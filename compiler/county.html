@@ -1,0 +1,21 @@
+<style>
+    .hideinput {
+        display: none;
+    }
+</style>
+<a href="/auth/manage/">Home</a>
+<form id="editingform" method="POST"> {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+<div id="sid" class="hideinput">{{ sid }}</div>
+<div id="sname" class="hideinput">{{ sname }}</div>
+<script>
+    let stateid = document.querySelector("#id_stateid");
+    let sid = document.querySelector("#sid");
+    stateid.value = sid.innerText;
+
+    let statename = document.querySelector("#id_statename");
+    let sname = document.querySelector("#sname");
+    statename.value = sname.innerText;
+</script>

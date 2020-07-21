@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+ <style>
+#states, #sites, #templates, #blogs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+}
+ </style>
+</head>
+<body>
+<h1>Manager Console</h1>
+<h2>Sites</h2>
+<a href="/auth/site/create/">Create a new Site</a>
+<div id="sites">{{ sites | safe }}</div>
+<h2>Templates</h2>
+<a href="/auth/template/create/">Create a new Template</a>
+<div id="templates">{{ templates | safe }}</div>
+<h2>Blogs</h2>
+<a href="/auth/blog/create/">Create a new Blog</a>
+<div id="blogs">{{ blogs | safe }}</div>
+<h2>Locations</h2>
+<a href="/auth/state/create/">Create a new State</a>
+<div id="states">{{ states | safe }}</div>
+</body>
+</html>
