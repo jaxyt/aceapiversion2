@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from django.db import transaction
 from django.http import HttpResponse, SimpleCookie, HttpResponseRedirect
 from django.contrib.auth import authenticate
 from pymongo import MongoClient
@@ -718,12 +717,10 @@ def create_site(request):
 def update_site(request):
     if request.COOKIES.get('sessionid'):
         id = request.GET.get('id', '')
-        #  instance = get_object_or_404(Site, id=id)
-        with transaction.atomic():
-            instance = (Site.objects.select_for_update().get(id=id))
-            form = SiteForm(request.POST or None, instance=instance)
-            if form.is_valid():
-                form.save()
+        instance = get_object_or_404(Site, id=id)
+        form = SiteForm(request.POST or None, instance=instance)
+        if form.is_valid():
+            form.save()
 
         context = {
             'form': form
