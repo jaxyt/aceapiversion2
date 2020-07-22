@@ -297,7 +297,7 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub('XXstateXX', st.title(), comp)
     corp_links = """<div class="corp-links">"""
     for i in coll_cp.find():
-        corp_links += """<a href="/process-server/{}-{}">{}</a>""".format(i['searchvalue'], i['id'], i['name'])
+        corp_links += """<a href="/process-server/{}-{}">{}</a>""".format("-".join(i['searchvalue'].split(" ")), i['id'], i['name'])
     corp_links += """</div>"""
     comp = re.sub('XXcorplinksXX', corp_links, comp)
     comp = re.sub('XXsitenameXX', s.sitename if s.sitename else "", comp)
