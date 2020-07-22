@@ -15,3 +15,10 @@ class RegisteredAgent(models.Model):
     website = models.CharField(max_length=200, blank=True)
 
     objects = models.DjongoManager()
+
+
+class Corporation(models.Model):
+    name = models.CharField(max_length=200)
+    searchkey = models.CharField(max_length=100)
+    searchvalue = models.TextField()
+    objects = models.DjongoManager()
