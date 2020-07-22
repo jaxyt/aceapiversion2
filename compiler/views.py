@@ -720,7 +720,7 @@ def update_site(request):
         id = request.GET.get('id', '')
         #  instance = get_object_or_404(Site, id=id)
         with transaction.atomic():
-            instance = (Site.objects.select_for_update(nowait=True).get(id=id))
+            instance = (Site.objects.select_for_update().get(id=id))
             form = SiteForm(request.POST or None, instance=instance)
             if form.is_valid():
                 form.save()
