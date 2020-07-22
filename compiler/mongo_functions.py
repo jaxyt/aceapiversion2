@@ -225,17 +225,11 @@ def compiler_v3(s, t, r, arr):
     elif arr[1] == "process-server":
         if len(arr) == 3:
             agents_info = """<div class="registered-agents">"""
-            print(int(arr[2].split("-")[-1]))
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
-            print(corp)
             k = corp['searchkey']
             q = corp['searchvalue']
-            print(k)
-            print(q)
             query = re.compile(q, re.IGNORECASE)
-            print(query)
             for i in coll_ra.find({k: query}):
-                print(i)
                 agents_info += """<ul id="{}" class="agent-container">""".format(i['id'])
                 agents_info += """<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{}">{}</a></li>""".format(
                     i['agency'], i['agency'].title()) if i['agency'] else ""
@@ -259,10 +253,13 @@ def compiler_v3(s, t, r, arr):
                     i['website'].title()) if i['website'] else ""
                 agents_info += "</ul>"
             agents_info += "</div>"
+            print(agents_info)
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
+            print(comp)
             corps_in_states = """<div class="state-corps-links">"""
             for i in coll_st.find():
+                print(i)
                 corps_in_states += """<a href="{}/{}">{}</a>""".format("/".join(arr), "-".join(i['statename'].split(" ")), i['statename'].title())
             corps_in_states += """</div>"""
             comp = ('XXcorpsinstatesXX', corps_in_states, comp)
