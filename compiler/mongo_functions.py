@@ -16,6 +16,7 @@ coll_ci = db.cities_city
 coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
+coll_cp = db.registeredagents_corporation
 
 def registered_agent_search(k, q):
     res = []
@@ -51,6 +52,11 @@ def compiler_v3(s, t, r, arr):
             page = "/registered-agents/id"
         elif len(arr) == 5:
             page = "/registered-agents/search/key/value"
+    elif arr[1] == "process-server":
+        if len(arr) == 3:
+            page = "/process-server/id"
+        elif len(arr) == 4:
+            page = "/process-server/id/state"
     else:
         page = r
     print(page)
@@ -216,6 +222,84 @@ def compiler_v3(s, t, r, arr):
                 agents_info += "</ul>"
             agents_info += "</div>"
             comp = re.sub("XXagentsXX", agents_info, comp)
+    elif arr[1] == "process-server":
+        if len(arr) == 3:
+            agents_info = """<div class="registered-agents">"""
+            corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
+            k = corp['searchkey']
+            q = corp['searchvalue']
+            query = re.compile(q, re.IGNORECASE)
+            for i in coll_ra.find({k: query}):
+                agents_info += """<ul id="{}" class="agent-container">""".format(i['id'])
+                agents_info += """<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{}">{}</a></li>""".format(
+                    i['agency'], i['agency'].title()) if i['agency'] else ""
+                agents_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
+                    i['state'], i['state'].title()) if i['state'] else ""
+                agents_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
+                    i['company'], i['company'].title()) if i['company'] else ""
+                agents_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(
+                    i['contact'].title()) if i['contact'] else ""
+                agents_info += """<li class="address">Address:&nbsp;{}</li>""".format(
+                    i['address'].title()) if i['address'] else ""
+                agents_info += """<li class="mail">Mailing Address:&nbsp;{}</li>""".format(
+                    i['mail'].title()) if i['mail'] else ""
+                agents_info += """<li class="ra-phone">Phone:&nbsp;{}</li>""".format(
+                    i['phone'].title()) if i['phone'] else ""
+                agents_info += """<li class="fax">Fax:&nbsp;{}</li>""".format(
+                    i['fax'].title()) if i['fax'] else ""
+                agents_info += """<li class="email">Email:&nbsp;{}</li>""".format(
+                    i['email'].title()) if i['email'] else ""
+                agents_info += """<li class="website">Website:&nbsp;{}</li>""".format(
+                    i['website'].title()) if i['website'] else ""
+                agents_info += "</ul>"
+            agents_info += "</div>"
+            comp = re.sub('XXagentsXX', agents_info, comp)
+            comp = re.sub('XXcorpXX', corp['name'], comp)
+            corps_in_states = """<div class="state-corps-links">"""
+            for i in coll_st.find():
+                corps_in_states += """<a href="{}/{}">{}</a>""".format("/".join(arr), "-".join(i['statename'].split(" ")), i['statename'].title())
+            corps_in_states += """</div>"""
+            comp = ('XXcorpsinstatesXX', corps_in_states, comp)
+        elif len(arr) == 4:
+            agents_info = """<div class="registered-agents">"""
+            corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
+            st = " ".join(arr[3].split("-"))
+            k = corp['searchkey']
+            q = corp['searchvalue']
+            query = re.compile(q, re.IGNORECASE)
+            state_query = re.compile(st.lower(), re.IGNORECASE)
+            for i in coll_ra.find({k: query, 'state': state_query}):
+                agents_info += """<ul id="{}" class="agent-container">""".format(i['id'])
+                agents_info += """<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{}">{}</a></li>""".format(
+                    i['agency'], i['agency'].title()) if i['agency'] else ""
+                agents_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
+                    i['state'], i['state'].title()) if i['state'] else ""
+                agents_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
+                    i['company'], i['company'].title()) if i['company'] else ""
+                agents_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(
+                    i['contact'].title()) if i['contact'] else ""
+                agents_info += """<li class="address">Address:&nbsp;{}</li>""".format(
+                    i['address'].title()) if i['address'] else ""
+                agents_info += """<li class="mail">Mailing Address:&nbsp;{}</li>""".format(
+                    i['mail'].title()) if i['mail'] else ""
+                agents_info += """<li class="ra-phone">Phone:&nbsp;{}</li>""".format(
+                    i['phone'].title()) if i['phone'] else ""
+                agents_info += """<li class="fax">Fax:&nbsp;{}</li>""".format(
+                    i['fax'].title()) if i['fax'] else ""
+                agents_info += """<li class="email">Email:&nbsp;{}</li>""".format(
+                    i['email'].title()) if i['email'] else ""
+                agents_info += """<li class="website">Website:&nbsp;{}</li>""".format(
+                    i['website'].title()) if i['website'] else ""
+                agents_info += "</ul>"
+            agents_info += "</div>"
+            comp = re.sub('XXagentsXX', agents_info, comp)
+            comp = re.sub('XXcorpXX', corp['name'], comp)
+            comp = re.sub('XXstateXX', st.title(), comp)
+    corp_links = """<div class="corp-links">"""
+    for i in coll_cp.find():
+        corp_links += """<a href="/process-server/{}-{}">{}</a>""".format(i['searchvalue'], i['id'], i['name'])
+    corp_links += """</div>"""
+    comp = re.sub('XXcorplinksXX', corp_links, comp)
     comp = re.sub('XXsitenameXX', s.sitename if s.sitename else "", comp)
     comp = re.sub('XXspagetitleXX', spage.title if spage.title else "", comp)
     comp = re.sub('XXspagerouteXX', spage.route if spage.route else "", comp)
