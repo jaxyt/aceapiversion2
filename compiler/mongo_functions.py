@@ -253,16 +253,14 @@ def compiler_v3(s, t, r, arr):
                     i['website'].title()) if i['website'] else ""
                 agents_info += "</ul>"
             agents_info += "</div>"
-            print(agents_info)
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
-            print(comp)
             corps_in_states = """<div class="state-corps-links">"""
             for i in coll_st.find():
-                print(i)
                 corps_in_states += """<a href="{}/{}">{}</a>""".format("/".join(arr), "-".join(i['statename'].split(" ")), i['statename'].title())
             corps_in_states += """</div>"""
             comp = ('XXcorpsinstatesXX', corps_in_states, comp)
+            print(comp)
         elif len(arr) == 4:
             agents_info = """<div class="registered-agents">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
