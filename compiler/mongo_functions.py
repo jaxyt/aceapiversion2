@@ -259,8 +259,7 @@ def compiler_v3(s, t, r, arr):
             for i in coll_st.find():
                 corps_in_states += """<a href="{}/{}">{}</a>""".format("/".join(arr), "-".join(i['statename'].split(" ")), i['statename'].title())
             corps_in_states += """</div>"""
-            comp = ('XXcorpsinstatesXX', corps_in_states, comp)
-            print(comp)
+            comp = re.sub('XXcorpsinstatesXX', corps_in_states, comp)
         elif len(arr) == 4:
             agents_info = """<div class="registered-agents">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
