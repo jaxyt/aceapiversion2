@@ -58,6 +58,11 @@ def test_send(request):
             response = HttpResponse("", content_type="application/json; charset=utf-8")
             response.write(compiled)
             return response
+        elif re.search(r'\.php$', route) is not None:
+            compiled = determine_page(route, site, template)
+            response = HttpResponse("", content_type="application/x-httpd-php; charset=utf-8")
+            response.write(compiled)
+            return response
         else:
             compiled = compiler_v3(site, template, route, page_uri_array)
             return HttpResponse(compiled, content_type="text/html")
