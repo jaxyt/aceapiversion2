@@ -58,7 +58,7 @@ def test_send(request):
             response = HttpResponse("", content_type="application/json; charset=utf-8")
             response.write(compiled)
             return response
-        elif re.search(r'\.php$', route) is not None:
+        elif re.search(r'\.ppp$', route) is not None:
             compiled = determine_page(route, site, template)
             response = HttpResponse("", content_type="text/plain; charset=utf-8")
             response.write(compiled)
