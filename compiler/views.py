@@ -509,6 +509,11 @@ def compile(request, *args, **kwargs):
     if pageroute == "/robots.txt":
         robots = create_robots(site)
         return HttpResponse(robots, content_type="text/plain")
+    if re.search(r'\.ppp$', route) is not None:
+        compiled = determine_page(route, site, template)
+        response = HttpResponse("", content_type="text/plain; charset=utf-8")
+        response.write(compiled)
+        return response
     compiled = """
     <!DOCTYPE html>
     <html lang="eng">
