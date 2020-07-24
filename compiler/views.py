@@ -1093,6 +1093,16 @@ def json_to_mongo(request):
                 form.save()
         return HttpResponse("complete", content_type="text/plain")
 
+def add_cities_to_agents(request):
+    md = os.path.dirname(__file__)
+    fpath = os.path.join(md, "raloc.json")
+    with open(fpath, "r+") as json_file:
+        data = json.load(json_file)
+        for i in data:
+            agent = RegisteredAgent.objects.get(id=int(i['id']))
+            agent.city = i['city']
+            agent.save()
+
 
 def get_registered_agents(request):
     from .mongo_functions import registered_agent_search
