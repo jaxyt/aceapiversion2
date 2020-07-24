@@ -67,7 +67,6 @@ def compiler_v3(s, t, r, arr):
         if i.route == page:
             tpage = i
     for i in coll_st.find():
-        #  states_links += """<a href="/locations/{}">{}</a>""".format('-'.join(i['statename'].split(' ')), i['statename'].title())
         states_links +=f"""<a href="/locations/{'-'.join(i['statename'].split(' '))}">{i['statename'].title()}</a>"""
     states_links += "</div>"
     comp += """<!DOCTYPE html><html lang="en"><head>"""
@@ -75,7 +74,6 @@ def compiler_v3(s, t, r, arr):
     comp += spage.pagemetas if spage.pagemetas else tpage.pagemetas if tpage.pagemetas else ""
     comp += s.sitelinks if s.sitelinks else t.sitelinks if t.sitelinks else ""
     comp += spage.pagelinks if spage.pagelinks else tpage.pagelinks if tpage.pagelinks else ""
-    #  comp += """<title>{}</title>""".format(spage.title if spage.title else tpage.title if tpage.title else "")
     comp += f"""<title>{spage.title if spage.title else tpage.title if tpage.title else ""}</title>"""
     comp += spage.pagestyle if spage.pagestyle else s.sitestyle if s.sitestyle else tpage.pagestyle if tpage.pagestyle else t.sitestyle if t.sitestyle else ""
     comp += """</head><body>"""
@@ -89,10 +87,6 @@ def compiler_v3(s, t, r, arr):
     site_state = coll_st.find_one({'id': s.location.stateid})
     for i in coll_co.find({'stateid': site_state['id']}):
         site_counties_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['id']}">{i['countyname'].title()}</a>"""
-        #  site_counties_links += """<a class="location-link" href="/locations/{}/{}-{}">{}</a>""".format(i['statename'],
-        #                                                                                               i['countyname'],
-        #                                                                                               i['id'],
-        #                                                                                               i['countyname'].title())
     site_counties_links += """</div>"""
     comp = re.sub(r'XXsitestateXX', site_state['statename'].title(), comp)
     comp = re.sub(r'XXsitecountylinksXX', site_counties_links, comp)
@@ -100,12 +94,6 @@ def compiler_v3(s, t, r, arr):
     site_county = coll_co.find_one({'id': s.location.countyid})
     for i in coll_ci.find({'countyid': site_county['id']}):
         site_cities_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['countyid']}/{i['cityname']}-{i['id']}">{i['cityname'].title()}</a>"""
-        #  site_cities_links += """<a class="location-link" href="/locations/{}/{}-{}/{}-{}">{}</a>""".format(i['statename'],
-        #                                                                                                   i['countyname'],
-        #                                                                                                   i['countyid'],
-        #                                                                                                   i['cityname'],
-        #                                                                                                   i['id'],
-        #                                                                                                   i['cityname'].title())
     site_cities_links += """</div>"""
     comp = re.sub(r'XXsitecountyXX', site_county['countyname'].title(), comp)
     comp = re.sub(r'XXsitecitylinksXX', site_cities_links, comp)
@@ -120,7 +108,6 @@ def compiler_v3(s, t, r, arr):
             page_state = coll_st.find_one({'statename': " ".join(arr[2].split('-'))})
             for i in coll_co.find({'stateid': page_state['id']}):
                 page_counties_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['id']}">{i['countyname'].title()}</a>"""
-                #  page_counties_links += """<a class="location-link" href="/locations/{}/{}-{}">{}</a>""".format(i['statename'], i['countyname'], i['id'], i['countyname'].title())
             page_counties_links += """</div>"""
             comp = re.sub(r'XXpagestateXX', page_state['statename'].title(), comp)
             comp = re.sub(r'XXpagecountylinksXX', page_counties_links, comp)
@@ -128,7 +115,6 @@ def compiler_v3(s, t, r, arr):
                 page_county = coll_co.find_one({'id': int(arr[3].split("-")[-1])})
                 for i in coll_ci.find({'countyid': page_county['id']}):
                     page_cities_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['countyid']}/{i['cityname']}-{i['id']}">{i['cityname'].title()}</a>"""
-                    #  page_cities_links += """<a class="location-link" href="/locations/{}/{}-{}/{}-{}">{}</a>""".format(i['statename'], i['countyname'], i['countyid'], i['cityname'], i['id'], i['cityname'].title())
                 page_cities_links += """</div>"""
                 comp = re.sub(r'XXpagecountyXX', page_county['countyname'].title(), comp)
                 comp = re.sub(r'XXpagecitylinksXX', page_cities_links, comp)
@@ -153,7 +139,6 @@ def compiler_v3(s, t, r, arr):
                     else:
                         post = post_content+"..."
                 snippets += f"""<div class="snippet"><h3><a href="/blog/posts/{"-".join(i['bloguri'].split(" "))}-{i['id']}">{i['blogtitle'].title()}</a></h3><p>{post}</p></div>"""
-                #  snippets += """<div class="snippet"><h3><a href="/blog/posts/{}-{}">{}</a></h3><p>{}</p></div>""".format("-".join(i['bloguri'].split(" ")), i['id'], i['blogtitle'].title(), post)
             snippets += "</div>"
             comp = re.sub('XXsnippetsXX', snippets, comp)
         elif len(arr) == 4:
@@ -164,7 +149,6 @@ def compiler_v3(s, t, r, arr):
             else:
                 post = blog_post['blogpostnational']
             post_template = f"""<div class="blog-post"><h1>{blog_post['blogtitle'].title()}</h1><div><span>{blog_post['blogdate']}</span><br><span>{blog_post['blogauthor']}</span></div><p>{post}</p></div>"""
-            #post_template = """<div class="blog-post"><h1>{}</h1><div><span>{}</span><br><span>{}</span></div><p>{}</p></div>""".format(blog_post['blogtitle'].title(), blog_post['blogdate'], blog_post['blogauthor'], post)
             comp = re.sub('XXblogpostXX', post_template, comp)
             comp = re.sub('XXblogtitleXX', blog_post['blogtitle'] if blog_post['blogtitle'] else "", comp)
             comp = re.sub('XXbloguriXX', blog_post['bloguri'] if blog_post['bloguri'] else "", comp)
@@ -178,40 +162,17 @@ def compiler_v3(s, t, r, arr):
         if len(arr) == 3:
             agent = coll_ra.find_one({'id': int(arr[2])})
             agent_info = f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">"""
-            #  agent_info = """<div class="registered-agent"><ul id="{}" class="agent-container">""".format(agent['id'])
             agent_info += f"""<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{agent['agency']}">{agent['agency'].title()}</a></li>""" if agent['agency'] else ""
-            #  agent_info += """<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{}">{}</a></li>""".format(
-            #    agent['agency'], agent['agency'].title()) if agent['agency'] else ""
             agent_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{agent['state']}">{agent['state'].title()}</a></li>""" if agent['state'] else ""
-            #  agent_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
-            #    agent['state'], agent['state'].title()) if agent['state'] else ""
             agent_info += f"""<li class="city">city:&nbsp;<a href="/registered-agents/search/city/{agent['city']}">{agent['city'].title()}</a></li>""" if agent['city'] else ""
-            #  agent_info += """<li class="city">city:&nbsp;<a href="/registered-agents/search/city/{}">{}</a></li>""".format(
-            #    agent['city'], agent['city'].title()) if agent['city'] else ""
             agent_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{agent['company']}">{agent['company'].title()}</a></li>""" if agent['company'] else ""
-            #  agent_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
-            #    agent['company'], agent['company'].title()) if agent['company'] else ""
             agent_info += f"""<li class="contact-point">Contact:&nbsp;{agent['contact'].title()}</li>""" if agent['contact'] else ""
-            #  agent_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(
-            #    agent['contact'].title()) if agent['contact'] else ""
             agent_info += f"""<li class="address">Address:&nbsp;{agent['address'].title()}</li>""" if agent['address'] else ""
-            #  agent_info += """<li class="address">Address:&nbsp;{}</li>""".format(
-            #    agent['address'].title()) if agent['address'] else ""
             agent_info += f"""<li class="mail">Mailing Address:&nbsp;{agent['mail'].title()}</li>"""  if agent['mail'] else ""
-            #  agent_info += """<li class="mail">Mailing Address:&nbsp;{}</li>""".format(
-            #    agent['mail'].title()) if agent['mail'] else ""
             agent_info += f"""<li class="ra-phone">Phone:&nbsp;{agent['phone'].title()}</li>""" if agent['phone'] else ""
-            #  agent_info += """<li class="ra-phone">Phone:&nbsp;{}</li>""".format(
-            #    agent['phone'].title()) if agent['phone'] else ""
             agent_info += f"""<li class="fax">Fax:&nbsp;{agent['fax'].title()}</li>""" if agent['fax'] else ""
-            #  agent_info += """<li class="fax">Fax:&nbsp;{}</li>""".format(
-            #    agent['fax'].title()) if agent['fax'] else ""
             agent_info += f"""<li class="email">Email:&nbsp;{agent['email'].title()}</li>""" if agent['email'] else ""
-            #  agent_info += """<li class="email">Email:&nbsp;{}</li>""".format(
-            #    agent['email'].title()) if agent['email'] else ""
             agent_info += f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else ""
-            #  agent_info += """<li class="website">Website:&nbsp;{}</li>""".format(
-            #    agent['website'].title()) if agent['website'] else ""
             agent_info += "</ul></div>"
             comp = re.sub("XXagentXX", agent_info, comp)
         elif len(arr) == 5:
@@ -221,40 +182,17 @@ def compiler_v3(s, t, r, arr):
             query = re.compile(arr[4], re.IGNORECASE)
             for i in coll_ra.find({k: query}):
                 agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                #agents_info += """<ul id="{}" class="agent-container">""".format(i['id'])
                 agents_info += f"""<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-                #  agents_info += """<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{}">{}</a></li>""".format(
-                #    i['agency'], i['agency'].title()) if i['agency'] else ""
                 agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-                #  agents_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
-                #    i['state'], i['state'].title()) if i['state'] else ""
                 agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-                #  agents_info += """<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{}">{}</a></li>""".format(
-                #    i['city'], i['city'].title()) if i['city'] else ""
                 agents_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                #  agents_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
-                #    i['company'], i['company'].title()) if i['company'] else ""
                 agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-                #  agents_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(
-                #    i['contact'].title()) if i['contact'] else ""
                 agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-                #  agents_info += """<li class="address">Address:&nbsp;{}</li>""".format(
-                #    i['address'].title()) if i['address'] else ""
                 agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-                #  agents_info += """<li class="mail">Mailing Address:&nbsp;{}</li>""".format(
-                #    i['mail'].title()) if i['mail'] else ""
                 agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-                #  agents_info += """<li class="ra-phone">Phone:&nbsp;{}</li>""".format(
-                #    i['phone'].title()) if i['phone'] else ""
                 agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-                #  agents_info += """<li class="fax">Fax:&nbsp;{}</li>""".format(
-                #    i['fax'].title()) if i['fax'] else ""
                 agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-                #  agents_info += """<li class="email">Email:&nbsp;{}</li>""".format(
-                #    i['email'].title()) if i['email'] else ""
                 agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-                #  agents_info += """<li class="website">Website:&nbsp;{}</li>""".format(
-                #    i['website'].title()) if i['website'] else ""
                 agents_info += "</ul>"
             agents_info += "</div>"
             comp = re.sub("XXagentsXX", agents_info, comp)
@@ -267,40 +205,17 @@ def compiler_v3(s, t, r, arr):
             query = re.compile(q, re.IGNORECASE)
             for i in coll_ra.find({k: query}):
                 agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                #  agents_info += """<ul id="{}" class="agent-container">""".format(i['id'])
                 agents_info += f"""<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-                #  agents_info += """<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{}">{}</a></li>""".format(
-                #    i['agency'], i['agency'].title()) if i['agency'] else ""
                 agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-                #  agents_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
-                #    i['state'], i['state'].title()) if i['state'] else ""
                 agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-                #  agents_info += """<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{}">{}</a></li>""".format(
-                #    i['city'], i['city'].title()) if i['city'] else ""
                 agents_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                #  agents_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
-                #    i['company'], i['company'].title()) if i['company'] else ""
                 agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-                #  agents_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(
-                #    i['contact'].title()) if i['contact'] else ""
                 agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-                #  agents_info += """<li class="address">Address:&nbsp;{}</li>""".format(
-                #    i['address'].title()) if i['address'] else ""
                 agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-                #  agents_info += """<li class="mail">Mailing Address:&nbsp;{}</li>""".format(
-                #    i['mail'].title()) if i['mail'] else ""
                 agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-                #  agents_info += """<li class="ra-phone">Phone:&nbsp;{}</li>""".format(
-                #    i['phone'].title()) if i['phone'] else ""
                 agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-                #  agents_info += """<li class="fax">Fax:&nbsp;{}</li>""".format(
-                #    i['fax'].title()) if i['fax'] else ""
                 agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-                #  agents_info += """<li class="email">Email:&nbsp;{}</li>""".format(
-                #    i['email'].title()) if i['email'] else ""
                 agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-                #  agents_info += """<li class="website">Website:&nbsp;{}</li>""".format(
-                #    i['website'].title()) if i['website'] else ""
                 agents_info += "</ul>"
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
@@ -308,7 +223,6 @@ def compiler_v3(s, t, r, arr):
             corps_in_states = """<div class="state-corps-links">"""
             for i in coll_st.find():
                 corps_in_states += f"""<a href="{"/".join(arr)}/{"-".join(i['statename'].split(" "))}">{i['statename'].title()}</a>"""
-                #  corps_in_states += """<a href="{}/{}">{}</a>""".format("/".join(arr), "-".join(i['statename'].split(" ")), i['statename'].title())
             corps_in_states += """</div>"""
             comp = re.sub('XXcorpsinstatesXX', corps_in_states, comp)
         elif len(arr) == 4:
@@ -321,40 +235,17 @@ def compiler_v3(s, t, r, arr):
             state_query = re.compile(st.lower(), re.IGNORECASE)
             for i in coll_ra.find({k: query, 'state': state_query}):
                 agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                #  agents_info += """<ul id="{}" class="agent-container">""".format(i['id'])
                 agents_info += f"""<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-                #  agents_info += """<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{}">{}</a></li>""".format(
-                #    i['agency'], i['agency'].title()) if i['agency'] else ""
                 agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-                #  agents_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
-                #    i['state'], i['state'].title()) if i['state'] else ""
                 agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-                #  agents_info += """<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{}">{}</a></li>""".format(
-                #    i['city'], i['city'].title()) if i['city'] else ""
                 agents_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                #  agents_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
-                #    i['company'], i['company'].title()) if i['company'] else ""
                 agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-                #  agents_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(
-                #    i['contact'].title()) if i['contact'] else ""
                 agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-                #  agents_info += """<li class="address">Address:&nbsp;{}</li>""".format(
-                #    i['address'].title()) if i['address'] else ""
                 agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-                #  agents_info += """<li class="mail">Mailing Address:&nbsp;{}</li>""".format(
-                #    i['mail'].title()) if i['mail'] else ""
                 agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-                #  agents_info += """<li class="ra-phone">Phone:&nbsp;{}</li>""".format(
-                #    i['phone'].title()) if i['phone'] else ""
                 agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-                #  agents_info += """<li class="fax">Fax:&nbsp;{}</li>""".format(
-                #    i['fax'].title()) if i['fax'] else ""
                 agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-                #  agents_info += """<li class="email">Email:&nbsp;{}</li>""".format(
-                #    i['email'].title()) if i['email'] else ""
                 agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-                #  agents_info += """<li class="website">Website:&nbsp;{}</li>""".format(
-                #    i['website'].title()) if i['website'] else ""
                 agents_info += "</ul>"
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
@@ -363,7 +254,6 @@ def compiler_v3(s, t, r, arr):
     corp_links = """<div class="corp-links">"""
     for i in coll_cp.find():
         corp_links += f"""<a href="/process-server/{"-".join(i['searchvalue'].split(" "))}-{i['id']}">{i['name']}</a>"""
-        #  corp_links += """<a href="/process-server/{}-{}">{}</a>""".format("-".join(i['searchvalue'].split(" ")), i['id'], i['name'])
     corp_links += """</div>"""
     comp = re.sub('XXcorplinksXX', corp_links, comp)
     comp = re.sub('XXsitenameXX', s.sitename if s.sitename else "", comp)
@@ -397,27 +287,21 @@ def render_xml_sitemap(s, t):
             if len(i.route.split("/")) == 3:
                 for n in coll_st.find():
                     sitemap += f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}</loc></url>"""
-                    #  sitemap += """<url><loc>https://www.{}.com/locations/{}</loc></url>""".format(s.sitename, n['statename'])
             elif len(i.route.split("/")) == 5:
                 for n in coll_ci.find():
                     sitemap += f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}/{n['countyname']}-{n['countyid']}/{n['cityname']}-{n['id']}</loc></url>"""
-                    #  sitemap += """<url><loc>https://www.{}.com/locations/{}/{}-{}/{}-{}</loc></url>""".format(s.sitename, n['statename'], n['countyname'], n['countyid'], n['cityname'], n['id'])
         elif re.search(r'^/blog/', i.route) is not None:
             if len(i.route.split("/")) == 3:
                 sitemap += f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>"""
-                #  sitemap += """<url><loc>https://www.{}.com{}</loc></url>""".format(s.sitename, i.route)
             elif len(i.route.split("/")) == 4:
                 for n in coll_bl.find({'blogcategory': s.blogcategory}):
                     sitemap += f"""<url><loc>https://www.{s.sitename}.com/blog/posts/{n['bloguri'] if n['bloguri'] else ""}-{n['id']}</loc></url>"""
-                    #  sitemap += """<url><loc>https://www.{}.com/blog/posts/{}-{}</loc></url>""".format(s.sitename, n['bloguri'] if n['bloguri'] else "", n['id'])
         elif re.search(r'^/registered-agents/', i.route) is not None:
             if re.search(r'^/registered-agents/search', i.route) is None:
                 for n in coll_ra.find():
                     sitemap += f"""<url><loc>https://www.{s.sitename}.com/registered-agents/{n['id']}</loc></url>"""
-                    #  sitemap += """<url><loc>https://www.{}.com/registered-agents/{}</loc></url>""".format(s.sitename, n['id'])
         else:
             if re.search(r'\.[a-z]{2,4}$', i.route) is None:
                 sitemap += f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>"""
-                #sitemap += """<url><loc>https://www.{}.com{}</loc></url>""".format(s.sitename, i.route)
     sitemap += """</urlset>"""
     return sitemap
