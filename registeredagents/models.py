@@ -13,6 +13,7 @@ class RegisteredAgent(models.Model):
     fax = models.CharField(max_length=200, blank=True)
     email = models.CharField(max_length=200, blank=True)
     website = models.CharField(max_length=200, blank=True)
+    city = models.CharField(max_length=200, blank=True)
 
     objects = models.DjongoManager()
 
