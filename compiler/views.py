@@ -1102,6 +1102,7 @@ def add_cities_to_agents(request):
             agent = RegisteredAgent.objects.get(id=int(i['id']))
             agent.city = i['city']
             agent.save()
+        return HttpResponse("complete", content_type="text/plain")
 
 
 def get_registered_agents(request):
