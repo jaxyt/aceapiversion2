@@ -22,7 +22,7 @@ module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'registered_agents.json')
 
 def test_send(request):
-    from .mongo_functions import compiler_v3, render_xml_sitemap
+    from .mongo_functions import compiler_v3, render_xml_sitemap, replace_shortcodes
     site_id = request.GET.get('id', '2')
     route = request.GET.get('route', '/')
     page_uri_array = route.split('/')
@@ -40,27 +40,32 @@ def test_send(request):
             response.write(compiled)
         elif re.search(r'\.css$', route) is not None:
             compiled = determine_page(route, site, template)
+            compiled = replace_shortcodes(site, template, compiled)
             response = HttpResponse("", content_type="text/css; charset=utf-8")
             response.write(compiled)
             return response
         elif re.search(r'\.js$', route) is not None:
             compiled = determine_page(route, site, template)
+            compiled = replace_shortcodes(site, template, compiled)
             response = HttpResponse("", content_type="text/javascript; charset=utf-8")
             response.write(compiled)
             return response
         elif re.search(r'\.sch$', route) is not None:
             compiled = determine_page(route, site, template)
-            response = HttpResponse("", content_type="application/ls+json; charset=utf-8")
+            compiled = replace_shortcodes(site, template, compiled)
+            response = HttpResponse("", content_type="application/ld+json; charset=utf-8")
             response.write(compiled)
             return response
         elif re.search(r'\.json$', route) is not None:
             compiled = determine_page(route, site, template)
+            compiled = replace_shortcodes(site, template, compiled)
             response = HttpResponse("", content_type="application/json; charset=utf-8")
             response.write(compiled)
             return response
-        elif re.search(r'\.ppp$', route) is not None:
+        if re.search(r'\.ppp$', route) is not None:
             compiled = determine_page(route, site, template)
-            response = HttpResponse("", content_type="application/json; charset=utf-8")
+            compiled = replace_shortcodes(site, template, compiled)
+            response = HttpResponse("", content_type="application/x-httpd-php; charset=utf-8")
             response.write(compiled)
             return response
         else:
