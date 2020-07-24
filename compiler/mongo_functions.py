@@ -174,6 +174,8 @@ def compiler_v3(s, t, r, arr):
                 agent['agency'], agent['agency'].title()) if agent['agency'] else ""
             agent_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
                 agent['state'], agent['state'].title()) if agent['state'] else ""
+            agent_info += """<li class="city">city:&nbsp;<a href="/registered-agents/search/city/{}">{}</a></li>""".format(
+                agent['city'], agent['city'].title()) if agent['city'] else ""
             agent_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
                 agent['company'], agent['company'].title()) if agent['company'] else ""
             agent_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(
@@ -203,6 +205,8 @@ def compiler_v3(s, t, r, arr):
                     i['agency'], i['agency'].title()) if i['agency'] else ""
                 agents_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
                     i['state'], i['state'].title()) if i['state'] else ""
+                agents_info += """<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{}">{}</a></li>""".format(
+                    i['city'], i['city'].title()) if i['city'] else ""
                 agents_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
                     i['company'], i['company'].title()) if i['company'] else ""
                 agents_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(
@@ -235,6 +239,8 @@ def compiler_v3(s, t, r, arr):
                     i['agency'], i['agency'].title()) if i['agency'] else ""
                 agents_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
                     i['state'], i['state'].title()) if i['state'] else ""
+                agents_info += """<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{}">{}</a></li>""".format(
+                    i['city'], i['city'].title()) if i['city'] else ""
                 agents_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
                     i['company'], i['company'].title()) if i['company'] else ""
                 agents_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(
@@ -274,6 +280,8 @@ def compiler_v3(s, t, r, arr):
                     i['agency'], i['agency'].title()) if i['agency'] else ""
                 agents_info += """<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{}">{}</a></li>""".format(
                     i['state'], i['state'].title()) if i['state'] else ""
+                agents_info += """<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{}">{}</a></li>""".format(
+                    i['city'], i['city'].title()) if i['city'] else ""
                 agents_info += """<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{}">{}</a></li>""".format(
                     i['company'], i['company'].title()) if i['company'] else ""
                 agents_info += """<li class="contact-point">Contact:&nbsp;{}</li>""".format(

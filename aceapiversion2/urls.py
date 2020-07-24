@@ -19,7 +19,7 @@ from compiler import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('test/',views.test_send, name="test"),
+    path('compilev3/',views.test_send, name="test"),
     path('compile/', views.compile, name='compile'),
     path('compilev2/', views.send_page, name='sendpage'),
     path('alllocations/', views.addngrams, name='alllocations'),
