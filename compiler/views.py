@@ -515,7 +515,9 @@ def compile(request, *args, **kwargs):
         robots = create_robots(site)
         return HttpResponse(robots, content_type="text/plain")
     if re.search(r'\.ppp$', route) is not None:
+        from .mongo_functions import replace_shortcodes
         compiled = determine_page(route, site, template)
+        compiled = replace_shortcodes(site, template, compiled)
         response = HttpResponse("", content_type="application/x-httpd-php; charset=utf-8")
         response.write(compiled)
         return response
