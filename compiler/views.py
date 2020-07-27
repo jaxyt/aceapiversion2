@@ -29,8 +29,8 @@ def test_send(request):
     site = Site.objects.get(id=int(site_id))
     template = Template.objects.get(id=site.templateid)
     try:
-        if re.search(r'sitemap\.xml$', route) is not None:
-            compiled = render_xml_sitemap(site, template)
+        if re.search(r'sitemap(-[0-9]+)?\.xml$', route) is not None:
+            compiled = render_xml_sitemap(site, template, route)
             response = HttpResponse("", content_type="application/xml; charset=utf-8")
             response.write(compiled)
             return response

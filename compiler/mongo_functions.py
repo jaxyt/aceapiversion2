@@ -290,29 +290,62 @@ def replace_shortcodes(site, template, string_content):
     return compiled
 
 
+def render_robots(s, t):
+    robots = ""
+    robots += " " 
+    return robots
 
-def render_xml_sitemap(s, t):
+def render_xml_sitemap(s, t, rt):
+    sitemap_urls = []
+    url_cnt = 0
     sitemap = """<?xml version="1.0" encoding="utf-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">"""
     for i in s.pages:
         if re.search(r'^/locations/', i.route) is not None:
             if len(i.route.split("/")) == 3:
                 for n in coll_st.find():
-                    sitemap += f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}</loc></url>"""
+                    #  sitemap += f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}</loc></url>"""
+                    sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}</loc></url>""")
+                    url_cnt += 1
             elif len(i.route.split("/")) == 5:
                 for n in coll_ci.find():
-                    sitemap += f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}/{n['countyname']}-{n['countyid']}/{n['cityname']}-{n['id']}</loc></url>"""
+                    #  sitemap += f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}/{n['countyname']}-{n['countyid']}/{n['cityname']}-{n['id']}</loc></url>"""
+                    sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}/{n['countyname']}-{n['countyid']}/{n['cityname']}-{n['id']}</loc></url>""")
+                    url_cnt += 1
         elif re.search(r'^/blog/', i.route) is not None:
             if len(i.route.split("/")) == 3:
-                sitemap += f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>"""
+                #  sitemap += f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>"""
+                sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>""")
+                url_cnt += 1
             elif len(i.route.split("/")) == 4:
                 for n in coll_bl.find({'blogcategory': s.blogcategory}):
-                    sitemap += f"""<url><loc>https://www.{s.sitename}.com/blog/posts/{n['bloguri'] if n['bloguri'] else ""}-{n['id']}</loc></url>"""
+                    #  sitemap += f"""<url><loc>https://www.{s.sitename}.com/blog/posts/{n['bloguri'] if n['bloguri'] else ""}-{n['id']}</loc></url>"""
+                    sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/blog/posts/{n['bloguri'] if n['bloguri'] else ""}-{n['id']}</loc></url>""")
+                    url_cnt += 1
         elif re.search(r'^/registered-agents/', i.route) is not None:
             if re.search(r'^/registered-agents/search', i.route) is None:
                 for n in coll_ra.find():
-                    sitemap += f"""<url><loc>https://www.{s.sitename}.com/registered-agents/{n['id']}</loc></url>"""
+                    #  sitemap += f"""<url><loc>https://www.{s.sitename}.com/registered-agents/{n['id']}</loc></url>"""
+                    sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/registered-agents/{n['id']}</loc></url>""")
+                    url_cnt += 1
         else:
             if re.search(r'\.[a-z]{2,4}$', i.route) is None:
-                sitemap += f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>"""
+                #  sitemap += f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>"""
+                sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>""")
+                url_cnt += 1
+    if rt == "/sitemap.xml":
+        for idx, val in enumerate(sitemap_urls):
+            if idx < 50000:
+                sitemap += val
+            else:
+                break
+    else:
+        multiplier = int(re.match(r'[0-9]+', rt)[0])
+        end = (multiplier*50000)
+        start = (multiplier-1)*50000
+        for idx, val in enumerate(sitemap_urls):
+            if idx < end and idx >= start:
+                sitemap += val
+            elif idx >= end:
+                break
     sitemap += """</urlset>"""
     return sitemap
