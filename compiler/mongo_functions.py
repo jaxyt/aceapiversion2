@@ -258,7 +258,10 @@ def compiler_v3(s, t, r, arr):
     html_sitemap = """<div><ul class="sitemap-links">"""
     for i in s.pages:
         if re.search(r'(/locations)|(/registered-agents)|(/process-server)|(/blog/posts/id)', i.route) is None:
-            html_sitemap += f"""<li><a href="{i.route}">{i.route}</a></li>"""
+            if i.route == "/":
+                html_sitemap += """<li><a href="/">Home</a></li>"""
+            else:
+                html_sitemap += f"""<li><a href="{i.route}">{" ".join(i.route.split("/")).title()}</a></li>"""
     html_sitemap += """</ul></div>"""
     comp = re.sub('XXsitemapXX', html_sitemap, comp)
     comp = re.sub('XXcorplinksXX', corp_links, comp)
