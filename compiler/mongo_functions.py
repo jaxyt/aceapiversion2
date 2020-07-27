@@ -257,7 +257,7 @@ def compiler_v3(s, t, r, arr):
     corp_links += """</div>"""
     html_sitemap = """<div><ul class="sitemap-links">"""
     for i in s.pages:
-        if re.search(r'(/locations)|(/registered-agents)|(/process-server)|(/blog/posts/id)', i.route) is None:
+        if re.search(r'(/locations)|(/registered-agents)|(/process-server)|(/blog/posts/id)|(\.)', i.route) is None:
             if i.route == "/":
                 html_sitemap += """<li><a href="/">Home</a></li>"""
             else:
