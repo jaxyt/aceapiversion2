@@ -262,6 +262,8 @@ def compiler_v3(s, t, r, arr):
     comp = re.sub('XXtemplatenameXX', t.templatename if t.templatename else "", comp)
     comp = re.sub('XXtpagetitleXX', tpage.title if tpage.title else "", comp)
     comp = re.sub('XXtpagerouteXX', tpage.route if tpage.route else "", comp)
+    comp = re.sub(r'Ct ', "CT ", comp)
+    comp = re.sub(r'Csc ', "CSC ", comp)
     comp = replace_shortcodes(s, t, comp)
     comp = replace_shortcodes(s, t, comp)
     return comp
