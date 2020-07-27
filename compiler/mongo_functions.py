@@ -256,7 +256,7 @@ def compiler_v3(s, t, r, arr):
         corp_links += f"""<a href="/process-server/{"-".join(i['searchvalue'].split(" "))}-{i['id']}">{i['name']}</a>"""
     corp_links += """</div>"""
     html_sitemap = """<div><ul class="sitemap-links">"""
-    for i in site.pages:
+    for i in s.pages:
         if re.search(r'(/locations)|(/registered-agents)|(/process-server)|(/blog/posts/id)', i.route) is None:
             html_sitemap += f"""<li><a href="{i.route}">{i.route}</a></li>"""
     html_sitemap += """</ul></div>"""
