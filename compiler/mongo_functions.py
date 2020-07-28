@@ -161,7 +161,7 @@ def compiler_v3(s, t, r, arr):
     elif arr[1] == "registered-agents":
         if len(arr) == 3:
             print(arr[2])
-            agent = coll_ra.find_one({'id': int(arr[2])})
+            agent = coll_ra.find_one({'id': int(arr[2].split("-")[-1])})
             agent_info = f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">"""
             agent_info += f"""<li class="agency">Agency:&nbsp;<a href="/registered-agents/search/agency/{agent['agency']}">{agent['agency'].title()}</a></li>""" if agent['agency'] else ""
             agent_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{agent['state']}">{agent['state'].title()}</a></li>""" if agent['state'] else ""
