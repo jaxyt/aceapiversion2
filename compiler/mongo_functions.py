@@ -176,18 +176,6 @@ def compiler_v3(s, t, r, arr):
             agent_info += f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else ""
             agent_info += "</ul></div>"
             comp = re.sub("XXagentXX", agent_info, comp)
-            comp = re.sub("XXagentidXX", agent['id'] if agent['id'] else "", comp)
-            comp = re.sub("XXagentagencyXX", agent['agency'].title() if agent['agency'] else "", comp)
-            comp = re.sub("XXagentcompanyXX", agent['company'].title() if agent['company'] else "", comp)
-            comp = re.sub("XXagentstateXX", agent['state'].title() if agent['state'] else "", comp)
-            comp = re.sub("XXagentcityXX", agent['city'].title() if agent['city'] else "", comp)
-            comp = re.sub("XXagentcontactXX", agent['contact'] if agent['contact'] else "", comp)
-            comp = re.sub("XXagentaddressXX", agent['address'] if agent['address'] else "", comp)
-            comp = re.sub("XXagentmailXX", agent['mail'] if agent['mail'] else "", comp)
-            comp = re.sub("XXagentphoneXX", agent['phone'] if agent['phone'] else "", comp)
-            comp = re.sub("XXagentfaxXX", agent['fax'] if agent['fax'] else "", comp)
-            comp = re.sub("XXagentemailXX", agent['email'] if agent['email'] else "", comp)
-            comp = re.sub("XXagentwebsiteXX", agent['website'] if agent['website'] else "", comp)
         elif len(arr) == 5:
             from urllib.parse import unquote
             agents_info = """<div class="registered-agents">"""
