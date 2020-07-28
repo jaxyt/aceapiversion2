@@ -206,7 +206,6 @@ def compiler_v3(s, t, r, arr):
         if len(arr) == 3:
             agents_info = """<div class="registered-agents">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
-            print(corp)
             k = corp['searchkey']
             q = corp['searchvalue']
             query = re.compile(q, re.IGNORECASE)
