@@ -160,30 +160,15 @@ def create_xml_sitemap(site):
             if site.national == True:
                 states = State.objects.mongo_aggregate([{'$project': {"state": "$statename"}}])
                 for n in states:
-                    compiled += """
-                      <url>
-                        <loc>https://www.{}.com/locations/{}</loc>
-                        <lastmod>{}</lastmod>
-                      </url>
-                            """.format(site.sitename, "-".join(n["state"].split(" ")), datetime.date.today())
+                    compiled += f"""<url><loc>https://www.{site.sitename}.com/locations/{"-".join(n["state"].split(" "))}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
 
             else:
-                compiled += """
-                      <url>
-                        <loc>https://www.{}.com/locations/{}</loc>
-                        <lastmod>{}</lastmod>
-                      </url>
-                            """.format(site.sitename, "-".join(site.location.statename.split(" ")), datetime.date.today())
+                compiled += f"""<url><loc>https://www.{site.sitename}.com/locations/{"-".join(site.location.statename.split(" "))}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
         elif i.route == "/locations/state/county":
             if site.national == False:
                 counties = County.objects.filter(stateid=site.location.stateid)
                 for n in counties:
-                    compiled += """
-                      <url>
-                        <loc>https://www.{}.com/locations/{}/{}-{}</loc>
-                        <lastmod>{}</lastmod>
-                      </url>
-                            """.format(site.sitename, "-".join(n.statename.split(" ")), "-".join(n.countyname.split(" ")), n.id, datetime.date.today())
+                    compiled += f"""<url><loc>https://www.{site.sitename}.com/locations/{"-".join(n.statename.split(" "))}/{"-".join(n.countyname.split(" "))}-{n.id}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
 
             else:
                 compiled += ""
@@ -192,39 +177,17 @@ def create_xml_sitemap(site):
                 cities = City.objects.mongo_aggregate(
                     [{'$project': {"id": "$id", "county": "$countyname", "cid":"$countyid", "state": "$statename", "city":"$cityname"}}])
                 for n in cities:
-                    compiled += """
-                      <url>
-                        <loc>https://www.{}.com/locations/{}/{}-{}/{}-{}</loc>
-                        <lastmod>{}</lastmod>
-                      </url>
-                            """.format(site.sitename, "-".join(n["state"].split(" ")), "-".join(n["county"].split(" ")), n["cid"], "-".join(n["city"].split(" ")), n["id"], datetime.date.today())
-
+                    compiled += f"""<url><loc>https://www.{site.sitename}.com/locations/{"-".join(n["state"].split(" "))}/{"-".join(n["county"].split(" "))}-{n["cid"]}/{"-".join(n["city"].split(" "))}-{n["id"]}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
             else:
                 cities = City.objects.filter(stateid=site.location.stateid)
                 for n in cities:
-                    compiled += """
-                      <url>
-                        <loc>https://www.{}.com/locations/{}/{}-{}/{}-{}</loc>
-                        <lastmod>{}</lastmod>
-                      </url>
-                            """.format(site.sitename, "-".join(n.statename.split(" ")), "-".join(n.countyname.split(" ")), n.countyid,"-".join(n.cityname.split(" ")), n.id, datetime.date.today())
+                    compiled += f"""<url><loc>https://www.{site.sitename}.com/locations/{"-".join(n.statename.split(" "))}/{"-".join(n.countyname.split(" "))}-{n.countyid}/{"-".join(n.cityname.split(" "))}-{n.id}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
         elif i.route == "/blog/posts/id":
             blogposts = Blog.objects.filter(blogcategory=site.blogcategory)
             for n in blogposts:
-                compiled += """
-                  <url>
-                    <loc>https://www.{}.com/blog/posts/{}-{}</loc>
-                    <lastmod>{}</lastmod>
-                  </url>
-                        """.format(site.sitename, "-".join(n.bloguri.split(" ")), n.id, datetime.date.today())
+                compiled += f"""<url><loc>https://www.{site.sitename}.com/blog/posts/{"-".join(n.bloguri.split(" "))}-{n.id}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
         else:
-            compiled += """
-                  <url>
-                    <loc>https://www.{}.com{}</loc>
-                    <lastmod>{}</lastmod>
-                  </url>
-                        """.format(site.sitename, i.route, datetime.date.today())
-
+            compiled += f"""<url><loc>https://www.{site.sitename}.com{i.route}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
     compiled += "</urlset>"
     return compiled
 
@@ -266,25 +229,19 @@ def compile_page(site, route, uri_arr):
     page_cities_in_county_list = ""
 
     for i in states:
-        states_list += """<a href="/locations/{}-{}">{}</a>""".format(i.statename, i.id, i.statename.capitalize())
+        states_list += f"""<a href="/locations/{"-".join(i.statename.split(" "))}-{i.id}">{i.statename.title()}</a>"""
     for i in site_counties_in_state:
-        site_counties_in_state_list += """<a href="/locations/{}-{}/{}-{}">{}</a>""".format(i.statename.split(" "), i.stateid, i.countyname.split(" "), i.id, i.countyname.capitalize())
+        site_counties_in_state_list += f"""<a href="/locations/{"-".join(i.statename.split(" "))}-{i.stateid}/{"-".join(i.countyname.split(" "))}-{i.id}">{i.countyname.title()}</a>"""
     for i in site_cities_in_state:
-        site_cities_in_state_list += """<a href="/locations/{}-{}/{}-{}/{}-{}">{}</a>""".format(i.statename.split(" "), i.stateid, i.countyname.split(" "), i.countyid, i.cityname.split(" "), i.id, i.cityname.capitalize())
+        site_cities_in_state_list += f"""<a href="/locations/{"-".join(i.statename.split(" "))}-{i.stateid}/{"-".join(i.countyname.split(" "))}-{i.countyid}/{"-".join(i.cityname.split(" "))}-{i.id}">{i.cityname.title()}</a>"""
     for i in site_cities_in_county:
-        site_cities_in_county_list += """<a href="/locations/{}-{}/{}-{}/{}-{}">{}</a>""".format(i.statename.split(" "), i.stateid, i.countyname.split(" "), i.countyid, i.cityname.split(" "), i.id, i.cityname.capitalize())
+        site_cities_in_county_list += f"""<a href="/locations/{"-".join(i.statename.split(" "))}-{i.stateid}/{"-".join(i.countyname.split(" "))}-{i.countyid}/{"-".join(i.cityname.split(" "))}-{i.id}">{i.cityname.title()}</a>"""
 
     blogpost = None
     blog = Blog.objects.filter(blogcategory=site.blogcategory) if site.blogcategory else ""
     blog_post_snippets = ""
     for i in blog:
-        blog_post_snippets += """
-<div>
-    <h2><a href="/blog/posts/{}-{}">{}</a></h2>
-    <p>{}...</p>
-</div>
-                    """.format( ("-".join(i.bloguri.split(" ")) if i.bloguri else ""), i.id,
-                                     i.blogtitle, i.blogpost[0:100] if len(i.blogpost) > 100 else i.blogpost)
+        blog_post_snippets += f"""<div><h2><a href="/blog/posts/{"-".join(i.bloguri.split(" ")) if i.bloguri else ""}-{i.id}">{i.blogtitle}</a></h2><p>{i.blogpost[0:100] if len(i.blogpost) > 100 else i.blogpost}...</p></div>"""
     template = Template.objects.get(id=site.templateid)
     if uri_arr[1] == "locations" and len(uri_arr) > 2:
         if len(uri_arr) == 3:
@@ -299,22 +256,14 @@ def compile_page(site, route, uri_arr):
         page_cities_in_state = City.objects.filter(stateid=page_state.id)
 
         for i in page_counties_in_state:
-            page_counties_in_state_list += """<a href="/locations/{}-{}/{}-{}">{}</a>""".format("-".join(i.statename.split(" ")),
-                                                                                                     i.stateid,
-                                                                                                     "-".join(i.countyname.split(" ")), i.id)
+            page_counties_in_state_list += f"""<a href="/locations/{"-".join(i.statename.split(" "))}-{i.stateid}/{"-".join(i.countyname.split(" "))}-{i.id}">{i.statename.title()}</a>"""
         for i in page_cities_in_state:
-            page_cities_in_state_list += """<a href="/locations/{}-{}/{}-{}/{}-{}">{}</a>""".format("-".join(i.statename.split(" ")),
-                                                                                                           i.stateid,
-                                                                                                           "-".join(i.countyname.split(" ")),
-                                                                                                           i.countyid,
-                                                                                                           "-".join(i.cityname.split(" ")),
-                                                                                                           i.id)
+            page_cities_in_state_list += f"""<a href="/locations/{"-".join(i.statename.split(" "))}-{i.stateid}/{"-".join(i.countyname.split(" "))}-{i.countyid}/{"-".join(i.cityname.split(" "))}-{i.id}">{i.cityname.title()}</a>"""
         if len(uri_arr) > 3:
             page_county = County.objects.get(id=int(uri_arr[3].split("-")[-1]))
             page_cities_in_county = City.objects.filter(countyid=page_county.id)
             for i in page_cities_in_county:
-                page_cities_in_county_list += """<a href="/locations/{}-{}/{}-{}/{}-{}">{}</a>""".format(
-                    "-".join(i.statename.split(" ")), i.stateid, "-".join(i.countyname.split(" ")), i.countyid, "-".join(i.cityname.split(" ")), i.id, i.cityname.capitalize())
+                page_cities_in_county_list += f"""<a href="/locations/{"-".join(i.statename.split(" "))}-{i.stateid}/{"-".join(i.countyname.split(" "))}-{i.countyid}/{"-".join(i.cityname.split(" "))}-{i.id}">{i.cityname.title()}</a>"""
             if len(uri_arr) > 4:
                 page_city = City.objects.get(id=int(uri_arr[4].split("-")[-1]))
     elif uri_arr[1] == "blog" and uri_arr[2] == "posts":
@@ -335,71 +284,26 @@ def compile_page(site, route, uri_arr):
 <html>
     <head>
     """
-    compiled += """
-        <!--meta-->
-        {}
-        {}
-        {}
-    """.format(
-        site.sitemetas if site.sitemetas else (template.sitemetas if template.sitemetas else ""),
-        spage.pagemetas if spage.pagemetas else (tpage.pagemetas if tpage.pagemetas else ""),
-        (("<meta name='keywords' content='" + blogpost.keywords + "' />") if blogpost else "")
-    )
-    compiled += """
-        <!--link-->
-        {}
-        {}
-    """.format(
-        site.sitelinks if site.sitelinks else (template.sitelinks if template.sitelinks else ""),
-        spage.pagelinks if spage.pagelinks else (tpage.pagelinks if tpage.pagelinks else "")
-    )
-    compiled += """
-        <title>{}</title>
-    """.format(spage.title if spage.title else (tpage.title if tpage.title else ""))
-    compiled += """
-        <!--style-->
-        <style>
-            {}
-        </style>
-    """.format(
-        spage.pagestyle if spage.pagestyle else (site.sitestyle if site.sitestyle else (tpage.pagestyle if tpage.pagestyle else (template.sitestyle if template.sitestyle else "")))
-    )
+    compiled += f"""<!--meta-->{site.sitemetas if site.sitemetas else (template.sitemetas if template.sitemetas else "")}{spage.pagemetas if spage.pagemetas else (tpage.pagemetas if tpage.pagemetas else "")}{("<meta name='keywords' content='" + blogpost.keywords + "' />") if blogpost else ""}"""
+    compiled += f"""<!--link-->{site.sitelinks if site.sitelinks else (template.sitelinks if template.sitelinks else "")}{spage.pagelinks if spage.pagelinks else (tpage.pagelinks if tpage.pagelinks else "")}"""
+    compiled += f"""<title>{spage.title if spage.title else (tpage.title if tpage.title else "")}</title>"""
+    compiled += f"""<!--style--><style>{spage.pagestyle if spage.pagestyle else (site.sitestyle if site.sitestyle else (tpage.pagestyle if tpage.pagestyle else (template.sitestyle if template.sitestyle else "")))}</style>"""
     compiled += """
     </head>
     <body>
     """
-    compiled += """
-        <!--header-->
-        {}
-    """.format(
-        spage.pageheader if spage.pageheader else (site.siteheader if site.siteheader else (tpage.pageheader if tpage.pageheader else (template.siteheader if template.siteheader else "")))
-    )
-    compiled += """
-        <!--content-->
-        {}
-    """.format(spage.content if spage.content else (tpage.content if tpage.content else ""))
-    compiled += """
-        <!--footer-->
-        {}
-    """.format(
-        spage.pagefooter if spage.pagefooter else (site.sitefooter if site.sitefooter else (tpage.pagefooter if tpage.pagefooter else (template.sitefooter if template.sitefooter else "")))
-    )
-    compiled += """
-        <!--script-->
-        {}
-        {}
-    """.format(
-        site.sitescripts if site.sitescripts else (template.sitescripts if template.sitescripts else ""),
-        spage.pagescripts if spage.pagescripts else (tpage.pagescripts if tpage.pagescripts else "")
-    )
+    compiled += f"""<!--header-->{spage.pageheader if spage.pageheader else (site.siteheader if site.siteheader else (tpage.pageheader if tpage.pageheader else (template.siteheader if template.siteheader else "")))}"""
+    compiled += f"""<!--content-->{spage.content if spage.content else (tpage.content if tpage.content else "")}"""
+    compiled += f"""<!--footer-->{spage.pagefooter if spage.pagefooter else (site.sitefooter if site.sitefooter else (tpage.pagefooter if tpage.pagefooter else (template.sitefooter if template.sitefooter else "")))}"""
+    compiled += f"""<!--script-->{site.sitescripts if site.sitescripts else (template.sitescripts if template.sitescripts else "")}{spage.pagescripts if spage.pagescripts else (tpage.pagescripts if tpage.pagescripts else "")}"""
     compiled += """
     </body>
 </html>
     """
     compiled = re.sub("XXstateslistXX", states_list, compiled)
-    compiled = re.sub("XXstateXX", site_state.statename.capitalize(), compiled)
-    compiled = re.sub("XXcountyXX", site_county.countyname.capitalize(), compiled)
-    compiled = re.sub("XXcityXX", site_city.cityname.capitalize(), compiled)
+    compiled = re.sub("XXstateXX", site_state.statename.title(), compiled)
+    compiled = re.sub("XXcountyXX", site_county.countyname.title(), compiled)
+    compiled = re.sub("XXcityXX", site_city.cityname.title(), compiled)
     compiled = re.sub("XXcountiesstateXX", site_counties_in_state_list, compiled)
     compiled = re.sub("XXcitiesinstateXX", site_cities_in_state_list, compiled)
     compiled = re.sub("XXcitiesincountyXX", site_cities_in_county_list, compiled)
@@ -407,54 +311,45 @@ def compile_page(site, route, uri_arr):
 
     if uri_arr[1] == "locations" and len(uri_arr) > 2:
         if len(uri_arr) == 3:
-            compiled = re.sub("XXpagestateXX", page_state.statename.capitalize(), compiled)
+            compiled = re.sub("XXpagestateXX", page_state.statename.title(), compiled)
             compiled = re.sub("XXpagecountiesinstateXX", page_counties_in_state_list, compiled)
             compiled = re.sub("XXpagecitiesinstateXX", page_cities_in_state_list, compiled)
         elif len(uri_arr) == 4:
-            compiled = re.sub("XXpagestateXX", page_state.statename.capitalize(), compiled)
+            compiled = re.sub("XXpagestateXX", page_state.statename.title(), compiled)
             compiled = re.sub("XXpagecountiesinstateXX", page_counties_in_state_list, compiled)
             compiled = re.sub("XXpagecitiesinstateXX", page_cities_in_state_list, compiled)
-            compiled = re.sub("XXpagecountyXX", page_county.countyname.capitalize(), compiled)
+            compiled = re.sub("XXpagecountyXX", page_county.countyname.title(), compiled)
             compiled = re.sub("XXpagecitiesincountyXX", page_cities_in_county_list, compiled)
         elif len(uri_arr) == 5:
-            compiled = re.sub("XXpagestateXX", page_state.statename.capitalize(), compiled)
+            compiled = re.sub("XXpagestateXX", page_state.statename.title(), compiled)
             compiled = re.sub("XXpagecountiesinstateXX", page_counties_in_state_list, compiled)
             compiled = re.sub("XXpagecitiesinstateXX", page_cities_in_state_list, compiled)
-            compiled = re.sub("XXpagecountyXX", page_county.countyname.capitalize(), compiled)
+            compiled = re.sub("XXpagecountyXX", page_county.countyname.title(), compiled)
             compiled = re.sub("XXpagecitiesincountyXX", page_cities_in_county_list, compiled)
-            compiled = re.sub("XXpagecityXX", page_city.cityname.capitalize(), compiled)
+            compiled = re.sub("XXpagecityXX", page_city.cityname.title(), compiled)
     elif uri_arr[1] == "blog" and uri_arr[2] == "posts":
         if len(uri_arr) == 3:
             wut = ""
         else:
-            local_blog = """
-                        <div>
-                            <h1>{}</h1>
-                            <p>{}</p>
-                        </div>
-                        """.format(blogpost.blogtitle, blogpost.blogpost)
-            national_blog  = """
-                        <div>
-                            <h1>{}</h1>
-                            <p>{}</p>
-                        </div>
-                        """.format(blogpost.blogtitle, blogpost.blogpost)
+            local_blog = f"""
+                        <div><h1>{blogpost.blogtitle}</h1><p>{blogpost.blogpost}</p></div>"""
+            national_blog  = f"""<div><h1>{blogpost.blogtitle}</h1><p>{blogpost.blogpost}</p></div>"""
             compiled = re.sub("XXblogpostXX", local_blog, compiled)
             compiled = re.sub("XXblogpostnationalXX", national_blog, compiled)
             compiled = re.sub("XXblogtitleXX", blogpost.blogtitle, compiled)
 
     for i in site.shortcodes:
-        reg = re.compile("""XX{}XX""".format(i.name))
+        reg = re.compile(f"""XX{i.name}XX""")
         compiled = re.sub(reg, i.value, compiled)
     for i in template.shortcodes:
-        reg = re.compile("""XX{}XX""".format(i.name))
+        reg = re.compile(f"""XX{i.name}XX""")
         compiled = re.sub(reg, i.value, compiled)
     
     for i in site.shortcodes:
-        reg = re.compile("""XX{}XX""".format(i.name))
+        reg = re.compile(f"""XX{i.name}XX""")
         compiled = re.sub(reg, i.value, compiled)
     for i in template.shortcodes:
-        reg = re.compile("""XX{}XX""".format(i.name))
+        reg = re.compile(f"""XX{i.name}XX""")
         compiled = re.sub(reg, i.value, compiled)
 
     return compiled
@@ -528,7 +423,7 @@ def compile(request, *args, **kwargs):
     """
     compiled += site.sitemetas if site.sitemetas else (template.sitemetas if template.sitemetas else "")
     compiled += spage.pagemetas if spage.pagemetas else (tpage.pagemetas if tpage.pagemetas else "")
-    compiled += """<meta name="keywords" content="{}" />""".format(blogpost.blogkeywords) if blogpost else ""
+    compiled += f"""<meta name="keywords" content="{blogpost.blogkeywords}" />""" if blogpost else ""
 
     compiled += site.sitelinks if site.sitelinks else (template.sitelinks if template.sitelinks else "")
     compiled += spage.pagelinks if spage.pagelinks else (tpage.pagelinks if tpage.pagelinks else "")
@@ -568,24 +463,24 @@ def compile(request, *args, **kwargs):
     """
 
     for i in site.shortcodes:
-        reg = """XX{}XX""".format(i.name)
+        reg = f"""XX{i.name}XX"""
         compiled = re.sub(reg, i.value, compiled)
     for i in template.shortcodes:
-        reg = """XX{}XX""".format(i.name)
+        reg = f"""XX{i.name}XX"""
         compiled = re.sub(reg, i.value, compiled)
 
     statelist = State.objects.all()
     statelinks = ""
     for i in statelist:
-        statelinks += """<a href="/locations/{}">{}</a>""".format("-".join(i.statename.split(' ')), i.statename.capitalize())
+        statelinks += f"""<a href="/locations/{"-".join(i.statename.split(' '))}">{i.statename.title()}</a>"""
     compiled = re.sub("XXstatelinksXX", statelinks, compiled)
 
     state = State.objects.get(id=site.location.stateid) if State.objects.get(id=site.location.stateid) else ""
-    compiled = re.sub("XXstateXX", state.statename.capitalize(), compiled)
+    compiled = re.sub("XXstateXX", state.statename.title(), compiled)
     county = County.objects.get(id=site.location.countyid) if County.objects.get(id=site.location.countyid) else ""
-    compiled = re.sub("XXcountyXX", county.countyname.capitalize(), compiled)
+    compiled = re.sub("XXcountyXX", county.countyname.title(), compiled)
     city = City.objects.get(id=site.location.cityid) if City.objects.get(id=site.location.cityid) else ""
-    compiled = re.sub("XXcityXX", city.cityname.capitalize(), compiled)
+    compiled = re.sub("XXcityXX", city.cityname.title(), compiled)
     sitecounties = County.objects.filter(stateid=state.id) if County.objects.filter(stateid=state.id) else []
     sitecities = City.objects.filter(countyid=county.id) if City.objects.filter(countyid=county.id) else []
     sitecitiesinstate = City.objects.filter(stateid=state.id) if City.objects.filter(stateid=state.id) else []
@@ -593,13 +488,13 @@ def compile(request, *args, **kwargs):
     sitecitylinks = ""
     sitecitiesinstatelinks = ""
     for i in sitecounties:
-        sitecountylinks += """<a href="/locations/{}/{}-{}">{}</a>""".format("-".join(i.statename.split(' ')), "-".join(i.countyname.split(' ')), i.id, i.countyname.capitalize())
+        sitecountylinks += f"""<a href="/locations/{"-".join(i.statename.split(' '))}/{"-".join(i.countyname.split(' '))}-{i.id}">{i.countyname.title()}</a>"""
     compiled = re.sub("XXsitecountylinksXX", sitecountylinks, compiled)
     for i in sitecitiesinstate:
-        sitecitiesinstatelinks += """<a href="/locations/{}/{}-{}/{}-{}">{}</a>""".format("-".join(i.statename.split(' ')),"-".join(i.countyname.split(' ')),i.countyid,"-".join(i.cityname.split(' ')),i.id,i.cityname.capitalize())
+        sitecitiesinstatelinks += f"""<a href="/locations/{"-".join(i.statename.split(' '))}/{"-".join(i.countyname.split(' '))}-{i.countyid}/{"-".join(i.cityname.split(' '))}-{i.id}">{i.cityname.title()}</a>"""
     compiled = re.sub("XXsitecitiesinstatelinksXX", sitecitiesinstatelinks, compiled)
     for i in sitecities:
-        sitecitylinks += """<a href="/locations/{}/{}-{}/{}-{}">{}</a>""".format("-".join(i.statename.split(' ')), "-".join(i.countyname.split(' ')), i.countyid, "-".join(i.cityname.split(' ')), i.id, i.cityname.capitalize())
+        sitecitylinks += f"""<a href="/locations/{"-".join(i.statename.split(' '))}/{"-".join(i.countyname.split(' '))}-{i.countyid}/{"-".join(i.cityname.split(' '))}-{i.id}">{i.cityname.title()}</a>"""
     compiled = re.sub("XXsitecitylinksXX", sitecitylinks, compiled)
 
     pagestate = ""
@@ -617,23 +512,23 @@ def compile(request, *args, **kwargs):
                 pagestate = State.objects.get(statename=" ".join(pageURIArray[2].split('-')))
                 pagecounties = County.objects.filter(stateid=pagestate.id) if County.objects.filter(stateid=pagestate.id) else []
                 pagecitiesinstate = City.objects.filter(stateid=pagestate.id) if City.objects.filter(stateid=pagestate.id) else []
-                compiled = re.sub("XXpagestateXX", pagestate.statename.capitalize(), compiled)
+                compiled = re.sub("XXpagestateXX", pagestate.statename.title(), compiled)
                 for i in pagecounties:
-                    pagecountylinks += """<a href="/locations/{}/{}-{}">{}</a>""".format("-".join(pagestate.statename.split(' ')),"-".join(i.countyname.split(' ')),i.id, i.countyname.capitalize())
+                    pagecountylinks += f"""<a href="/locations/{"-".join(pagestate.statename.split(' '))}/{"-".join(i.countyname.split(' '))}-{i.id}">{i.countyname.title()}</a>"""
                 compiled = re.sub("XXpagecountylinksXX", pagecountylinks, compiled)
                 for i in pagecitiesinstate:
-                    pagecitiesinstatelinks += """<a href="/locations/{}/{}-{}/{}-{}">{}</a>""".format("-".join(pagestate.statename.split(' ')),"-".join(i.countyname.split(' ')),i.countyid,"-".join(i.cityname.split(' ')),i.id, i.cityname.capitalize())
+                    pagecitiesinstatelinks += f"""<a href="/locations/{"-".join(pagestate.statename.split(' '))}/{"-".join(i.countyname.split(' '))}-{i.countyid}/{"-".join(i.cityname.split(' '))}-{i.id}">{i.cityname.title()}</a>"""
                 compiled = re.sub("XXpagecitiesinstatelinksXX", pagecitiesinstatelinks, compiled)
                 if len(pageURIArray) > 3:
                     pagecounty = County.objects.get(id=int(pageURIArray[3].split('-')[-1]))
-                    compiled = re.sub("XXpagecountyXX", pagecounty.countyname.capitalize(), compiled)
+                    compiled = re.sub("XXpagecountyXX", pagecounty.countyname.title(), compiled)
                     pagecities = City.objects.filter(countyid=pagecounty.id) if City.objects.filter(countyid=pagecounty.id) else []
                     for i in pagecities:
-                        pagecitylinks += """<a href="/locations/{}/{}-{}/{}-{}">{}</a>""".format("-".join(pagestate.statename.split(' ')),"-".join(i.countyname.split(' ')),i.countyid,"-".join(i.cityname.split(' ')),i.id, i.cityname.capitalize())
+                        pagecitylinks += f"""<a href="/locations/{"-".join(pagestate.statename.split(' '))}/{"-".join(i.countyname.split(' '))}-{i.countyid}/{"-".join(i.cityname.split(' '))}-{i.id}">{i.cityname.title()}</a>"""
                     compiled = re.sub("XXpagecitylinksXX", pagecitylinks, compiled)
                     if len(pageURIArray) > 4:
                         pagecity = City.objects.get(id=int(pageURIArray[4].split('-')[-1]))
-                        compiled = re.sub("XXpagecityXX", pagecity.cityname.capitalize(), compiled)
+                        compiled = re.sub("XXpagecityXX", pagecity.cityname.title(), compiled)
         elif pageURIArray[1] == "blog" and len(pageURIArray) == 4:
             blogbody = remove_html_tags(blogpost.blogpost)
             blogbody = re.sub(r"\r\n", " ", blogbody)
@@ -694,22 +589,17 @@ def compile(request, *args, **kwargs):
     blogposts = Blog.objects.filter(blogcategory=site.blogcategory) if Blog.objects.filter(blogcategory=site.blogcategory) else []
     blogpostsnippets = ""
     for i in blogposts:
-        blogpostsnippets += """
-                    <div>
-                    <h2><a href="/blog/posts/{}-{}">{}</a></h2>
-                    <p>{}...</p>
-                    </div>""".format(("-".join(i.bloguri.split(" ")) if i.bloguri else ""), i.id,
-                                     i.blogtitle, i.blogpost[0:100] if len(i.blogpost) > 100 else i.blogpost)
+        blogpostsnippets += f"""<div><h2><a href="/blog/posts/{"-".join(i.bloguri.split(" ")) if i.bloguri else ""}-{i.id}">{i.blogtitle}</a></h2><p>{i.blogpost[0:100] if len(i.blogpost) > 100 else i.blogpost}...</p></div>"""
     compiled = re.sub("XXblogpostsnippetsXX", blogpostsnippets, compiled)
-    compiled = re.sub("XXstateXX", state.statename.capitalize(), compiled)
-    compiled = re.sub("XXcountyXX", county.countyname.capitalize(), compiled)
-    compiled = re.sub("XXcityXX", city.cityname.capitalize(), compiled)
+    compiled = re.sub("XXstateXX", state.statename.title(), compiled)
+    compiled = re.sub("XXcountyXX", county.countyname.title(), compiled)
+    compiled = re.sub("XXcityXX", city.cityname.title(), compiled)
 
     for i in site.shortcodes:
-        reg = """XX{}XX""".format(i.name)
+        reg = f"""XX{i.name}XX"""
         compiled = re.sub(reg, i.value, compiled)
     for i in template.shortcodes:
-        reg = """XX{}XX""".format(i.name)
+        reg = f"""XX{i.name}XX"""
         compiled = re.sub(reg, i.value, compiled)
 
     return HttpResponse(compiled)
