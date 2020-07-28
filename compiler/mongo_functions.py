@@ -176,6 +176,18 @@ def compiler_v3(s, t, r, arr):
             agent_info += f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else ""
             agent_info += "</ul></div>"
             comp = re.sub("XXagentXX", agent_info, comp)
+            comp = re.sub("XXagentidXX", agent['id'] if agent['id'] else "", comp)
+            comp = re.sub("XXagentagencyXX", f"""{agent['agency'].title() if agent['agency'] else ""}""", comp)
+            comp = re.sub("XXagentcompanyXX", f"""{agent['company'].title() if agent['company'] else ""}""", comp)
+            comp = re.sub("XXagentstateXX", f"""{agent['state'].title() if agent['state'] else ""}""", comp)
+            comp = re.sub("XXagentcityXX", f"""{agent['city'].title() if agent['city'] else ""}""", comp)
+            comp = re.sub("XXagentcontactXX", f"""{agent['contact'] if agent['contact'] else ""}""", comp)
+            comp = re.sub("XXagentaddressXX", f"""{agent['address'] if agent['address'] else ""}""", comp)
+            comp = re.sub("XXagentmailXX", f"""{agent['mail'] if agent['mail'] else ""}""", comp)
+            comp = re.sub("XXagentphoneXX", f"""{agent['phone'] if agent['phone'] else ""}""", comp)
+            comp = re.sub("XXagentfaxXX", f"""{agent['fax'] if agent['fax'] else ""}""", comp)
+            comp = re.sub("XXagentemailXX", f"""{agent['email'] if agent['email'] else ""}""", comp)
+            comp = re.sub("XXagentwebsiteXX", f"""{agent['website'] if agent['website'] else ""}""", comp)
         elif len(arr) == 5:
             from urllib.parse import unquote
             agents_info = """<div class="registered-agents">"""
