@@ -175,6 +175,18 @@ def compiler_v3(s, t, r, arr):
             agent_info += f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else ""
             agent_info += "</ul></div>"
             comp = re.sub("XXagentXX", agent_info, comp)
+            comp = re.sub("XXagentidXX", agent['id'] if agent['id'] else "", comp)
+            comp = re.sub("XXagentagencyXX", agent['agency'].title() if agent['agency'] else "", comp)
+            comp = re.sub("XXagentcompanyXX", agent['company'].title() if agent['company'] else "", comp)
+            comp = re.sub("XXagentstateXX", agent['state'].title() if agent['state'] else "", comp)
+            comp = re.sub("XXagentcityXX", agent['city'].title() if agent['city'] else "", comp)
+            comp = re.sub("XXagentcontactXX", agent['contact'] if agent['contact'] else "", comp)
+            comp = re.sub("XXagentaddressXX", agent['address'] if agent['address'] else "", comp)
+            comp = re.sub("XXagentmailXX", agent['mail'] if agent['mail'] else "", comp)
+            comp = re.sub("XXagentphoneXX", agent['phone'] if agent['phone'] else "", comp)
+            comp = re.sub("XXagentfaxXX", agent['fax'] if agent['fax'] else "", comp)
+            comp = re.sub("XXagentemailXX", agent['email'] if agent['email'] else "", comp)
+            comp = re.sub("XXagentwebsiteXX", agent['website'] if agent['website'] else "", comp)
         elif len(arr) == 5:
             from urllib.parse import unquote
             agents_info = """<div class="registered-agents">"""
@@ -196,6 +208,7 @@ def compiler_v3(s, t, r, arr):
                 agents_info += "</ul>"
             agents_info += "</div>"
             comp = re.sub("XXagentsXX", agents_info, comp)
+            comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
     elif arr[1] == "process-server":
         if len(arr) == 3:
             agents_info = """<div class="registered-agents">"""
@@ -250,7 +263,7 @@ def compiler_v3(s, t, r, arr):
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
-            comp = re.sub('XXstateXX', st.title(), comp)
+            comp = re.sub('XXstatequeryXX', st.title(), comp)
     corp_links = """<div class="corp-links">"""
     for i in coll_cp.find():
         corp_links += f"""<a href="/process-server/{"-".join(i['searchvalue'].split(" "))}-{i['id']}">{i['name']}</a>"""
@@ -282,10 +295,10 @@ def compiler_v3(s, t, r, arr):
 def replace_shortcodes(site, template, string_content):
     compiled = string_content
     for i in site.shortcodes:
-        reg = re.compile("""XX{}XX""".format(i.name))
+        reg = re.compile(f"""XX{i.name}XX""")
         compiled = re.sub(reg, i.value, compiled)
     for i in template.shortcodes:
-        reg = re.compile("""XX{}XX""".format(i.name))
+        reg = re.compile(f"""XX{i.name}XX""")
         compiled = re.sub(reg, i.value, compiled)
     return compiled
 

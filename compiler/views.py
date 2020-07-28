@@ -73,7 +73,7 @@ def test_send(request):
             return HttpResponse(compiled, content_type="text/html")
     except Exception as e:
         print(e)
-        return HttpResponse(e, content_type="text/plain")
+        return HttpResponse("<h1>This Page Does Not Exist</h1><br><a href='/'>Return Home</a>", content_type="text/plain")
 
 def handle_uploaded_file(f, t):
     with open(os.path.join(module_dir, t), 'wb+') as destination:
