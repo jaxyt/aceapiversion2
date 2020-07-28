@@ -156,7 +156,6 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub('XXblogkeywordsXX', blog_post['blogkeywords'] if blog_post['blogkeywords'] else "", comp)
             comp = re.sub('XXblogpostlocalXX', blog_post['blogpost'] if blog_post['blogpost'] else "", comp)
             comp = re.sub('XXblogpostnationalXX', blog_post['blogpostnational'] if blog_post['blogpostnational'] else "", comp)
-            comp = re.sub('XXblogdateXX', blog_post['blogdate'] if blog_post['blogdate'] else "", comp)
             comp = re.sub('XXblogauthorXX', blog_post['blogauthor'] if blog_post['blogauthor'] else "", comp)
     elif arr[1] == "registered-agents":
         if len(arr) == 3:
