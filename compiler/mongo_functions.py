@@ -339,7 +339,7 @@ def render_xml_sitemap(s, t, rt):
                 for n in coll_cp.find():
                     sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}</loc></url>""")
                     url_cnt += 1
-                print(len(coll_ra.find().distinct("state")))
+                print(len(coll_ra.find().distinct("company")))
         else:
             if re.search(r'\.[a-z]{2,4}$', i.route) is None:
                 sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>""")
