@@ -328,7 +328,7 @@ def render_xml_sitemap(s, t, rt):
         elif re.search(r'^/registered-agents/', i.route) is not None:
             if re.search(r'^/registered-agents/search', i.route) is not None:
                 print(i.route)
-                for n in coll_ra.find():
+                for n in coll_ra.find().distinct("company"):
                     print(n)
         elif re.search(r'^/process-server/', i.route) is not None:
             if re.search(r'^/process-server/id/state', i.route) is not None:
