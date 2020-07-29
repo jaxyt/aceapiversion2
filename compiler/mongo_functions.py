@@ -59,7 +59,6 @@ def compiler_v3(s, t, r, arr):
             page = "/process-server/id/state"
     else:
         page = r
-    print(page)
     for i in s.pages:
         if i.route == page:
             spage = i

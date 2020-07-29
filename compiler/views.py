@@ -161,7 +161,6 @@ def create_xml_sitemap(site):
                 states = State.objects.mongo_aggregate([{'$project': {"state": "$statename"}}])
                 for n in states:
                     compiled += f"""<url><loc>https://www.{site.sitename}.com/locations/{"-".join(n["state"].split(" "))}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
-
             else:
                 compiled += f"""<url><loc>https://www.{site.sitename}.com/locations/{"-".join(site.location.statename.split(" "))}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
         elif i.route == "/locations/state/county":
@@ -169,7 +168,6 @@ def create_xml_sitemap(site):
                 counties = County.objects.filter(stateid=site.location.stateid)
                 for n in counties:
                     compiled += f"""<url><loc>https://www.{site.sitename}.com/locations/{"-".join(n.statename.split(" "))}/{"-".join(n.countyname.split(" "))}-{n.id}</loc><lastmod>{datetime.date.today()}</lastmod></url>"""
-
             else:
                 compiled += ""
         elif i.route == "/locations/state/county/city":
