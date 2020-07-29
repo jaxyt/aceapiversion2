@@ -331,10 +331,7 @@ def render_xml_sitemap(s, t, rt):
                     sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/registered-agents/{n['id']}</loc></url>""")
                     url_cnt += 1
             else:
-                import urllib.parse
-                for n in coll_ra.find().distinct("company"):
-                    sitemap_urls.append(urllib.parse.quote(f"""<url><loc>https://www.{s.sitename}.com/registered-agents/search/company/{n['company'].lower()}</loc></url>"""))
-                    url_cnt += 1
+                print(len(coll_ra.find().distinct("company")))
         elif re.search(r'^/process-server/', i.route) is not None:
             if re.search(r'^/process-server/id/state', i.route) is not None:
                 for n in coll_cp.find():
@@ -360,4 +357,5 @@ def render_xml_sitemap(s, t, rt):
             elif idx >= end:
                 break
     sitemap += """</urlset>"""
+    print(url_cnt)
     return sitemap
