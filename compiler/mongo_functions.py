@@ -330,6 +330,12 @@ def render_xml_sitemap(s, t, rt):
                 print(i.route)
                 for n in coll_ra.find().distinct("company"):
                     print(n)
+                for n in coll_ra.find().distinct("agency"):
+                    print(n)
+                for n in coll_ra.find().distinct("state"):
+                    print(n)
+                for n in coll_ra.find().distinct("city"):
+                    print(n)
         elif re.search(r'^/process-server/', i.route) is not None:
             if re.search(r'^/process-server/id/state', i.route) is not None:
                 print(i.route)
