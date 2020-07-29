@@ -341,6 +341,8 @@ def render_xml_sitemap(s, t, rt):
                 print(i.route)
                 for n in coll_cp.find():
                     print(n)
+                    for k in coll_ra.find().distinct("state"):
+                        print(k)
         else:
             if re.search(r'\.[a-z]{2,4}$', i.route) is None:
                 sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>""")
