@@ -327,10 +327,14 @@ def render_xml_sitemap(s, t, rt):
                     url_cnt += 1
         elif re.search(r'^/registered-agents/', i.route) is not None:
             if re.search(r'^/registered-agents/search', i.route) is not None:
-                print(rt)
+                print(i.route)
+                for n in coll_ra.find():
+                    print(n)
         elif re.search(r'^/process-server/', i.route) is not None:
             if re.search(r'^/process-server/id/state', i.route) is not None:
-                print(rt)
+                print(i.route)
+                for n in coll_cp.find():
+                    print(n)
         else:
             if re.search(r'\.[a-z]{2,4}$', i.route) is None:
                 sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>""")
