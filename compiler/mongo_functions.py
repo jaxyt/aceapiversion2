@@ -340,7 +340,8 @@ def render_xml_sitemap(s, t, rt):
                     sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}</loc></url>""")
                     url_cnt += 1
                     for k in coll_ra.find().distinct("state"):
-                        sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}/{"-".join(k['state'].split(" "))}</loc></url>""")
+                        #  sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}/{"-".join(k['state'].split(" "))}</loc></url>""")
+                        print(f"{n['name']} | {k}")
                         url_cnt += 1
         else:
             if re.search(r'\.[a-z]{2,4}$', i.route) is None:
