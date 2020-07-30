@@ -23,7 +23,7 @@ coll_cp = db.registeredagents_corporation
 
 arra = ["", "registered-agents", "search", "state", "mi"]
 
-def test_func(arr):
+def location_search_func(arr):
     locations = []
     k = arr[3]
     query = re.compile(arr[4], re.IGNORECASE)
@@ -50,7 +50,15 @@ def test_func(arr):
     return locations
 
 
-locs = test_func(arra)
+locs = location_search_func(arra)
 
-print(locs[0:5])
+#  print(locs[0:5])
 
+def minify_js(sid, rt):
+    site = coll_si.find_one({"id": sid})
+    for i in site['pages']:
+        if i['route'] == rt:
+            return re.replace(r'\s{2,}', " ", i['content'])
+
+script = minify_js(4, "/script.js")
+print(script)
