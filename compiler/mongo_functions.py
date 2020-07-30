@@ -186,8 +186,8 @@ def compiler_v3(s, t, r, arr):
             for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
                 #  for i in coll_ra.find({k: query}):
                 agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                agents_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                agents_info += f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
+                agents_info += f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
+                agents_info += f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
                 agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
                 agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
                 agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
