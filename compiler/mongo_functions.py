@@ -183,7 +183,7 @@ def compiler_v3(s, t, r, arr):
             agents_info = """<div class="registered-agents">"""
             k = arr[3]
             query = re.compile(arr[4], re.IGNORECASE)
-            results = mdb.events.aggregate([
+            results = coll_ra.aggregate([
                 {"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},
                 {"$sort": { k: 1 }}
             ])
