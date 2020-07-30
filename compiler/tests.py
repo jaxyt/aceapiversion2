@@ -27,7 +27,7 @@ def test_func(arr):
     locations = []
     k = arr[3]
     query = re.compile(arr[4], re.IGNORECASE)
-    for i in coll_ci.aggregate([{"$match": {"$or" : [{"statename": query},{"countyname": query},{"cityname": query}]}},{"$sort": { f"{k}name": 1 }}]):
+    for i in coll_ci.aggregate([{"$match": {"$or" : [{"statename": query},{"countyname": query},{"cityname": query}]}},{"$project": {"cityngrams": 0}},{"$sort": { f"{k}name": 1 }}]):
         state_sim = similar_text(arr[4], i['statename'])
         county_sim = similar_text(arr[4], i['countyname'])
         city_sim = similar_text(arr[4], i['cityname'])
