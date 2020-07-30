@@ -58,7 +58,7 @@ def minify_js(sid, rt):
     site = coll_si.find_one({"id": sid})
     for i in site['pages']:
         if i['route'] == rt:
-            return re.replace(r'\s{2,}', " ", i['content'])
+            return re.sub(r'\s{2,}', " ", i['content'])
 
 script = minify_js(4, "/script.js")
 print(script)
