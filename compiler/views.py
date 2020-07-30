@@ -34,6 +34,11 @@ def test_send(request):
             response = HttpResponse("", content_type="application/xml; charset=utf-8")
             response.write(compiled)
             return response
+        elif re.search(r'robots\.txt$', route) is not None:
+            compiled = create_robots(site)
+            response = HttpResponse("", content_type="text/plain; charset=utf-8")
+            response.write(compiled)
+            return response
         elif re.search(r'\.xml$', route) is not None:
             compiled = determine_page(route, site, template)
             response = HttpResponse("", content_type="application/xml; charset=utf-8")
