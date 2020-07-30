@@ -183,8 +183,11 @@ def compiler_v3(s, t, r, arr):
             agents_info = """<div class="registered-agents">"""
             k = arr[3]
             query = re.compile(arr[4], re.IGNORECASE)
+            locations = []
+            for i in coll_ci.aggregate([{"$match": {"$or" : [{"state": query},{"county": query},{"city": query}]}},{"$sort": { k: 1 }}]):
+                locations.push(i)
+            print(locations[0:5])
             for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
-                #  for i in coll_ra.find({k: query}):
                 agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
                 agents_info += f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
                 agents_info += f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
