@@ -1010,5 +1010,5 @@ def shee_exec(cmd):
 
 def pull_from_github(request):
     os.system("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git fetch && git pull")
-    return HttpResponse(status=204)
+    return HttpResponse("success")
 
