@@ -1011,10 +1011,6 @@ def shee_exec(cmd):
 
 @csrf_exempt
 def pull_from_github(request):
-    if request.method == 'POST':
-        os.system("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git fetch && git pull")
-        return HttpResponse(status=204)
-    else:
-        return HttpResponse("pong")
-    
+    os.system("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git pull")
+    return HttpResponse('pong')     
 
