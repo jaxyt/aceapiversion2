@@ -1008,13 +1008,11 @@ def get_registered_agents(request):
 
 def pull_from_github(request, *args, **kwargs):
     if request.method == 'POST':
-        print(request)
-        print(request.POST)
-        if request.POST.get("payload"):
+        if request.body:
             os.popen("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git pull").read()
             return HttpResponse(status=204)
         else:
-            return HttpResponse("unsuccessful")
+            return HttpResponse(status=400)
     else:
         return HttpResponse("hello world")
 
