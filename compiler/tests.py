@@ -64,6 +64,6 @@ def minify_js(sid, rt):
 #print(script)
 
 def check_for_change():
-    return "test 3"
+    return "test 4"
 
 print(check_for_change())

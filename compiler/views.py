@@ -1006,7 +1006,7 @@ def get_registered_agents(request):
     return HttpResponse(x, content_type="text/plain")
 
 
-def pull_from_github(request, *args, **kwargs):
+def pull_from_github(request):
     print(request.body)
     if request.method == 'POST':
         if request.body:
