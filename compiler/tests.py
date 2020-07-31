@@ -60,10 +60,10 @@ def minify_js(sid, rt):
         if i['route'] == rt:
             return re.sub(r'\s{2,}', " ", i['content'])
 
-script = minify_js(4, "/script.js")
-print(script)
+#script = minify_js(4, "/script.js")
+#print(script)
 
 def check_for_change():
     return "success"
 
-#print(check_for_change())
+print(check_for_change())
