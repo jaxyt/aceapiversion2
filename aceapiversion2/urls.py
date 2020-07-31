@@ -22,6 +22,7 @@ urlpatterns = [
     path('compilev3/',views.test_send, name="test"),
     path('compile/', views.compile, name='compile'),
     path('compilev2/', views.send_page, name='sendpage'),
+    path('auth/pull/',views.pull_from_github, name="pulley"),
     path('alllocations/', views.addngrams, name='alllocations'),
     path('registered-agents/', views.get_registered_agents, name='registered_agents_search'),
     path('login/', views.login, name='login'),
