@@ -52,7 +52,7 @@ def location_search_func(arr):
 
 locs = location_search_func(arra)
 
-print(locs[0:5])
+#  print(locs[0:5])
 
 def minify_js(sid, rt):
     site = coll_si.find_one({"id": sid})
@@ -64,6 +64,6 @@ def minify_js(sid, rt):
 #print(script)
 
 def check_for_change():
-    return "test 9"
+    return "test 10"
 
-#print(check_for_change())
+print(check_for_change())
