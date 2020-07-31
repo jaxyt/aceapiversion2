@@ -1007,6 +1007,7 @@ def get_registered_agents(request):
 
 
 def pull_from_github(request, *args, **kwargs):
+    print(request.body)
     if request.method == 'POST':
         if request.body:
             os.popen("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git pull").read()
