@@ -1009,7 +1009,6 @@ def shee_exec(cmd):
     return os.popen(cmd).read()
 
 def pull_from_github(request):
-    comm = shee_exec("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git pull")
-    comm
+    os.system("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git fetch && git pull")
     return HttpResponse(status=204)
 
