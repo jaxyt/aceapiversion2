@@ -1011,6 +1011,8 @@ def shee_exec(cmd):
 
 @csrf_exempt
 def pull_from_github(request):
+    print("start")
     os.system("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git pull")
-    return HttpResponse('pong')     
+    print("end")
+    return HttpResponse('pong')
 
