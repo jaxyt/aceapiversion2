@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, SimpleCookie, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from pymongo import MongoClient
 import re
@@ -1008,7 +1009,13 @@ def get_registered_agents(request):
 def shee_exec(cmd):
     return os.popen(cmd).read()
 
+@csrf_exempt
 def pull_from_github(request):
-    os.system("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git fetch && git pull")
-    return HttpResponse("success")
+    if request.method == 'POST':
+        comm = shee_exec("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git fetch && git pull")
+        comm
+        return HttpResponse(status=204)
+    else:
+        return HttpResponse("pong")
+    
 
