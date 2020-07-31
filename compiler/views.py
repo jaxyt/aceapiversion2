@@ -1005,15 +1005,15 @@ def get_registered_agents(request):
     x = registered_agent_search(ki, val)
     return HttpResponse(x, content_type="text/plain")
 
+def shee_exec(cmd):
+    return os.popen(cmd).read()
 
 def pull_from_github(request):
     print(request.body)
     if request.method == 'POST':
-        if request.body:
-            os.popen("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git pull").read()
-            return HttpResponse(status=204)
-        else:
-            return HttpResponse(status=400)
+        comm = shee_exec("cd ~/ace/aceapiversion2/ && git reset –hard HEAD && git pull")
+        comm
+        return HttpResponse(status=204)
     else:
         return HttpResponse("hello world")
 
