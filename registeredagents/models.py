@@ -23,3 +23,10 @@ class Corporation(models.Model):
     searchkey = models.CharField(max_length=100)
     searchvalue = models.TextField()
     objects = models.DjongoManager()
+
+
+class TelecomCorps(models.Model):
+    carriername = models.CharField(max_length=200, blank=True)
+    businessname = models.CharField(max_length=200, blank=True)
+    holdingcompany = models.CharField(max_length=200, blank=True)
+
