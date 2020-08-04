@@ -53,7 +53,7 @@ def location_search_func(arr):
 
 #  locs = location_search_func(arra)
 
-
+arra2 = ["", "registered-agents", "search", "state", "ct inc., del"]
 def text_score_search(arr):
     res = []
     k = arr[3]
@@ -64,13 +64,16 @@ def text_score_search(arr):
     query = re.compile(qu, re.IGNORECASE)
     for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
         res.append(i)
-    return res
+    return sort_results(res, q)
 
-arra2 = ["", "registered-agents", "search", "state", "ct inc., del"]
-results = text_score_search(arra2)
+def sort_results(results, quer):
+    scores = []
+    for idx, val in enumerate(results):
+        scores.append(f"{val['company']} : {similar_text(val['company'], quer)} | {val['agency']} : {similar_text(val['agency'], quer)} | {val['state']} : {similar_text(val['state'], quer)}")
+    return scores
 
-for idx, val in enumerate(results):
-    print(f"{val['company']} : {similar_text(val['company'], q)} | {val['agency']} : {similar_text(val['agency'], q)} | {val['state']} : {similar_text(val['state'], q)}")
+print(text_score_search(arra2))
+
 
 #  print(locs[0:5])
 
