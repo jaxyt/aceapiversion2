@@ -31,6 +31,12 @@ coll_te = db.registeredagents_telecomcorps
 
 arra = ["", "registered-agents", "search", "state", "mi"]
 
+def clean_text(text):
+    text = ''.join([word for word in text if word not in string.punctuation])
+    text = text.lower()
+    text = ' '.join([word for word in text.split() if word not in stw])
+    return text
+
 def location_search_func(arr):
     locations = []
     k = arr[3]
@@ -97,12 +103,5 @@ def minify_js(sid, rt):
 
 #script = minify_js(4, "/script.js")
 #print(script)
-
-
-def clean_text(text):
-    text = ''.join([word for word in text if word not in string.punctuation])
-    text = text.lower()
-    text = ' '.join([word for word in text.split() if word not in stw])
-    return text
 
 #  cleaned = list(map(clean_string, sentences))
