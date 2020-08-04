@@ -8,6 +8,13 @@ import os
 import pprint as pp
 from pymongo import MongoClient
 from similar_text import similar_text
+import Levenshtein
+import string
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extractions.text import CountVectorizer
+from nltk.corpus import stopwords
+stopwords = stopwords.words('english')
+import ngram
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
@@ -99,9 +106,9 @@ def sort_results(results, quer):
     return sorted_scores
 
 
-for m in text_score_search(arra2):
+#for m in text_score_search(arra2):
     # print(f"{m['averagescore']} - {max(m['scorearr'])} : {m['obj']['company']} | {m['obj']['agency']} | {m['obj']['city']} | {m['obj']['state']}")
-    print(m)
+    #print(m)
 
 
 #  print(locs[0:5])
@@ -114,3 +121,12 @@ def minify_js(sid, rt):
 
 #script = minify_js(4, "/script.js")
 #print(script)
+
+
+def clean_string(text):
+    text = ''.join([word for word in text if word not in string.punctuation])
+    text = text.lower()
+    text = ' '.join([word for word in text.split() if word not in stopwords])
+    return text
+
+#  cleaned = list(map(clean_string, sentences))
