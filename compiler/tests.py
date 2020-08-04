@@ -51,8 +51,25 @@ def location_search_func(arr):
     return locations
 
 
-locs = location_search_func(arra)
+#  locs = location_search_func(arra)
 
+
+def text_score_search(arr):
+    res = []
+    k = arr[3]
+    q = re.sub(r"[^A-z0-9\s]+", "", arr[4])
+    print(q)
+    qu = "("+re.sub(r"\s+", ")|(", q.strip())+")"
+    print(qu)
+    query = re.compile(qu, re.IGNORECASE)
+    for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
+        res.append(i)
+    return res
+
+arra2 = ["", "registered-agents", "search", "state", "ct del"]
+results = text_score_search(arra2)
+
+print(results)
 #  print(locs[0:5])
 
 def minify_js(sid, rt):
