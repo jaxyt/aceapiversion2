@@ -298,11 +298,6 @@ def compiler_v3(s, t, r, arr):
             agent_info += f"""</ul></li>""" if agent['note1'] else ""
             agent_info += "</ul></div>"
             comp = re.sub("XXagentXX", agent_info, comp)
-            comp = re.sub("XXagentagencyXX", f"""{agent['agency'].title() if agent['agency'] else ""}""", comp)
-            comp = re.sub("XXagentcompanyXX", f"""{agent['company'].title() if agent['company'] else ""}""", comp)
-            comp = re.sub("XXagentstateXX", f"""{agent['state'].title() if agent['state'] else ""}""", comp)
-            comp = re.sub("XXagentcityXX", f"""{agent['city'].title() if agent['city'] else ""}""", comp)
-            comp = re.sub("XXcorpXX", f"""{agent['company'].title() if agent['company'] else agent['agency'].title() if agent['agency'] else ""}""", comp)
         elif len(arr) == 5:
             agents_info = """<div class="registered-agents">"""
             k = arr[3]
