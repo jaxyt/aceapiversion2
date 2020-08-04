@@ -186,9 +186,25 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub("XXcorpXX", f"""{agent['company'].title() if agent['company'] else agent['agency'].title() if agent['agency'] else ""}""", comp)
         elif len(arr) == 5:
             agents_info = """<div class="registered-agents">"""
-            k = arr[3]
-            query = re.compile(arr[4], re.IGNORECASE)
-            for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
+            # k = arr[3]
+            # query = re.compile(arr[4], re.IGNORECASE)
+            # for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
+            #     agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
+            #     agents_info += f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
+            #     agents_info += f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
+            #     agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
+            #     agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
+            #     agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
+            #     agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
+            #     agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
+            #     agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
+            #     agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
+            #     agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
+            #     agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
+            #     agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
+            #     agents_info += "</ul>"
+            for k in text_score_search(arr):
+                i = k['obj']
                 agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
                 agents_info += f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
                 agents_info += f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
@@ -431,3 +447,47 @@ def render_xml_sitemap(s, t, rt):
     sitemap += """</urlset>"""
     print(url_cnt)
     return sitemap
+
+
+def text_score_search(arr):
+    res = []
+    k = arr[3]
+    q = re.sub(r"[^A-z0-9\s]+", "", arr[4])
+    print(q)
+    qu = "("+re.sub(r"\s+", ")|(", q.strip())+")"
+    print(qu)
+    query = re.compile(qu, re.IGNORECASE)
+    for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
+        res.append(i)
+    return sort_results(res, q)
+
+def sort_results(results, quer):
+    scores = []
+    sorted_scores = []
+    for val in results:
+        avg_cnt = 0
+        if val['company']:
+            avg_cnt += 1
+        if val['agency']:
+            avg_cnt += 1
+        if val['state']:
+            avg_cnt += 1
+        if val['city']:
+            avg_cnt += 1
+        scores.append({"obj": val, "averagescore": (similar_text(val['company'], quer)+similar_text(val['agency'], quer)+similar_text(val['state'], quer)+similar_text(val['city'], quer))/avg_cnt, "scorearr": [similar_text(val['company'], quer), similar_text(val['agency'], quer), similar_text(val['state'], quer), similar_text(val['city'], quer)]})
+    for val in scores:
+        if len(sorted_scores) == 0:
+            sorted_scores.append(val)
+        else:
+            for idx, n in enumerate(sorted_scores):
+                if val['averagescore'] > n['averagescore']:
+                    sorted_scores.insert(idx, val)
+                    break
+                elif idx == len(sorted_scores) - 1 and val['averagescore'] < n['averagescore']:
+                    sorted_scores.append(val)
+                    break
+                elif val['averagescore'] == n['averagescore']:
+                    if max(val['scorearr']) > max(n['scorearr']):
+                        sorted_scores.insert(idx, val)
+                        break
+    return sorted_scores
