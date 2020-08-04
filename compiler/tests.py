@@ -69,27 +69,28 @@ def text_score_search(arr):
 def sort_results(results, quer):
     scores = []
     sorted_scores = []
-    for idx, val in enumerate(results):
-        # f"{val['company']} : {similar_text(val['company'], quer)} | {val['agency']} : {similar_text(val['agency'], quer)} | {val['state']} : {similar_text(val['state'], quer)}"
+    for val in results:
         scores.append({"obj": val, "averagescore": (similar_text(val['company'], quer)+similar_text(val['agency'], quer)+similar_text(val['state'], quer))/3, "scorearr": [similar_text(val['company'], quer), similar_text(val['agency'], quer), similar_text(val['state'], quer)]})
     for val in scores:
         if len(sorted_scores) == 0:
             sorted_scores.append(val)
         else:
             for idx, n in enumerate(sorted_scores):
-                # if val['averagescore'] >= n['averagescore']:
-                if max(val['scorearr']) >= max(n['scorearr']):
+                if val['averagescore'] > n['averagescore']:
                     sorted_scores.insert(idx, val)
                     break
-                # elif idx == len(sorted_scores) - 1 and val['averagescore'] < n['averagescore']:
-                elif idx == len(sorted_scores) - 1 and max(val['scorearr']) < max(n['scorearr']):
+                elif idx == len(sorted_scores) - 1 and val['averagescore'] < n['averagescore']:
                     sorted_scores.append(val)
                     break
+                elif val['averagescore'] == n['averagescore']:
+                    if max(val['scorearr']) > max(n['scorearr']):
+                        sorted_scores.insert(idx, val)
+                        break
     return sorted_scores
 
 
 for m in text_score_search(arra2):
-    print(f"{m['averagescore']} | {max(m['scorearr'])} : {m['obj']['company']} | {m['obj']['agency']} | {m['obj']['state']}")
+    print(f"{m['averagescore']} - {max(m['scorearr'])} : {m['obj']['company']} | {m['obj']['agency']} | {m['obj']['state']}")
 
 
 #  print(locs[0:5])
