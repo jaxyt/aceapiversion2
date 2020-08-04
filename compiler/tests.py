@@ -80,6 +80,9 @@ def sort_results(results, quer):
                 if val['averagescore'] >= n['averagescore']:
                     sorted_scores.insert(idx, val)
                     break
+                elif idx == len(sorted_scores) - 1 and val['averagescore'] <= n['averagescore']:
+                    sorted_scores.append(val)
+                    break
     return sorted_scores
 
 
