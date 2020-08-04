@@ -41,5 +41,5 @@ urlpatterns = [
     path('auth/city/update/', views.update_city, name='city_update'),
     path('admin/', admin.site.urls),
     path('auth/upload/', views.upload_file, name='file_upload'),
-    path('auth/cities-to-agents/', views.add_cities_to_agents, name='add_cities_to_agents')
+    path('auth/db-sync/', views.json_to_mongo, name='json_to_mongo')
 ]

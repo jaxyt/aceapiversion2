@@ -5,7 +5,7 @@ from blogs.models import Blog
 from states.models import State
 from counties.models import County
 from cities.models import City
-from registeredagents.models import RegisteredAgent
+from registeredagents.models import RegisteredAgent, TelecomCorps
 
 class SiteForm(forms.ModelForm):
     class Meta:
@@ -40,6 +40,11 @@ class CityForm(forms.ModelForm):
 class RegisteredAgentForm(forms.ModelForm):
     class Meta:
         model = RegisteredAgent
+        fields = '__all__'
+
+class TelecomCorpsForm(forms.ModelForm):
+    class Meta:
+        model = TelecomCorps
         fields = '__all__'
 
 class UploadFileForm(forms.Form):

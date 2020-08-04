@@ -20,6 +20,7 @@ coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
 coll_cp = db.registeredagents_corporation
+coll_te = db.registeredagents_telecomcorps
 
 arra = ["", "registered-agents", "search", "state", "mi"]
 
@@ -62,8 +63,3 @@ def minify_js(sid, rt):
 
 #script = minify_js(4, "/script.js")
 #print(script)
-
-def check_for_change():
-    return "test 13"
-
-print(check_for_change())

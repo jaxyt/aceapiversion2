@@ -15,9 +15,9 @@ from blogs.models import Blog
 from states.models import State
 from counties.models import County
 from cities.models import City
-from registeredagents.models import RegisteredAgent
+from registeredagents.models import RegisteredAgent, TelecomCorps
 from django.contrib.auth.models import User
-from .forms import SiteForm, TemplateForm, BlogForm, StateForm, CountyForm, CityForm, RegisteredAgentForm, UploadFileForm
+from .forms import SiteForm, TemplateForm, BlogForm, StateForm, CountyForm, CityForm, RegisteredAgentForm, TelecomCorpsForm, UploadFileForm
 import os
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'registered_agents.json')
@@ -978,11 +978,11 @@ def addngrams(request):
 
 def json_to_mongo(request):
     md = os.path.dirname(__file__)
-    fpath = os.path.join(md, "registered_agents.json")
+    fpath = os.path.join(md, "telecom.json")
     with open(fpath, "r+") as json_file:
         data = json.load(json_file)
         for i in data:
-            form = RegisteredAgentForm(i)
+            form = TelecomCorpsForm(i)
             if form.is_valid():
                 form.save()
         return HttpResponse("complete", content_type="text/plain")
