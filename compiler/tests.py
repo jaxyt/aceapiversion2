@@ -99,7 +99,7 @@ def minify_js(sid, rt):
 #print(script)
 
 
-def clean_string(text):
+def clean_text(text):
     text = ''.join([word for word in text if word not in string.punctuation])
     text = text.lower()
     text = ' '.join([word for word in text.split() if word not in stw])
