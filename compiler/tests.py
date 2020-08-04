@@ -68,9 +68,19 @@ def text_score_search(arr):
 
 def sort_results(results, quer):
     scores = []
+    sorted_scores = []
     for idx, val in enumerate(results):
-        scores.append(f"{val['company']} : {similar_text(val['company'], quer)} | {val['agency']} : {similar_text(val['agency'], quer)} | {val['state']} : {similar_text(val['state'], quer)}")
-    return scores
+        # f"{val['company']} : {similar_text(val['company'], quer)} | {val['agency']} : {similar_text(val['agency'], quer)} | {val['state']} : {similar_text(val['state'], quer)}"
+        scores.append({"obj": val, "averagescore": (similar_text(val['company'], quer)+similar_text(val['agency'], quer)+similar_text(val['state'], quer))/3})
+    for val in scores:
+        if len(sorted_scores) == 0:
+            sorted_scores.append(val)
+        else:
+            for idx, n in enumerate(sorted_scores):
+                if val['averagescore'] >= n['averagescore']:
+                    sorted_scores.insert(idx, val)
+                    break
+    return sorted_scores
 
 print(text_score_search(arra2))
 
