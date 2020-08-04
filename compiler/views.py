@@ -981,10 +981,11 @@ def json_to_mongo(request):
     fpath = os.path.join(md, "telecom.json")
     with open(fpath, "r+") as json_file:
         data = json.load(json_file)
-        for i in data:
-            form = TelecomCorpsForm(i)
-            if form.is_valid():
-                form.save()
+        for idx, val in enumerate(data):
+            if idx > 2605:
+                form = TelecomCorpsForm(val)
+                if form.is_valid():
+                    form.save()
         return HttpResponse("complete", content_type="text/plain")
 
 def add_cities_to_agents(request):
