@@ -454,9 +454,7 @@ def text_score_search(arr):
     res = []
     k = arr[3]
     q = re.sub(r"[^A-z0-9\s]+", "", arr[4])
-    print(q)
     qu = "("+re.sub(r"\s+", ")|(", q.strip())+")"
-    print(qu)
     query = re.compile(qu, re.IGNORECASE)
     for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
         res.append(i)
@@ -481,14 +479,18 @@ def sort_results(results, quer):
             sorted_scores.append(val)
         else:
             for idx, n in enumerate(sorted_scores):
-                if val['averagescore'] > n['averagescore']:
+                # if val['averagescore'] > n['averagescore']:
+                if max(val['scorearr']) > max(n['scorearr']):
                     sorted_scores.insert(idx, val)
                     break
-                elif idx == len(sorted_scores) - 1 and val['averagescore'] < n['averagescore']:
+                # elif idx == len(sorted_scores) - 1 and val['averagescore'] < n['averagescore']:
+                elif idx == len(sorted_scores) - 1 and max(val['scorearr']) < max(n['scorearr']):
                     sorted_scores.append(val)
                     break
-                elif val['averagescore'] == n['averagescore']:
-                    if max(val['scorearr']) > max(n['scorearr']):
+                # elif val['averagescore'] == n['averagescore']:
+                elif max(val['scorearr']) == max(n['scorearr']):
+                    # if max(val['scorearr']) > max(n['scorearr']):
+                    if val['averagescore'] > n['averagescore']:
                         sorted_scores.insert(idx, val)
                         break
     return sorted_scores
