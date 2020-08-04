@@ -69,8 +69,8 @@ def text_score_search(arr):
 arra2 = ["", "registered-agents", "search", "state", "ct inc., del"]
 results = text_score_search(arra2)
 
-for i in results:
-    print(f"{i['company']} | {i['agency']} | {i['state']}")
+for idx, val in enumerate(results):
+    print(f"{val['company']} : {similar_text(val['company'], q)} | {val['agency']} : {similar_text(val['agency'], q)} | {val['state']} : {similar_text(val['state'], q)}")
 
 #  print(locs[0:5])
 
