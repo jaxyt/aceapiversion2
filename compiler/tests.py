@@ -53,7 +53,7 @@ def location_search_func(arr):
 
 #  locs = location_search_func(arra)
 
-arra2 = ["", "registered-agents", "search", "state", "ct inc., del"]
+arra2 = ["", "registered-agents", "search", "state", "ct del"]
 def text_score_search(arr):
     res = []
     k = arr[3]
