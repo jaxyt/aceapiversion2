@@ -11,7 +11,7 @@ from similar_text import similar_text
 import Levenshtein
 import string
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extractions.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 stopwords = stopwords.words('english')
 import ngram
