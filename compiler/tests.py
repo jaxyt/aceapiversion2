@@ -69,7 +69,9 @@ def text_score_search(arr):
 arra2 = ["", "registered-agents", "search", "state", "ct inc., del"]
 results = text_score_search(arra2)
 
-print(results)
+for i in results:
+    print(f"{i['company']} | {i['agency']} | {i['state']}")
+
 #  print(locs[0:5])
 
 def minify_js(sid, rt):
