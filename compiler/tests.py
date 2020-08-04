@@ -14,7 +14,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 import nltk
 stopwords = nltk.download('stopwords')
-stopwords = stopwords.words('english')
+stw = stopwords.words('english')
 import ngram
 
 client = MongoClient('mongodb://localhost:27017/')
@@ -103,7 +103,7 @@ def minify_js(sid, rt):
 def clean_string(text):
     text = ''.join([word for word in text if word not in string.punctuation])
     text = text.lower()
-    text = ' '.join([word for word in text.split() if word not in stopwords])
+    text = ' '.join([word for word in text.split() if word not in stw])
     return text
 
 #  cleaned = list(map(clean_string, sentences))
