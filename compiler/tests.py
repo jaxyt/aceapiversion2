@@ -89,7 +89,7 @@ def sort_results(results, quer):
             sorted_scores.append(i)
         else:
             for idx, val in enumerate(sorted_scores):
-                if i['avg'] >= val['avg']:
+                if i['avg'] <= val['avg']:
                     sorted_scores.insert(idx, i)
                     break
     return sorted_scores
