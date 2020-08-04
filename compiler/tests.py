@@ -90,7 +90,7 @@ def sort_results(results, quer):
         else:
             for idx, val in enumerate(sorted_scores):
                 if i['avg'] >= val['avg']:
-                    sorted_scores.insert(idx, val)
+                    sorted_scores.insert(idx, i)
     return sorted_scores
 
 for i in text_score_search(arra2):
