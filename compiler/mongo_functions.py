@@ -5,6 +5,7 @@ import datetime
 import os
 import pprint as pp
 from pymongo import MongoClient
+from similar_text import similar_text
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
