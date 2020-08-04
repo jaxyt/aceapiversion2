@@ -82,7 +82,9 @@ def sort_results(results, quer):
                     break
     return sorted_scores
 
-print(text_score_search(arra2))
+
+for m in text_score_search(arra2):
+    print(f"{m['averagescore']} : {m['obj']['company']} | {m['obj']['agency']} | {m['obj']['state']}")
 
 
 #  print(locs[0:5])
