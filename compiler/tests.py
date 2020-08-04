@@ -91,10 +91,11 @@ def sort_results(results, quer):
             for idx, val in enumerate(sorted_scores):
                 if i['avg'] >= val['avg']:
                     sorted_scores.insert(idx, i)
+                    break
     return sorted_scores
 
-for i in text_score_search(arra2):
-    print(f"{i['avg']}: {i['obj']['company']} | {i['obj']['agency']} | {i['obj']['city']} | {i['obj']['state']}")
+for k in text_score_search(arra2):
+    print(f"{k['avg']}: {k['obj']['company']} | {k['obj']['agency']} | {k['obj']['city']} | {k['obj']['state']}")
 
 #for m in text_score_search(arra2):
     # print(f"{m['averagescore']} - {max(m['scorearr'])} : {m['obj']['company']} | {m['obj']['agency']} | {m['obj']['city']} | {m['obj']['state']}")
