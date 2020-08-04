@@ -474,7 +474,7 @@ def sort_results(results, quer):
         if val['city']:
             avg_cnt += 1
         # scores.append({"obj": val, "averagescore": (similar_text(val['company'], quer)+similar_text(val['agency'], quer)+similar_text(val['state'], quer)+similar_text(val['city'], quer))/avg_cnt, "scorearr": [similar_text(val['company'], quer), similar_text(val['agency'], quer), similar_text(val['state'], quer), similar_text(val['city'], quer)]})
-        scores.append({"obj": val, "averagescore": similar_text(f"{val['company']} {val['agency']} {val['city']} {val['state']}", q), "scorearr": [similar_text(val['company'], quer), similar_text(val['agency'], quer), similar_text(val['state'], quer), similar_text(val['city'], quer)]})
+        scores.append({"obj": val, "averagescore": similar_text(f"{val['company']} {val['agency']} {val['city']} {val['state']}", quer), "scorearr": [similar_text(val['company'], quer), similar_text(val['agency'], quer), similar_text(val['state'], quer), similar_text(val['city'], quer)]})
     for val in scores:
         if len(sorted_scores) == 0:
             sorted_scores.append(val)
