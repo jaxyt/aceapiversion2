@@ -66,7 +66,7 @@ def text_score_search(arr):
         res.append(i)
     return res
 
-arra2 = ["", "registered-agents", "search", "state", "ct del"]
+arra2 = ["", "registered-agents", "search", "state", "ct inc., del"]
 results = text_score_search(arra2)
 
 print(results)
