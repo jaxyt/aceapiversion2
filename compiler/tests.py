@@ -99,7 +99,7 @@ def sort_results(results, quer):
 
 
 for m in text_score_search(arra2):
-    print(f"{m['averagescore']} - {max(m['scorearr'])} : {m['obj']['company']} | {m['obj']['agency']} | {m['obj']['state']}")
+    print(f"{m['averagescore']} - {max(m['scorearr'])} : {m['obj']['company']} | {m['obj']['agency']} | {m['obj']['city']} | {m['obj']['state']}")
 
 
 #  print(locs[0:5])
