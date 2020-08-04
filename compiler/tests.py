@@ -81,9 +81,17 @@ def text_score_search(arr):
 
 def sort_results(results, quer):
     scores = []
+    sorted_scores = []
     for i in results:
         scores.append({"obj": i, "avg": ((Levenshtein.distance(quer, clean_text(i['company'])))+(Levenshtein.distance(quer, clean_text(i['agency'])))+(Levenshtein.distance(quer, clean_text(i['state'])))+(Levenshtein.distance(quer, clean_text(i['city']))))/4})
-    return scores
+    for i in scores:
+        if len(sorted_scores) == 0:
+            sorted_scores.append(i)
+        else:
+            for idx, val in enumerate(sorted_scores):
+                if i['avg'] >= val['avg']:
+                    sorted_scores.insert(idx, val)
+    return sorted_scores
 
 for i in text_score_search(arra2):
     print(f"{i['avg']}: {i['obj']['company']} | {i['obj']['agency']} | {i['obj']['city']} | {i['obj']['state']}")
