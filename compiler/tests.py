@@ -61,14 +61,13 @@ def location_search_func(arr):
 #  locs = location_search_func(arra)
 
 # arra2 = ["", "registered-agents", "search", "state", "ct del"]
-arra2 = ["", "registered-agents", "search", "state", "washington district of columbia"]
+arra2 = ["", "registered-agents", "search", "state", "csc del"]
 def text_score_search(arr):
     res = []
     k = arr[3]
-    q = re.sub(r"[^A-z0-9\s]+", "", arr[4])
-    print(q)
+    # q = re.sub(r"[^A-z0-9\s]+", "", arr[4])
+    q = clean_text(arr[4])
     qu = "("+re.sub(r"\s+", ")|(", q.strip())+")"
-    print(qu)
     query = re.compile(qu, re.IGNORECASE)
     for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
         res.append(i)
@@ -76,35 +75,12 @@ def text_score_search(arr):
 
 def sort_results(results, quer):
     scores = []
-    sorted_scores = []
-    for val in results:
-        avg_cnt = 0
-        if val['company']:
-            avg_cnt += 1
-        if val['agency']:
-            avg_cnt += 1
-        if val['state']:
-            avg_cnt += 1
-        if val['city']:
-            avg_cnt += 1
-        scores.append({"obj": val, "averagescore": (similar_text(val['company'], quer)+similar_text(val['agency'], quer)+similar_text(val['state'], quer)+similar_text(val['city'], quer))/avg_cnt, "scorearr": [similar_text(val['company'], quer), similar_text(val['agency'], quer), similar_text(val['state'], quer), similar_text(val['city'], quer)]})
-    for val in scores:
-        if len(sorted_scores) == 0:
-            sorted_scores.append(val)
-        else:
-            for idx, n in enumerate(sorted_scores):
-                if val['averagescore'] > n['averagescore']:
-                    sorted_scores.insert(idx, val)
-                    break
-                elif idx == len(sorted_scores) - 1 and val['averagescore'] < n['averagescore']:
-                    sorted_scores.append(val)
-                    break
-                elif val['averagescore'] == n['averagescore']:
-                    if max(val['scorearr']) > max(n['scorearr']):
-                        sorted_scores.insert(idx, val)
-                        break
-    return sorted_scores
+    for i in results:
+        scores.append({"obj": i, "avg": ((Levenshtein.distance(quer, clean_string(i['company'])))+(Levenshtein.distance(quer, clean_string(i['agency'])))+(Levenshtein.distance(quer, clean_string(i['state'])))+(Levenshtein.distance(quer, clean_string(i['city']))))/4})
+    return scores
 
+for i in text_score_search(arra2):
+    print(f"{i['avg']}: {i['obj']['company']} | {i['obj']['agency']} | {i['obj']['city']} | {i['obj']['state']}")
 
 #for m in text_score_search(arra2):
     # print(f"{m['averagescore']} - {max(m['scorearr'])} : {m['obj']['company']} | {m['obj']['agency']} | {m['obj']['city']} | {m['obj']['state']}")
