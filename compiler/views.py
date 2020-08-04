@@ -982,7 +982,7 @@ def json_to_mongo(request):
     with open(fpath, "r+") as json_file:
         data = json.load(json_file)
         for idx, val in enumerate(data):
-            if idx > 12658:
+            if idx > 15068:
                 form = TelecomCorpsForm(val)
                 if form.is_valid():
                     form.save()
