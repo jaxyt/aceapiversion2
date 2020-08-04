@@ -60,7 +60,7 @@ def text_score_search(arr):
     k = arr[3]
     q = re.sub(r"[^A-z0-9\s]+", "", arr[4])
     print(q)
-    qu = "^("+re.sub(r"\s+", ")|(", q.strip())+")"
+    qu = "("+re.sub(r"\s+", ")|(", q.strip())+")"
     print(qu)
     query = re.compile(qu, re.IGNORECASE)
     for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
