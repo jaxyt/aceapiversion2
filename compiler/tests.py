@@ -126,7 +126,7 @@ def json_to_mongodb():
             for idx, val in enumerate(data):
                 match_ob = f"""{i["cityname"]} |"""
                 for attr, value in val['properties'].items():
-                    if type(value) == type(i['cityname']):
+                    if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
                         reg = re.compile(i['cityname'], re.IGNORECASE)
                         if re.search(reg, value) is not None:
                             for a, v in val['properties'].items():
