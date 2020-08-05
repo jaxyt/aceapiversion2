@@ -139,7 +139,7 @@ def json_to_mongodb():
                             break
         return matches
 
-#m = json_to_mongodb()
-#for i in m:
-#    print(i)
+m = json_to_mongodb()
+for i in m:
+    print(i)
 
