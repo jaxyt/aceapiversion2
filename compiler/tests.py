@@ -119,10 +119,10 @@ def json_to_mongodb():
     md = os.path.dirname(__file__)
     fpath = os.path.join(md, "towns-cities.json")
     with open(fpath, "r+") as json_file:
-        matches = []
+        matches = ["done"]
         data = json.load(json_file)
         for cnt, i in enumerate(coll_ci.find()):
-            if cnt > 100:
+            if cnt > 1000:
                 break
             else:
                 for idx, val in enumerate(data):
@@ -136,10 +136,9 @@ def json_to_mongodb():
                                         reg = re.compile(i['statename'], re.IGNORECASE)
                                         if re.search(reg, v) is not None:
                                             match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
+                                            print(match_ob)
                                             break
                                 break
-                    if match_ob != f"""{i["cityname"]} |""":
-                        matches.append(match_ob)
         return matches
 
 m = json_to_mongodb()
