@@ -135,6 +135,7 @@ def json_to_mongodb():
                                     reg = re.compile(i['statename'], re.IGNORECASE)
                                     if re.search(reg, v) is not None:
                                         match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
+                                        print(match_ob)
                                         matches.append(match_ob)
                                         break
                             break
