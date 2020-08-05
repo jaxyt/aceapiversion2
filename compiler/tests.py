@@ -122,21 +122,24 @@ def json_to_mongodb():
         matches = []
         data = json.load(json_file)
         for cnt, i in enumerate(coll_ci.find()):
-            for idx, val in enumerate(data):
-                match_ob = f"""{i["cityname"]} |"""
-                for attr, value in val['properties'].items():
-                    if type(value) == type(i['cityname']):
-                        reg = re.compile(i['cityname'], re.IGNORECASE)
-                        if re.search(reg, value) is not None:
-                            for a, v in val['properties'].items():
-                                if type(v) == type(i['statename']):
-                                    reg = re.compile(i['statename'], re.IGNORECASE)
-                                    if re.search(reg, v) is not None:
-                                        match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
-                                        break
-                            break
-                if match_ob != f"""{i["cityname"]} |""":
-                    matches.append(match_ob)
+            if cnt > 1000:
+                break
+            else:
+                for idx, val in enumerate(data):
+                    match_ob = f"""{i["cityname"]} |"""
+                    for attr, value in val['properties'].items():
+                        if type(value) == type(i['cityname']):
+                            reg = re.compile(i['cityname'], re.IGNORECASE)
+                            if re.search(reg, value) is not None:
+                                for a, v in val['properties'].items():
+                                    if type(v) == type(i['statename']):
+                                        reg = re.compile(i['statename'], re.IGNORECASE)
+                                        if re.search(reg, v) is not None:
+                                            match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
+                                            break
+                                break
+                    if match_ob != f"""{i["cityname"]} |""":
+                        matches.append(match_ob)
         return matches
 
 m = json_to_mongodb()
