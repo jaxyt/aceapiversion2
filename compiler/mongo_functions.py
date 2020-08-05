@@ -91,10 +91,12 @@ def compiler_v3(s, t, r, arr):
     comp += """</body></html>"""
     site_counties_links = """<div class="link-list">"""
     site_state = coll_st.find_one({'id': s.location.stateid})
+    site_state_acronym = site_state['stateacronym']
     for i in coll_co.find({'stateid': site_state['id']}):
         site_counties_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['id']}">{i['countyname'].title()}</a>"""
     site_counties_links += """</div>"""
     comp = re.sub(r'XXsitestateXX', site_state['statename'].title(), comp)
+    comp = re.sub(r"XXsitestateacronymXX", site_state_acronym, comp)
     comp = re.sub(r'XXsitecountylinksXX', site_counties_links, comp)
     site_cities_links = """<div class="link-list">"""
     site_county = coll_co.find_one({'id': s.location.countyid})
@@ -112,10 +114,12 @@ def compiler_v3(s, t, r, arr):
         page_cities_links = """<div class="link-list">"""
         if len(arr) >= 3:
             page_state = coll_st.find_one({'statename': " ".join(arr[2].split('-'))})
+            page_state_acronym = page_state['stateacronym']
             for i in coll_co.find({'stateid': page_state['id']}):
                 page_counties_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['id']}">{i['countyname'].title()}</a>"""
             page_counties_links += """</div>"""
             comp = re.sub(r'XXpagestateXX', page_state['statename'].title(), comp)
+            comp = re.sub(r'XXpagestateacronymXX', page_state_acronym, comp)
             comp = re.sub(r'XXpagecountylinksXX', page_counties_links, comp)
             if len(arr) >= 4:
                 page_county = coll_co.find_one({'id': int(arr[3].split("-")[-1])})
@@ -189,9 +193,9 @@ def compiler_v3(s, t, r, arr):
                 rege = re.compile(agent['state'], re.IGNORECASE)
                 agent_state = coll_st.find_one({"statename": rege})
                 state_acronym = agent_state['stateacronym']
-                comp = re.sub("XXstateacronymXX", state_acronym, comp)
+                comp = re.sub(r"XXstateacronymXX", state_acronym, comp)
             else:
-                comp = re.sub("XXstateacronymXX", "", comp)
+                comp = re.sub(r"XXstateacronymXX", "", comp)
         elif len(arr) == 5:
             agents_info = """<div class="registered-agents">"""
             # k = arr[3]
