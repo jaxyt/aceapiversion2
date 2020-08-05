@@ -121,27 +121,26 @@ def json_to_mongodb():
     with open(fpath, "r+") as json_file:
         matches = ["done"]
         data = json.load(json_file)
-        for cnt, i in enumerate(coll_ci.find()):
-            if cnt > 1000:
-                break
-            else:
-                for idx, val in enumerate(data):
-                    match_ob = f"""{i["cityname"]} |"""
-                    for attr, value in val['properties'].items():
-                        if type(value) == type(i['cityname']):
-                            reg = re.compile(i['cityname'], re.IGNORECASE)
-                            if re.search(reg, value) is not None:
-                                for a, v in val['properties'].items():
-                                    if type(v) == type(i['statename']):
-                                        reg = re.compile(i['statename'], re.IGNORECASE)
-                                        if re.search(reg, v) is not None:
-                                            match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
-                                            print(match_ob)
-                                            break
-                                break
+        for cnt, i in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
+            for idx, val in enumerate(data):
+                match_ob = f"""{i["cityname"]} |"""
+                for attr, value in val['properties'].items():
+                    if type(value) == type(i['cityname']):
+                        reg = re.compile(i['cityname'], re.IGNORECASE)
+                        if re.search(reg, value) is not None:
+                            for a, v in val['properties'].items():
+                                if type(v) == type(i['statename']):
+                                    reg = re.compile(i['statename'], re.IGNORECASE)
+                                    if re.search(reg, v) is not None:
+                                        match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
+                                        print(match_ob)
+                                        break
+                            break
         return matches
 
-m = json_to_mongodb()
-for i in m:
-    print(i)
+#m = json_to_mongodb()
+#for i in m:
+#    print(i)
 
+for cnt, i in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
+    print(f"{i['id']}: {i['cityname']}, {i['statename']}")
