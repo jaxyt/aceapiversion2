@@ -121,7 +121,7 @@ def json_to_mongodb():
     with open(fpath, "r+") as json_file:
         matches = []
         data = json.load(json_file)
-        for cnt, i in enumerate(coll_ci.find({"statename": "new york"})):
+        for cnt, i in enumerate(coll_ci.find()):
             if cnt > 10:
                 break
             else:
