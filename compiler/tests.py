@@ -129,6 +129,7 @@ def json_to_mongodb():
                     match_ob = f"""{i["cityname"]} |"""
                     for attr, value in val.items():
                         if type(value) == type(i['cityname']):
+                            print(f"{i['cityname']} | {value}")
                             reg = re.compile(i['cityname'], re.IGNORECASE)
                             if re.search(reg, value) is not None:
                                 match_ob += f""" / {attr}: {value} /"""
