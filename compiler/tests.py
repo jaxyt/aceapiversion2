@@ -141,12 +141,47 @@ def json_to_mongodb():
                             break
         return matches
 
-m = json_to_mongodb()
-for i in m:
-    print(i)
+#m = json_to_mongodb()
+#for i in m:
+    #print(i)
 
 
-
-
+# code snippet to be executed only once 
+mysetup = """
+import os
+from pymongo import MongoClient
+client = MongoClient('mongodb://localhost:27017/')
+db = client.acedbv2
+coll_ci = db.cities_city
+"""
+  
+# code snippet whose execution time is to be measured 
+mycode = """ 
+def example(): 
+    i = coll_ci.find_one({"cityname": "jackson", "statename":"wyoming"})
+    matches = []
+    md = os.path.dirname(__file__)
+    fpath = os.path.join(md, "towns-cities.json") 
+    with open(fpath, "r+") as json_file:
+        for idx, val in enumerate(data):
+            for attr, value in val['properties'].items():
+                if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
+                    reg = re.compile(i['cityname'], re.IGNORECASE)
+                    if re.search(reg, value) is not None:
+                        for a, v in val['properties'].items():
+                            if type(v) == type(i['statename']):
+                                reg = re.compile(i['statename'], re.IGNORECASE)
+                                if re.search(reg, v) is not None:
+                                    match_ob = i["cityname"]+" | / "+attr+": "+value+"; "+a+": "+v+"; "+val['geometry']['coordinates'][1]+", "+val['geometry']['coordinates'][0]+"; "+val['id']+" /"
+                                    matches.append(match_ob)
+                                    break
+                        break
+        return matches
+"""
+  
+# timeit statement 
+print (timeit.timeit(setup = mysetup, 
+                    stmt = mycode, 
+                    number = 10000))
 
 
