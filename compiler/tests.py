@@ -127,9 +127,9 @@ def json_to_mongodb():
             else:
                 for idx, val in enumerate(data):
                     match_ob = f"""{i["cityname"]} |"""
-                    for attr, value in val.items():
+                    for attr, value in val['properties'].items():
                         if type(value) == type(i['cityname']):
-                            print(f"{i['cityname']} | {value}")
+                            #print(f"{i['cityname']} | {value}")
                             reg = re.compile(i['cityname'], re.IGNORECASE)
                             if re.search(reg, value) is not None:
                                 match_ob += f""" / {attr}: {value} /"""
