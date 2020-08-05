@@ -182,6 +182,6 @@ def example():
 # timeit statement 
 print (timeit.timeit(setup = mysetup, 
                     stmt = mycode, 
-                    number = 10000))
+                    number = 193324818))
 
 
