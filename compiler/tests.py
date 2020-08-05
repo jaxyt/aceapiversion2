@@ -139,10 +139,10 @@ def json_to_mongodb():
                                             break
                                 break
                     if match_ob != f"""{i["cityname"]} |""":
-                        matches.append(match_ob)
-        return matches
+                        #matches.append(match_ob)
+                        print(match_ob)
+        return "done" #matches
 
-m = json_to_mongodb()
-for i in m:
-    print(i)
+json_to_mongodb()
+
 
