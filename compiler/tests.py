@@ -118,13 +118,14 @@ def minify_js(sid, rt):
 def json_to_mongodb():
     md = os.path.dirname(__file__)
     fpath = os.path.join(md, "towns-cities.json")
-    with open(fpath, "r+") as json_file:
-        matches = []
-        data = json.load(json_file)
-        for cnt, i in enumerate(coll_ci.find()):
-            if cnt > 10:
-                break
-            else:
+    
+    matches = []
+    for cnt, i in enumerate(coll_ci.find()):
+        if cnt > 10:
+            break
+        else:
+            with open(fpath, "r+") as json_file:
+                data = json.load(json_file)
                 for idx, val in enumerate(data):
                     match_ob = f"""{i["cityname"]} |"""
                     for attr, value in val['properties'].items():
@@ -137,6 +138,8 @@ def json_to_mongodb():
                                         if re.search(reg, v) is not None:
                                             match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
                                             print(match_ob)
+                                            break
+                                break
     return
 
 json_to_mongodb()
