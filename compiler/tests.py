@@ -119,7 +119,7 @@ def json_to_mongodb():
     md = os.path.dirname(__file__)
     fpath = os.path.join(md, "towns-cities.json")
     with open(fpath, "r+") as json_file:
-        matches = ["done"]
+        matches = []
         data = json.load(json_file)
         for cnt, n in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
             i = n['_id']
@@ -134,16 +134,15 @@ def json_to_mongodb():
                                     reg = re.compile(i['statename'], re.IGNORECASE)
                                     if re.search(reg, v) is not None:
                                         match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
-                                        print(match_ob)
+                                        matches.append(match_ob)
                                         break
                             break
         return matches
 
-#m = json_to_mongodb()
-#for i in m:
-#    print(i)
-
-for i in coll_ci.find({"cityname": "ace"}):
+m = json_to_mongodb()
+for i in m:
     print(i)
+
+
 
 
