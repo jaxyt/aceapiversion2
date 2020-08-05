@@ -153,12 +153,16 @@ from pymongo import MongoClient
 client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
 coll_ci = db.cities_city
+def add_to_map(ob):
+    return ob
+cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
+city = cities[0]
 """
   
 # code snippet whose execution time is to be measured 
 mycode = """ 
 def example(): 
-    i = coll_ci.find_one({"cityname": "jackson", "statename":"wyoming"})
+    i = city['_id']
     matches = []
     md = os.path.dirname(__file__)
     fpath = os.path.join(md, "towns-cities.json") 
