@@ -124,7 +124,7 @@ def json_to_mongodb():
         for i in coll_ci.find():
             for idx, val in enumerate(data):
                 match_ob = f"""{i["cityname"]} |"""
-                for attr, value in k.__dict__.items():
+                for attr, value in val.__dict__.items():
                     if type(value) == type(i['cityname']):
                         reg = re.compile(i['cityname'], re.IGNORECASE)
                         if re.search(reg, value) is not None:
