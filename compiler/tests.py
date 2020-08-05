@@ -15,6 +15,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 stw = stopwords.words('english')
 import ngram
+import timeit
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
@@ -139,9 +140,25 @@ def json_to_mongodb():
                             break
         return matches
 
-m = json_to_mongodb()
-for i in m:
-    print(i)
+#m = json_to_mongodb()
+#for i in m:
+    #print(i)
+
+# code snippet to be executed only once 
+mysetup = "from math import sqrt"
+  
+# code snippet whose execution time is to be measured 
+mycode = ''' 
+def example(): 
+    mylist = [] 
+    for x in range(100): 
+        mylist.append(sqrt(x)) 
+'''
+  
+# timeit statement 
+print (timeit.timeit(setup = mysetup, 
+                    stmt = mycode, 
+                    number = 10000))
 
 
 
