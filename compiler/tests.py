@@ -132,7 +132,15 @@ def json_to_mongodb():
                             #print(f"{i['cityname']} | {value}")
                             reg = re.compile(i['cityname'], re.IGNORECASE)
                             if re.search(reg, value) is not None:
-                                match_ob += f""" / {attr}: {value} /"""
+                                match_ob += f""" / {attr}: {value} ;"""
+                                for a, v in val['properties'].items():
+                                    if type(v) == type(i['statename']):
+                                        #print(f"{i['cityname']} | {value}")
+                                        reg = re.compile(i['statename'], re.IGNORECASE)
+                                        if re.search(reg, v) is not None:
+                                            match_ob += f""" {a}: {v} /"""
+                                            break
+                                break
                     if match_ob != f"""{i["cityname"]} |""":
                         matches.append(match_ob)
         return matches
