@@ -139,7 +139,14 @@ def json_to_mongodb():
                             break
         return matches
 
-m = json_to_mongodb()
-for i in m:
-    print(i)
+#m = json_to_mongodb()
+#for i in m:
+#    print(i)
 
+for cnt, n in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
+    print(cnt)
+
+with open(fpath, "r+") as json_file:
+        data = json.load(json_file)
+        for idx, val in enumerate(data):
+            print(idx)
