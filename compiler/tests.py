@@ -138,8 +138,6 @@ def json_to_mongodb():
                                         if re.search(reg, v) is not None:
                                             match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
                                             print(match_ob)
-                                            break
-                                break
     return
 
 json_to_mongodb()
