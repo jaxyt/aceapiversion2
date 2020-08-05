@@ -138,4 +138,6 @@ def json_to_mongodb():
         return matches
 
 m = json_to_mongodb()
-print(m)
+for i in m:
+    print(i)
+
