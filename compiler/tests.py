@@ -121,16 +121,19 @@ def json_to_mongodb():
     with open(fpath, "r+") as json_file:
         matches = []
         data = json.load(json_file)
-        for i in coll_ci.find():
-            for idx, val in enumerate(data):
-                match_ob = f"""{i["cityname"]} |"""
-                for attr, value in val.items():
-                    if type(value) == type(i['cityname']):
-                        reg = re.compile(i['cityname'], re.IGNORECASE)
-                        if re.search(reg, value) is not None:
-                            match_ob += f""" / {attr}: {value} /"""
-                if match_ob != f"""{i["cityname"]} |""":
-                    matches.append(match_ob)
+        for cnt, i in enumerate(coll_ci.find()):
+            if cnt > 10:
+                break
+            else:
+                for idx, val in enumerate(data):
+                    match_ob = f"""{i["cityname"]} |"""
+                    for attr, value in val.items():
+                        if type(value) == type(i['cityname']):
+                            reg = re.compile(i['cityname'], re.IGNORECASE)
+                            if re.search(reg, value) is not None:
+                                match_ob += f""" / {attr}: {value} /"""
+                    if match_ob != f"""{i["cityname"]} |""":
+                        matches.append(match_ob)
         return matches
 
 m = json_to_mongodb()
