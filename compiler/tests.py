@@ -143,4 +143,4 @@ def json_to_mongodb():
 #    print(i)
 
 for cnt, i in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
-    print(f"{i['id']}: {i['cityname']}, {i['statename']}")
+    print(i)
