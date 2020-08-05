@@ -129,16 +129,13 @@ def json_to_mongodb():
                     match_ob = f"""{i["cityname"]} |"""
                     for attr, value in val['properties'].items():
                         if type(value) == type(i['cityname']):
-                            #print(f"{i['cityname']} | {value}")
                             reg = re.compile(i['cityname'], re.IGNORECASE)
                             if re.search(reg, value) is not None:
-                                match_ob += f""" / {attr}: {value} ;"""
                                 for a, v in val['properties'].items():
                                     if type(v) == type(i['statename']):
-                                        #print(f"{i['cityname']} | {value}")
                                         reg = re.compile(i['statename'], re.IGNORECASE)
                                         if re.search(reg, v) is not None:
-                                            match_ob += f""" {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
+                                            match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
                                             break
                                 break
                     if match_ob != f"""{i["cityname"]} |""":
