@@ -121,7 +121,8 @@ def json_to_mongodb():
     with open(fpath, "r+") as json_file:
         matches = ["done"]
         data = json.load(json_file)
-        for cnt, i in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
+        for cnt, n in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
+            i = n['_id']
             for idx, val in enumerate(data):
                 match_ob = f"""{i["cityname"]} |"""
                 for attr, value in val['properties'].items():
@@ -142,5 +143,3 @@ def json_to_mongodb():
 #for i in m:
 #    print(i)
 
-for cnt, i in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
-    print(i['_id'])
