@@ -146,6 +146,8 @@ def json_to_mongodb():
 for cnt, n in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
     print(cnt)
 
+md = os.path.dirname(__file__)
+fpath = os.path.join(md, "towns-cities.json")
 with open(fpath, "r+") as json_file:
         data = json.load(json_file)
         for idx, val in enumerate(data):
