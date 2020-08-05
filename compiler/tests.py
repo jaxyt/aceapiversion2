@@ -122,7 +122,7 @@ def json_to_mongodb():
         matches = []
         data = json.load(json_file)
         for cnt, i in enumerate(coll_ci.find()):
-            if cnt > 1000:
+            if cnt > 100:
                 break
             else:
                 for idx, val in enumerate(data):
