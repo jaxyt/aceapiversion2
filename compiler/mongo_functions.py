@@ -361,7 +361,6 @@ def compiler_v3(s, t, r, arr):
                 agents_info += "</ul>"
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
-            comp = re.sub('XXcorpXX', corp['name'], comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
             corps_in_cities = """<div class="state-corps-links">"""
             for i in coll_ra.find({'state': state_query}).distinct('city'):
