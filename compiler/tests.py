@@ -138,9 +138,9 @@ def json_to_mongodb():
     fpath = os.path.join(md, "towns-cities.json") 
     with open(fpath, "r+") as json_file:
         json_locations = list(map(add_to_map, json.load(json_file)))
-    for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
+    for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET), desc='mongo'):
         i = cities[n]['_id']
-        for val in trange(len(json_locations), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.BLUE, Fore.RESET)):
+        for val in trange(len(json_locations), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.BLUE, Fore.RESET), desc='overpass', leave=False):
             for attr, value in json_locations[val]['properties'].items():
                 if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
                     reg = re.compile(i['cityname'], re.IGNORECASE)
