@@ -180,7 +180,7 @@ def example():
         md = os.path.dirname(__file__)
         fpath = os.path.join(md, "towns-cities.json") 
         with open(fpath, "r+") as json_file:
-            data = json.load(data)
+            data = json.load(json_file)
             for idx, val in enumerate(data):
                 for attr, value in val['properties'].items():
                     if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
