@@ -153,7 +153,7 @@ def json_to_mongodb():
                         for a, v in val['properties'].items():
                             s_search = re.search(re.compile(i['statename'], re.IGNORECASE), v)
                             if s_search is not None:
-                                match_ob[i['cityname'],attr,value,i['statename'],a,v,val['geometry']['coordinates'][1],val['geometry']['coordinates'][0],val['id']]
+                                match_ob = [i['cityname'],attr,value,i['statename'],a,v,val['geometry']['coordinates'][1],val['geometry']['coordinates'][0],val['id']]
                                 found = True
                                 break
                         
