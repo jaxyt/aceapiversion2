@@ -181,7 +181,6 @@ def example():
         data = json.load(json_file)
         for n in tqdm(range(len(cities))):
             i = cities[n]['_id']
-            print(i)
             for idx, val in enumerate(data):
                 for attr, value in val['properties'].items():
                     if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
