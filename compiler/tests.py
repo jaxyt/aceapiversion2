@@ -167,6 +167,7 @@ def example():
     md = os.path.dirname(__file__)
     fpath = os.path.join(md, "towns-cities.json") 
     with open(fpath, "r+") as json_file:
+        data = json.load(json_file)
         for idx, val in enumerate(data):
             for attr, value in val['properties'].items():
                 if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
@@ -184,7 +185,7 @@ def example():
 """
   
 # timeit statement 
-# print (timeit.timeit(setup = mysetup, stmt = mycode, number = 193324818))
+print (timeit.timeit(setup = mysetup, stmt = mycode, number = 193324818))
 
 def add_to_map(ob):
     return ob
@@ -213,5 +214,5 @@ def example():
                             break
             return matches
 
-print(example())
+# print(example())
 
