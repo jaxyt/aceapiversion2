@@ -156,36 +156,16 @@ coll_ci = db.cities_city
 def add_to_map(ob):
     return ob
 cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
-city = cities[0]
 """
   
 # code snippet whose execution time is to be measured 
 mycode = """ 
 def example(): 
-    i = city['_id']
-    matches = []
-    md = os.path.dirname(__file__)
-    fpath = os.path.join(md, "towns-cities.json") 
-    with open(fpath, "r+") as json_file:
-        data = json.load(json_file)
-        for idx, val in enumerate(data):
-            for attr, value in val['properties'].items():
-                if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
-                    reg = re.compile(i['cityname'], re.IGNORECASE)
-                    if re.search(reg, value) is not None:
-                        for a, v in val['properties'].items():
-                            if type(v) == type(i['statename']):
-                                reg = re.compile(i['statename'], re.IGNORECASE)
-                                if re.search(reg, v) is not None:
-                                    match_ob = i["cityname"]+" | / "+attr+": "+value+"; "+a+": "+v+"; "+val['geometry']['coordinates'][1]+", "+val['geometry']['coordinates'][0]+"; "+val['id']+" /"
-                                    matches.append(match_ob)
-                                    break
-                        break
-        return matches
+    return
 """
   
 # timeit statement 
-print (timeit.timeit(setup = mysetup, stmt = mycode, number = 193324818))
+#print (timeit.timeit(setup = mysetup, stmt = mycode, number = 193324818))
 
 def add_to_map(ob):
     return ob
@@ -194,8 +174,9 @@ def add_to_map(ob):
 cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
 
 def example():
+    from tqdm import tqdm
     matches = []
-    for i in cities:
+    for i in tqdm(cities):
         md = os.path.dirname(__file__)
         fpath = os.path.join(md, "towns-cities.json") 
         with open(fpath, "r+") as json_file:
@@ -214,5 +195,5 @@ def example():
                             break
             return matches
 
-# print(example())
+print(example())
 
