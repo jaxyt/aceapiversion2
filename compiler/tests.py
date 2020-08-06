@@ -195,7 +195,7 @@ def example():
                                         matches.append(match_ob)
                                         break
                             break
-            return matches
+    return matches
 
 print(example())
 
