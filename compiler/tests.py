@@ -133,29 +133,27 @@ def add_to_map(ob):
 def json_to_mongodb():
     matches = []
     cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
-    json_locations = None
     md = os.path.dirname(__file__)
     fpath = os.path.join(md, "towns-cities.json") 
     with open(fpath, "r+") as json_file:
-        json_locations = list(map(add_to_map, json.load(json_file)))
-    print("starting")
-    for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET), desc='mongo'):
-        i = cities[n]['_id']
-        found = False
-        for val in json_locations:
-            if found:
-                break
-            for attr, value in val['properties'].items():
-                if type(value) == type(i['cityname']):
-                    c_search = re.search(re.compile(i['cityname'], re.IGNORECASE), value)
-                    attr_search = re.search(re.compile(r"(county)|(is_in)", re.IGNORECASE), attr)
-                    if c_search is not None and attr_search is None:
-                        for a, v in val['properties'].items():
-                            s_search = re.search(re.compile(i['statename'], re.IGNORECASE), v)
-                            if s_search is not None:
-                                match_ob = [i['cityname'],attr,value,i['statename'],a,v,val['geometry']['coordinates'][1],val['geometry']['coordinates'][0],val['id']]
-                                found = True
-                                break
+        data = json.load(json_file)
+        for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET), desc='mongo'):
+            i = cities[n]['_id']
+            found = False
+            for val in data:
+                if found:
+                    break
+                for attr, value in val['properties'].items():
+                    if type(value) == type(i['cityname']):
+                        c_search = re.search(re.compile(i['cityname'], re.IGNORECASE), value)
+                        attr_search = re.search(re.compile(r"(county)|(is_in)", re.IGNORECASE), attr)
+                        if c_search is not None and attr_search is None:
+                            for a, v in val['properties'].items():
+                                s_search = re.search(re.compile(i['statename'], re.IGNORECASE), v)
+                                if s_search is not None:
+                                    match_ob = [i['cityname'],attr,value,i['statename'],a,v,val['geometry']['coordinates'][1],val['geometry']['coordinates'][0],val['id']]
+                                    found = True
+                                    break
                         
     return matches
 
