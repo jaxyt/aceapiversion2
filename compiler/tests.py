@@ -129,15 +129,15 @@ def minify_js(sid, rt):
 #  cleaned = list(map(clean_string, sentences))
 
 def json_to_mongodb():
+    matches = []
+    cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
     md = os.path.dirname(__file__)
-    fpath = os.path.join(md, "towns-cities.json")
+    fpath = os.path.join(md, "towns-cities.json") 
     with open(fpath, "r+") as json_file:
-        matches = []
         data = json.load(json_file)
-        for cnt, n in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
-            i = n['_id']
+        for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
+            i = cities[n]['_id']
             for idx, val in enumerate(data):
-                match_ob = f"""{i["cityname"]} |"""
                 for attr, value in val['properties'].items():
                     if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
                         reg = re.compile(i['cityname'], re.IGNORECASE)
@@ -146,12 +146,12 @@ def json_to_mongodb():
                                 if type(v) == type(i['statename']):
                                     reg = re.compile(i['statename'], re.IGNORECASE)
                                     if re.search(reg, v) is not None:
-                                        match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
-                                        print(match_ob)
+                                        match_ob = f"""{i["cityname"]} | / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
                                         matches.append(match_ob)
                                         break
-                            break
-        return matches
+                                        break
+                                        break
+    return matches
 
 #m = json_to_mongodb()
 #for i in m:
@@ -184,28 +184,6 @@ def add_to_map(ob):
 
 
 def example():
-    matches = []
-    cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
-    md = os.path.dirname(__file__)
-    fpath = os.path.join(md, "towns-cities.json") 
-    with open(fpath, "r+") as json_file:
-        data = json.load(json_file)
-        for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
-            i = cities[n]['_id']
-            for idx, val in enumerate(data):
-                for attr, value in val['properties'].items():
-                    if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
-                        reg = re.compile(i['cityname'], re.IGNORECASE)
-                        if re.search(reg, value) is not None:
-                            for a, v in val['properties'].items():
-                                if type(v) == type(i['statename']):
-                                    reg = re.compile(i['statename'], re.IGNORECASE)
-                                    if re.search(reg, v) is not None:
-                                        match_ob = f"""{i["cityname"]} | / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
-                                        matches.append(match_ob)
-                                        break
-                            break
-    return matches
+    return
 
-print(example())
 
