@@ -177,11 +177,10 @@ def example():
     cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
     md = os.path.dirname(__file__)
     fpath = os.path.join(md, "towns-cities.json") 
-    print(cities)
     with open(fpath, "r+") as json_file:
         data = json.load(json_file)
-        for n in tqdm(cities):
-            i = n['_id']
+        for n in tqdm(range(len(cities))):
+            i = cities[n]['_id']
             print(i)
             for idx, val in enumerate(data):
                 for attr, value in val['properties'].items():
@@ -192,7 +191,7 @@ def example():
                                 if type(v) == type(i['statename']):
                                     reg = re.compile(i['statename'], re.IGNORECASE)
                                     if re.search(reg, v) is not None:
-                                        match_ob = i["cityname"]+" | / "+attr+": "+value+"; "+a+": "+v+"; "+val['geometry']['coordinates'][1]+", "+val['geometry']['coordinates'][0]+"; "+val['id']+" /"
+                                        match_ob = f"""{i["cityname"]} | / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
                                         matches.append(match_ob)
                                         break
                             break
