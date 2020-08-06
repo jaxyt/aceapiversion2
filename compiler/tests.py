@@ -16,6 +16,18 @@ from nltk.corpus import stopwords
 stw = stopwords.words('english')
 import ngram
 import timeit
+from tqdm import tqdm, trange
+from colorama import Fore
+
+# Cross-platform colored terminal text.
+color_bars = [Fore.BLACK,
+    Fore.RED,
+    Fore.GREEN,
+    Fore.YELLOW,
+    Fore.BLUE,
+    Fore.MAGENTA,
+    Fore.CYAN,
+    Fore.WHITE]
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
@@ -172,14 +184,13 @@ def add_to_map(ob):
 
 
 def example():
-    from tqdm import tqdm
     matches = []
     cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
     md = os.path.dirname(__file__)
     fpath = os.path.join(md, "towns-cities.json") 
     with open(fpath, "r+") as json_file:
         data = json.load(json_file)
-        for n in tqdm(range(len(cities))):
+        for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
             i = cities[n]['_id']
             for idx, val in enumerate(data):
                 for attr, value in val['properties'].items():
