@@ -140,38 +140,44 @@ def json_to_mongodb():
         json_locations = list(map(add_to_map, json.load(json_file)))
     for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET), desc='mongo'):
         i = cities[n]['_id']
+        found = False
         for val in json_locations:
-            c = False
-            s = False
-            match_ob = {'c': '', 's': '', 'a1': '', 'v1': '', 'a2': '', 'v2': '', 'lat': 0, 'lon': 0, 'node': ''}
-            for attr, value in val['properties'].items():
-                if type(value) == type(i['cityname']):
-                    reg1 = re.compile(i['cityname'], re.IGNORECASE)
-                    reg2 = re.compile(i['statename'], re.IGNORECASE)
+            if found:
+                break
+            else:
+                c = False
+                s = False
+                match_ob = {'c': '', 's': '', 'a1': '', 'v1': '', 'a2': '', 'v2': '', 'lat': 0, 'lon': 0, 'node': ''}
+                for attr, value in val['properties'].items():
                     if c and s:
+                        found = True
                         match_ob['lat'] = val['geometry']['coordinates'][1]
                         match_ob['lon'] = val['geometry']['coordinates'][0]
                         match_ob['node'] = val['id']
                         matches.append(match_ob)
                         break
-                        break
-                    elif re.search(reg1, value) is not None and re.search(reg2, v) is not None and re.search(re.compile(r"(county)|(is_in)", re.IGNORECASE), attr) is None:
-                        c = True
-                        s = True
-                        match_ob['c'] = i['cityname']
-                        match_ob['s'] = i['statename']
-                        match_ob['a1'] = attr
-                        match_ob['v1'] = value
-                    elif re.search(reg1, value) is not None and re.search(re.compile(r"(county)|(is_in)", re.IGNORECASE), attr) is None:
-                        c = True
-                        match_ob['c'] = i['cityname']
-                        match_ob['a1'] = attr
-                        match_ob['v1'] = value
-                    elif re.search(reg2, value) is not None:
-                        s = True
-                        match_ob['s'] = i['statename']
-                        match_ob['a2'] = attr
-                        match_ob['v2'] = value
+                    else:
+                        if type(value) == type(i['cityname']):
+                            c_search = re.search(re.compile(i['cityname'], re.IGNORECASE), value)
+                            s_search = re.search(re.compile(i['statename'], re.IGNORECASE), value)
+                            attr_search = re.search(re.compile(r"(county)|(is_in)", re.IGNORECASE), attr)
+                            if c_search is not None and s_search is not None and attr_search is None:
+                                c = True
+                                s = True
+                                match_ob['c'] = i['cityname']
+                                match_ob['s'] = i['statename']
+                                match_ob['a1'] = attr
+                                match_ob['v1'] = value
+                            elif c_search is not None and attr_search is None:
+                                c = True
+                                match_ob['c'] = i['cityname']
+                                match_ob['a1'] = attr
+                                match_ob['v1'] = value
+                            elif s_search is not None:
+                                s = True
+                                match_ob['s'] = i['statename']
+                                match_ob['a2'] = attr
+                                match_ob['v2'] = value
     return matches
 
 print(json_to_mongodb())
