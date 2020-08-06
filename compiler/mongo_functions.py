@@ -292,8 +292,8 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub('XXcorpXX', corp['name'], comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
             corps_in_cities = """<div class="state-corps-links">"""
-            for i in coll_ra.find({k: query, 'state': state_query}):
-                corps_in_cities += f"""<a href="{"/".join(arr)}/{"-".join(i['city'].split(" "))}">{i['city'].title()}</a>""" if i['city'] else ""
+            for i in coll_ra.find({k: query, 'state': state_query}).distinct('city'):
+                corps_in_cities += f"""<a href="{"/".join(arr)}/{"-".join(i.lower().split(" "))}">{i.title()}</a>""" if i else ""
             corps_in_cities += """</div>"""
             comp = re.sub('XXcitycorpsXX', corps_in_cities, comp)
         elif len(arr) == 5:
