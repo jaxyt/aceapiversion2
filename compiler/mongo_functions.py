@@ -291,6 +291,41 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
+            corps_in_cities = """<div class="state-corps-links">"""
+            for i in coll_ra.find({k: query, 'state': state_query, 'city': r".+"}).distinct("city"):
+                corps_in_cities += f"""<a href="{"/".join(arr)}/{"-".join(i['city'].split(" "))}">{i['city'].title()}</a>"""
+            corps_in_cities += """</div>"""
+            comp = re.sub('XXcitycorpsXX', corps_in_cities, comp)
+        elif len(arr) == 5:
+            agents_info = """<div class="registered-agents">"""
+            corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
+            st = " ".join(arr[3].split("-"))
+            cit = " ".join(arr[4].split("-"))
+            k = corp['searchkey']
+            q = corp['searchvalue']
+            query = re.compile(q, re.IGNORECASE)
+            state_query = re.compile(st.lower(), re.IGNORECASE)
+            city_query = re.compile(cit.lower(), re.IGNORECASE)
+            for i in coll_ra.find({k: query, 'state': state_query, 'city': city_query}):
+                agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
+                agents_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
+                agents_info += f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
+                agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
+                agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
+                agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
+                agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
+                agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
+                agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
+                agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
+                agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
+                agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
+                agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
+                agents_info += "</ul>"
+            agents_info += "</div>"
+            comp = re.sub('XXagentsXX', agents_info, comp)
+            comp = re.sub('XXcorpXX', corp['name'], comp)
+            comp = re.sub('XXstatequeryXX', st.title(), comp)
+            comp = re.sub('XXcityqueryXX', cit.title(), comp)
     elif arr[1] == "telecom-agents":
         import urllib.parse
         if len(arr) == 3:
