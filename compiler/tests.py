@@ -192,10 +192,7 @@ def example():
         data = json.load(json_file)
         for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
             i = cities[n]['_id']
-            found = False
             for idx, val in enumerate(data):
-                if found:
-                    break
                 for attr, value in val['properties'].items():
                     if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
                         reg = re.compile(i['cityname'], re.IGNORECASE)
