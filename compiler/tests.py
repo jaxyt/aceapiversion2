@@ -175,13 +175,14 @@ def example():
     from tqdm import tqdm
     matches = []
     cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
+    md = os.path.dirname(__file__)
+    fpath = os.path.join(md, "towns-cities.json") 
     print(cities)
-    for n in tqdm(cities):
-        i = n['_id']
-        md = os.path.dirname(__file__)
-        fpath = os.path.join(md, "towns-cities.json") 
-        with open(fpath, "r+") as json_file:
-            data = json.load(json_file)
+    with open(fpath, "r+") as json_file:
+        data = json.load(json_file)
+        for n in tqdm(cities):
+            i = n['_id']
+            print(i)
             for idx, val in enumerate(data):
                 for attr, value in val['properties'].items():
                     if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
