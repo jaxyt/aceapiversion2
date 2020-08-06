@@ -1,6 +1,7 @@
 asgiref==3.2.7
 bson==0.5.8
 click==7.1.2
+colorama==0.4.3
 dataclasses==0.7
 Django==2.2.12
 django-cors-headers==3.2.1
