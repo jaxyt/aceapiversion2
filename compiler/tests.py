@@ -133,26 +133,27 @@ def add_to_map(ob):
 def json_to_mongodb():
     matches = []
     cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
+    json_locations = None
     md = os.path.dirname(__file__)
     fpath = os.path.join(md, "towns-cities.json") 
     with open(fpath, "r+") as json_file:
-        data = json.load(json_file)
-        for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
-            i = cities[n]['_id']
-            for idx, val in enumerate(data):
-                for attr, value in val['properties'].items():
-                    if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
-                        reg = re.compile(i['cityname'], re.IGNORECASE)
-                        if re.search(reg, value) is not None:
-                            for a, v in val['properties'].items():
-                                if type(v) == type(i['statename']):
-                                    reg = re.compile(i['statename'], re.IGNORECASE)
-                                    if re.search(reg, v) is not None:
-                                        match_ob = f"""{i["cityname"]} | / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
-                                        matches.append(match_ob)
-                                        break
-                                        break
-                                        break
+        json_locations = list(map(add_to_map, json.load(json_file)))
+    for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
+        i = cities[n]['_id']
+        for val in trange(len(json_locations), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.BLUE, Fore.RESET)):
+            for attr, value in json_locations[val]['properties'].items():
+                if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
+                    reg = re.compile(i['cityname'], re.IGNORECASE)
+                    if re.search(reg, value) is not None:
+                        for a, v in json_locations[val]['properties'].items():
+                            if type(v) == type(i['statename']):
+                                reg = re.compile(i['statename'], re.IGNORECASE)
+                                if re.search(reg, v) is not None:
+                                    match_ob = f"""{i["cityname"]} | / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
+                                    matches.append(match_ob)
+                                    break
+                                    break
+                                    break
     return matches
 
 print(json_to_mongodb())
