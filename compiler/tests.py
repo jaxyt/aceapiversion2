@@ -127,6 +127,8 @@ def minify_js(sid, rt):
 #print(script)
 
 #  cleaned = list(map(clean_string, sentences))
+def add_to_map(ob):
+    return ob
 
 def json_to_mongodb():
     matches = []
@@ -153,9 +155,8 @@ def json_to_mongodb():
                                         break
     return matches
 
-#m = json_to_mongodb()
-#for i in m:
-    #print(i)
+print(json_to_mongodb())
+
 
 
 # code snippet to be executed only once 
@@ -179,8 +180,7 @@ def example():
 # timeit statement 
 #print (timeit.timeit(setup = mysetup, stmt = mycode, number = 193324818))
 
-def add_to_map(ob):
-    return ob
+
 
 
 def example():
