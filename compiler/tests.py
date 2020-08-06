@@ -141,38 +141,22 @@ def json_to_mongodb():
     print("starting")
     for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET), desc='mongo'):
         i = cities[n]['_id']
+        found = False
         for val in json_locations:
-            c = False
-            s = False
-            match_ob = {'c': '', 's': '', 'a1': '', 'v1': '', 'a2': '', 'v2': '', 'lat': 0, 'lon': 0, 'node': ''}
+            if found:
+                break
             for attr, value in val['properties'].items():
-                if c and s:
-                    match_ob['lat'] = val['geometry']['coordinates'][1]
-                    match_ob['lon'] = val['geometry']['coordinates'][0]
-                    match_ob['node'] = val['id']
-                    matches.append(match_ob)
-                    break
-                elif type(value) == type(i['cityname']):
+                if type(value) == type(i['cityname']):
                     c_search = re.search(re.compile(i['cityname'], re.IGNORECASE), value)
-                    s_search = re.search(re.compile(i['statename'], re.IGNORECASE), value)
                     attr_search = re.search(re.compile(r"(county)|(is_in)", re.IGNORECASE), attr)
-                    if c_search is not None and s_search is not None and attr_search is None:
-                        c = True
-                        s = True
-                        match_ob['c'] = i['cityname']
-                        match_ob['s'] = i['statename']
-                        match_ob['a1'] = attr
-                        match_ob['v1'] = value
-                    elif c_search is not None and attr_search is None:
-                        c = True
-                        match_ob['c'] = i['cityname']
-                        match_ob['a1'] = attr
-                        match_ob['v1'] = value
-                    elif s_search is not None:
-                        s = True
-                        match_ob['s'] = i['statename']
-                        match_ob['a2'] = attr
-                        match_ob['v2'] = value
+                    if c_search is not None and attr_search is None:
+                        for a, v in val['properties'].items():
+                            s_search = re.search(re.compile(i['statename'], re.IGNORECASE), v)
+                            if s_search is not None:
+                                match_ob[i['cityname'],attr,value,i['statename'],a,v,val['geometry']['coordinates'][1],val['geometry']['coordinates'][0],val['id']]
+                                found = True
+                                break
+                        
     return matches
 
 print(json_to_mongodb())
