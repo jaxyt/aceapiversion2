@@ -176,7 +176,8 @@ cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statenam
 def example():
     from tqdm import tqdm
     matches = []
-    for i in tqdm(cities):
+    for n in tqdm(cities):
+        i = n['_id']
         md = os.path.dirname(__file__)
         fpath = os.path.join(md, "towns-cities.json") 
         with open(fpath, "r+") as json_file:
