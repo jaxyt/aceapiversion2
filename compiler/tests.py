@@ -171,11 +171,11 @@ def add_to_map(ob):
     return ob
 
 
-cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
-
 def example():
     from tqdm import tqdm
     matches = []
+    cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
+    print(cities)
     for n in tqdm(cities):
         i = n['_id']
         md = os.path.dirname(__file__)
