@@ -149,7 +149,7 @@ def json_to_mongodb():
                             if type(v) == type(i['statename']):
                                 reg = re.compile(i['statename'], re.IGNORECASE)
                                 if re.search(reg, v) is not None:
-                                    match_ob = f"""{i["cityname"]} | / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
+                                    match_ob = f"""{i["cityname"]}, {i['statename']} | / {attr}: {value}; {a}: {v}; {json_locations[val]['geometry']['coordinates'][1]}, {json_locations[val]['geometry']['coordinates'][0]}; {json_locations[val]['id']} /"""
                                     matches.append(match_ob)
                                     break
                                     break
