@@ -335,6 +335,7 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub('XXcityqueryXX', cit.title(), comp)
     elif arr[1] == "agents-by-state":
         if len(arr) == 2:
+            print("here")
             corps_in_states = """<div class="state-corps-links">"""
             for i in coll_st.find():
                 corps_in_states += f"""<a href="/agents-by-state/{"-".join(i['statename'].split(" "))}">{i['statename'].title()}</a>"""
