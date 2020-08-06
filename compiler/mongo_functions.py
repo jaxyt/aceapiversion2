@@ -468,13 +468,16 @@ def render_xml_sitemap(s, t, rt):
                     sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/registered-agents/{n['id']}</loc></url>""")
                     url_cnt += 1
         elif re.search(r'^/process-server/', i.route) is not None:
-            if re.search(r'^/process-server/id/state', i.route) is not None:
+            if re.search(r'^/process-server/id/state/city', i.route) is not None:
                 for n in coll_cp.find():
                     sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}</loc></url>""")
                     url_cnt += 1
                     for k in coll_ra.find().distinct("state"):
                         sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}/{"-".join(k.split(" ")).lower()}</loc></url>""")
                         url_cnt += 1
+                        for m in coll_ra.find({'state': k}).distinct('city'):
+                            sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}/{"-".join(k.split(" ")).lower()}/{"-".join(m.split(" ")).lower()}</loc></url>""")
+                            url_cnt += 1
         else:
             if re.search(r'\.[a-z]{2,4}$', i.route) is None:
                 sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>""")
