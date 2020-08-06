@@ -212,4 +212,4 @@ def example():
 
 corp = coll_cp.find_one({'id': 1})
 for i in coll_ra.find({corp['searchkey']: re.compile(f"{corp['searchvalue']}", re.IGNORECASE), 'state': re.compile("alabama", re.IGNORECASE)}).distinct('city'):
-    print(i)
+    print(i.lower())
