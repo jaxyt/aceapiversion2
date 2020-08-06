@@ -127,38 +127,35 @@ def minify_js(sid, rt):
 #print(script)
 
 #  cleaned = list(map(clean_string, sentences))
-def add_to_map(ob):
-    return ob
 
 def json_to_mongodb():
-    matches = []
-    cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
     md = os.path.dirname(__file__)
-    fpath = os.path.join(md, "towns-cities.json") 
+    fpath = os.path.join(md, "towns-cities.json")
     with open(fpath, "r+") as json_file:
+        matches = []
         data = json.load(json_file)
-        for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET), desc='mongo'):
-            i = cities[n]['_id']
-            found = False
-            for val in data:
-                if found:
-                    break
+        for cnt, n in enumerate(coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])):
+            i = n['_id']
+            for idx, val in enumerate(data):
+                match_ob = f"""{i["cityname"]} |"""
                 for attr, value in val['properties'].items():
-                    if type(value) == type(i['cityname']):
-                        c_search = re.search(re.compile(i['cityname'], re.IGNORECASE), value)
-                        attr_search = re.search(re.compile(r"(county)|(is_in)", re.IGNORECASE), attr)
-                        if c_search is not None and attr_search is None:
+                    if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
+                        reg = re.compile(i['cityname'], re.IGNORECASE)
+                        if re.search(reg, value) is not None:
                             for a, v in val['properties'].items():
-                                s_search = re.search(re.compile(i['statename'], re.IGNORECASE), v)
-                                if s_search is not None:
-                                    match_ob = [i['cityname'],attr,value,i['statename'],a,v,val['geometry']['coordinates'][1],val['geometry']['coordinates'][0],val['id']]
-                                    found = True
-                                    break
-                        
-    return matches
+                                if type(v) == type(i['statename']):
+                                    reg = re.compile(i['statename'], re.IGNORECASE)
+                                    if re.search(reg, v) is not None:
+                                        match_ob += f""" / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
+                                        print(match_ob)
+                                        matches.append(match_ob)
+                                        break
+                            break
+        return matches
 
-print(json_to_mongodb())
-
+#m = json_to_mongodb()
+#for i in m:
+    #print(i)
 
 
 # code snippet to be executed only once 
@@ -182,10 +179,33 @@ def example():
 # timeit statement 
 #print (timeit.timeit(setup = mysetup, stmt = mycode, number = 193324818))
 
-
+def add_to_map(ob):
+    return ob
 
 
 def example():
-    return
+    matches = []
+    cities = list(map(add_to_map, coll_ci.aggregate([{"$group": { "_id": { "statename": "$statename", "cityname": "$cityname" } } }])))
+    md = os.path.dirname(__file__)
+    fpath = os.path.join(md, "towns-cities.json") 
+    with open(fpath, "r+") as json_file:
+        data = json.load(json_file)
+        for n in trange(len(cities), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
+            i = cities[n]['_id']
+            for idx, val in enumerate(data):
+                for attr, value in val['properties'].items():
+                    if type(value) == type(i['cityname']) and attr != "gnis:County" and attr != "is_in":
+                        reg = re.compile(i['cityname'], re.IGNORECASE)
+                        if re.search(reg, value) is not None:
+                            for a, v in val['properties'].items():
+                                if type(v) == type(i['statename']):
+                                    reg = re.compile(i['statename'], re.IGNORECASE)
+                                    if re.search(reg, v) is not None:
+                                        match_ob = f"""{i["cityname"]} | / {attr}: {value}; {a}: {v}; {val['geometry']['coordinates'][1]}, {val['geometry']['coordinates'][0]}; {val['id']} /"""
+                                        matches.append(match_ob)
+                                        break
+                            break
+    return matches
 
+print(example())
 
