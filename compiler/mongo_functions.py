@@ -6,6 +6,16 @@ import os
 import pprint as pp
 from pymongo import MongoClient
 from similar_text import similar_text
+import Levenshtein
+import string
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.corpus import stopwords
+stopwords = stopwords.words('english')
+import ngram
+import timeit
+from tqdm import tqdm, trange
+from colorama import Fore
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
@@ -224,8 +234,10 @@ def compiler_v3(s, t, r, arr):
             #     agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
             #     agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
             #     agents_info += "</ul>"
-            for k in text_score_search(arr):
-                i = k['obj']
+            #for k in text_score_search(arr):
+            for k in lev_and_cos_search(arr[4]):
+                i = k
+                #i = k['obj']
                 agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
                 agents_info += f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
                 agents_info += f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
@@ -608,3 +620,54 @@ def sort_results(results, quer):
                         sorted_scores.insert(idx, val)
                         break
     return sorted_scores
+
+
+def add_to_map(ob):
+    return ob
+
+def clean_string(text):
+    text = ''.join([word for word in text if word not in string.punctuation])
+    text = text.lower()
+    text = ' '.join([word for word in text.split() if word not in stopwords])
+
+    return text
+
+def cosine_sim_vectors(vec1, vec2):
+    vec1 = vec1.reshape(1, -1)
+    vec2 = vec2.reshape(1, -1)
+    return cosine_similarity(vec1, vec2)[0][0]
+
+def lev_and_cos_search(searchterm):
+    results = {}
+    agents = list(map(add_to_map, coll_ra.find()))
+    for i in agents:
+        sentences = [searchterm]
+        combined = ""
+        if i['company']:
+            sentences.append(i['company'])
+            combined += f"{i['company']} "
+        if i['agency']:
+            sentences.append(i['agency'])
+            combined += f"{i['agency']} "
+        if i['state']:
+            sentences.append(i['state'])
+            combined += f"{i['state']} "
+        if i['city']:
+            sentences.append(i['city'])
+            combined += f"{i['city']}"
+        sentences.append(combined)
+        cleaned = list(map(clean_string, sentences))
+        vectorizer = CountVectorizer().fit_transform(cleaned)
+        vectors = vectorizer.toarray()
+        #csim = cosine_similarity(vectors)
+        similarities = [cosine_sim_vectors(vectors[0], k) for k in vectors[1:]]
+        """for k in vectors[1:]:
+            similarities.append(cosine_sim_vectors(vectors[0], k))"""
+        #max_similarity = max(similarities)
+        avg_similarity = sum(similarities)/(len(similarities) + 1)
+        results[f"{i['id']}"] = avg_similarity
+    return [coll_ra.find_one({'id': int(m[0])}) for m in sorted(results.items(), key=lambda x: x[1], reverse=True) if m[1]]
+
+#for m in lev_and_cos_search()[0:10]:
+    #pp.pprint(coll_ra.find_one({'id': int(m[0])}))
+
