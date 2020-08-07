@@ -11,7 +11,7 @@ import string
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
-stw = stopwords.words('english')
+stopwords = stopwords.words('english')
 import ngram
 import timeit
 from tqdm import tqdm, trange
@@ -32,6 +32,54 @@ coll_cp = db.registeredagents_corporation
 coll_te = db.registeredagents_telecomcorps
 
 
-def lev_and_cos_search():
-    return
-    
+def add_to_map(ob):
+    return ob
+
+def clean_string(text):
+    text = ''.join([word for word in text if word not in string.punctuation])
+    text = text.lower()
+    text = ' '.join([word for word in text.split() if word not in stopwords])
+
+    return text
+
+def cosine_sim_vectors(vec1, vec2):
+    vec1 = vec1.reshape(1, -1)
+    vec2 = vec2.reshape(1, -1)
+    return cosine_similarity(vec1, vec2)[0][0]
+
+sentences = [
+    'This is a foo bar sentence.',
+    'This sentence is similar to a foo bar sentence.',
+    'This is another string, but it is not quite similar to the previous ones.',
+    'I am also just another string.'
+]
+
+cleaned = list(map(clean_string, sentences))
+vectorizer = CountVectorizer().fit_transform(cleaned)
+vectors = vectorizer.toarray()
+print(cosine_sim_vectors(vectors[0], vectors[1]))
+
+"""def lev_and_cos_search():
+    results = []
+    agents = list(map(add_to_map, coll_ra.find()))
+
+    for n in trange(len(agents), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
+        i = agents[n]
+        sentences = []
+        if i['company']:
+            sentences.append(i['company'])
+        if i['agency']:
+            sentences.append(i['agency'])
+        if i['state']:
+            sentences.append(i['state'])
+        if i['city']:
+            sentences.append(i['city'])
+        cleaned = list(map(clean_string, sentences))
+        vectorizer = CountVectorizer().fit_transform(cleaned)
+        vectors = vectorizer.toarray()
+        #csim = cosine_similarity(vectors)
+        results.append(f"{i['id']}: {cosine_sim_vectors(vectors[0], vectors[1])}")
+    return"""
+
+
+
