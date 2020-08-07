@@ -47,6 +47,7 @@ def cosine_sim_vectors(vec1, vec2):
     vec2 = vec2.reshape(1, -1)
     return cosine_similarity(vec1, vec2)[0][0]
 
+"""
 sentences = [
     'This is a foo bar sentence.',
     'This sentence is similar to a foo bar sentence.',
@@ -58,28 +59,37 @@ cleaned = list(map(clean_string, sentences))
 vectorizer = CountVectorizer().fit_transform(cleaned)
 vectors = vectorizer.toarray()
 print(cosine_sim_vectors(vectors[0], vectors[1]))
+"""
 
-"""def lev_and_cos_search():
-    results = []
+def lev_and_cos_search(searchterm):
+    results = {}
     agents = list(map(add_to_map, coll_ra.find()))
 
     for n in trange(len(agents), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
         i = agents[n]
-        sentences = []
+        sentences = [searchterm]
+        combined = ""
         if i['company']:
             sentences.append(i['company'])
+            combined += f"{i['company']} "
         if i['agency']:
             sentences.append(i['agency'])
+            combined += f"{i['agency']} "
         if i['state']:
             sentences.append(i['state'])
+            combined += f"{i['state']} "
         if i['city']:
             sentences.append(i['city'])
+            combined += f"{i['city']}"
+        # sentences.append(combined)
         cleaned = list(map(clean_string, sentences))
         vectorizer = CountVectorizer().fit_transform(cleaned)
         vectors = vectorizer.toarray()
         #csim = cosine_similarity(vectors)
-        results.append(f"{i['id']}: {cosine_sim_vectors(vectors[0], vectors[1])}")
-    return"""
+        results[f"{i['id']}"] = cosine_sim_vectors(vectors[0], vectors[1])
+    return results
+
+pp.pprint(sorted(lev_and_cos_search('plantation').items(), key=lambda x: x[1], reverse=True))
 
 
 
