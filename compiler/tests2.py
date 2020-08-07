@@ -64,6 +64,7 @@ print(cosine_sim_vectors(vectors[0], vectors[1]))
 def lev_and_cos_search(searchterm):
     results = {}
     agents = list(map(add_to_map, coll_ra.find()))
+    print(agents[0])
 
     for n in trange(len(agents), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
         i = agents[n]
@@ -87,9 +88,11 @@ def lev_and_cos_search(searchterm):
         vectors = vectorizer.toarray()
         #csim = cosine_similarity(vectors)
         results[f"{i['id']}"] = cosine_sim_vectors(vectors[0], vectors[1])
+        print(vectors)
+        print(cosine_sim_vectors(vectors[0], vectors[1]))
     return results
 
-pp.pprint(sorted(lev_and_cos_search('plantation').items(), key=lambda x: x[1])[0:25])
-
+# pp.pprint(sorted(lev_and_cos_search('plantation').items(), key=lambda x: x[1], reverse=True))
+lev_and_cos_search('plantation')
 
 
