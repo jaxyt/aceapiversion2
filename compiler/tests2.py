@@ -61,7 +61,7 @@ vectors = vectorizer.toarray()
 print(cosine_sim_vectors(vectors[0], vectors[1]))
 """
 
-def lev_and_cos_search(searchterm):
+def lev_and_cos_search(searchterm, ranking):
     results = {}
     agents = list(map(add_to_map, coll_ra.find()))
 
@@ -86,13 +86,14 @@ def lev_and_cos_search(searchterm):
         vectorizer = CountVectorizer().fit_transform(cleaned)
         vectors = vectorizer.toarray()
         #csim = cosine_similarity(vectors)
-        similarities = []
-        for k in vectors[1:]:
-            similarities.append(cosine_sim_vectors(vectors[0], k))
+        similarities = [cosine_sim_vectors(vectors[0], k) for k in vectors[1:]]
+        """for k in vectors[1:]:
+            similarities.append(cosine_sim_vectors(vectors[0], k))"""
         max_similarity = max(similarities)
-        results[f"{i['id']}"] = max_similarity
+        avg_similarity = sum(similarities)/(len(similarities) + 1)
+        results[f"{i['id']}"] = avg_similarity if ranking == "avg" else max_similarity
     return results
 
-for m in sorted(lev_and_cos_search(input("enter search term:  ")).items(), key=lambda x: x[1], reverse=True)[0:10]:
+for m in sorted(lev_and_cos_search(input("enter search term:  "), input("rank by avg or max?:  ")).items(), key=lambda x: x[1], reverse=True)[0:10]:
     pp.pprint(coll_ra.find_one({'id': int(m[0])}))
 
