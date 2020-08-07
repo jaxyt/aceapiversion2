@@ -64,7 +64,6 @@ print(cosine_sim_vectors(vectors[0], vectors[1]))
 def lev_and_cos_search(searchterm):
     results = {}
     agents = list(map(add_to_map, coll_ra.find()))
-    print(agents[0])
 
     for n in trange(len(agents), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
         i = agents[n]
@@ -94,5 +93,6 @@ def lev_and_cos_search(searchterm):
         results[f"{i['id']}"] = max_similarity
     return results
 
-print(sorted(lev_and_cos_search('plantation').items(), key=lambda x: x[1]))
+for m in sorted(lev_and_cos_search('plantation').items(), key=lambda x: x[1]):
+    print(m[0])
 
