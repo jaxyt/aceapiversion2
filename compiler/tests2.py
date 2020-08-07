@@ -89,7 +89,7 @@ def lev_and_cos_search(searchterm):
         results[f"{i['id']}"] = cosine_sim_vectors(vectors[0], vectors[1])
     return results
 
-pp.pprint(sorted(lev_and_cos_search('plantation').items(), key=lambda x: x[1])['1'])
+pp.pprint(sorted(lev_and_cos_search('plantation').items(), key=lambda x: x[1])[0:25])
 
 
 
