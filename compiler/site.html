@@ -353,6 +353,8 @@ input[type=submit] {
           </div>
         <a href="#jumpto" data-command='h1'>H1</a>
         <a href="#jumpto" data-command='h2'>H2</a>
+        <a href="#jumpto" data-command='h3'>H3</a>
+        <a href="#jumpto" data-command='h4'>H4</a>
         <a href="#jumpto" data-command='createlink'><i class='fa fa-link'></i></a>
         <a href="#jumpto" data-command='unlink'><i class='fa fa-unlink'></i></a>
         <a href="#jumpto" data-command='insertimage'><i class='fa fa-image'></i></a>
@@ -626,7 +628,7 @@ for (var i = 0; i < fontFamilies.length; i++) {
 
 $('.toolbar a').click(function(e) {
     var command = $(this).data('command');
-    if (command == 'h1' || command == 'h2' || command == 'p') {
+    if (command == 'h1' || command == 'h2' || command == 'h3' || command == 'h4' || command == 'p') {
         document.execCommand('formatBlock', false, command);
     }
     else if (command == 'forecolor' || command == 'backcolor') {
