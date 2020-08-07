@@ -82,17 +82,17 @@ def lev_and_cos_search(searchterm):
         if i['city']:
             sentences.append(i['city'])
             combined += f"{i['city']}"
-        # sentences.append(combined)
+        sentences.append(combined)
         cleaned = list(map(clean_string, sentences))
         vectorizer = CountVectorizer().fit_transform(cleaned)
         vectors = vectorizer.toarray()
         #csim = cosine_similarity(vectors)
-        results[f"{i['id']}"] = cosine_sim_vectors(vectors[0], vectors[1])
-        print(vectors)
-        print(cosine_sim_vectors(vectors[0], vectors[1]))
+        similarities = []
+        for k in vectors[1:]:
+            similarities.append(cosine_sim_vectors(vectors[0], k))
+        max_similarity = max(similarities)
+        results[f"{i['id']}"] = max_similarity
     return results
 
-# pp.pprint(sorted(lev_and_cos_search('plantation').items(), key=lambda x: x[1], reverse=True))
-lev_and_cos_search('plantation')
-
+pp.pprint(sorted(lev_and_cos_search('plantation').items(), key=lambda x: x[1]))
 
