@@ -93,6 +93,6 @@ def lev_and_cos_search(searchterm):
         results[f"{i['id']}"] = max_similarity
     return results
 
-for m in sorted(lev_and_cos_search('csc').items(), key=lambda x: x[1], reverse=True)[0:10]:
+for m in sorted(lev_and_cos_search('plantation fl').items(), key=lambda x: x[1], reverse=True)[0:10]:
     pp.pprint(coll_ra.find_one({'id': int(m[0])}))
 
