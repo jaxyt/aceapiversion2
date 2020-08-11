@@ -468,7 +468,7 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub("XXagentsXX", agents_info, comp)
             comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
     corp_links = """<div class="corp-links">"""
-    for i in coll_cp.find():
+    for i in coll_cp.find().sort("name", 1):
         corp_links += f"""<a href="/process-server/{"-".join(i['searchvalue'].split(" "))}-{i['id']}">{i['name']}</a>"""
     corp_links += """</div>"""
     html_sitemap = """<div><ul class="sitemap-links">"""
