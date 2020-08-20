@@ -57,19 +57,19 @@ def telecom_search(searchterm, model_keys):
         sentences = [searchterm]
         combined = ""
         for k in model_keys:
-            if i[f'{k}']:
-                sentences.append(i[f'{k}'])
-                combined += f"{i[f'{k}']} "
-        sentences.append(combined)
+            if i[k]:
+                sentences.append(i[k])
+                combined += f"{i[k]} "
+        combined = combined.strip()
+        #sentences.append(combined)
         cleaned = list(map(clean_string, sentences))
         vectorizer = CountVectorizer().fit_transform(cleaned)
         vectors = vectorizer.toarray()
         similarities = [cosine_sim_vectors(vectors[0], k) for k in vectors[1:]]
         avg_similarity = sum(similarities)/(len(similarities) + 1)
         results[f"{i['id']}"] = avg_similarity
-
     return sorted(results.items(), key=lambda x: x[1], reverse=True)
 
 
 results = telecom_search("ver", ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate'])
-pp.pprint(results[0:100])
+pp.pprint(results[0:25])
