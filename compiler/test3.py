@@ -64,11 +64,9 @@ def telecom_search(searchterm, model_keys):
             if i[k]:
                 strOptions.append(i[k])
         Ratios = process.extract(str2Match,strOptions)
-        avg = sum(list(map(add_to_map_tuple, Ratios)))/len(Ratios)
-
         highest = process.extractOne(str2Match,strOptions)
         #results.append({"id": i['id'], "highest": highest, "average": avg})
-        results[f"{i['id']}"] = max([highest, avg])
+        results[f"{i['id']}"] = highest
     return sorted(results.items(), key=lambda x: x[1], reverse=True)
 
         
