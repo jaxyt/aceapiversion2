@@ -48,7 +48,7 @@ def cosine_sim_vectors(vec1, vec2):
     return cosine_similarity(vec1, vec2)[0][0]
 
 
-def telecom_search(searchterm):
+def telecom_search(searchterm, model_keys):
     results = {}
     agents = list(map(add_to_map, coll_te.find()))
 
@@ -56,9 +56,10 @@ def telecom_search(searchterm):
         i = agents[n]
         sentences = [searchterm]
         combined = ""
-        if i['company']:
-            sentences.append(i['company'])
-            combined += f"{i['company']} "
+        for k in model_keys:
+            if i[f'{k}']:
+                sentences.append(i[f'{k}'])
+                combined += f"{i[f'{k}']} "
         sentences.append(combined)
         cleaned = list(map(clean_string, sentences))
         vectorizer = CountVectorizer().fit_transform(cleaned)
@@ -69,3 +70,6 @@ def telecom_search(searchterm):
 
     return sorted(results.items(), key=lambda x: x[1], reverse=True)
 
+
+results = telecom_search("ver", ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate'])
+pp.pprint(results)
