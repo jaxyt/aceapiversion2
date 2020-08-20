@@ -48,5 +48,24 @@ def cosine_sim_vectors(vec1, vec2):
     return cosine_similarity(vec1, vec2)[0][0]
 
 
-def telecom_search():
-    return
+def telecom_search(searchterm):
+    results = {}
+    agents = list(map(add_to_map, coll_te.find()))
+
+    for n in trange(len(agents), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
+        i = agents[n]
+        sentences = [searchterm]
+        combined = ""
+        if i['company']:
+            sentences.append(i['company'])
+            combined += f"{i['company']} "
+        sentences.append(combined)
+        cleaned = list(map(clean_string, sentences))
+        vectorizer = CountVectorizer().fit_transform(cleaned)
+        vectors = vectorizer.toarray()
+        similarities = [cosine_sim_vectors(vectors[0], k) for k in vectors[1:]]
+        avg_similarity = sum(similarities)/(len(similarities) + 1)
+        results[f"{i['id']}"] = avg_similarity
+
+    return sorted(results.items(), key=lambda x: x[1], reverse=True)
+
