@@ -72,4 +72,4 @@ def telecom_search(searchterm, model_keys):
 
 
 results = telecom_search("ver", ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate'])
-pp.pprint(results)
+pp.pprint(results[0:100])
