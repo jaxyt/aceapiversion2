@@ -84,7 +84,6 @@ def telecom_efficient_search(searchterm, model_keys):
         results[f"{i['id']}"] = highest
     res = [coll_te.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
     return res
-
         
 
 #  , ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate']
