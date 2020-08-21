@@ -311,6 +311,7 @@ input[type=submit] {
   }
 </style>
 <a id="home-button" href="/auth/manage/">Home</a>
+<div id="add-new-page" style="background-color: aliceblue; width: 100px; height: 20px; padding: 2px 4px; position: fixed; top: 18%; left: 85%;" onclick="addNewPage()">Add New Page</div>
 <div id="toolbar-menu-button" class="show" style="background-color: blue; width: 40px; height: 20px; padding: 2px 4px; position: fixed; top: 5%; left: 85%;" onclick="hideToolbar()">Hide</div>
 <div class="toolbar">
         <a href="#jumpto" data-command='undo'><i class='fa fa-undo'></i></a>
@@ -684,4 +685,38 @@ document.querySelector("#clone").addEventListener("click", ()=> {
     }
     document.querySelector("#clone").classList.toggle("cloning");
 })
+
+function addNewPage(){
+  let pages = document.querySelector("table.pages-array-model-field");
+  let totalForms = document.querySelector("#id_pages-TOTAL_FORMS");
+  let newPage = document.createElement("tbody");
+  newPage.classList.add("hide-page");
+  newPage.id = `${totalForms.value}`;
+  pages.insertAdjacentElement("beforeend", newPage)
+  newPage.innerHTML = `<tr><th><label for="id_pages-${totalForms.value}-route">Route:</label></th><td><input type="text" name="pages-${totalForms.value}-route" maxlength="200" id="id_pages-${totalForms.value}-route"><div id="compile-page-${totalForms.value}-button" style="background-color: green; border: 1px solid black;" onclick="compilePage(this, ${totalForms.value})">Preview Page</div><div id="compile-page-${totalForms.value}-frame"></div></td></tr>
+  <tr><th><label for="id_pages-${totalForms.value}-title">Title:</label></th><td><input type="text" name="pages-${totalForms.value}-title" maxlength="200" id="id_pages-${totalForms.value}-title"></td></tr>
+  <tr><th><label for="id_pages-${totalForms.value}-pagemetas">Pagemetas:</label></th><td><textarea name="pages-${totalForms.value}-pagemetas" cols="1" rows="1" id="id_pages-${totalForms.value}-pagemetas"></textarea></td></tr>
+  <tr><th><label for="id_pages-${totalForms.value}-pagelinks">Pagelinks:</label></th><td><textarea name="pages-${totalForms.value}-pagelinks" cols="1" rows="1" id="id_pages-${totalForms.value}-pagelinks"></textarea></td></tr>
+  <tr><th><label for="id_pages-${totalForms.value}-pagescripts">Pagescripts:</label></th><td><textarea name="pages-${totalForms.value}-pagescripts" cols="1" rows="1" id="id_pages-${totalForms.value}-pagescripts"></textarea></td></tr>
+  <tr><th><label for="id_pages-${totalForms.value}-pagestyle">Pagestyle:</label></th><td><textarea name="pages-${totalForms.value}-pagestyle" cols="1" rows="1" id="id_pages-${totalForms.value}-pagestyle"></textarea></td></tr>
+  <tr><th><label for="id_pages-${totalForms.value}-pageheader">Pageheader:</label></th><td><textarea name="pages-${totalForms.value}-pageheader" cols="1" rows="1" id="id_pages-${totalForms.value}-pageheader"></textarea></td></tr>
+  <tr><th><label for="id_pages-${totalForms.value}-pagefooter">Pagefooter:</label></th><td><textarea name="pages-${totalForms.value}-pagefooter" cols="1" rows="1" id="id_pages-${totalForms.value}-pagefooter"></textarea></td></tr>
+  <tr><th><label for="id_pages-${totalForms.value}-content">Content:</label></th><td><div id="editor-${totalForms.value}" onkeyup="friendlySync(${totalForms.value})" style="background-color: white; color: black; box-shadow: 0 0 2px #CCC;
+      min-height: 150px;
+      /*overflow: auto;*/
+      padding: 1em;
+      width: 80vw;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      resize: vertical;
+      outline: none;" contenteditable=""></div><textarea name="pages-${totalForms.value}-content" cols="150" rows="30" id="id_pages-${totalForms.value}-content" onkeyup="technicalSync(${totalForms.value})"></textarea></td></tr>
+  <tr><th><label for="id_pages-${totalForms.value}-DELETE">Delete:</label></th><td><input type="checkbox" name="pages-${totalForms.value}-DELETE" id="id_pages-${totalForms.value}-DELETE"></td></tr>`;
+
+  let pageSelection = document.querySelector(`#pageselector`);
+  pageSelection.insertAdjacentHTML("beforeend", `<div class="selection" onclick="pageSelector(${totalForms.value})">${totalForms.value}: </div>`);
+
+  totalForms.value = totalForms.value + 1; 
+      
+}
+
 </script>
