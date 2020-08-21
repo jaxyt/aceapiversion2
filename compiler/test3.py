@@ -74,14 +74,16 @@ def telecom_search(searchterm, model_keys):
 
 def telecom_efficient_search(searchterm, model_keys):
     results = {}
+    rats = []
     agents = coll_te.find()
     for i in agents:
         str2Match = searchterm
         strOptions = [i[k] for k in model_keys if i[k]]
-        #Ratios = process.extract(str2Match,strOptions)
+        Ratios = process.extract(str2Match,strOptions)
         highest = process.extractOne(str2Match,strOptions)[1]
-        #results.append({"id": i['id'], "highest": highest, "average": avg})
+        rats.append(Ratios)
         results[f"{i['id']}"] = highest
+    print(rats[0])
     res = [coll_te.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
     return res
         
