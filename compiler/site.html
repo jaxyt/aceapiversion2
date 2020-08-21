@@ -435,7 +435,7 @@ pageTechnicalContentEditors.forEach((i, cnt) => {
 })
 
 let pageSelector =  (x) => {
-    pages.forEach((e, i) => {
+  document.querySelectorAll(`table.pages-array-model-field > tbody`).forEach((e, i) => {
         if (i !== x) {
             e.classList.add("hide-page");
             e.classList.remove("show-page");
@@ -715,7 +715,7 @@ function addNewPage(){
   let pageSelection = document.querySelector(`#pageselector`);
   pageSelection.insertAdjacentHTML("beforeend", `<div class="selection" onclick="pageSelector(${totalForms.value})">${totalForms.value}: </div>`);
 
-  totalForms.value = totalForms.value + 1; 
+  totalForms.value = `${parseInt(totalForms.value) + 1}`; 
       
 }
 
