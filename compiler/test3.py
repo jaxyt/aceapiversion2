@@ -63,15 +63,17 @@ def telecom_search(searchterm, model_keys):
         for k in model_keys:
             if i[k]:
                 strOptions.append(i[k])
-        Ratios = process.extract(str2Match,strOptions)
+        #Ratios = process.extract(str2Match,strOptions)
         highest = process.extractOne(str2Match,strOptions)[1]
         #results.append({"id": i['id'], "highest": highest, "average": avg})
         results[f"{i['id']}"] = highest
-    return sorted(results.items(), key=lambda x: x[1], reverse=True)
+    r = sorted(results.items(), key=lambda x: x[1], reverse=True)
+    r = [coll_te.find_one({"id": int(l[0])}) for l in r if l[1] > 50]
+    return r
 
         
 
 #  , ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate']
-r = telecom_search("ver", ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate'])
+r = telecom_search(input("type a searchterm:  "), ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate'])
 pp.pprint(r[0:25])
-print(coll_te.find_one({"id":82}))
+#print(coll_te.find_one({"id":82}))
