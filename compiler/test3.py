@@ -84,6 +84,8 @@ def telecom_efficient_search(searchterm, model_keys):
         highest = process.extractOne(str2Match,strOptions)[1]
         rats[f"{i['id']}"] = average
         results[f"{i['id']}"] = highest
+    print(f"{sorted(rats.items(), key=lambda x: x[1], reverse=True)[0]}")
+    print(f"{sorted(results.items(), key=lambda x: x[1], reverse=True)[0]}")
     avg = [coll_te.find_one({"id": int(l[0])}) for l in sorted(rats.items(), key=lambda x: x[1], reverse=True)]
     res = [coll_te.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
     return [res, avg]
