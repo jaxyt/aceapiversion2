@@ -76,10 +76,11 @@ input[type=submit] {
   .toolbar {
     text-align: center;
     display: grid;
-    grid-template-columns: repeat(28, auto);
+    grid-template-rows: repeat(28, auto);
+    grid-template-columns: repeat(2, 1fr);
     position: fixed;
     top: 10%;
-    left: 10%;
+    left: 90%;
   }
   
   .toolbar a,
@@ -311,8 +312,8 @@ input[type=submit] {
   }
 </style>
 <a id="home-button" href="/auth/manage/">Home</a>
-<div id="add-new-page" style="background-color: aliceblue; width: 100px; height: 20px; padding: 2px 4px; position: fixed; top: 18%; left: 85%;" onclick="addNewPage()">Add New Page</div>
-<div id="toolbar-menu-button" class="show" style="background-color: blue; width: 40px; height: 20px; padding: 2px 4px; position: fixed; top: 5%; left: 85%;" onclick="hideToolbar()">Hide</div>
+<div id="add-new-page" style="background-color: aliceblue; width: 100px; height: 20px; padding: 2px 4px; position: fixed; top: 5%; left: 85%;" onclick="addNewPage()">Add New Page</div>
+<div id="toolbar-menu-button" class="show" style="background-color: blue; width: 40px; height: 20px; padding: 2px 4px; position: fixed; top: 8%; left: 85%;" onclick="hideToolbar()">Hide</div>
 <div class="toolbar">
         <a href="#jumpto" data-command='undo'><i class='fa fa-undo'></i></a>
         <a href="#jumpto" data-command='redo'><i class='fa fa-redo'></i></a>
