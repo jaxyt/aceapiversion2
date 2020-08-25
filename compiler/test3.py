@@ -55,25 +55,6 @@ def cosine_sim_vectors(vec1, vec2):
 
 def telecom_search(searchterm, model_keys):
     results = {}
-    agents = list(map(add_to_map, coll_te.find()))
-    for n in trange(len(agents), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
-        i = agents[n]
-        str2Match = searchterm
-        strOptions = []
-        for k in model_keys:
-            if i[k]:
-                strOptions.append(i[k])
-        #Ratios = process.extract(str2Match,strOptions)
-        highest = process.extractOne(str2Match,strOptions)[1]
-        #results.append({"id": i['id'], "highest": highest, "average": avg})
-        results[f"{i['id']}"] = highest
-    r = sorted(results.items(), key=lambda x: x[1], reverse=True)
-    r = [coll_te.find_one({"id": int(l[0])}) for l in r if l[1] > 50]
-    return r
-
-
-def telecom_efficient_search(searchterm, model_keys):
-    results = {}
     rats = {}
     agents = coll_te.find()
     for i in agents:
@@ -81,7 +62,7 @@ def telecom_efficient_search(searchterm, model_keys):
         strOptions = [i[k] for k in model_keys if i[k]]
         highest = process.extractOne(str2Match,strOptions)[1]
         results[f"{i['id']}"] = highest
-    print(f"{sorted(results.items(), key=lambda x: x[1], reverse=True)[0]}")
+    #print(f"{sorted(results.items(), key=lambda x: x[1], reverse=True)[0]}")
     res = [coll_te.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
     return res
         
@@ -89,6 +70,6 @@ def telecom_efficient_search(searchterm, model_keys):
 #  , ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate']
 #r = telecom_search(input("type a searchterm:  "), ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate'])
 #r = telecom_efficient_search(input("type a searchterm:  "), ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate'])
-r = telecom_efficient_search(input("type a searchterm:  "), ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate'])
-pp.pprint(f"high: {r[0]}")
+#r = telecom_search(input("type a searchterm:  "), ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate'])
+#pp.pprint(f"high: {r[0]}")
 #print(coll_te.find_one({"id":82}))

@@ -16,6 +16,7 @@ import ngram
 import timeit
 from tqdm import tqdm, trange
 from colorama import Fore
+from fuzzywuzzy import process, fuzz
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
@@ -670,4 +671,18 @@ def lev_and_cos_search(searchterm):
 
 #for m in lev_and_cos_search()[0:10]:
     #pp.pprint(coll_ra.find_one({'id': int(m[0])}))
+
+
+def telecom_search(searchterm, model_keys):
+    results = {}
+    rats = {}
+    agents = coll_te.find()
+    for i in agents:
+        str2Match = searchterm
+        strOptions = [i[k] for k in model_keys if i[k]]
+        highest = process.extractOne(str2Match,strOptions)[1]
+        results[f"{i['id']}"] = highest
+    #print(f"{sorted(results.items(), key=lambda x: x[1], reverse=True)[0]}")
+    res = [coll_te.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
+    return res
 
