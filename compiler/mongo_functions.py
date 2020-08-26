@@ -463,7 +463,7 @@ def compiler_v3(s, t, r, arr):
                 agents_info += f"""<li class="dcagent2">Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['dcagent2'])}">{i['dcagent2']}</a></li>""" if i['dcagent2'] else ""
                 agents_info += f"""<li class="alternateagent1">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent1'])}">{i['alternateagent1']}</a></li>""" if i['alternateagent1'] else ""
                 agents_info += f"""<li class="alternateagent2">Alt Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent2'])}">{i['alternateagent2']}</a></li>""" if i['alternateagent2'] else ""
-                agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
+                agents_info += f"""<li class="agent-details"><a href="/telecom-agents/{i['id']}"><button>Go to Details</button></a></li>"""
                 agents_info += "</ul>"
             agents_info += "</div>"
             comp = re.sub("XXagentsXX", agents_info, comp)
