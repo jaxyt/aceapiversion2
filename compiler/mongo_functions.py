@@ -190,19 +190,21 @@ def compiler_v3(s, t, r, arr):
     elif arr[1] == "registered-agents":
         if len(arr) == 3:
             agent = coll_ra.find_one({'id': int(arr[2])})
-            agent_info = f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">"""
-            agent_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{agent['company']}">{agent['company'].title()}</a></li>""" if agent['company'] else ""
-            agent_info += f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{agent['agency']}">{agent['agency'].title()}</a></li>""" if agent['agency'] else ""
-            agent_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{agent['state']}">{agent['state'].title()}</a></li>""" if agent['state'] else ""
-            agent_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{agent['city']}">{agent['city'].title()}</a></li>""" if agent['city'] else ""
-            agent_info += f"""<li class="contact-point">Contact:&nbsp;{agent['contact'].title()}</li>""" if agent['contact'] else ""
-            agent_info += f"""<li class="address">Address:&nbsp;{agent['address'].title()}</li>""" if agent['address'] else ""
-            agent_info += f"""<li class="mail">Mailing Address:&nbsp;{agent['mail'].title()}</li>"""  if agent['mail'] else ""
-            agent_info += f"""<li class="ra-phone">Phone:&nbsp;{agent['phone'].title()}</li>""" if agent['phone'] else ""
-            agent_info += f"""<li class="fax">Fax:&nbsp;{agent['fax'].title()}</li>""" if agent['fax'] else ""
-            agent_info += f"""<li class="email">Email:&nbsp;{agent['email'].title()}</li>""" if agent['email'] else ""
-            agent_info += f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else ""
-            agent_info += "</ul></div>"
+            agent_info = "".join([
+                f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">""",
+                f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{agent['company']}">{agent['company'].title()}</a></li>""" if agent['company'] else "",
+                f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{agent['agency']}">{agent['agency'].title()}</a></li>""" if agent['agency'] else "",
+                f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{agent['state']}">{agent['state'].title()}</a></li>""" if agent['state'] else "",
+                f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{agent['city']}">{agent['city'].title()}</a></li>""" if agent['city'] else "",
+                f"""<li class="contact-point">Contact:&nbsp;{agent['contact'].title()}</li>""" if agent['contact'] else "",
+                f"""<li class="address">Address:&nbsp;{agent['address'].title()}</li>""" if agent['address'] else "",
+                f"""<li class="mail">Mailing Address:&nbsp;{agent['mail'].title()}</li>"""  if agent['mail'] else "",
+                f"""<li class="ra-phone">Phone:&nbsp;{agent['phone'].title()}</li>""" if agent['phone'] else "",
+                f"""<li class="fax">Fax:&nbsp;{agent['fax'].title()}</li>""" if agent['fax'] else "",
+                f"""<li class="email">Email:&nbsp;{agent['email'].title()}</li>""" if agent['email'] else "",
+                f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else "",
+                "</ul></div>"
+            ])
             comp = re.sub("XXagentXX", agent_info, comp)
             comp = re.sub("XXagentagencyXX", f"""{agent['agency'].title() if agent['agency'] else ""}""", comp)
             comp = re.sub("XXagentcompanyXX", f"""{agent['company'].title() if agent['company'] else ""}""", comp)
@@ -218,41 +220,24 @@ def compiler_v3(s, t, r, arr):
                 comp = re.sub(r"XXstateacronymXX", "", comp)
         elif len(arr) == 5:
             agents_info = """<div class="registered-agents">"""
-            # k = arr[3]
-            # query = re.compile(arr[4], re.IGNORECASE)
-            # for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
-            #     agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-            #     agents_info += f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-            #     agents_info += f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-            #     agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-            #     agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-            #     agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-            #     agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-            #     agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-            #     agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-            #     agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-            #     agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-            #     agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-            #     agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
-            #     agents_info += "</ul>"
-            #for k in text_score_search(arr):
             for k in lev_and_cos_search(arr[4]):
                 i = k
-                #i = k['obj']
-                agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                agents_info += f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                agents_info += f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-                agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-                agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-                agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-                agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-                agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-                agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-                agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-                agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-                agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-                agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
-                agents_info += "</ul>"
+                agents_info += "".join([
+                    f"""<ul id="{i['id']}" class="agent-container">""",
+                    f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
+                    f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
+                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
+                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else "",
+                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
+                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
+                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
+                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
+                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
+                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
+                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
+                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    "</ul>"
+                ])
             agents_info += "</div>"
             comp = re.sub("XXagentsXX", agents_info, comp)
             comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
@@ -264,20 +249,22 @@ def compiler_v3(s, t, r, arr):
             q = corp['searchvalue']
             query = re.compile(q, re.IGNORECASE)
             for i in coll_ra.find({k: query}):
-                agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                agents_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                agents_info += f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-                agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-                agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-                agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-                agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-                agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-                agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-                agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-                agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-                agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-                agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
-                agents_info += "</ul>"
+                agents_info += "".join([
+                    f"""<ul id="{i['id']}" class="agent-container">""",
+                    f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
+                    f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
+                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
+                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else "",
+                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
+                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
+                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
+                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
+                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
+                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
+                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
+                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    "</ul>"
+                ])
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
@@ -295,20 +282,22 @@ def compiler_v3(s, t, r, arr):
             query = re.compile(q, re.IGNORECASE)
             state_query = re.compile(st.lower(), re.IGNORECASE)
             for i in coll_ra.find({k: query, 'state': state_query}):
-                agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                agents_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                agents_info += f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-                agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-                agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-                agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-                agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-                agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-                agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-                agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-                agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-                agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-                agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
-                agents_info += "</ul>"
+                agents_info += "".join([
+                    f"""<ul id="{i['id']}" class="agent-container">""",
+                    f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
+                    f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
+                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
+                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else "",
+                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
+                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
+                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
+                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
+                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
+                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
+                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
+                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    "</ul>"
+                ])
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
@@ -329,20 +318,22 @@ def compiler_v3(s, t, r, arr):
             state_query = re.compile(st.lower(), re.IGNORECASE)
             city_query = re.compile(cit.lower(), re.IGNORECASE)
             for i in coll_ra.find({k: query, 'state': state_query, 'city': city_query}):
-                agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                agents_info += f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                agents_info += f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-                agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-                agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-                agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-                agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-                agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-                agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-                agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-                agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-                agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-                agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
-                agents_info += "</ul>"
+                agents_info += "".join([
+                    f"""<ul id="{i['id']}" class="agent-container">""",
+                    f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
+                    f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
+                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
+                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else "",
+                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
+                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
+                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
+                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
+                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
+                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
+                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
+                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    "</ul>"
+                ])
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
@@ -360,20 +351,22 @@ def compiler_v3(s, t, r, arr):
             st = " ".join(arr[2].split("-"))
             state_query = re.compile(st.lower(), re.IGNORECASE)
             for i in coll_ra.find({'state': state_query}):
-                agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                agents_info += f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                agents_info += f"""<li class="agency">{"Alt-Name" if i['company'] else "Agent"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-                agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-                agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-                agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-                agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-                agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-                agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-                agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-                agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-                agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-                agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
-                agents_info += "</ul>"
+                agents_info += "".join([
+                    f"""<ul id="{i['id']}" class="agent-container">""",
+                    f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
+                    f"""<li class="agency">{"Alt-Name" if i['company'] else "Agent"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
+                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
+                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else "",
+                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
+                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
+                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
+                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
+                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
+                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
+                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
+                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    "</ul>"
+                ])
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
@@ -389,20 +382,22 @@ def compiler_v3(s, t, r, arr):
             state_query = re.compile(st.lower(), re.IGNORECASE)
             city_query = re.compile(cit.lower(), re.IGNORECASE)
             for i in coll_ra.find({'state': state_query, 'city': city_query}):
-                agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                agents_info += f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else ""
-                agents_info += f"""<li class="agency">{"Alt-Name" if i['company'] else "Agent"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else ""
-                agents_info += f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else ""
-                agents_info += f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else ""
-                agents_info += f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else ""
-                agents_info += f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else ""
-                agents_info += f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else ""
-                agents_info += f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else ""
-                agents_info += f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else ""
-                agents_info += f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else ""
-                agents_info += f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else ""
-                agents_info += f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>"""
-                agents_info += "</ul>"
+                agents_info += "".join([
+                    f"""<ul id="{i['id']}" class="agent-container">""",
+                    f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
+                    f"""<li class="agency">{"Alt-Name" if i['company'] else "Agent"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
+                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
+                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else "",
+                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
+                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
+                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
+                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
+                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
+                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
+                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
+                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    "</ul>"
+                ])
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
@@ -411,60 +406,64 @@ def compiler_v3(s, t, r, arr):
         import urllib.parse
         if len(arr) == 3:
             agent = coll_te.find_one({'id': int(arr[2])})
-            agent_info = f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">"""
-            agent_info += f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['carriername'])}">{agent['carriername'] if agent['carriername'] else ""}</a></li>"""
-            agent_info += f"""<li class="businessname">Business Name:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['businessname'])}">{agent['businessname'] if agent['businessname'] else ""}</a></li>"""
-            agent_info += f"""<li class="holdingcompany">Holding Company:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['holdingcompany'])}">{agent['holdingcompany'] if agent['holdingcompany'] else ""}</a></li>"""
-            agent_info += f"""<li class="hqaddress">HQ Address:&nbsp;{agent['hqaddress1'] if agent['hqaddress1'] else ""}{", "+agent['hqaddress2'] if agent['hqaddress2'] else ""}{", "+agent['hqaddress3'] if agent['hqaddress3'] else ""}</li>"""
-            agent_info += f"""<li class="othertradenames"><ul class="other-trade-names">Other Trade Names""" if agent['othertradename1'] else ""
-            agent_info += f"""<li class="othertradenames1"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename1'])}">{agent['othertradename1']}</a></li>""" if agent['othertradename1'] else ""
-            agent_info += f"""<li class="othertradenames2"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename2'])}">{agent['othertradename2']}</a></li>""" if agent['othertradename2'] else ""
-            agent_info += f"""<li class="othertradenames3"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename3'])}">{agent['othertradename3']}</a></li>""" if agent['othertradename3'] else ""
-            agent_info += f"""<li class="othertradenames4"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename4'])}">{agent['othertradename4']}</a></li>""" if agent['othertradename4'] else ""
-            agent_info += f"""</ul></li>""" if agent['othertradename1'] else ""
-            agent_info += f"""<li class="dcagents"><ul class="dc-agents">DC Agents""" if agent['dcagent1'] else ""
-            agent_info += f"""<li class="dcagent1">Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['dcagent1'])}">{agent['dcagent1']}</a></li>""" if agent['dcagent1'] else ""
-            agent_info += f"""<li class="dcagent2">Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['dcagent2'])}">{agent['dcagent2']}</a></li>""" if agent['dcagent2'] else ""
-            agent_info += f"""<li class="dcagentaddress">Address:&nbsp;{agent['dcagentaddress1']}{", "+agent['dcagentaddress2'] if agent['dcagentaddress2'] else ""}{", "+agent['dcagentaddress3'] if agent['dcagentaddress3'] else ""}</li>""" if agent['dcagentaddress1'] else ""
-            agent_info += f"""</ul></li>""" if agent['dcagent1'] else ""
-            agent_info += f"""<li class="alternateagents"><ul class="alternate-agents">Alternate Agents""" if agent['alternateagent1'] else ""
-            agent_info += f"""<li class="alternateagent1">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['alternateagent1'])}">{agent['alternateagent1']}</a></li>""" if agent['alternateagent1'] else ""
-            agent_info += f"""<li class="alternateagent2">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['alternateagent2'])}">{agent['alternateagent2']}</a></li>""" if agent['alternateagent2'] else ""
-            agent_info += f"""<li class="alternateagenttelephone">Phone:&nbsp;{agent['alternateagenttelephone']}</li>""" if agent['alternateagenttelephone'] else ""
-            agent_info += f"""<li class="alternateagentext">Ext:&nbsp;{agent['alternateagentext']}</li>""" if agent['alternateagentext'] else ""
-            agent_info += f"""<li class="alternateagentfax">Fax:&nbsp;{agent['alternateagentfax']}</li>""" if agent['alternateagentfax'] else ""
-            agent_info += f"""<li class="alternateagentemail">Email:&nbsp;{agent['alternateagentemail']}</li>""" if agent['alternateagentemail'] else ""
-            agent_info += f"""<li class="alternateagentaddress">Address:&nbsp;{agent['alternateagentaddress1']}{", "+agent['alternateagentaddress2'] if agent['alternateagentaddress2'] else ""}{", "+agent['alternateagentaddress3'] if agent['alternateagentaddress3'] else ""}{", "+agent['alternateagentcity'] if agent['alternateagentcity'] else ""}{", "+agent['alternateagentstate'] if agent['alternateagentstate'] else ""}{", "+agent['alternateagent1zip'] if agent['alternateagent1zip'] else ""}</li>""" if agent['alternateagentaddress1'] else ""
-            agent_info += f"""<ul><li>""" if agent['alternateagent1'] else ""
-            agent_info += f"""<li class="notes"><ul class="other-trade-names">Notes""" if agent['note1'] else ""
-            agent_info += f"""<li class="note1">{agent['note1']}</li>""" if agent['note1'] else ""
-            agent_info += f"""<li class="note2">{agent['note2']}</li>""" if agent['note2'] else ""
-            agent_info += f"""<li class="note3">{agent['note3']}</li>""" if agent['note3'] else ""
-            agent_info += f"""</ul></li>""" if agent['note1'] else ""
-            agent_info += "</ul></div>"
+            agent_info = "".join([
+                f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">""",
+                f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['carriername'])}">{agent['carriername'] if agent['carriername'] else ""}</a></li>""",
+                f"""<li class="businessname">Business Name:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['businessname'])}">{agent['businessname'] if agent['businessname'] else ""}</a></li>""",
+                f"""<li class="holdingcompany">Holding Company:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['holdingcompany'])}">{agent['holdingcompany'] if agent['holdingcompany'] else ""}</a></li>""",
+                f"""<li class="hqaddress">HQ Address:&nbsp;{agent['hqaddress1'] if agent['hqaddress1'] else ""}{", "+agent['hqaddress2'] if agent['hqaddress2'] else ""}{", "+agent['hqaddress3'] if agent['hqaddress3'] else ""}</li>""",
+                f"""<li class="othertradenames"><ul class="other-trade-names">Other Trade Names""" if agent['othertradename1'] else "",
+                f"""<li class="othertradenames1"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename1'])}">{agent['othertradename1']}</a></li>""" if agent['othertradename1'] else "",
+                f"""<li class="othertradenames2"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename2'])}">{agent['othertradename2']}</a></li>""" if agent['othertradename2'] else "",
+                f"""<li class="othertradenames3"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename3'])}">{agent['othertradename3']}</a></li>""" if agent['othertradename3'] else "",
+                f"""<li class="othertradenames4"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename4'])}">{agent['othertradename4']}</a></li>""" if agent['othertradename4'] else "",
+                f"""</ul></li>""" if agent['othertradename1'] else "",
+                f"""<li class="dcagents"><ul class="dc-agents">DC Agents""" if agent['dcagent1'] else "",
+                f"""<li class="dcagent1">Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['dcagent1'])}">{agent['dcagent1']}</a></li>""" if agent['dcagent1'] else "",
+                f"""<li class="dcagent2">Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['dcagent2'])}">{agent['dcagent2']}</a></li>""" if agent['dcagent2'] else "",
+                f"""<li class="dcagentaddress">Address:&nbsp;{agent['dcagentaddress1']}{", "+agent['dcagentaddress2'] if agent['dcagentaddress2'] else ""}{", "+agent['dcagentaddress3'] if agent['dcagentaddress3'] else ""}</li>""" if agent['dcagentaddress1'] else "",
+                f"""</ul></li>""" if agent['dcagent1'] else "",
+                f"""<li class="alternateagents"><ul class="alternate-agents">Alternate Agents""" if agent['alternateagent1'] else "",
+                f"""<li class="alternateagent1">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['alternateagent1'])}">{agent['alternateagent1']}</a></li>""" if agent['alternateagent1'] else "",
+                f"""<li class="alternateagent2">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['alternateagent2'])}">{agent['alternateagent2']}</a></li>""" if agent['alternateagent2'] else "",
+                f"""<li class="alternateagenttelephone">Phone:&nbsp;{agent['alternateagenttelephone']}</li>""" if agent['alternateagenttelephone'] else "",
+                f"""<li class="alternateagentext">Ext:&nbsp;{agent['alternateagentext']}</li>""" if agent['alternateagentext'] else "",
+                f"""<li class="alternateagentfax">Fax:&nbsp;{agent['alternateagentfax']}</li>""" if agent['alternateagentfax'] else "",
+                f"""<li class="alternateagentemail">Email:&nbsp;{agent['alternateagentemail']}</li>""" if agent['alternateagentemail'] else "",
+                f"""<li class="alternateagentaddress">Address:&nbsp;{agent['alternateagentaddress1']}{", "+agent['alternateagentaddress2'] if agent['alternateagentaddress2'] else ""}{", "+agent['alternateagentaddress3'] if agent['alternateagentaddress3'] else ""}{", "+agent['alternateagentcity'] if agent['alternateagentcity'] else ""}{", "+agent['alternateagentstate'] if agent['alternateagentstate'] else ""}{", "+agent['alternateagent1zip'] if agent['alternateagent1zip'] else ""}</li>""" if agent['alternateagentaddress1'] else "",
+                f"""<ul><li>""" if agent['alternateagent1'] else "",
+                f"""<li class="notes"><ul class="other-trade-names">Notes""" if agent['note1'] else "",
+                f"""<li class="note1">{agent['note1']}</li>""" if agent['note1'] else "",
+                f"""<li class="note2">{agent['note2']}</li>""" if agent['note2'] else "",
+                f"""<li class="note3">{agent['note3']}</li>""" if agent['note3'] else "",
+                f"""</ul></li>""" if agent['note1'] else "",
+                "</ul></div>"
+            ])
             comp = re.sub("XXagentXX", agent_info, comp)
         elif len(arr) == 5:
             agents_info = """<div class="registered-agents">"""
             k = arr[3]
             query = re.compile(arr[4], re.IGNORECASE)
             for i in coll_te.aggregate([{"$match": {"$or" : [{"carriername": query},{"businessname": query},{"holdingcompany": query},{"othertradename1": query},{"othertradename2": query},{"othertradename3": query},{"othertradename4": query},{"dcagent1": query},{"dcagent2": query},{"alternateagent1": query},{"alternateagent2": query}]}},{"$sort": { k: 1 }}]):
-                agents_info += f"""<ul id="{i['id']}" class="agent-container">"""
-                agents_info += f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['carriername'])}">{i['carriername'] if i['carriername'] else ""}</a></li>"""
-                agents_info += f"""<li class="businessname">Business Name:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['businessname'])}">{i['businessname'] if i['businessname'] else ""}</a></li>"""
-                agents_info += f"""<li class="holdingcompany">Holding Company:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['holdingcompany'])}">{i['holdingcompany'] if i['holdingcompany'] else ""}</a></li>"""
-                agents_info += f"""<li class="hqaddress">HQ Address:&nbsp;{i['hqaddress1'] if i['hqaddress1'] else ""}{", "+i['hqaddress2'] if i['hqaddress2'] else ""}{", "+i['hqaddress3'] if i['hqaddress3'] else ""}</li>"""
-                agents_info += f"""<li class="othertradenames"><ul class="other-trade-names">Other Trade Names""" if i['othertradename1'] else ""
-                agents_info += f"""<li class="othertradenames1"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename1'])}">{i['othertradename1']}</a></li>""" if i['othertradename1'] else ""
-                agents_info += f"""<li class="othertradenames2"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename2'])}">{i['othertradename2']}</a></li>""" if i['othertradename2'] else ""
-                agents_info += f"""<li class="othertradenames3"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename3'])}">{i['othertradename3']}</a></li>""" if i['othertradename3'] else ""
-                agents_info += f"""<li class="othertradenames4"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename4'])}">{i['othertradename4']}</a></li>""" if i['othertradename4'] else ""
-                agents_info += f"""</ul></li>""" if i['othertradename1'] else ""
-                agents_info += f"""<li class="dcagent1">Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['dcagent1'])}">{i['dcagent1']}</a></li>""" if i['dcagent1'] else ""
-                agents_info += f"""<li class="dcagent2">Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['dcagent2'])}">{i['dcagent2']}</a></li>""" if i['dcagent2'] else ""
-                agents_info += f"""<li class="alternateagent1">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent1'])}">{i['alternateagent1']}</a></li>""" if i['alternateagent1'] else ""
-                agents_info += f"""<li class="alternateagent2">Alt Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent2'])}">{i['alternateagent2']}</a></li>""" if i['alternateagent2'] else ""
-                agents_info += f"""<li class="agent-details"><a href="/telecom-agents/{i['id']}"><button>Go to Details</button></a></li>"""
-                agents_info += "</ul>"
+                agents_info += "".join([
+                    f"""<ul id="{i['id']}" class="agent-container">""",
+                    f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['carriername'])}">{i['carriername'] if i['carriername'] else ""}</a></li>""",
+                    f"""<li class="businessname">Business Name:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['businessname'])}">{i['businessname'] if i['businessname'] else ""}</a></li>""",
+                    f"""<li class="holdingcompany">Holding Company:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['holdingcompany'])}">{i['holdingcompany'] if i['holdingcompany'] else ""}</a></li>""",
+                    f"""<li class="hqaddress">HQ Address:&nbsp;{i['hqaddress1'] if i['hqaddress1'] else ""}{", "+i['hqaddress2'] if i['hqaddress2'] else ""}{", "+i['hqaddress3'] if i['hqaddress3'] else ""}</li>""",
+                    f"""<li class="othertradenames"><ul class="other-trade-names">Other Trade Names""" if i['othertradename1'] else "",
+                    f"""<li class="othertradenames1"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename1'])}">{i['othertradename1']}</a></li>""" if i['othertradename1'] else "",
+                    f"""<li class="othertradenames2"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename2'])}">{i['othertradename2']}</a></li>""" if i['othertradename2'] else "",
+                    f"""<li class="othertradenames3"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename3'])}">{i['othertradename3']}</a></li>""" if i['othertradename3'] else "",
+                    f"""<li class="othertradenames4"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename4'])}">{i['othertradename4']}</a></li>""" if i['othertradename4'] else "",
+                    f"""</ul></li>""" if i['othertradename1'] else "",
+                    f"""<li class="dcagent1">Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['dcagent1'])}">{i['dcagent1']}</a></li>""" if i['dcagent1'] else "",
+                    f"""<li class="dcagent2">Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['dcagent2'])}">{i['dcagent2']}</a></li>""" if i['dcagent2'] else "",
+                    f"""<li class="alternateagent1">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent1'])}">{i['alternateagent1']}</a></li>""" if i['alternateagent1'] else "",
+                    f"""<li class="alternateagent2">Alt Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent2'])}">{i['alternateagent2']}</a></li>""" if i['alternateagent2'] else "",
+                    f"""<li class="agent-details"><a href="/telecom-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    "</ul>"
+                ])
             agents_info += "</div>"
             comp = re.sub("XXagentsXX", agents_info, comp)
             comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
@@ -474,7 +473,7 @@ def compiler_v3(s, t, r, arr):
     corp_links += """</div>"""
     html_sitemap = """<div><ul class="sitemap-links">"""
     for i in s.pages:
-        if re.search(r'(/locations)|(/registered-agents)|(/telecom-agents)|(/process-server)|(/blog/posts/id)|(/agents-by-state/)|(\.)', i.route) is None:
+        if re.search(r'(^/locations)|(^/registered-agents)|(^/telecom-agents)|(^/process-server)|(/blog/posts/id)|(^/agents-by-state/)|(\.)', i.route) is None:
             if i.route == "/":
                 html_sitemap += """<li><a href="/">Home</a></li>"""
             else:
@@ -484,6 +483,7 @@ def compiler_v3(s, t, r, arr):
     comp = re.sub('XXcorplinksXX', corp_links, comp)
     comp = re.sub('XXsitenameXX', s.sitename if s.sitename else "", comp)
     comp = re.sub('XXspagetitleXX', spage.title if spage.title else "", comp)
+    comp = re.sub('XXrouteXX', r if r else "", comp)
     comp = re.sub('XXspagerouteXX', spage.route if spage.route else "", comp)
     comp = re.sub('XXtemplatenameXX', t.templatename if t.templatename else "", comp)
     comp = re.sub('XXtpagetitleXX', tpage.title if tpage.title else "", comp)
