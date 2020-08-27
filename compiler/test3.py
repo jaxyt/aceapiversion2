@@ -73,3 +73,9 @@ def telecom_search(searchterm, model_keys):
 #r = telecom_search(input("type a searchterm:  "), ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate'])
 #pp.pprint(f"high: {r[0]}")
 #print(coll_te.find_one({"id":82}))
+
+
+iter_result = list(map(lambda x: f"""<a href="/locations/{'-'.join(x['statename'].split(' '))}">{x['statename'].title()}</a>""", coll_st.find()))
+
+print(iter_result)
+
