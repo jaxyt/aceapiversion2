@@ -43,8 +43,6 @@ def no_html_tags(text):
     return re.sub(clean, '', text)
 
 def compiler_v3(s, t, r, arr):
-    comp = ""
-    states_links = """<div class="states-links">"""
     page = ""
     spage = None
     tpage = None
@@ -92,24 +90,20 @@ def compiler_v3(s, t, r, arr):
     for i in t.pages:
         if i.route == page:
             tpage = i
-    for i in coll_st.find():
-        states_links +=f"""<a href="/locations/{'-'.join(i['statename'].split(' '))}">{i['statename'].title()}</a>"""
-    states_links += "</div>"
-    comp += f"""<!DOCTYPE html><html lang="en"><head>{s.sitemetas if s.sitemetas else t.sitemetas if t.sitemetas else ""}{spage.pagemetas if spage.pagemetas else tpage.pagemetas if tpage.pagemetas else ""}{s.sitelinks if s.sitelinks else t.sitelinks if t.sitelinks else ""}{spage.pagelinks if spage.pagelinks else tpage.pagelinks if tpage.pagelinks else ""}<title>{spage.title if spage.title else tpage.title if tpage.title else ""}</title>{spage.pagestyle if spage.pagestyle else s.sitestyle if s.sitestyle else tpage.pagestyle if tpage.pagestyle else t.sitestyle if t.sitestyle else ""}</head><body>{spage.pageheader if spage.pageheader else s.siteheader if s.siteheader else tpage.pageheader if tpage.pageheader else t.siteheader if t.siteheader else ""}{spage.content if spage.content else tpage.content if tpage.content else ""}{spage.pagefooter if spage.pagefooter else s.sitefooter if s.sitefooter else tpage.pagefooter if tpage.pagefooter else t.sitefooter if t.sitefooter else ""}{s.sitescripts if s.sitescripts else t.sitescripts if t.sitescripts else ""}{spage.pagescripts if spage.pagescripts else tpage.pagescripts if tpage.pagescripts else ""}</body></html>"""
-    site_counties_links = """<div class="link-list">"""
+    states_links = "".join(["""<div class="states-links">""", "".join(list(map(lambda x: f"""<a href="/locations/{'-'.join(x['statename'].split(' '))}">{x['statename'].title()}</a>""", coll_st.find()))), "</div>"])
+    comp = f"""<!DOCTYPE html><html lang="en"><head>{s.sitemetas if s.sitemetas else t.sitemetas if t.sitemetas else ""}{spage.pagemetas if spage.pagemetas else tpage.pagemetas if tpage.pagemetas else ""}{s.sitelinks if s.sitelinks else t.sitelinks if t.sitelinks else ""}{spage.pagelinks if spage.pagelinks else tpage.pagelinks if tpage.pagelinks else ""}<title>{spage.title if spage.title else tpage.title if tpage.title else ""}</title>{spage.pagestyle if spage.pagestyle else s.sitestyle if s.sitestyle else tpage.pagestyle if tpage.pagestyle else t.sitestyle if t.sitestyle else ""}</head><body>{spage.pageheader if spage.pageheader else s.siteheader if s.siteheader else tpage.pageheader if tpage.pageheader else t.siteheader if t.siteheader else ""}{spage.content if spage.content else tpage.content if tpage.content else ""}{spage.pagefooter if spage.pagefooter else s.sitefooter if s.sitefooter else tpage.pagefooter if tpage.pagefooter else t.sitefooter if t.sitefooter else ""}{s.sitescripts if s.sitescripts else t.sitescripts if t.sitescripts else ""}{spage.pagescripts if spage.pagescripts else tpage.pagescripts if tpage.pagescripts else ""}</body></html>"""
+    
     site_state = coll_st.find_one({'id': s.location.stateid})
     site_state_acronym = site_state['stateacronym']
-    for i in coll_co.find({'stateid': site_state['id']}):
-        site_counties_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['id']}">{i['countyname'].title()}</a>"""
-    site_counties_links += """</div>"""
+    site_counties_links = "".join(["""<div class="link-list">""", "".join(list(map(lambda x: f"""<a class="location-link" href="/locations/{x['statename']}/{x['countyname']}-{x['id']}">{x['countyname'].title()}</a>""", coll_co.find({'stateid': site_state['id']})))), """</div>"""])
+    
     comp = re.sub(r'XXsitestateXX', site_state['statename'].title(), comp)
     comp = re.sub(r"XXsitestateacronymXX", site_state_acronym, comp)
     comp = re.sub(r'XXsitecountylinksXX', site_counties_links, comp)
-    site_cities_links = """<div class="link-list">"""
+    
     site_county = coll_co.find_one({'id': s.location.countyid})
-    for i in coll_ci.find({'countyid': site_county['id']}):
-        site_cities_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['countyid']}/{i['cityname']}-{i['id']}">{i['cityname'].title()}</a>"""
-    site_cities_links += """</div>"""
+    site_cities_links = "".join(["""<div class="link-list">""", "".join(list(map(lambda x: f"""<a class="location-link" href="/locations/{x['statename']}/{x['countyname']}-{x['countyid']}/{x['cityname']}-{x['id']}">{x['cityname'].title()}</a>""", coll_ci.find({'countyid': site_county['id']})))), """</div>"""])
+    
     comp = re.sub(r'XXsitecountyXX', site_county['countyname'].title(), comp)
     comp = re.sub(r'XXsitecitylinksXX', site_cities_links, comp)
 
@@ -117,22 +111,18 @@ def compiler_v3(s, t, r, arr):
     comp = re.sub(r'XXsitecityXX', site_city['cityname'].title(), comp)
     comp = re.sub(r'XXstateslinksXX', states_links, comp)
     if arr[1] == "locations":
-        page_counties_links = """<div class="link-list">"""
-        page_cities_links = """<div class="link-list">"""
         if len(arr) >= 3:
             page_state = coll_st.find_one({'statename': " ".join(arr[2].split('-'))})
             page_state_acronym = page_state['stateacronym']
-            for i in coll_co.find({'stateid': page_state['id']}):
-                page_counties_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['id']}">{i['countyname'].title()}</a>"""
-            page_counties_links += """</div>"""
+            page_counties_links = "".join(["""<div class="link-list">""", "".join(list(map(lambda x: f"""<a class="location-link" href="/locations/{x['statename']}/{x['countyname']}-{x['id']}">{x['countyname'].title()}</a>""", coll_co.find({'stateid': page_state['id']})))), """</div>"""])
+            
             comp = re.sub(r'XXpagestateXX', page_state['statename'].title(), comp)
             comp = re.sub(r'XXpagestateacronymXX', page_state_acronym, comp)
             comp = re.sub(r'XXpagecountylinksXX', page_counties_links, comp)
             if len(arr) >= 4:
                 page_county = coll_co.find_one({'id': int(arr[3].split("-")[-1])})
-                for i in coll_ci.find({'countyid': page_county['id']}):
-                    page_cities_links += f"""<a class="location-link" href="/locations/{i['statename']}/{i['countyname']}-{i['countyid']}/{i['cityname']}-{i['id']}">{i['cityname'].title()}</a>"""
-                page_cities_links += """</div>"""
+                page_cities_links = "".join(["""<div class="link-list">""", "".join(list(map(lambda x: f"""<a class="location-link" href="/locations/{x['statename']}/{x['countyname']}-{x['countyid']}/{x['cityname']}-{x['id']}">{x['cityname'].title()}</a>""", coll_ci.find({'countyid': page_county['id']})))), """</div>"""])
+                
                 comp = re.sub(r'XXpagecountyXX', page_county['countyname'].title(), comp)
                 comp = re.sub(r'XXpagecitylinksXX', page_cities_links, comp)
                 if len(arr) == 5:
