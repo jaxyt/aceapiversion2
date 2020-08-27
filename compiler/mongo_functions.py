@@ -95,20 +95,7 @@ def compiler_v3(s, t, r, arr):
     for i in coll_st.find():
         states_links +=f"""<a href="/locations/{'-'.join(i['statename'].split(' '))}">{i['statename'].title()}</a>"""
     states_links += "</div>"
-    comp += """<!DOCTYPE html><html lang="en"><head>"""
-    comp += s.sitemetas if s.sitemetas else t.sitemetas if t.sitemetas else ""
-    comp += spage.pagemetas if spage.pagemetas else tpage.pagemetas if tpage.pagemetas else ""
-    comp += s.sitelinks if s.sitelinks else t.sitelinks if t.sitelinks else ""
-    comp += spage.pagelinks if spage.pagelinks else tpage.pagelinks if tpage.pagelinks else ""
-    comp += f"""<title>{spage.title if spage.title else tpage.title if tpage.title else ""}</title>"""
-    comp += spage.pagestyle if spage.pagestyle else s.sitestyle if s.sitestyle else tpage.pagestyle if tpage.pagestyle else t.sitestyle if t.sitestyle else ""
-    comp += """</head><body>"""
-    comp += spage.pageheader if spage.pageheader else s.siteheader if s.siteheader else tpage.pageheader if tpage.pageheader else t.siteheader if t.siteheader else ""
-    comp += spage.content if spage.content else tpage.content if tpage.content else ""
-    comp += spage.pagefooter if spage.pagefooter else s.sitefooter if s.sitefooter else tpage.pagefooter if tpage.pagefooter else t.sitefooter if t.sitefooter else ""
-    comp += s.sitescripts if s.sitescripts else t.sitescripts if t.sitescripts else ""
-    comp += spage.pagescripts if spage.pagescripts else tpage.pagescripts if tpage.pagescripts else ""
-    comp += """</body></html>"""
+    comp += f"""<!DOCTYPE html><html lang="en"><head>{s.sitemetas if s.sitemetas else t.sitemetas if t.sitemetas else ""}{spage.pagemetas if spage.pagemetas else tpage.pagemetas if tpage.pagemetas else ""}{s.sitelinks if s.sitelinks else t.sitelinks if t.sitelinks else ""}{spage.pagelinks if spage.pagelinks else tpage.pagelinks if tpage.pagelinks else ""}<title>{spage.title if spage.title else tpage.title if tpage.title else ""}</title>{spage.pagestyle if spage.pagestyle else s.sitestyle if s.sitestyle else tpage.pagestyle if tpage.pagestyle else t.sitestyle if t.sitestyle else ""}</head><body>{spage.pageheader if spage.pageheader else s.siteheader if s.siteheader else tpage.pageheader if tpage.pageheader else t.siteheader if t.siteheader else ""}{spage.content if spage.content else tpage.content if tpage.content else ""}{spage.pagefooter if spage.pagefooter else s.sitefooter if s.sitefooter else tpage.pagefooter if tpage.pagefooter else t.sitefooter if t.sitefooter else ""}{s.sitescripts if s.sitescripts else t.sitescripts if t.sitescripts else ""}{spage.pagescripts if spage.pagescripts else tpage.pagescripts if tpage.pagescripts else ""}</body></html>"""
     site_counties_links = """<div class="link-list">"""
     site_state = coll_st.find_one({'id': s.location.stateid})
     site_state_acronym = site_state['stateacronym']
