@@ -75,7 +75,7 @@ def telecom_search(searchterm, model_keys):
 #print(coll_te.find_one({"id":82}))
 
 
-iter_result = list(map(lambda x: f"""<a href="/locations/{'-'.join(x['statename'].split(' '))}">{x['statename'].title()}</a>""", coll_st.find()))
+iter_result = "".join(list(map(lambda x: f"""<a href="/locations/{'-'.join(x['statename'].split(' '))}">{x['statename'].title()}</a>""", coll_st.find())))
 
 print(iter_result)
 
