@@ -118,5 +118,5 @@ def render_xml_sitemap(s, t, rt):
     sitemap = "".join(["""<?xml version="1.0" encoding="utf-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""", "".join(sitemap_urls), """</urlset>"""])
     return sitemap
 
-pp.pprint(render_xml_sitemap(coll_si.find_one({"id": 7}), coll_tel.find_one({"id": 5}), "/sitemap.xml")[0:1000])
+pp.pprint(render_xml_sitemap(coll_si.find_one({"id": 7}), coll_te.find_one({"id": 5}), "/sitemap.xml")[0:1000])
 
