@@ -75,7 +75,39 @@ def telecom_search(searchterm, model_keys):
 #print(coll_te.find_one({"id":82}))
 
 
-iter_result = "".join(list(map(lambda x: f"""<a href="/locations/{'-'.join(x['statename'].split(' '))}">{x['statename'].title()}</a>""", coll_st.find())))
+# iter_result = "".join(list(map(lambda x: f"""<a href="/locations/{'-'.join(x['statename'].split(' '))}">{x['statename'].title()}</a>""", coll_st.find())))
 
-print(iter_result)
+# print(iter_result)
+
+def render_xml_sitemap(s, t, rt):
+    sitemap_urls = []
+    for i in s.pages:
+        if re.search(r'^/locations/', i.route) is not None:
+            if len(i.route.split("/")) == 3:
+                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}</loc></url>""", coll_st.find()))))
+            elif len(i.route.split("/")) == 5:
+                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/locations/{n['statename']}/{n['countyname']}-{n['countyid']}/{n['cityname']}-{n['id']}</loc></url>""", coll_ci.find()))))
+        elif re.search(r'^/blog/', i.route) is not None:
+            if len(i.route.split("/")) == 3:
+                sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>""")
+            elif len(i.route.split("/")) == 4:
+                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/blog/posts/{n['bloguri'] if n['bloguri'] else ""}-{n['id']}</loc></url>""", coll_bl.find({'blogcategory': s.blogcategory})))))
+        elif re.search(r'^/registered-agents/', i.route) is not None:
+            if re.search(r'^/registered-agents/search', i.route) is not None:
+                import urllib.parse
+                for n in ["company", "agency", "state", "city"]:
+                    sitemap_urls.append("".join(list(map(lambda k: "".join([f"<url><loc>https://www.{s.sitename}.com", urllib.parse.quote(f"""/registered-agents/search/{n}/{k.lower()}"""), "</loc></url>"]), coll_ra.find().distinct(n)))))
+            else:
+                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/registered-agents/{n['id']}</loc></url>""", coll_ra.find()))))
+        elif re.search(r'^/process-server/', i.route) is not None:
+            if re.search(r'^/process-server/id/state/city', i.route) is not None:
+                # nested map lambda functions to get all three layers of permutated dynamic url routes simultaneously
+                sitemap_urls.append("".join(list(map(lambda n: "".join([f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}</loc></url>""", "".join(list(map(lambda k: "".join([f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}/{"-".join(k.split(" ")).lower()}</loc></url>""", "".join(list(map(lambda m: f"""<url><loc>https://www.{s.sitename}.com/process-server/{"-".join(n['name'].split(" ")).lower()}-{n['id']}/{"-".join(k.split(" ")).lower()}/{"-".join(m.split(" ")).lower()}</loc></url>""", coll_ra.find({'state': k}).distinct('city'))))]), coll_ra.find().distinct("state"))))]), coll_cp.find()))))
+        else:
+            if re.search(r'\.[a-z]{2,4}$', i.route) is None:
+                sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>""")
+    sitemap = "".join(["""<?xml version="1.0" encoding="utf-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""", "".join(sitemap_urls), """</urlset>"""])
+    return sitemap
+
+pp.pprint(render_xml_sitemap(coll_si.find_one({"id": 7}), coll_te.find_one({"id": 5}), "/sitemap.xml")[0:1000])
 
