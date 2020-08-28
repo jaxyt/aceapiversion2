@@ -81,7 +81,9 @@ def telecom_search(searchterm, model_keys):
 
 def render_xml_sitemap(s, t, rt):
     sitemap_urls = []
-    for i in s["pages"]:
+    for z in trange(len(s["pages"]), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
+        i = s["pages"][z]
+        #for i in s["pages"]:
         if re.search(r'^/locations/', i["route"]) is not None:
             if len(i["route"].split("/")) == 3:
                 sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s["sitename"]}.com/locations/{n['statename']}</loc></url>""", coll_st.find()))))
