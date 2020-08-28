@@ -31,7 +31,7 @@ coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
 coll_cp = db.registeredagents_corporation
-coll_te = db.registeredagents_telecomcorps
+coll_tel = db.registeredagents_telecomcorps
 
 
 def add_to_map(ob):
@@ -56,14 +56,14 @@ def cosine_sim_vectors(vec1, vec2):
 def telecom_search(searchterm, model_keys):
     results = {}
     rats = {}
-    agents = coll_te.find()
+    agents = coll_tel.find()
     for i in agents:
         str2Match = searchterm
         strOptions = [i[k] for k in model_keys if i[k]]
         highest = process.extractOne(str2Match,strOptions)[1]
         results[f"{i['id']}"] = highest
     #print(f"{sorted(results.items(), key=lambda x: x[1], reverse=True)[0]}")
-    res = [coll_te.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
+    res = [coll_tel.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
     return res
         
 
@@ -72,7 +72,7 @@ def telecom_search(searchterm, model_keys):
 #r = telecom_efficient_search(input("type a searchterm:  "), ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate', 'alternateagent1', 'alternateagent2', 'alternateagentcity', 'alternateagentstate'])
 #r = telecom_search(input("type a searchterm:  "), ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate'])
 #pp.pprint(f"high: {r[0]}")
-#print(coll_te.find_one({"id":82}))
+#print(coll_tel.find_one({"id":82}))
 
 
 # iter_result = "".join(list(map(lambda x: f"""<a href="/locations/{'-'.join(x['statename'].split(' '))}">{x['statename'].title()}</a>""", coll_st.find())))
@@ -101,6 +101,13 @@ def render_xml_sitemap(s, t, rt):
                     sitemap_urls.append("".join(list(map(lambda k: "".join([f"""<url><loc>https://www.{s["sitename"]}.com""", urllib.parse.quote(f"""/registered-agents/search/{n}/{k.lower()}"""), "</loc></url>"]), coll_ra.find().distinct(n)))))
             else:
                 sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s["sitename"]}.com/registered-agents/{n['id']}</loc></url>""", coll_ra.find()))))
+        elif re.search(r'^/telecom-agents/', i["route"]) is not None:
+            if re.search(r'^/telecom-agents/search', i["route"]) is not None:
+                import urllib.parse
+                for n in ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate']:
+                    sitemap_urls.append("".join(list(map(lambda k: "".join([f"""<url><loc>https://www.{s["sitename"]}.com""", urllib.parse.quote(f"""/telecom-agents/search/{n}/{k.lower()}"""), "</loc></url>"]), coll_tel.find().distinct(n)))))
+            else:
+                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s["sitename"]}.com/telecom-agents/{n['id']}</loc></url>""", coll_tel.find()))))
         elif re.search(r'^/process-server/', i["route"]) is not None:
             if re.search(r'^/process-server/id/state/city', i["route"]) is not None:
                 # nested map lambda functions to get all three layers of permutated dynamic url routes simultaneously
@@ -111,5 +118,5 @@ def render_xml_sitemap(s, t, rt):
     sitemap = "".join(["""<?xml version="1.0" encoding="utf-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""", "".join(sitemap_urls), """</urlset>"""])
     return sitemap
 
-pp.pprint(render_xml_sitemap(coll_si.find_one({"id": 7}), coll_te.find_one({"id": 5}), "/sitemap.xml")[0:1000])
+pp.pprint(render_xml_sitemap(coll_si.find_one({"id": 7}), coll_tel.find_one({"id": 5}), "/sitemap.xml")[0:1000])
 

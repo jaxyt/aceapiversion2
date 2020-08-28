@@ -29,7 +29,7 @@ coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
 coll_cp = db.registeredagents_corporation
-coll_te = db.registeredagents_telecomcorps
+coll_tel = db.registeredagents_telecomcorps
 
 def registered_agent_search(k, q):
     res = []
@@ -382,7 +382,7 @@ def compiler_v3(s, t, r, arr):
     elif arr[1] == "telecom-agents":
         import urllib.parse
         if len(arr) == 3:
-            agent = coll_te.find_one({'id': int(arr[2])})
+            agent = coll_tel.find_one({'id': int(arr[2])})
             agent_info = "".join([
                 f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">""",
                 f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['carriername'])}">{agent['carriername'] if agent['carriername'] else ""}</a></li>""",
@@ -421,7 +421,7 @@ def compiler_v3(s, t, r, arr):
             agents_info = """<div class="registered-agents">"""
             k = arr[3]
             query = re.compile(arr[4], re.IGNORECASE)
-            for i in coll_te.aggregate([{"$match": {"$or" : [{"carriername": query},{"businessname": query},{"holdingcompany": query},{"othertradename1": query},{"othertradename2": query},{"othertradename3": query},{"othertradename4": query},{"dcagent1": query},{"dcagent2": query},{"alternateagent1": query},{"alternateagent2": query}]}},{"$sort": { k: 1 }}]):
+            for i in coll_tel.aggregate([{"$match": {"$or" : [{"carriername": query},{"businessname": query},{"holdingcompany": query},{"othertradename1": query},{"othertradename2": query},{"othertradename3": query},{"othertradename4": query},{"dcagent1": query},{"dcagent2": query},{"alternateagent1": query},{"alternateagent2": query}]}},{"$sort": { k: 1 }}]):
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['carriername'])}">{i['carriername'] if i['carriername'] else ""}</a></li>""",
@@ -653,13 +653,13 @@ def lev_and_cos_search(searchterm):
 def telecom_search(searchterm, model_keys):
     results = {}
     rats = {}
-    agents = coll_te.find()
+    agents = coll_tel.find()
     for i in agents:
         str2Match = searchterm
         strOptions = [i[k] for k in model_keys if i[k]]
         highest = process.extractOne(str2Match,strOptions)[1]
         results[f"{i['id']}"] = highest
     #print(f"{sorted(results.items(), key=lambda x: x[1], reverse=True)[0]}")
-    res = [coll_te.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
+    res = [coll_tel.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
     return res
 
