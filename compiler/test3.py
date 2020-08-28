@@ -91,7 +91,7 @@ def render_xml_sitemap(s, t, rt):
             if len(i["route"].split("/")) == 3:
                 sitemap_urls.append(f"""<url><loc>https://www.{s["sitename"]}.com{i["route"]}</loc></url>""")
             elif len(i["route"].split("/")) == 4:
-                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s["sitename"]}.com/blog/posts/{n['bloguri'] if n['bloguri'] else ""}-{n['id']}</loc></url>""", coll_bl.find({'blogcategory': s.blogcategory})))))
+                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s["sitename"]}.com/blog/posts/{n['bloguri'] if n['bloguri'] else ""}-{n['id']}</loc></url>""", coll_bl.find({'blogcategory': s["blogcategory"]})))))
         elif re.search(r'^/registered-agents/', i["route"]) is not None:
             if re.search(r'^/registered-agents/search', i["route"]) is not None:
                 import urllib.parse
