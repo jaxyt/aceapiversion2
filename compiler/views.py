@@ -23,6 +23,7 @@ module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'registered_agents.json')
 
 def test_send(request):
+    print(request.headers)
     from .mongo_functions import compiler_v3, render_xml_sitemap, replace_shortcodes
     site_id = request.GET.get('id', '2')
     route = request.GET.get('route', '/')
@@ -379,6 +380,7 @@ def send_page(request, *args, **kwargs):
         raise Http404
 
 def compile(request, *args, **kwargs):
+    print(request.headers)
     id = request.GET.get('id', '')
     route = request.GET.get('route', '')
     pageroute = route
