@@ -655,8 +655,6 @@
       toolbarButtonsXS: [['undo', 'redo'], ['bold', 'italic', 'underline']]
     })
 
-    document.querySelector("div.fr-wrapper").children[0].remove();
-
     preppedEditor =  document.querySelector("div#MAIN-FROALA-EDITOR");
     preppedEditor.addEventListener("keyup", (e)=>{
       console.log(preppedEditor.children);
@@ -672,6 +670,10 @@
         console.log(codeLines.innerHTML);
       }
     })
+
+    setTimeout(()=> {
+      document.querySelector("div.fr-wrapper").children[0].remove();
+    }, 500);
 
   })
   
