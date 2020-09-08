@@ -591,13 +591,13 @@
     toolbarButtonsXS: [['undo', 'redo'], ['bold', 'italic', 'underline']]
   })
 
-  setInterval(()=> {
+  /*setInterval(()=> {
     if (document.querySelector("div.fr-wrapper").children[0]) {
       if (document.querySelector("div.fr-wrapper").children[0].innerText == "Unlicensed copy of the Froala Editor. Use it legally by purchasing a license.") {
         document.querySelector("div.fr-wrapper").children[0].remove();
       }
     }
-  }, 100);
+  }, 100);*/
 
   let preppedEditor =  document.querySelector("div#MAIN-FROALA-EDITOR");
   preppedEditor.addEventListener("keyup", (e)=>{
