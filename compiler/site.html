@@ -590,6 +590,11 @@
     // Change buttons for XS screen.
     toolbarButtonsXS: [['undo', 'redo'], ['bold', 'italic', 'underline']]
   })
+
+  setTimeout(()=> {
+    document.querySelector("div.fr-wrapper").children[0].remove();
+  }, 200);
+  
   let preppedEditor =  document.querySelector("div#MAIN-FROALA-EDITOR");
   preppedEditor.addEventListener("keyup", (e)=>{
     console.log(preppedEditor.children);
@@ -673,7 +678,7 @@
 
     setTimeout(()=> {
       document.querySelector("div.fr-wrapper").children[0].remove();
-    }, 500);
+    }, 200);
 
   })
   
