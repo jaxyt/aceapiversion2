@@ -128,6 +128,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/home/ubuntu/ace/aceapiversion2/static/'
 
 # other settings
 CORS_ORIGIN_ALLOW_ALL = True
