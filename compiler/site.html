@@ -363,45 +363,7 @@
                                                             src="{% static 'editor-assets/image_tui.js' %}"></script>
                                                         <!--<script type="text/javascript" src="{% static 'editor-assets/spell_checker.js' %}"></script>-->
 
-                                                        <script>
-                                                            if (FroalaEditor) {
-                                                                FroalaEditor.DEFAULTS.imageUploadURL = 'https://i.froala.com/upload';
-                                                                FroalaEditor.DEFAULTS.fileUploadURL = '/upload';
-                                                                FroalaEditor.DEFAULTS.pastedImagesUploadURL = '/upload_base64';
-                                                                FroalaEditor.DEFAULTS.imagesLoadURL = '/load_images';
-                                                                FroalaEditor.DEFAULTS.maxImageSize = 1024 * 1024;
-                                                                FroalaEditor.DEFAULTS.maxFileSize = 1024 * 1024;
-                                                                FroalaEditor.DEFAULTS.key = '1CC3kA5C7A3F6E4C3byrncoeG4eheuD3E2A2B2C4G1G4F1A11A7==';
-                                                                FroalaEditor.DEFAULTS.defaultBlockStyle = {
-                                                                    'text-thin': 'Thin Text',
-                                                                    'text-light': 'Light Text',
-                                                                    'text-bold': 'Strong Text',
-                                                                    'text-spaced': 'Spaced Text'
-                                                                };
-                                                                FroalaEditor.DEFAULTS.buttons = ['bold', 'italic', 'underline', 'fontSize', 'color', 'fontFamily', 'sep', 'formatBlock', 'align', 'insertOrderedList', 'insertUnorderedList', 'outdent', 'indent', 'sep', 'createLink', 'insertImage', 'table', 'undo', 'redo', 'html'];
-
-
-                                                            }
-
-
-                                                            new FroalaEditor('#main-froala-editor', {
-                                                                pluginsEnabled: null,
-                                                                heightMin: 160
-                                                            })
-
-                                                            new FroalaEditor('.inline-editor', {
-                                                                toolbarInline: true,
-                                                                charCounterCount: false,
-                                                                initOnClick: true
-
-                                                            })
-
-                                                            new FroalaEditor('#contact-message', {
-                                                                height: 200,
-                                                                charCounterCount: true,
-                                                                pluginsEnabled: ['align', 'colors', 'draggable', 'embedly', 'emoticons', 'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager', 'lineBreaker', 'link', 'lists', 'paragraphFormat', 'quote', 'table', 'url', 'video', 'wordPaste']
-                                                            });
-                                                        </script>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="elementor-element elementor-element-e015fff elementor-widget elementor-widget-html"
