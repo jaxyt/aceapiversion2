@@ -591,7 +591,7 @@
     toolbarButtonsXS: [['undo', 'redo'], ['bold', 'italic', 'underline']]
   })
 
-  setinterval(()=> {
+  setInterval(()=> {
     if (document.querySelector("div.fr-wrapper").children[0]) {
       if (document.querySelector("div.fr-wrapper").children[0].innerText == "Unlicensed copy of the Froala Editor. Use it legally by purchasing a license.") {
         document.querySelector("div.fr-wrapper").children[0].remove();
