@@ -128,6 +128,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    "/home/ubuntu/ace/aceapiversion2/compiler/static/",
+]
+
 STATIC_ROOT = '/home/ubuntu/ace/aceapiversion2/static/'
 
 # other settings
