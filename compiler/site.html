@@ -486,7 +486,7 @@
     <input type="submit" value="Save" />
 </form>
 <script type='text/javascript'>
-  console.log(document.querySelector("table.pages-array-model-field").children);
+  //console.log(document.querySelector("table.pages-array-model-field").children);
   new FroalaEditor('div#MAIN-FROALA-EDITOR', {
       // Set custom buttons.
       toolbarButtons: {
@@ -605,26 +605,27 @@
 
   let preppedEditor =  document.querySelector("div#MAIN-FROALA-EDITOR");
   preppedEditor.addEventListener("keyup", (e)=>{
-    console.log(preppedEditor.children);
+    //let contForm = `${document.querySelector("#page-select-tag").value}`;
+    //console.log(preppedEditor.children);
     if(preppedEditor.classList.contains("fr-code-view")){
       let elemLines = document.querySelectorAll("div.CodeMirror-code > div > pre");
       let codeLines = Array.prototype.map.call(elemLines, function(obj) {
         return obj.innerText
       });
-      console.log(codeLines.join("\n"));
+      //console.log(codeLines.join("\n"));
       
     } else {
       let codeLines = document.querySelector("div.fr-element.fr-view");
-      console.log(codeLines.innerHTML);
+      //console.log(codeLines.innerHTML);
     }
   })
   document.querySelector("#page-select-tag").addEventListener("change", (e)=> {
-    pageSelector = document.querySelector("#page-select-tag");
-    selectedPage = pageSelector.value;
-    formTarget2 = document.querySelector(`#id_pages-${selectedPage}-content`);
-    formEditorArea = document.querySelector("div.elementor-element.elementor-element-f3025de.elementor-widget.elementor-widget-html").children[0];
+    let pageSelector = document.querySelector("#page-select-tag");
+    let selectedPage = pageSelector.value;
+    let formTarget2 = document.querySelector(`#id_pages-${selectedPage}-content`);
+    let formEditorArea = document.querySelector("div.elementor-element.elementor-element-f3025de.elementor-widget.elementor-widget-html").children[0];
     formEditorArea.children[0].remove();
-    friendlyEditor = document.createElement("div");
+    let friendlyEditor = document.createElement("div");
     friendlyEditor.id = `MAIN-FROALA-EDITOR`;
     friendlyEditor.classList.add(`page-editor-${selectedPage}`);
     friendlyEditor.innerHTML = document.querySelector("table.pages-array-model-field").children[parseInt(selectedPage)].children[8].children[1].children[0].value;
@@ -668,19 +669,22 @@
       toolbarButtonsXS: [['undo', 'redo'], ['bold', 'italic', 'underline']]
     })
 
-    preppedEditor =  document.querySelector("div#MAIN-FROALA-EDITOR");
+    let preppedEditor =  document.querySelector("div#MAIN-FROALA-EDITOR");
     preppedEditor.addEventListener("keyup", (e)=>{
-      console.log(preppedEditor.children);
+      //console.log(preppedEditor.children);
       if(preppedEditor.classList.contains("fr-code-view")){
         let elemLines = document.querySelectorAll("div.CodeMirror-code > div > pre");
         let codeLines = Array.prototype.map.call(elemLines, function(obj) {
           return obj.innerText
         });
-        console.log(codeLines.join("\n"));
+        //console.log(codeLines.join(""));
+        document.querySelector(`#id_pages-${document.querySelector("#page-select-tag")}-content`).value = `${codeLines.join("")}`;
+
         
       } else {
         let codeLines = document.querySelector("div.fr-element.fr-view");
-        console.log(codeLines.innerHTML);
+        //console.log(codeLines.innerHTML);
+        document.querySelector(`#id_pages-${document.querySelector("#page-select-tag")}-content`).value = `${codeLines.innerHTML}`;
       }
     })
 
