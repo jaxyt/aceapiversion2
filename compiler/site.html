@@ -610,7 +610,7 @@
     } else {
       let codeLines = document.querySelector("div.fr-element.fr-view");
       //console.log(codeLines.innerHTML);
-      document.querySelector(`#id_pages-${document.querySelector("#page-select-tag").value}-content`).value = `${codeLines.join("")}`;
+      document.querySelector(`#id_pages-${document.querySelector("#page-select-tag").value}-content`).value = `${codeLines.innerHTML}`;
     }
   })
   document.querySelector("#page-select-tag").addEventListener("change", (e)=> {
