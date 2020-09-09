@@ -1,9 +1,79 @@
 <!DOCTYPE html><html lang="en-US"><head >
     	<meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
-        
-    
+        <style>
+            a[href^="https://www.froala"] {
+              display: none !important; 
+            }
+      
+            input[type="submit"] {
+              position: fixed;
+              top: 5%;
+              left: 1%;
+          }
+          
+          .cloning {
+              background-color: green;
+              color: aliceblue;
+          }
+          
+          #button-actions {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-end;
+              position: fixed;
+              top: 5%;
+              right: 0%;
+          }
+          #button-actions > div {
+              margin-top: 10px;
+          }
+          
+          .hide-editor {
+              display: none;
+          }
+          
+          .hide {
+              display: none;
+          }
+          
+          
+          /* ------------- arrows ------------- */
+          
+          @import 'https://fonts.googleapis.com/css?family=Lato';
+          
+          .arrow {
+            width: 1.25rem;
+            height: 1.25rem;
+            display: inline-block;
+            position: relative;
+            margin: 0 1rem;
+          }
+          .arrow span {
+            top: 0.5rem;
+            position: absolute;
+            width: 0.75rem;
+            height: 0.1rem;
+            background-color: #000000;
+            display: inline-block;
+            transition: all 0.2s ease;
+          }
+          .arrow span:first-of-type {
+            left: 0;
+            transform: rotate(45deg);
+          }
+          .arrow span:last-of-type {
+            right: 0;
+            transform: rotate(-45deg);
+          }
+          .arrow.active span:first-of-type {
+            transform: rotate(-45deg);
+          }
+          .arrow.active span:last-of-type {
+            transform: rotate(45deg);
+          }
+          
+          </style>
     
     <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
     <link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
