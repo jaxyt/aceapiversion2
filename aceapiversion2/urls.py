@@ -31,6 +31,7 @@ urlpatterns = [
     path('auth/manage/', views.manage, name='manage'),
     path('auth/site/create/', views.create_site, name='site_create'),
     path('auth/site/update/', views.update_site, name='site_update'),
+    path('auth/editor/update/', views.update_editor, name='editor_update'),
     path('auth/template/create/', views.create_template, name='template_create'),
     path('auth/template/update/', views.update_template, name='template_update'),
     path('auth/blog/create/', views.create_blog, name='blog_create'),
