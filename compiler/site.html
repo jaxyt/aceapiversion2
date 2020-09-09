@@ -595,14 +595,6 @@
     toolbarButtonsXS: [['undo', 'redo'], ['bold', 'italic', 'underline']]
   })
 
-  /*setInterval(()=> {
-    if (document.querySelector("div.fr-wrapper").children[0]) {
-      if (document.querySelector("div.fr-wrapper").children[0].innerText == "Unlicensed copy of the Froala Editor. Use it legally by purchasing a license.") {
-        document.querySelector("div.fr-wrapper").children[0].remove();
-      }
-    }
-  }, 100);*/
-
   let preppedEditor =  document.querySelector("div#MAIN-FROALA-EDITOR");
   preppedEditor.addEventListener("keyup", (e)=>{
     //let contForm = `${document.querySelector("#page-select-tag").value}`;
@@ -613,10 +605,12 @@
         return obj.innerText
       });
       //console.log(codeLines.join("\n"));
+      document.querySelector(`#id_pages-${document.querySelector("#page-select-tag").value}-content`).value = `${codeLines.join("")}`;
       
     } else {
       let codeLines = document.querySelector("div.fr-element.fr-view");
       //console.log(codeLines.innerHTML);
+      document.querySelector(`#id_pages-${document.querySelector("#page-select-tag").value}-content`).value = `${codeLines.join("")}`;
     }
   })
   document.querySelector("#page-select-tag").addEventListener("change", (e)=> {
