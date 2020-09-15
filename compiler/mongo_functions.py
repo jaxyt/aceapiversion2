@@ -198,12 +198,7 @@ def compiler_v3(s, t, r, arr):
         elif len(arr) == 5:
             agents_info = """<div class="registered-agents">"""
             k = arr[3]
-            import string
-            s = arr[4]
-            out = s.translate((str.maketrans('', '', string.punctuation)))
-            out = out.strip(r"\s+")
-            q = "|".join(out.split(r"\s+"))
-            query = re.compile(q, re.IGNORECASE)
+            query = re.compile(arr[4], re.IGNORECASE)
             #for k in lev_and_cos_search(arr[4]):
             for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
                 agents_info += "".join([
