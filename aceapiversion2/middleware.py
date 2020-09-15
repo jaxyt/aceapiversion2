@@ -1,7 +1,7 @@
 # 'aceapiversion2.middleware.ProfilerMiddleware'
 import sys
 import cProfile
-from cStringIO import StringIO
+from io import StringIO
 from django.conf import settings
 
 class ProfilerMiddleware(object):
