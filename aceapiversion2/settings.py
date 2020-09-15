@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_cprofile_middleware.middleware.ProfilerMiddleware',
+    'aceapiversion2.middleware.ProfilerCustomMiddleware',
 ]
 
 ROOT_URLCONF = 'aceapiversion2.urls'
@@ -137,3 +137,5 @@ STATIC_ROOT = '/home/ubuntu/ace/aceapiversion2/static/'
 
 # other settings
 CORS_ORIGIN_ALLOW_ALL = True
+
+DJANGO_CPROFILE_MIDDLEWARE_REQUIRE_STAFF = False
