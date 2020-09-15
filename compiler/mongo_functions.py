@@ -202,7 +202,7 @@ def compiler_v3(s, t, r, arr):
             q = re.sub(r'[^\w\s]','',q)
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
-            q = "|".join(q.split(r"\s"))
+            q = "|".join(q.split(" "))
             print(q)
             query = re.compile(q, re.IGNORECASE)
             #for k in lev_and_cos_search(arr[4]):
