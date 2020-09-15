@@ -205,19 +205,19 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
                     f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
                     f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else "",
-                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
                     f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
-                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
-                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
-                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
-                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
-                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
                     f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
                     "</ul>"
                 ])
             agents_info += "</div>"
             comp = re.sub("XXagentsXX", agents_info, comp)
             comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
+            #f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
+            #f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
+            #f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
+            #f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
+            #f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
+            #f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
     elif arr[1] == "process-server":
         if len(arr) == 3:
             agents_info = """<div class="registered-agents">"""
