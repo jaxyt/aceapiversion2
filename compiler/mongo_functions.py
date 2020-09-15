@@ -197,8 +197,10 @@ def compiler_v3(s, t, r, arr):
                 comp = re.sub(r"XXstateacronymXX", "", comp)
         elif len(arr) == 5:
             agents_info = """<div class="registered-agents">"""
-            for k in lev_and_cos_search(arr[4]):
-                i = k
+            k = arr[3]
+            query = re.compile(arr[4], re.IGNORECASE)
+            #for k in lev_and_cos_search(arr[4]):
+            for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
