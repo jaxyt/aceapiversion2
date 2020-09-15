@@ -56,7 +56,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'aceapiversion2.middleware.ProfilerMiddleware',
 ]
 
 ROOT_URLCONF = 'aceapiversion2.urls'
