@@ -200,7 +200,7 @@ def compiler_v3(s, t, r, arr):
             k = arr[3]
             import string
             s = arr[4]
-            out = s.translate(string.maketrans("",""), string.punctuation)
+            out = s.translate(None, string.punctuation)
             out = out.strip(r"\s+")
             q = "|".join(out.split(r"\s+"))
             query = re.compile(q, re.IGNORECASE)
