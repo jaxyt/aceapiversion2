@@ -541,7 +541,7 @@
       let footer = page.children[7].children[1].children[0];
       let del = page.children[9].children[1].children[0];
       let content = page.children[8].children[1].children[0];
-      page.style = "display: none;"
+      page.style = "display: none;";
       let pageOpt = document.createElement("option");
       pageOpt.value = `${i}`;
       pageOpt.text = `${i}: ${route.value}`;
@@ -616,6 +616,14 @@
   document.querySelector("#page-select-tag").addEventListener("change", (e)=> {
     let pageSelector = document.querySelector("#page-select-tag");
     let selectedPage = pageSelector.value;
+    for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        if (pageSelector.value == i) {
+            page.style = "";
+        } else {
+            page.style = "display: none;";
+        }
+    }
     let formTarget2 = document.querySelector(`#id_pages-${selectedPage}-content`);
     let formEditorArea = document.querySelector("div.elementor-element.elementor-element-f3025de.elementor-widget.elementor-widget-html").children[0];
     formEditorArea.children[0].remove();
