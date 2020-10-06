@@ -22,7 +22,7 @@ coll_cp = db.registeredagents_corporation
 coll_tel = db.registeredagents_telecomcorps
 
 
-def compiler_v4(req, kwargs):
+def compiler_v4(req):
     compiled = [
         """<!doctype html><html lang="en"><head><!-- Required meta tags --><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></head><body>""",
         """<div>Hello World</div>""",

@@ -21,8 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('compilev4/<int:site_id>/',views.compile_v4, name="compilerv4home"),
-    path('compilev4/<int:site_id>/<page_route>/',views.compile_v4, name="compilerv4routes"),
+    path('compilev4/',views.compile_v4, name="compilerv4"),
     path('compilev3/',views.test_send, name="test"),
     path('compile/', views.compile, name='compile'),
     path('compilev2/', views.send_page, name='sendpage'),

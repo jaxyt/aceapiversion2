@@ -25,14 +25,9 @@ file_path = os.path.join(module_dir, 'registered_agents.json')
 
 
 def compile_v4(request, *args, **kwargs):
-    for i in args:
-        print(i)
+    print(args)
     print(kwargs)
-    if kwargs['page_route']:
-        return HttpResponse(compiler_v4(request, kwargs), content_type="text/html")
-    else:
-        kwargs['page_route'] = "/"
-        return HttpResponse(compiler_v4(request, kwargs), content_type="text/html")
+    return HttpResponse(compiler_v4(request, kwargs), content_type="text/html")
 
 
 def test_send(request):
