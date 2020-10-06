@@ -28,7 +28,11 @@ def compile_v4(request, *args, **kwargs):
     for i in args:
         print(i)
     print(kwargs)
-    return HttpResponse(compiler_v4(request), content_type="text/html")
+    if kwargs['page_route']:
+        return HttpResponse(compiler_v4(request, kwargs), content_type="text/html")
+    else:
+        kwargs['page_route'] = "/"
+        return HttpResponse(compiler_v4(request, kwargs), content_type="text/html")
 
 
 def test_send(request):
