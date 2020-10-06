@@ -76,7 +76,7 @@ def compile_v4(request, *args, **kwargs):
             response.write(compiled)
             return response
         else:
-            compiled = compiler_v3(site, template, route, page_uri_array)
+            compiled = compiler_v4(site, template, route, page_uri_array)
             return HttpResponse(compiled, content_type="text/html")
     except Exception as e:
         print(e)
