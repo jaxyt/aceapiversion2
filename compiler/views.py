@@ -25,6 +25,9 @@ file_path = os.path.join(module_dir, 'registered_agents.json')
 
 
 def compile_v4(request, *args, **kwargs):
+    for i in args:
+        print(i)
+    print(kwargs)
     return HttpResponse(compiler_v4(request), content_type="text/html")
 
 
