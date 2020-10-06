@@ -27,7 +27,7 @@ file_path = os.path.join(module_dir, 'registered_agents.json')
 def compile_v4(request, *args, **kwargs):
     print(args)
     print(kwargs)
-    return HttpResponse(compiler_v4(request, kwargs), content_type="text/html")
+    return HttpResponse(compiler_v4(request), content_type="text/html")
 
 
 def test_send(request):
