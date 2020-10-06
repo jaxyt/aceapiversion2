@@ -19,8 +19,14 @@ from registeredagents.models import RegisteredAgent, TelecomCorps
 from django.contrib.auth.models import User
 from .forms import SiteForm, TemplateForm, BlogForm, StateForm, CountyForm, CityForm, RegisteredAgentForm, TelecomCorpsForm, UploadFileForm
 import os
+from .raclone import compiler_v4
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'registered_agents.json')
+
+
+def compile_v4(request, *args, **kwargs):
+    return HttpResponse(compiler_v4(request), content_type="text/html")
+
 
 def test_send(request):
     from .mongo_functions import compiler_v3, render_xml_sitemap, replace_shortcodes
