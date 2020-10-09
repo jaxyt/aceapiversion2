@@ -209,7 +209,7 @@ def compiler_v3(s, t, r, arr):
             query = re.compile(q, re.IGNORECASE)
             #for k in lev_and_cos_search(arr[4]):
             for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
-                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
+                slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -237,7 +237,7 @@ def compiler_v3(s, t, r, arr):
             q = corp['searchvalue']
             query = re.compile(q, re.IGNORECASE)
             for i in coll_ra.find({k: query}):
-                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
+                slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -271,7 +271,7 @@ def compiler_v3(s, t, r, arr):
             query = re.compile(q, re.IGNORECASE)
             state_query = re.compile(st.lower(), re.IGNORECASE)
             for i in coll_ra.find({k: query, 'state': state_query}):
-                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
+                slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -308,7 +308,7 @@ def compiler_v3(s, t, r, arr):
             state_query = re.compile(st.lower(), re.IGNORECASE)
             city_query = re.compile(cit.lower(), re.IGNORECASE)
             for i in coll_ra.find({k: query, 'state': state_query, 'city': city_query}):
-                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
+                slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -342,7 +342,7 @@ def compiler_v3(s, t, r, arr):
             st = " ".join(arr[2].split("-"))
             state_query = re.compile(st.lower(), re.IGNORECASE)
             for i in coll_ra.find({'state': state_query}):
-                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
+                slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -374,7 +374,7 @@ def compiler_v3(s, t, r, arr):
             state_query = re.compile(st.lower(), re.IGNORECASE)
             city_query = re.compile(cit.lower(), re.IGNORECASE)
             for i in coll_ra.find({'state': state_query, 'city': city_query}):
-                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
+                slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -438,7 +438,7 @@ def compiler_v3(s, t, r, arr):
             k = arr[3]
             query = re.compile(arr[4], re.IGNORECASE)
             for i in coll_tel.aggregate([{"$match": {"$or" : [{"carriername": query},{"businessname": query},{"holdingcompany": query},{"othertradename1": query},{"othertradename2": query},{"othertradename3": query},{"othertradename4": query},{"dcagent1": query},{"dcagent2": query},{"alternateagent1": query},{"alternateagent2": query}]}},{"$sort": { k: 1 }}]):
-                slug = slugify(f"""{urllib.parse.quote(i['carriername']) if i['carriername'] else (urllib.parse.quote(i['businessname']) if i['businessname'] else "")}-{urllib.parse.quote(i['dcagent1']) if i['dcagent1'] else (urllib.parse.quote(i['dcagent2']) if i['dcagent2'] else "")}-service-of-process-{i['id']}""")
+                slug = slugify(f"""{i['carriername'] if i['carriername'] else (i['businessname'] if i['businessname'] else "")}-{i['dcagent1'] if i['dcagent1'] else (i['dcagent2'] if i['dcagent2'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['carriername'])}">{i['carriername'] if i['carriername'] else ""}</a></li>""",
