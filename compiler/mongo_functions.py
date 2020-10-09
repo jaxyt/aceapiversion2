@@ -17,6 +17,8 @@ import timeit
 from tqdm import tqdm, trange
 from colorama import Fore
 from fuzzywuzzy import process, fuzz
+import urllib.parse
+from django.template.defaultfilters import slugify
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
@@ -166,7 +168,7 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub('XXblogauthorXX', blog_post['blogauthor'] if blog_post['blogauthor'] else "", comp)
     elif arr[1] == "registered-agents":
         if len(arr) == 3:
-            agent = coll_ra.find_one({'id': int(arr[2])})
+            agent = coll_ra.find_one({'id': int(arr[2].split("-")[-1])})
             agent_info = "".join([
                 f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">""",
                 f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{agent['company']}">{agent['company'].title()}</a></li>""" if agent['company'] else "",
@@ -207,6 +209,7 @@ def compiler_v3(s, t, r, arr):
             query = re.compile(q, re.IGNORECASE)
             #for k in lev_and_cos_search(arr[4]):
             for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
+                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -214,7 +217,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
                     f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else "",
                     f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
                     "</ul>"
                 ])
             agents_info += "</div>"
@@ -234,6 +237,7 @@ def compiler_v3(s, t, r, arr):
             q = corp['searchvalue']
             query = re.compile(q, re.IGNORECASE)
             for i in coll_ra.find({k: query}):
+                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -247,7 +251,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
                     f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
                     f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
                     "</ul>"
                 ])
             agents_info += "</div>"
@@ -267,6 +271,7 @@ def compiler_v3(s, t, r, arr):
             query = re.compile(q, re.IGNORECASE)
             state_query = re.compile(st.lower(), re.IGNORECASE)
             for i in coll_ra.find({k: query, 'state': state_query}):
+                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -280,7 +285,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
                     f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
                     f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
                     "</ul>"
                 ])
             agents_info += "</div>"
@@ -303,6 +308,7 @@ def compiler_v3(s, t, r, arr):
             state_query = re.compile(st.lower(), re.IGNORECASE)
             city_query = re.compile(cit.lower(), re.IGNORECASE)
             for i in coll_ra.find({k: query, 'state': state_query, 'city': city_query}):
+                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -316,7 +322,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
                     f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
                     f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
                     "</ul>"
                 ])
             agents_info += "</div>"
@@ -336,6 +342,7 @@ def compiler_v3(s, t, r, arr):
             st = " ".join(arr[2].split("-"))
             state_query = re.compile(st.lower(), re.IGNORECASE)
             for i in coll_ra.find({'state': state_query}):
+                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -349,7 +356,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
                     f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
                     f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
                     "</ul>"
                 ])
             agents_info += "</div>"
@@ -367,6 +374,7 @@ def compiler_v3(s, t, r, arr):
             state_query = re.compile(st.lower(), re.IGNORECASE)
             city_query = re.compile(cit.lower(), re.IGNORECASE)
             for i in coll_ra.find({'state': state_query, 'city': city_query}):
+                slug = slugify(f"""{urllib.parse.quote(i['company']) if i['company'] else (urllib.parse.quote(i['agency']) if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
@@ -380,7 +388,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
                     f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
                     f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
                     "</ul>"
                 ])
             agents_info += "</div>"
@@ -388,9 +396,9 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub('XXstatequeryXX', st.title(), comp)
             comp = re.sub('XXcityqueryXX', cit.title(), comp)
     elif arr[1] == "telecom-agents":
-        import urllib.parse
+        
         if len(arr) == 3:
-            agent = coll_tel.find_one({'id': int(arr[2])})
+            agent = coll_tel.find_one({'id': int(arr[2].split("-")[-1])})
             agent_info = "".join([
                 f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">""",
                 f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['carriername'])}">{agent['carriername'] if agent['carriername'] else ""}</a></li>""",
@@ -430,6 +438,7 @@ def compiler_v3(s, t, r, arr):
             k = arr[3]
             query = re.compile(arr[4], re.IGNORECASE)
             for i in coll_tel.aggregate([{"$match": {"$or" : [{"carriername": query},{"businessname": query},{"holdingcompany": query},{"othertradename1": query},{"othertradename2": query},{"othertradename3": query},{"othertradename4": query},{"dcagent1": query},{"dcagent2": query},{"alternateagent1": query},{"alternateagent2": query}]}},{"$sort": { k: 1 }}]):
+                slug = slugify(f"""{urllib.parse.quote(i['carriername']) if i['carriername'] else (urllib.parse.quote(i['businessname']) if i['businessname'] else "")}-{urllib.parse.quote(i['dcagent1']) if i['dcagent1'] else (urllib.parse.quote(i['dcagent2']) if i['dcagent2'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
                     f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['carriername'])}">{i['carriername'] if i['carriername'] else ""}</a></li>""",
@@ -446,7 +455,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="dcagent2">Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['dcagent2'])}">{i['dcagent2']}</a></li>""" if i['dcagent2'] else "",
                     f"""<li class="alternateagent1">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent1'])}">{i['alternateagent1']}</a></li>""" if i['alternateagent1'] else "",
                     f"""<li class="alternateagent2">Alt Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent2'])}">{i['alternateagent2']}</a></li>""" if i['alternateagent2'] else "",
-                    f"""<li class="agent-details"><a href="/telecom-agents/{i['id']}"><button>Go to Details</button></a></li>""",
+                    f"""<li class="agent-details"><a href="/telecom-agents/{slug}"><button>Go to Details</button></a></li>""",
                     "</ul>"
                 ])
             agents_info += "</div>"
@@ -548,14 +557,14 @@ def render_xml_sitemap(s, t, rt):
                 for n in ["company", "agency", "state", "city"]:
                     sitemap_urls.append("".join(list(map(lambda k: "".join([f"""<url><loc>https://www.{s.sitename}.com""", urllib.parse.quote(f"""/registered-agents/search/{n}/{k.lower()}"""), "</loc></url>"]), coll_ra.find().distinct(n)))))
             else:
-                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/registered-agents/{n['id']}</loc></url>""", coll_ra.find()))))
+                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/registered-agents/service-of-process-{n['id']}</loc></url>""", coll_ra.find()))))
         elif re.search(r'^/telecom-agents/', i.route) is not None:
             if re.search(r'^/telecom-agents/search', i.route) is not None:
                 import urllib.parse
                 for n in ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate']:
                     sitemap_urls.append("".join(list(map(lambda k: "".join([f"""<url><loc>https://www.{s.sitename}.com""", urllib.parse.quote(f"""/telecom-agents/search/{n}/{k.lower()}"""), "</loc></url>"]), coll_tel.find().distinct(n)))))
             else:
-                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/telecom-agents/{n['id']}</loc></url>""", coll_tel.find()))))
+                sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/telecom-agents/service-of-process-{n['id']}</loc></url>""", coll_tel.find()))))
         elif re.search(r'^/process-server/', i.route) is not None:
             if re.search(r'^/process-server/id/state/city', i.route) is not None:
                 # nested map lambda functions to get all three layers of permutated dynamic url routes simultaneously
