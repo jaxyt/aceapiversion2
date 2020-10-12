@@ -55,9 +55,6 @@ class PageForm(forms.ModelForm):
         fields = (
             'route', 'title', 'pagemetas', 'pagelinks', 'pagescripts', 'pagestyle', 'pageheader', 'pagefooter', 'content'
         )
-        widgets = {
-            'content': RichTextField(blank=True)
-        }
 
 class Site(models.Model):
 
