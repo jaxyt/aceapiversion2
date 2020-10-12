@@ -7,8 +7,14 @@
 </head>
 <body>
     <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
-        {{ form.as_p }}
+        {{ form }}
         <input type="submit" value="Save" />
     </form>
+    <script>
+        let site = {
+            sitename: '',
+            templateid: '',
+        }
+    </script>
 </body>
 </html>
