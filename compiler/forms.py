@@ -1,4 +1,5 @@
 from django import forms
+from ckeditor.fields import RichTextField
 from sites.models import Site
 from templates.models import Template
 from blogs.models import Blog
@@ -50,3 +51,6 @@ class TelecomCorpsForm(forms.ModelForm):
 class UploadFileForm(forms.Form):
     title = forms.CharField(max_length=50)
     file = forms.FileField()
+
+class RichForm(forms.form):
+    content = RichTextField(blank=True)
