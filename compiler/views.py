@@ -688,6 +688,7 @@ def create_site(request):
 
 def update_site(request):
     if request.COOKIES.get('sessionid'):
+        
         id = request.GET.get('id', '')
         instance = get_object_or_404(Site, id=id)
         form = SiteForm(request.POST or None, instance=instance)
