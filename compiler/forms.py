@@ -52,5 +52,5 @@ class UploadFileForm(forms.Form):
     title = forms.CharField(max_length=50)
     file = forms.FileField()
 
-class RichForm(forms.form):
+class RichForm(forms.Form):
     content = RichTextField(blank=True)
