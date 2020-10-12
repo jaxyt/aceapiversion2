@@ -17,7 +17,7 @@ from counties.models import County
 from cities.models import City
 from registeredagents.models import RegisteredAgent, TelecomCorps
 from django.contrib.auth.models import User
-from .forms import SiteForm, TemplateForm, BlogForm, StateForm, CountyForm, CityForm, RegisteredAgentForm, TelecomCorpsForm, UploadFileForm
+from .forms import SiteForm, TemplateForm, BlogForm, StateForm, CountyForm, CityForm, RegisteredAgentForm, TelecomCorpsForm, UploadFileForm, RichForm
 import os
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'registered_agents.json')
@@ -688,7 +688,7 @@ def create_site(request):
 
 def update_site(request):
     if request.COOKIES.get('sessionid'):
-        
+
         id = request.GET.get('id', '')
         instance = get_object_or_404(Site, id=id)
         form = SiteForm(request.POST or None, instance=instance)
@@ -1100,11 +1100,7 @@ def update_editor(request):
 
 def update_nice(request):
     if request.COOKIES.get('sessionid'):
-        id = request.GET.get('id', '')
-        instance = get_object_or_404(Site, id=id)
-        form = SiteForm(request.POST or None, instance=instance)
-        if form.is_valid():
-            form.save()
+        form = RichForm()
 
         context = {
             'form': form
