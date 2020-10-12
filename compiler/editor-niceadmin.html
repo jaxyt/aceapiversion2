@@ -13,8 +13,23 @@
     <script>
         let site = {
             sitename: '',
-            templateid: '',
+            sitelinks: '',
+            sitemetas: '',
+            sitescripts: '',
+            sitestyle: '',
+            siteheader: '',
+            sitefooter: '',
+            pages: []
         }
+        let initial_sitename = document.querySelector("input[name='sitename']").value
+        let initial_sitelinks = document.querySelector("input[name='sitelinks']").value
+        let initial_sitemetas = document.querySelector("input[name='sitemetas']").value
+        let initial_sitescripts = document.querySelector("input[name='sitescripts']").value
+        let initial_sitestyle = document.querySelector("input[name='sitestyle']").value
+        let initial_siteheader = document.querySelector("input[name='siteheader']").value
+        let initial_sitefooter = document.querySelector("input[name='sitefooter']").value
+        site['sitename'] = `${initial_sitename}`;
+        console.log(site['sitename'])
     </script>
 </body>
 </html>
