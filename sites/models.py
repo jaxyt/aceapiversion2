@@ -1,6 +1,5 @@
 from djongo import models
 from django import forms
-from ckeditor.fields import RichTextField
 
 # Create your models here.
 class Shortcode(models.Model):
@@ -55,9 +54,6 @@ class PageForm(forms.ModelForm):
         fields = (
             'route', 'title', 'pagemetas', 'pagelinks', 'pagescripts', 'pagestyle', 'pageheader', 'pagefooter', 'content'
         )
-        widgets = {
-            'content': RichTextField(blank=True)
-        }
 
 class Site(models.Model):
 
