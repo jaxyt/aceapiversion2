@@ -5,37 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css"
-        href="{% static 'niceadmin/assets/libs/ckeditor/samples/toolbarconfigurator/lib/codemirror/neo.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'niceadmin/assets/libs/ckeditor/samples/css/samples.css' %}">
 </head>
 <body>
     <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
         {{ form }}
         <input type="submit" value="Save" />
     </form>
-    <script type="text/javascript"
-        src="{% static 'niceadmin/assets/libs/ckeditor/ckeditor.js' %}"></script>
-    <script type="text/javascript"
-        src="{% static 'niceadmin/assets/libs/ckeditor/samples/js/sample.js' %}"></script>
-    <script>
-        //default
-        initSample();
-
-        //inline editor
-        // We need to turn off the automatic editor creation first.
-        CKEDITOR.disableAutoInline = true;
-        
-    </script>
-    <script>
-        let pages = document.querySelector("table.pages-array-model-field").children;
-        for (i=0; i < pages.length; i++){
-            const page = pages[i]
-            let content = page.children[8].children[1].children[0];
-            CKEDITOR.replace(`${content.id}`, {
-                height: 400
-            });
-        }
-    </script>
 </body>
 </html>

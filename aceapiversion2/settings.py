@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'counties',
     'cities',
     'registeredagents',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
