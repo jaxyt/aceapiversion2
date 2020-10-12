@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" type="text/css"
-        href="{% static 'niceadmin/assets/neo.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'niceadmin/assets/samples.css' %}">
+        href="{% static 'niceadmin/assets/libs/ckeditor/samples/toolbarconfigurator/lib/codemirror/neo.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'niceadmin/assets/libs/ckeditor/samples/css/samples.css' %}">
 </head>
 <body>
     <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
@@ -15,9 +15,9 @@
         <input type="submit" value="Save" />
     </form>
     <script type="text/javascript"
-        src="{% static 'niceadmin/assets/ckeditor.js' %}"></script>
+        src="{% static 'niceadmin/assets/libs/ckeditor/ckeditor.js' %}"></script>
     <script type="text/javascript"
-        src="{% static 'niceadmin/assets/sample.js' %}"></script>
+        src="{% static 'niceadmin/assets/libs/ckeditor/samples/js/sample.js' %}"></script>
     <script>
         //default
         initSample();
