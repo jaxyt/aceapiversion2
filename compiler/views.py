@@ -1096,3 +1096,20 @@ def update_editor(request):
     else:
         return HttpResponse('FORBIDDEN')
 
+
+def update_nice(request):
+    if request.COOKIES.get('sessionid'):
+        id = request.GET.get('id', '')
+        instance = get_object_or_404(Site, id=id)
+        form = SiteForm(request.POST or None, instance=instance)
+        if form.is_valid():
+            form.save()
+
+        context = {
+            'form': form
+        }
+
+        return render(request, "editor-niceadmin.html", context)
+    else:
+        return HttpResponse('FORBIDDEN')
+

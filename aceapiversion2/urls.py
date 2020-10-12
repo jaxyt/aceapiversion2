@@ -43,6 +43,7 @@ urlpatterns = [
     path('auth/county/update/', views.update_county, name='county_update'),
     path('auth/city/create/', views.create_city, name='city_create'),
     path('auth/city/update/', views.update_city, name='city_update'),
+    path('auth/nice/update/', views.update_nice, name='nice_update'),
     path('admin/', admin.site.urls),
     path('auth/upload/', views.upload_file, name='file_upload'),
     path('auth/db-sync/', views.home, name='json_to_mongo')
