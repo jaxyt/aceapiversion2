@@ -54,6 +54,9 @@ class PageForm(forms.ModelForm):
         fields = (
             'route', 'title', 'pagemetas', 'pagelinks', 'pagescripts', 'pagestyle', 'pageheader', 'pagefooter', 'content'
         )
+        widgets = {
+            
+        }
 
 class Site(models.Model):
 
