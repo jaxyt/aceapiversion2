@@ -5,12 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        .cm-s-default, .cm-s-3024-night {
-            overflow-x: scroll;
-            overflow-y: scroll;
-        }
-    </style>
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/lib/codemirror.css' %}">
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/theme/3024-night.css' %}">
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/display/fullscreen.css' %}">
@@ -74,7 +68,7 @@
             const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
                 lineNumbers: true,
                 mode: "text/html",
-                scrollBarStyle: "simple"
+                gutters: ["CodeMirror-linenumbers"],
             });
 
             CodeMirror.commands["selectAll"](editor);
@@ -94,6 +88,8 @@
             }
             
             autoFormatSelection();
+
+            editor.setSelection(editor.getCuror("start"))
         }
             
             
