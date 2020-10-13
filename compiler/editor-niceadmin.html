@@ -36,7 +36,7 @@
     -->
 </head>
 <body>
-    <a href="javascript:autoFormatSelected()"></a>
+    <a href="javascript:autoFormatSelected()">Autoformat Selected</a>
     <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
         {{ form }}
         <input type="submit" value="Save" />
@@ -90,8 +90,6 @@
                 scrollbarStyle: "simple"
             });
         }
-
-        CodeMirror.commands["selectAll"](editor);
             
         function getSelectedRange() {
             return { from: editor.getCursor(true), to: editor.getCursor(false) };
