@@ -91,9 +91,12 @@
                 autoFormatSelection();
 
                 editor.setSelection(editor.getCursor("start"))
+                editor.on("change", ()=>{
+                    editor.save();
+                })
 
                 editor.on("blur", ()=>{
-                    editor.toTextArea()
+                    editor.toTextArea();
                 })
 
                 
