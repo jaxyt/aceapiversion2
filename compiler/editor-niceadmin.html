@@ -73,21 +73,6 @@
             const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
                 lineNumbers: true,
                 mode: "text/html",
-                matchBrackets: true,
-                lineWrapping: true,
-                theme: "3024-night",
-                extraKeys: {
-                    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
-                    "F11": function(cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    },
-                    "Esc": function(cm) {
-                        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                    }
-                },
-                foldGutter: true,
-                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                scrollbarStyle: "simple"
             });
 
             CodeMirror.commands["selectAll"](editor);
