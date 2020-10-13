@@ -69,6 +69,7 @@
             const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
                 lineNumbers: true,
                 lineWrapping: true,
+                mode: "text/html",
                 theme: "3024-night",
                 gutters: ["CodeMirror-linenumbers"]
             });
