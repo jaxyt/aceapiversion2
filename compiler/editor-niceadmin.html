@@ -32,9 +32,9 @@
 
     <style>
         #preview {
-            position: fixed;
+            /*position: fixed;
             width: 50vw;
-            height: 30vh;
+            height: 30vh;*/
         }
     </style>
 </head>
@@ -80,6 +80,17 @@
                 let editor = CodeMirror.fromTextArea(e.target, {
                     lineNumbers: true,
                     mode: "htmlmixed",
+                    theme: "3024-night",
+                    matchBrackets: true,
+                    lineWrapping: true,
+                    extraKeys: {
+                        "F11": function(cm) {
+                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                        },
+                        "Esc": function(cm) {
+                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                        }
+                    },
                     gutters: ["CodeMirror-linenumbers"],
                 });
 
