@@ -63,6 +63,7 @@
         for (i=0; i < areas.length; i++){
             const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
                 lineNumbers: true,
+                lineWrapping: true,
                 gutters: ["CodeMirror-linenumbers"]
             });
         }
