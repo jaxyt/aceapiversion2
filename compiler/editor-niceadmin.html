@@ -20,6 +20,7 @@
     <script src="{% static 'codemirror/codemirror-5.57.0/mode/javascript/javascript.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/selection/active-line.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/mode/xml/xml.js' %}"></script>
+    <script src="{% static 'codemirror/codemirror-5.57.0/addon/scroll/simplescrollbars.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/display/fullscreen.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/mode/css/css.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/mode/htmlmixed/htmlmixed.js' %}"></script>
@@ -49,7 +50,8 @@
                     }
                 },
                 foldGutter: true,
-                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                scrollbarStyle: "simple"
             });
         }
     </script>
