@@ -65,6 +65,7 @@
 <body>
     <a href="javascript:autoFormatSelection()">Autoformat Selected</a>
     <iframe id=preview></iframe>
+    <select name="page-select" id="page-select"></select>
     <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
         {{ form }}
         <input type="submit" value="Save" />
@@ -98,6 +99,28 @@
     <script>
         let delay;
         let areas = document.querySelectorAll("textarea");
+        let pages = document.querySelector("table.pages-array-model-field");
+        let pageSelect = document.querySelector("#page-select");
+        for (i=0; i < pages.children.length; i++){
+            page = pages.children[i];
+            let pageOpt = document.createElement("option");
+            pageOpt.value = `${i}`;
+            pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
+            pageSelect.append()
+        }
+        pageSelect.addEventListener("change", (e)=> {
+            pageId = `#id_pages-${e.target.value}-content`;
+            for (i=0; i < pages.children.length; i++){
+                page = pages.children[i];
+                page.style = "display: none";
+            }
+            for (i=0; i < pages.children.length; i++){
+                page = pages.children[i];
+                if(i == e.target.value){
+                    page.style = "";
+                }
+            }
+        })
         for (i=0; i < areas.length; i++){
 
             areas[i].addEventListener("focusin", (e)=> {
