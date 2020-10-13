@@ -126,7 +126,7 @@
             }
         })
         for (i=0; i < areas.length; i++){
-
+            areas[i].rows = 5;
             areas[i].addEventListener("focusin", (e)=> {
                 let editor = CodeMirror.fromTextArea(e.target, {
                     lineNumbers: true,
