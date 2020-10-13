@@ -101,6 +101,8 @@
         let areas = document.querySelectorAll("textarea");
         let pages = document.querySelector("table.pages-array-model-field");
         let pageSelect = document.querySelector("#page-select");
+        let shortCodes = document.querySelector("table.shortcodes-array-model-field");
+        shortCodes.style = "display: none";
         for (i=0; i < pages.children.length; i++){
             page = pages.children[i];
             let pageOpt = document.createElement("option");
