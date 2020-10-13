@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/fold/foldgutter.css' %}" />
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/hint/show-hint.css' %}" />
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/lint/lint.css' %}" />
+    <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/dialog/dialog.css' %}" />
+    <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/search/matchesonscrollbar.css' %}" />
     <!---->
     <script src="{% static 'codemirror/codemirror-5.57.0/lib/codemirror.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/lib/util/formatting.js' %}"></script>
@@ -23,6 +25,14 @@
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/lint/javascript-lint.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/lint/css-lint.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/mode/htmlmixed/htmlmixed.js' %}"></script>
+
+    <script src="{% static 'codemirror/codemirror-5.57.0/addon/dialog/dialog.js' %}"></script>
+    <script src="{% static 'codemirror/codemirror-5.57.0/addon/search/searchcursor.js' %}"></script>
+    <script src="{% static 'codemirror/codemirror-5.57.0/addon/search/search.js' %}"></script>
+    <script src="{% static 'codemirror/codemirror-5.57.0/addon/scroll/annotatescrollbar.js' %}"></script>
+    <script src="{% static 'codemirror/codemirror-5.57.0/addon/search/matchesonscrollbar.js' %}"></script>
+    <script src="{% static 'codemirror/codemirror-5.57.0/addon/search/jump-to-line.js' %}"></script>
+
     <script src="{% static 'codemirror/codemirror-5.57.0/mode/javascript/javascript.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/selection/active-line.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/edit/matchbrackets.js' %}"></script>
@@ -93,6 +103,7 @@
             areas[i].addEventListener("focusin", (e)=> {
                 let editor = CodeMirror.fromTextArea(e.target, {
                     lineNumbers: true,
+                    styleActiveLine: true,
                     mode: "htmlmixed",
                     theme: "3024-night",
                     matchBrackets: true,
@@ -104,10 +115,10 @@
                         "Esc": function(cm) {
                             if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
                         },
-                        "Ctrl-Space": "autocomplete"
+                        "Ctrl-Space": "autocomplete",
+                        "Alt-F": "findPersistent"
                     },
-                    gutters: ["CodeMirror-linenumbers", "CodeMirror-lint-markers"],
-                    lint: true
+                    gutters: ["CodeMirror-linenumbers"],
                 });
 
                 CodeMirror.commands["selectAll"](editor);
