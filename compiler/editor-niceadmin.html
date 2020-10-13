@@ -68,7 +68,6 @@
         let areas = document.querySelectorAll("textarea");
         for (i=0; i < areas.length; i++){
 
-            areas[i].parentElement.parentElement.children[0].insertAdjacentElement()
             areas[i].addEventListener("focusin", (e)=> {
                 let editor = CodeMirror.fromTextArea(e.target, {
                     lineNumbers: true,
