@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/lib/codemirror.css' %}">
-    <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/display/fullscreen.css' %}">
+    <!--<link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/display/fullscreen.css' %}">
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/fold/foldgutter.css' %}" />
-    <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/theme/3024-night.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/theme/3024-night.css' %}">-->
     <script src="{% static 'codemirror/codemirror-5.57.0/lib/codemirror.js' %}"></script>
-    <script src="{% static 'codemirror/codemirror-5.57.0/addon/fold/foldcode.js' %}"></script>
+    <!--<script src="{% static 'codemirror/codemirror-5.57.0/addon/fold/foldcode.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/fold/foldgutter.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/fold/brace-fold.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/fold/xml-fold.js' %}"></script>
@@ -23,7 +23,7 @@
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/scroll/simplescrollbars.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/display/fullscreen.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/mode/css/css.js' %}"></script>
-    <script src="{% static 'codemirror/codemirror-5.57.0/mode/htmlmixed/htmlmixed.js' %}"></script>
+    <script src="{% static 'codemirror/codemirror-5.57.0/mode/htmlmixed/htmlmixed.js' %}"></script>-->
 </head>
 <body>
     <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
@@ -31,11 +31,35 @@
         <input type="submit" value="Save" />
     </form>
     <script>
-        console.log(document.querySelector("table.pages-array-model-field"));
+        /*console.log(document.querySelector("table.pages-array-model-field"));
         let areas = document.querySelectorAll("textarea");
         let pages = document.querySelector("table.pages-array-model-field");
         for (i=0; i < 2; i++){
             const editor = CodeMirror.fromTextArea(document.getElementById(`${pages.children[i].children[8].children[1].children[0].id}`), {
+                lineNumbers: true,
+                mode: "text/html",
+                matchBrackets: true,
+                lineWrapping: true,
+                theme: "3024-night",
+                extraKeys: {
+                    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
+                    "F11": function(cm) {
+                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    },
+                    "Esc": function(cm) {
+                        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                    }
+                },
+                foldGutter: true,
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                scrollbarStyle: "simple"
+            });
+        }*/
+    </script>
+    <script>
+        let areas = document.querySelectorAll("textarea");
+        for (i=0; i < areas.length; i++){
+            const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
                 lineNumbers: true,
                 mode: "text/html",
                 matchBrackets: true,
