@@ -89,21 +89,23 @@
                 gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
                 scrollbarStyle: "simple"
             });
+
+            function getSelectedRange() {
+                return { from: editor.getCursor(true), to: editor.getCursor(false) };
+            }
+            
+            function autoFormatSelection() {
+                var range = getSelectedRange();
+                editor.autoFormatRange(range.from, range.to);
+            }
+            
+            function commentSelection(isComment) {
+                var range = getSelectedRange();
+                editor.commentRange(isComment, range.from, range.to);
+            } 
         }
             
-        function getSelectedRange() {
-            return { from: editor.getCursor(true), to: editor.getCursor(false) };
-        }
-        
-        function autoFormatSelection() {
-            var range = getSelectedRange();
-            editor.autoFormatRange(range.from, range.to);
-        }
-        
-        function commentSelection(isComment) {
-            var range = getSelectedRange();
-            editor.commentRange(isComment, range.from, range.to);
-        }     
+            
     </script>
 </body>
 </html>
