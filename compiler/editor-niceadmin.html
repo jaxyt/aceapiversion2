@@ -68,7 +68,7 @@
             areas[i].addEventListener("focusin", (e)=> {
                 let editor = CodeMirror.fromTextArea(e.target, {
                     lineNumbers: true,
-                    mode: "text/html",
+                    mode: "htmlmixed",
                     gutters: ["CodeMirror-linenumbers"],
                 });
 
