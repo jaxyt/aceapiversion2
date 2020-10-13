@@ -32,6 +32,7 @@
 </head>
 <body>
     <a href="javascript:autoFormatSelection()">Autoformat Selected</a>
+    <iframe id=preview></iframe>
     <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
         {{ form }}
         <input type="submit" value="Save" />
@@ -63,8 +64,11 @@
         }*/
     </script>
     <script>
+        let delay;
         let areas = document.querySelectorAll("textarea");
         for (i=0; i < areas.length; i++){
+
+            areas[i].parentElement.parentElement.children[0].insertAdjacentElement()
             areas[i].addEventListener("focusin", (e)=> {
                 let editor = CodeMirror.fromTextArea(e.target, {
                     lineNumbers: true,
@@ -93,6 +97,15 @@
                 editor.setSelection(editor.getCursor("start"))
                 editor.on("change", ()=>{
                     editor.save();
+                    clearTimeout(delay);
+                    delay = setTimeout(()=>{
+                        var previewFrame = document.getElementById('preview');
+                        var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
+                        preview.open();
+                        preview.write(editor.getValue());
+                        preview.close();
+                    }, 300)
+
                 })
 
                 editor.on("blur", ()=>{
