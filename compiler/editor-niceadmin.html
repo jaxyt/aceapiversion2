@@ -127,7 +127,13 @@
                 })
 
                 editor.on("blur", ()=>{
-                    editor.toTextArea();
+                    clearTimeout(delay)
+                    delay = setTimeout(()=>{
+                        if(!editor.hasFocus()){
+                            editor.toTextArea();
+                        }
+                    }, 3000)
+                    
                 })
 
                 
