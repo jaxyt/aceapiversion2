@@ -60,10 +60,19 @@
         #editingform {
             /*display: grid;*/
         }
+
+        iframe.modal-display {
+            position: absolute;
+            width: 50vw;
+            height: 50vh;
+            z-index: 2;
+            background-color: aliceblue;
+        }
     </style>
 </head>
 <body>
     <a href="javascript:autoFormatSelection()">Autoformat Selected</a>
+    <a href="javascript:blowUpPreview()">Preview Page</a>
     <iframe id=preview></iframe>
     <select name="page-select" id="page-select"></select>
     <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
@@ -193,33 +202,15 @@
                 
             })
             
-
-            /*const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
-                lineNumbers: true,
-                mode: "text/html",
-                gutters: ["CodeMirror-linenumbers"],
-            });
-
-            CodeMirror.commands["selectAll"](editor);
-
-            function getSelectedRange() {
-                return { from: editor.getCursor(true), to: editor.getCursor(false) };
-            }
-            
-            function autoFormatSelection() {
-                var range = getSelectedRange();
-                editor.autoFormatRange(range.from, range.to);
-            }
-            
-            function commentSelection(isComment) {
-                var range = getSelectedRange();
-                editor.commentRange(isComment, range.from, range.to);
-            }
-            
-            autoFormatSelection();
-
-            editor.setSelection(editor.getCursor("start"))*/
         }
+
+        function blowUpPreview(){
+            var prevFrame = document.getElementById('preview');
+            prevFrame.classList.toggle("modal-display");
+        }
+
+        
+        
             
             
     </script>
