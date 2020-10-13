@@ -106,7 +106,7 @@
             let pageOpt = document.createElement("option");
             pageOpt.value = `${i}`;
             pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
-            pageSelect.append()
+            pageSelect.append(pageOpt);
         }
         pageSelect.addEventListener("change", (e)=> {
             pageId = `#id_pages-${e.target.value}-content`;
