@@ -32,7 +32,7 @@
     <script>
         console.log(document.querySelector("table.pages-array-model-field"));
         let areas = document.querySelectorAll("textarea");
-        for (i=0; i < areas.length(); i++){
+        for (i=0; i < areas.length; i++){
             const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
                 lineNumbers: true,
                 mode: "text/html",
