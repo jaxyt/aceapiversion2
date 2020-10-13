@@ -65,7 +65,37 @@
     <script>
         let areas = document.querySelectorAll("textarea");
         for (i=0; i < areas.length; i++){
-            const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
+            areas[i].addEventListener("focusin", (e)=> {
+                let editor = CodeMirror.fromTextArea(e.target, {
+                    lineNumbers: true,
+                    mode: "text/html",
+                    gutters: ["CodeMirror-linenumbers"],
+                });
+
+                CodeMirror.commands["selectAll"](editor);
+
+                function getSelectedRange() {
+                    return { from: editor.getCursor(true), to: editor.getCursor(false) };
+                }
+                
+                function autoFormatSelection() {
+                    var range = getSelectedRange();
+                    editor.autoFormatRange(range.from, range.to);
+                }
+                
+                function commentSelection(isComment) {
+                    var range = getSelectedRange();
+                    editor.commentRange(isComment, range.from, range.to);
+                }
+                
+                autoFormatSelection();
+
+                editor.setSelection(editor.getCursor("start"))
+
+                
+            })
+
+            /*const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
                 lineNumbers: true,
                 mode: "text/html",
                 gutters: ["CodeMirror-linenumbers"],
@@ -89,7 +119,7 @@
             
             autoFormatSelection();
 
-            editor.setSelection(editor.getCursor("start"))
+            editor.setSelection(editor.getCursor("start"))*/
         }
             
             
