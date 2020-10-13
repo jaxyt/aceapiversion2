@@ -92,8 +92,13 @@
 
                 editor.setSelection(editor.getCursor("start"))
 
+                editor.on("blur", ()=>{
+                    editor.toTextArea()
+                })
+
                 
             })
+            
 
             /*const editor = CodeMirror.fromTextArea(document.getElementById(`${areas[i].id}`), {
                 lineNumbers: true,
