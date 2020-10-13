@@ -35,7 +35,7 @@
         let areas = document.querySelectorAll("textarea");
         let pages = document.querySelector("table.pages-array-model-field");
         for (i=0; i < pages.children.length; i++){
-            const editor = CodeMirror.fromTextArea(document.getElementById(`${pages.children[i].id}`), {
+            const editor = CodeMirror.fromTextArea(document.getElementById(`${pages.children[i].children[8].children[1].children[0].id}`), {
                 lineNumbers: true,
                 mode: "text/html",
                 matchBrackets: true,
