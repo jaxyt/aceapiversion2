@@ -90,6 +90,8 @@
                 scrollbarStyle: "simple"
             });
 
+            CodeMirror.commands["selectAll"](editor);
+
             function getSelectedRange() {
                 return { from: editor.getCursor(true), to: editor.getCursor(false) };
             }
@@ -102,7 +104,9 @@
             function commentSelection(isComment) {
                 var range = getSelectedRange();
                 editor.commentRange(isComment, range.from, range.to);
-            } 
+            }
+            
+            autoFormatSelection();
         }
             
             
