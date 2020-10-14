@@ -1793,13 +1793,13 @@
                                 pageSelect.append(pageOpt);*/
                                 pagesBar[i].id = `${i}`;
                                 pagesBar[i].addEventListener("click", (e)=>{
-                                    pageId = `#id_pages-${e.target.id}-content`;
-                                    for (i=0; i < pages.children.length; i++){
-                                        page = pages.children[i];
+                                    pageId = `#id_pages-${pagesBar[i].id}-content`;
+                                    for (n=0; n < pages.children.length - 1; n++){
+                                        page = pages.children[n];
                                         page.style = "display: none";
                                     }
-                                    for (i=0; i < pages.children.length; i++){
-                                        page = pages.children[i];
+                                    for (n=0; n < pages.children.length - 1; n++){
+                                        page = pages.children[n];
                                         if(i == e.target.id){
                                             page.style = "";
                                         }
