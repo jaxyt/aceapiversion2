@@ -1856,7 +1856,7 @@
                             
                             for (i=0; i < areas.length; i++){
                                 areas[i].rows = 5;
-                                if(areas[i].parentElement.nodeName === "TD"){
+                                if(`${areas[i].id}`.match(/id_pages-\d-content/g)){
                                     
                                     areas[i].addEventListener("focusin", (e)=> {
                                         if(oldEditor){
