@@ -1782,6 +1782,9 @@
                             let pages = document.querySelector("table.pages-array-model-field");
                             let pageSelect = document.querySelector("#page-select");
                             let shortCodes = document.querySelector("table.shortcodes-array-model-field");
+                            let pagesBar = document.querySelectorAll("#pages-bar ul li.sidebar-item");
+                            let shortcodesBar = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
+                            console.log(pagesBar);
                             shortCodes.style = "display: none";
                             for (i=0; i < pages.children.length; i++){
                                 page = pages.children[i];
