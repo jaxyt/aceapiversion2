@@ -1787,7 +1787,7 @@
                             <button type="submit" class="btn btn-dark m-t-20">Discard</button>
                         </form>
                         <script>
-                            //let delay;
+                            let delay;
                             //let closeDelay;
                             let oldEditor;
                             let oldText;
@@ -1918,7 +1918,64 @@
                                         oldEditor = editor;
                                         oldText = textAr;
 
+                                    })
+                                } else {
+                                    areas[i].addEventListener("focusin", (e)=> {
+
+                                        let textAr = e.target;
+                                        let editor = CodeMirror.fromTextArea(e.target, {
+                                            lineNumbers: true,
+                                            styleActiveLine: true,
+                                            mode: "htmlmixed",
+                                            theme: "3024-night",
+                                            matchBrackets: true,
+                                            lineWrapping: true,
+                                            extraKeys: {
+                                                "F11": function(cm) {
+                                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                                },
+                                                "Esc": function(cm) {
+                                                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                                                },
+                                                "Ctrl-Space": "autocomplete",
+                                                "Alt-F": "findPersistent"
+                                            },
+                                            gutters: ["CodeMirror-linenumbers"],
+                                        });
+
+                                        CodeMirror.commands["selectAll"](editor);
+
+                                        function getSelectedRange() {
+                                            return { from: editor.getCursor(true), to: editor.getCursor(false) };
+                                        }
                                         
+                                        function autoFormatSelection() {
+                                            var range = getSelectedRange();
+                                            editor.autoFormatRange(range.from, range.to);
+                                        }
+                                        
+                                        function commentSelection(isComment) {
+                                            var range = getSelectedRange();
+                                            editor.commentRange(isComment, range.from, range.to);
+                                        }
+                                        
+                                        autoFormatSelection();
+
+                                        editor.setSelection(editor.getCursor("start"))
+                                        editor.on("change", ()=>{
+                                            editor.save();
+
+                                        })
+
+                                        editor.on("blur", ()=>{
+                                            clearTimeout(delay)
+                                            delay = setTimeout(()=>{
+                                                if(!editor.hasFocus()){
+                                                    editor.toTextArea();
+                                                }
+                                            }, 10000)
+                                            
+                                        })
 
                                         
                                     })
