@@ -1804,6 +1804,7 @@
                                 let editingLabels = document.querySelectorAll("#editingform label");
                                 let editingInputs = document.querySelectorAll("#editingform input");
                                 let editingtexts = document.querySelectorAll("#editingform textarea");
+                                let editingTBodies = document.querySelectorAll("#editingform tbody");
 
                                 for (i=0; i < editingLabels.length; i++){
                                     editingLabels[i].classList.add("editing-form-inactive");
@@ -1813,6 +1814,10 @@
                                 }
                                 for (i=0; i < editingtexts.length; i++){
                                     editingtexts[i].classList.add("editing-form-inactive");
+                                }
+
+                                for (i=0; i < editingTBodies.length; i++){
+                                    editingTBodies[i].classList.add("editing-form-inactive");
                                 }
                             }
                             
