@@ -1856,87 +1856,73 @@
                             
                             for (i=0; i < areas.length; i++){
                                 areas[i].rows = 5;
-                                areas[i].addEventListener("focusin", (e)=> {
-                                    if(oldEditor){
-                                        oldEditor.toTextArea();
-                                    }
-                                    if (oldText) {
-                                        oldText.classList.add("editing-form-inactive");
-                                        oldText.parentElement.parentElement.parentElement.classList.add("editing-form-inactive");
-                                        page.parentElement.parentElement.parentElement.children[0].children[1].children[0].classList.add("editing-form-inactive");
-                                        page.parentElement.parentElement.parentElement.children[1].children[1].children[0].classList.add("editing-form-inactive");
-                                        page.parentElement.parentElement.parentElement.children[2].children[1].children[0].classList.add("editing-form-inactive");
-                                    }
+                                if(areas[i].parentElement.nodeName === "TD"){
+                                    
+                                    areas[i].addEventListener("focusin", (e)=> {
+                                        if(oldEditor){
+                                            oldEditor.toTextArea();
+                                        }
+                                        if (oldText) {
+                                            oldText.classList.add("editing-form-inactive");
+                                            oldText.parentElement.parentElement.parentElement.classList.add("editing-form-inactive");
+                                            page.parentElement.parentElement.parentElement.children[0].children[1].children[0].classList.add("editing-form-inactive");
+                                            page.parentElement.parentElement.parentElement.children[1].children[1].children[0].classList.add("editing-form-inactive");
+                                            page.parentElement.parentElement.parentElement.children[2].children[1].children[0].classList.add("editing-form-inactive");
+                                        }
 
-                                    let textAr = e.target;
-                                    let editor = CodeMirror.fromTextArea(e.target, {
-                                        lineNumbers: true,
-                                        styleActiveLine: true,
-                                        mode: "htmlmixed",
-                                        theme: "3024-night",
-                                        matchBrackets: true,
-                                        lineWrapping: true,
-                                        extraKeys: {
-                                            "F11": function(cm) {
-                                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                        let textAr = e.target;
+                                        let editor = CodeMirror.fromTextArea(e.target, {
+                                            lineNumbers: true,
+                                            styleActiveLine: true,
+                                            mode: "htmlmixed",
+                                            theme: "3024-night",
+                                            matchBrackets: true,
+                                            lineWrapping: true,
+                                            extraKeys: {
+                                                "F11": function(cm) {
+                                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                                },
+                                                "Esc": function(cm) {
+                                                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                                                },
+                                                "Ctrl-Space": "autocomplete",
+                                                "Alt-F": "findPersistent"
                                             },
-                                            "Esc": function(cm) {
-                                                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                                            },
-                                            "Ctrl-Space": "autocomplete",
-                                            "Alt-F": "findPersistent"
-                                        },
-                                        gutters: ["CodeMirror-linenumbers"],
-                                    });
+                                            gutters: ["CodeMirror-linenumbers"],
+                                        });
 
-                                    CodeMirror.commands["selectAll"](editor);
+                                        CodeMirror.commands["selectAll"](editor);
 
-                                    function getSelectedRange() {
-                                        return { from: editor.getCursor(true), to: editor.getCursor(false) };
-                                    }
-                                    
-                                    function autoFormatSelection() {
-                                        var range = getSelectedRange();
-                                        editor.autoFormatRange(range.from, range.to);
-                                    }
-                                    
-                                    function commentSelection(isComment) {
-                                        var range = getSelectedRange();
-                                        editor.commentRange(isComment, range.from, range.to);
-                                    }
-                                    
-                                    autoFormatSelection();
-
-                                    editor.setSelection(editor.getCursor("start"))
-                                    editor.on("change", ()=>{
-                                        editor.save();
-                                        /*clearTimeout(delay);
-                                        delay = setTimeout(()=>{
-                                            var previewFrame = document.getElementById('preview');
-                                            var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
-                                            preview.open();
-                                            preview.write(editor.getValue());
-                                            preview.close();
-                                        }, 300)*/
-
-                                    })
-
-                                    oldEditor = editor;
-                                    oldText = textAr;
-
-                                    /*editor.on("blur", ()=>{
-                                        clearTimeout(closeDelay)
-                                        delay = setTimeout(()=>{
-                                            if(!editor.hasFocus()){
-                                                editor.toTextArea();
-                                                textAr.classList.add("editing-form-inactive");
-                                            }
-                                        }, 10000)
+                                        function getSelectedRange() {
+                                            return { from: editor.getCursor(true), to: editor.getCursor(false) };
+                                        }
                                         
-                                    })*/
+                                        function autoFormatSelection() {
+                                            var range = getSelectedRange();
+                                            editor.autoFormatRange(range.from, range.to);
+                                        }
+                                        
+                                        function commentSelection(isComment) {
+                                            var range = getSelectedRange();
+                                            editor.commentRange(isComment, range.from, range.to);
+                                        }
+                                        
+                                        autoFormatSelection();
 
-                                    
-                                })
+                                        editor.setSelection(editor.getCursor("start"))
+                                        editor.on("change", ()=>{
+                                            editor.save();
+
+                                        })
+
+                                        oldEditor = editor;
+                                        oldText = textAr;
+
+                                        
+
+                                        
+                                    })
+                                }
                                 
                             }
 
