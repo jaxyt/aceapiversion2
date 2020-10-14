@@ -1788,12 +1788,28 @@
                             shortCodes.style = "display: none";
                             for (i=0; i < pages.children.length; i++){
                                 page = pages.children[i];
-                                let pageOpt = document.createElement("option");
+                                /*let pageOpt = document.createElement("option");
                                 pageOpt.value = `${i}`;
                                 pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
-                                pageSelect.append(pageOpt);
+                                pageSelect.append(pageOpt);*/
+                                pagesBar[i].id = `${i}`;
+                                pagesBar[i].addEventListener("click", (e)=>{
+                                    pageId = `#id_pages-${e.target.id}-content`;
+                                    for (i=0; i < pages.children.length; i++){
+                                        page = pages.children[i];
+                                        page.style = "display: none";
+                                    }
+                                    for (i=0; i < pages.children.length; i++){
+                                        page = pages.children[i];
+                                        if(i == e.target.id){
+                                            page.style = "";
+                                        }
+                                        page.children[8].scrollIntoView();
+                                        page.children[8].children[1].children[0].focus();
+                                    }
+                                })
                             }
-                            pageSelect.addEventListener("change", (e)=> {
+                            /*pageSelect.addEventListener("change", (e)=> {
                                 pageId = `#id_pages-${e.target.value}-content`;
                                 for (i=0; i < pages.children.length; i++){
                                     page = pages.children[i];
@@ -1807,7 +1823,7 @@
                                     page.children[8].scrollIntoView();
                                     page.children[8].children[1].children[0].focus();
                                 }
-                            })
+                            })*/
                             for (i=0; i < areas.length; i++){
                                 areas[i].rows = 5;
                                 areas[i].addEventListener("focusin", (e)=> {
