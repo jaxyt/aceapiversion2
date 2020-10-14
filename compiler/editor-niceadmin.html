@@ -1843,39 +1843,17 @@
                                     page = document.querySelector(pageId);
                                     page.classList.remove("editing-form-inactive");
                                     page.parentElement.parentElement.parentElement.classList.remove("editing-form-inactive");
+                                    page.parentElement.parentElement.parentElement.children[0].children[1].children[0].classList.remove("editing-form-inactive");
+                                    page.parentElement.parentElement.parentElement.children[1].children[1].children[0].classList.remove("editing-form-inactive");
+                                    page.parentElement.parentElement.parentElement.children[2].children[1].children[0].classList.remove("editing-form-inactive");
                                     page.scrollIntoView();
                                     page.focus();
                                 }
                                 
-                                /*for (i=0; i < pages.children.length; i++){
-                                    page = pages.children[i];
-                                    page.style = "display: none";
-                                }*/
-                                /*for (i=0; i < pages.children.length; i++){
-                                    page = pages.children[i];
-                                    if(i == e.target.id){
-                                        page.style = "";
-                                    }
-                                    page.children[8].scrollIntoView();
-                                    page.children[8].children[1].children[0].focus();
-                                }*/
+                                
                             })
 
-                            /*pageSelect.addEventListener("change", (e)=> {
-                                pageId = `#id_pages-${e.target.value}-content`;
-                                for (i=0; i < pages.children.length; i++){
-                                    page = pages.children[i];
-                                    page.style = "display: none";
-                                }
-                                for (i=0; i < pages.children.length; i++){
-                                    page = pages.children[i];
-                                    if(i == e.target.value){
-                                        page.style = "";
-                                    }
-                                    page.children[8].scrollIntoView();
-                                    page.children[8].children[1].children[0].focus();
-                                }
-                            })*/
+                            
                             for (i=0; i < areas.length; i++){
                                 areas[i].rows = 5;
                                 areas[i].addEventListener("focusin", (e)=> {
@@ -1885,6 +1863,9 @@
                                     if (oldText) {
                                         oldText.classList.add("editing-form-inactive");
                                         oldText.parentElement.parentElement.parentElement.classList.add("editing-form-inactive");
+                                        page.parentElement.parentElement.parentElement.children[0].children[1].children[0].classList.add("editing-form-inactive");
+                                        page.parentElement.parentElement.parentElement.children[1].children[1].children[0].classList.add("editing-form-inactive");
+                                        page.parentElement.parentElement.parentElement.children[2].children[1].children[0].classList.add("editing-form-inactive");
                                     }
 
                                     let textAr = e.target;
