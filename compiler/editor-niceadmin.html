@@ -1819,8 +1819,11 @@
                             pagesBar.addEventListener("click", (e)=>{
                                 //console.log(e);
                                 //console.log(e.target);
-                                pageId = `#id_pages-${e.target.getAttribute("data-pageid")}-content`;
-                                console.log(pageId);
+                                if (e.target.getAttribute("data-pageid") !== null){
+                                    pageId = `#id_pages-${e.target.getAttribute("data-pageid")}-content`;
+                                    document.querySelector(pageId).classList.toggle("editing-form-inactive");
+                                }
+                                
                                 /*for (i=0; i < pages.children.length; i++){
                                     page = pages.children[i];
                                     page.style = "display: none";
