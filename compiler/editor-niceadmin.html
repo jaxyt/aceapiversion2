@@ -74,10 +74,7 @@
         .CodeMirror {
             /*height: 50vh;*/
         }
-        table.pages-array-model-field {
-            height: 0;
-            width: 0;
-        }
+        
     </style>
 </head>
 
@@ -1839,6 +1836,7 @@
                                     pageId = `#id_pages-${e.target.getAttribute("data-pageid")}-content`;
                                     page = document.querySelector(pageId);
                                     page.classList.remove("editing-form-inactive");
+                                    page.scrollIntoView();
                                     page.focus();
                                 }
                                 
