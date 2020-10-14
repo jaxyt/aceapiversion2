@@ -1785,7 +1785,7 @@
                             let pagesBar = document.querySelectorAll("#pages-bar ul li.sidebar-item");
                             let shortcodesBar = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
                             console.log(pagesBar);
-                            console.log(pages);
+                            console.log(pages.children.length);
                             shortCodes.style = "display: none";
                             for (i=0; i < pages.children.length; i++){
                                 page = pages.children[i];
@@ -1793,6 +1793,8 @@
                                 pageOpt.value = `${i}`;
                                 pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
                                 pageSelect.append(pageOpt);*/
+                                console.log(i)
+                                console.log(pagesBar[i])
                                 pagesBar[i].id = `${i}`;
                                 pagesBar[i].addEventListener("click", (e)=>{
                                     pageId = `#id_pages-${e.target.id}-content`;
