@@ -1836,6 +1836,7 @@
                                     pageId = `#id_pages-${e.target.getAttribute("data-pageid")}-content`;
                                     page = document.querySelector(pageId);
                                     page.classList.remove("editing-form-inactive");
+                                    page.parentElement.parentElement.parentElement.classList.remove("editing-form-inactive");
                                     page.scrollIntoView();
                                     page.focus();
                                 }
@@ -1877,6 +1878,7 @@
                                     }
                                     if (oldText) {
                                         oldText.classList.add("editing-form-inactive");
+                                        oldText.parentElement.parentElement.parentElement.classList.add("editing-form-inactive");
                                     }
 
                                     let textAr = e.target;
