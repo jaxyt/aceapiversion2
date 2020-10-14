@@ -1791,19 +1791,25 @@
                             let pagesBarItems = document.querySelectorAll("#pages-bar ul li.sidebar-item");
                             let shortcodesBar = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
                             let editingForm = document.querySelector("#editingform");
-                            let editingLabels = document.querySelectorAll("#editingform label");
-                            let editingInputs = document.querySelectorAll("#editingform input");
-                            let editingtexts = document.querySelectorAll("#editingform textarea");
 
-                            for (i=0; i < editingLabels.length; i++){
-                                editingLabels[i].classList.toggle("editing-form-inactive");
+                            function hideForms(){
+                                let editingLabels = document.querySelectorAll("#editingform label");
+                                let editingInputs = document.querySelectorAll("#editingform input");
+                                let editingtexts = document.querySelectorAll("#editingform textarea");
+
+                                for (i=0; i < editingLabels.length; i++){
+                                    editingLabels[i].classList.add("editing-form-inactive");
+                                }
+                                for (i=0; i < editingInputs.length; i++){
+                                    editingInputs[i].classList.add("editing-form-inactive");
+                                }
+                                for (i=0; i < editingtexts.length; i++){
+                                    editingtexts[i].classList.add("editing-form-inactive");
+                                }
                             }
-                            for (i=0; i < editingInputs.length; i++){
-                                editingInputs[i].classList.toggle("editing-form-inactive");
-                            }
-                            for (i=0; i < editingtexts.length; i++){
-                                editingtexts[i].classList.toggle("editing-form-inactive");
-                            }
+                            
+                            hideForms();
+                            
                             
 
                             //shortCodes.style = "display: none";
@@ -1815,14 +1821,13 @@
                                 pageSelect.append(pageOpt);*/
                                 //pagesBarItems[i].children[0].id = `${i}`;
                             }
-                            console.log(pagesBar);
+                            
                             pagesBar.addEventListener("click", (e)=>{
-                                //console.log(e);
-                                //console.log(e.target);
+                                hideForms();
                                 if (e.target.getAttribute("data-pageid") !== null){
                                     pageId = `#id_pages-${e.target.getAttribute("data-pageid")}-content`;
                                     page = document.querySelector(pageId);
-                                    page.classList.toggle("editing-form-inactive");
+                                    page.classList.remove("editing-form-inactive");
                                     page.focus();
                                 }
                                 
