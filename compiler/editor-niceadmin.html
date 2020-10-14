@@ -388,6 +388,45 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
+                        
+                        <li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">Site</span>
+                        </li>
+                        <li id="pages-bar" class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-av-timer"></i>
+                                <span class="hide-menu">Pages </span>
+                                <span class="badge badge-pill badge-info ml-auto m-r-15">3</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                {% for obj in instance.pages %}
+                                    <li class="sidebar-item">
+                                        <a href="" class="sidebar-link">
+                                            <i class="mdi mdi-adjust"></i>
+                                            <span class="hide-menu"> {{ obj.route }} </span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li id="shortcodes-bar" class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-tune"></i>
+                                <span class="hide-menu">Shortcodes </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                {% for obj in instance.shortcodes %}
+                                    <li class="sidebar-item">
+                                        <a href="" class="sidebar-link">
+                                            <i class="mdi mdi-view-quilt"></i>
+                                            <span class="hide-menu"> {{ obj.name }} </span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        
                         <li class="nav-small-cap">
                             <i class="mdi mdi-dots-horizontal"></i>
                             <span class="hide-menu">Personal</span>

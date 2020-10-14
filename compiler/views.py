@@ -1106,7 +1106,8 @@ def update_nice(request):
             form.save()
 
         context = {
-            'form': form
+            'form': form,
+            'instance': instance
         }
 
         return render(request, "editor-niceadmin.html", context)
