@@ -1793,7 +1793,7 @@
                                 pageSelect.append(pageOpt);*/
                                 pagesBar[i].id = `${i}`;
                                 pagesBar[i].addEventListener("click", (e)=>{
-                                    pageId = `#id_pages-${pagesBar[i].id}-content`;
+                                    pageId = `#id_pages-${e.target.id}-content`;
                                     for (n=0; n < pages.children.length - 1; n++){
                                         page = pages.children[n];
                                         page.style = "display: none";
