@@ -1796,14 +1796,16 @@
                                 for (i=0; i < parent.children.length; i++){
                                     const current = parent.children[i];
                                     if (current.children){
-                                        toggleClasses(current, clsName);
+                                        for (n=0; n < parent.children.length; n++){
+                                            toggleClasses(current.children[n], clsName);
+                                        }
                                     } else {
                                         current.classList.toggle(clsName);
                                     }
                                 }
                             }
 
-                            //toggleClasses(editingForm, "editing-form-inactive");
+                            toggleClasses(editingForm, "editing-form-inactive");
 
                             //shortCodes.style = "display: none";
                             for (i=0; i < pages.children.length - 1; i++){
