@@ -1841,11 +1841,19 @@
                                 if (e.target.getAttribute("data-pageid") !== null){
                                     pageId = `#id_pages-${e.target.getAttribute("data-pageid")}-content`;
                                     page = document.querySelector(pageId);
+                                    let tBody = page.parentElement.parentElement.parentElement;
+                                    let route = tBody.children[0].children[1].children[0];
+                                    let title = tBody.children[1].children[1].children[0];
+                                    let meta = tBody.children[2].children[1].children[0];
+                                    console.log(tBody);
+                                    console.log(route);
+                                    console.log(title);
+                                    console.log(meta);
                                     page.classList.remove("editing-form-inactive");
-                                    page.parentElement.parentElement.parentElement.classList.remove("editing-form-inactive");
-                                    page.parentElement.parentElement.parentElement.children[0].children[1].children[0].classList.remove("editing-form-inactive");
-                                    page.parentElement.parentElement.parentElement.children[1].children[1].children[0].classList.remove("editing-form-inactive");
-                                    page.parentElement.parentElement.parentElement.children[2].children[1].children[0].classList.remove("editing-form-inactive");
+                                    tBody.classList.remove("editing-form-inactive");
+                                    route.classList.remove("editing-form-inactive");
+                                    title.classList.remove("editing-form-inactive");
+                                    meta.classList.remove("editing-form-inactive");
                                     page.scrollIntoView();
                                     page.focus();
                                 }
