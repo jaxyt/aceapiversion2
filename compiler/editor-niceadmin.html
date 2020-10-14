@@ -1776,7 +1776,7 @@
                     <div class="card-body">
                         <!--<a href="javascript:autoFormatSelection()">Autoformat Selected</a>
                         <a href="javascript:blowUpPreview()">Preview Page</a>
-                        <iframe id=preview></iframe>
+                        <iframe id="preview"></iframe>
                         <select name="page-select" id="page-select"></select>-->
                         <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
                             <div id="summernote">
@@ -1787,6 +1787,9 @@
                         </form>
                         <script>
                             let delay;
+                            let closeDelay;
+                            let oldEditor;
+                            let oldText;
                             let areas = document.querySelectorAll("textarea");
                             let pages = document.querySelector("table.pages-array-model-field");
                             let pageSelect = document.querySelector("#page-select");
@@ -1867,6 +1870,13 @@
                             for (i=0; i < areas.length; i++){
                                 areas[i].rows = 5;
                                 areas[i].addEventListener("focusin", (e)=> {
+                                    if(oldEditor){
+                                        oldEditor.toTextArea();
+                                    }
+                                    if (oldText) {
+                                        oldText.classList.add("editing-form-inactive");
+                                    }
+
                                     let textAr = e.target;
                                     let editor = CodeMirror.fromTextArea(e.target, {
                                         lineNumbers: true,
@@ -1909,19 +1919,22 @@
                                     editor.setSelection(editor.getCursor("start"))
                                     editor.on("change", ()=>{
                                         editor.save();
-                                        clearTimeout(delay);
+                                        /*clearTimeout(delay);
                                         delay = setTimeout(()=>{
                                             var previewFrame = document.getElementById('preview');
                                             var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
                                             preview.open();
                                             preview.write(editor.getValue());
                                             preview.close();
-                                        }, 300)
+                                        }, 300)*/
 
                                     })
 
-                                    editor.on("blur", ()=>{
-                                        clearTimeout(delay)
+                                    oldEditor = editor;
+                                    oldText = textAr;
+
+                                    /*editor.on("blur", ()=>{
+                                        clearTimeout(closeDelay)
                                         delay = setTimeout(()=>{
                                             if(!editor.hasFocus()){
                                                 editor.toTextArea();
@@ -1929,7 +1942,7 @@
                                             }
                                         }, 10000)
                                         
-                                    })
+                                    })*/
 
                                     
                                 })
