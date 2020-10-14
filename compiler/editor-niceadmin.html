@@ -66,6 +66,11 @@
     <script src="{% static 'codemirror/codemirror-5.57.0/mode/xml/xml.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/scroll/simplescrollbars.js' %}"></script>
     <script src="{% static 'codemirror/codemirror-5.57.0/addon/display/fullscreen.js' %}"></script>
+    <style>
+        .editing-form-inactive{
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -1785,7 +1790,22 @@
                             let pagesBar = document.querySelector("#pages-bar");
                             let pagesBarItems = document.querySelectorAll("#pages-bar ul li.sidebar-item");
                             let shortcodesBar = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
-                            shortCodes.style = "display: none";
+                            let editingForm = document.querySelector("#editingform");
+
+                            function toggleClasses(parent, clsName){
+                                for (i=0; i < parent.children.length; i++){
+                                    const current = parent.children[i];
+                                    if (current.children){
+                                        toggleClasses(current, clsName);
+                                    } else {
+                                        current.classList.toggle(clsName);
+                                    }
+                                }
+                            }
+
+                            toggleClasses(editingForm, "editing-form-inactive");
+
+                            //shortCodes.style = "display: none";
                             for (i=0; i < pages.children.length - 1; i++){
                                 page = pages.children[i];
                                 /*let pageOpt = document.createElement("option");
