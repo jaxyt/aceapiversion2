@@ -1792,12 +1792,25 @@
                                 pageOpt.value = `${i}`;
                                 pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
                                 pageSelect.append(pageOpt);*/
-                                pagesBarItems[i].id = `${i}`;
+                                pagesBarItems[i].children[0].id = `${i}`;
                             }
                             console.log(pagesBar);
                             pagesBar.addEventListener("click", (e)=>{
-                                console.log(e);
-                                console.log(e.target);
+                                //console.log(e);
+                                //console.log(e.target);
+                                pageId = `#id_pages-${e.target.id}-content`;
+                                for (i=0; i < pages.children.length; i++){
+                                    page = pages.children[i];
+                                    page.style = "display: none";
+                                }
+                                for (i=0; i < pages.children.length; i++){
+                                    page = pages.children[i];
+                                    if(i == e.target.id){
+                                        page.style = "";
+                                    }
+                                    page.children[8].scrollIntoView();
+                                    page.children[8].children[1].children[0].focus();
+                                }
                             })
 
                             /*pageSelect.addEventListener("change", (e)=> {
