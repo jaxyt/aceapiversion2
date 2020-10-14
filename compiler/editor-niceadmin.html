@@ -406,10 +406,10 @@
                             </a>
                             <ul aria-expanded="false" class="collapse  first-level">
                                 {% for obj in instance.pages %}
-                                    <li id="{{ forloop.counter0 }}" class="sidebar-item">
-                                        <a class="sidebar-link">
-                                            <i class="mdi mdi-adjust"></i>
-                                            <span class="hide-menu"> {{ obj.route }} </span>
+                                    <li data-pageid="{{ forloop.counter0 }}" class="sidebar-item">
+                                        <a data-pageid="{{ forloop.counter0 }}" class="sidebar-link">
+                                            <i data-pageid="{{ forloop.counter0 }}" class="mdi mdi-adjust"></i>
+                                            <span data-pageid="{{ forloop.counter0 }}" class="hide-menu"> {{ obj.route }} </span>
                                         </a>
                                     </li>
                                 {% endfor %}
@@ -422,7 +422,7 @@
                             </a>
                             <ul aria-expanded="false" class="collapse  first-level">
                                 {% for obj in instance.shortcodes %}
-                                    <li class="sidebar-item">
+                                    <li data-shortcodeid="{{ forloop.counter0 }}" class="sidebar-item">
                                         <a class="sidebar-link">
                                             <i class="mdi mdi-view-quilt"></i>
                                             <span class="hide-menu"> {{ obj.name }} </span>
@@ -1819,19 +1819,20 @@
                             pagesBar.addEventListener("click", (e)=>{
                                 //console.log(e);
                                 //console.log(e.target);
-                                pageId = `#id_pages-${e.target.id}-content`;
-                                for (i=0; i < pages.children.length; i++){
+                                pageId = `#id_pages-${e.target.getAttribute("data-pageid")}-content`;
+                                console.log(pageId);
+                                /*for (i=0; i < pages.children.length; i++){
                                     page = pages.children[i];
                                     page.style = "display: none";
-                                }
-                                for (i=0; i < pages.children.length; i++){
+                                }*/
+                                /*for (i=0; i < pages.children.length; i++){
                                     page = pages.children[i];
                                     if(i == e.target.id){
                                         page.style = "";
                                     }
                                     page.children[8].scrollIntoView();
                                     page.children[8].children[1].children[0].focus();
-                                }
+                                }*/
                             })
 
                             /*pageSelect.addEventListener("change", (e)=> {
