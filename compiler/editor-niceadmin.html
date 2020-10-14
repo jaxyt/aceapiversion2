@@ -1726,167 +1726,126 @@
                     <!-- Action part -->
                     <!-- Button group part -->
                     <div class="card-body">
-                        <form>
-                            <div class="form-group">
-                                <input type="email" id="example-email" name="example-email" class="form-control" placeholder="To">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="example-subject" name="example-subject" class="form-control" placeholder="Subject">
-                            </div>
+                        <a href="javascript:autoFormatSelection()">Autoformat Selected</a>
+                        <a href="javascript:blowUpPreview()">Preview Page</a>
+                        <iframe id=preview></iframe>
+                        <select name="page-select" id="page-select"></select>
+                        <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
                             <div id="summernote">
-                                <a href="javascript:autoFormatSelection()">Autoformat Selected</a>
-                                <a href="javascript:blowUpPreview()">Preview Page</a>
-                                <iframe id=preview></iframe>
-                                <select name="page-select" id="page-select"></select>
-                                <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
-                                    {{ form }}
-                                    <input type="submit" value="Save" />
-                                </form>
-                                <script>
-                                    /*console.log(document.querySelector("table.pages-array-model-field"));
-                                    let areas = document.querySelectorAll("textarea");
-                                    let pages = document.querySelector("table.pages-array-model-field");
-                                    for (i=0; i < 2; i++){
-                                        const editor = CodeMirror.fromTextArea(document.getElementById(`${pages.children[i].children[8].children[1].children[0].id}`), {
-                                            lineNumbers: true,
-                                            mode: "text/html",
-                                            matchBrackets: true,
-                                            lineWrapping: true,
-                                            theme: "3024-night",
-                                            extraKeys: {
-                                                "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
-                                                "F11": function(cm) {
-                                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                                                },
-                                                "Esc": function(cm) {
-                                                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                                                }
-                                            },
-                                            foldGutter: true,
-                                            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                                            scrollbarStyle: "simple"
-                                        });
-                                    }*/
-                                </script>
-                                <script>
-                                    let delay;
-                                    let areas = document.querySelectorAll("textarea");
-                                    let pages = document.querySelector("table.pages-array-model-field");
-                                    let pageSelect = document.querySelector("#page-select");
-                                    let shortCodes = document.querySelector("table.shortcodes-array-model-field");
-                                    shortCodes.style = "display: none";
-                                    for (i=0; i < pages.children.length; i++){
-                                        page = pages.children[i];
-                                        let pageOpt = document.createElement("option");
-                                        pageOpt.value = `${i}`;
-                                        pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
-                                        pageSelect.append(pageOpt);
-                                    }
-                                    pageSelect.addEventListener("change", (e)=> {
-                                        pageId = `#id_pages-${e.target.value}-content`;
-                                        for (i=0; i < pages.children.length; i++){
-                                            page = pages.children[i];
-                                            page.style = "display: none";
-                                        }
-                                        for (i=0; i < pages.children.length; i++){
-                                            page = pages.children[i];
-                                            if(i == e.target.value){
-                                                page.style = "";
-                                            }
-                                            page.children[8].scrollIntoView();
-                                            page.children[8].children[1].children[0].focus();
-                                        }
-                                    })
-                                    for (i=0; i < areas.length; i++){
-                                        areas[i].rows = 5;
-                                        areas[i].addEventListener("focusin", (e)=> {
-                                            let editor = CodeMirror.fromTextArea(e.target, {
-                                                lineNumbers: true,
-                                                styleActiveLine: true,
-                                                mode: "htmlmixed",
-                                                theme: "3024-night",
-                                                matchBrackets: true,
-                                                lineWrapping: true,
-                                                extraKeys: {
-                                                    "F11": function(cm) {
-                                                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                                                    },
-                                                    "Esc": function(cm) {
-                                                        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                                                    },
-                                                    "Ctrl-Space": "autocomplete",
-                                                    "Alt-F": "findPersistent"
-                                                },
-                                                gutters: ["CodeMirror-linenumbers"],
-                                            });
-
-                                            CodeMirror.commands["selectAll"](editor);
-
-                                            function getSelectedRange() {
-                                                return { from: editor.getCursor(true), to: editor.getCursor(false) };
-                                            }
-                                            
-                                            function autoFormatSelection() {
-                                                var range = getSelectedRange();
-                                                editor.autoFormatRange(range.from, range.to);
-                                            }
-                                            
-                                            function commentSelection(isComment) {
-                                                var range = getSelectedRange();
-                                                editor.commentRange(isComment, range.from, range.to);
-                                            }
-                                            
-                                            autoFormatSelection();
-
-                                            editor.setSelection(editor.getCursor("start"))
-                                            editor.on("change", ()=>{
-                                                editor.save();
-                                                clearTimeout(delay);
-                                                delay = setTimeout(()=>{
-                                                    var previewFrame = document.getElementById('preview');
-                                                    var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
-                                                    preview.open();
-                                                    preview.write(editor.getValue());
-                                                    preview.close();
-                                                }, 300)
-
-                                            })
-
-                                            editor.on("blur", ()=>{
-                                                clearTimeout(delay)
-                                                delay = setTimeout(()=>{
-                                                    if(!editor.hasFocus()){
-                                                        editor.toTextArea();
-                                                    }
-                                                }, 10000)
-                                                
-                                            })
-
-                                            
-                                        })
-                                        
-                                    }
-
-                                    function blowUpPreview(){
-                                        var prevFrame = document.getElementById('preview');
-                                        prevFrame.classList.toggle("modal-display");
-                                    }
-
-                                    
-                                    
-                                        
-                                        
-                                </script>
-                            </div>
-                            <h4>Attachment</h4>
-                            <div class="dropzone" id="dzid">
-                                <div class="fallback">
-                                    <input name="file" type="file" multiple />
-                                </div>
+                                {{ form }}
                             </div>
                             <button type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i> Send</button>
                             <button type="submit" class="btn btn-dark m-t-20">Discard</button>
                         </form>
+                        <script>
+                            let delay;
+                            let areas = document.querySelectorAll("textarea");
+                            let pages = document.querySelector("table.pages-array-model-field");
+                            let pageSelect = document.querySelector("#page-select");
+                            let shortCodes = document.querySelector("table.shortcodes-array-model-field");
+                            shortCodes.style = "display: none";
+                            for (i=0; i < pages.children.length; i++){
+                                page = pages.children[i];
+                                let pageOpt = document.createElement("option");
+                                pageOpt.value = `${i}`;
+                                pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
+                                pageSelect.append(pageOpt);
+                            }
+                            pageSelect.addEventListener("change", (e)=> {
+                                pageId = `#id_pages-${e.target.value}-content`;
+                                for (i=0; i < pages.children.length; i++){
+                                    page = pages.children[i];
+                                    page.style = "display: none";
+                                }
+                                for (i=0; i < pages.children.length; i++){
+                                    page = pages.children[i];
+                                    if(i == e.target.value){
+                                        page.style = "";
+                                    }
+                                    page.children[8].scrollIntoView();
+                                    page.children[8].children[1].children[0].focus();
+                                }
+                            })
+                            for (i=0; i < areas.length; i++){
+                                areas[i].rows = 5;
+                                areas[i].addEventListener("focusin", (e)=> {
+                                    let editor = CodeMirror.fromTextArea(e.target, {
+                                        lineNumbers: true,
+                                        styleActiveLine: true,
+                                        mode: "htmlmixed",
+                                        theme: "3024-night",
+                                        matchBrackets: true,
+                                        lineWrapping: true,
+                                        extraKeys: {
+                                            "F11": function(cm) {
+                                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                            },
+                                            "Esc": function(cm) {
+                                                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                                            },
+                                            "Ctrl-Space": "autocomplete",
+                                            "Alt-F": "findPersistent"
+                                        },
+                                        gutters: ["CodeMirror-linenumbers"],
+                                    });
+
+                                    CodeMirror.commands["selectAll"](editor);
+
+                                    function getSelectedRange() {
+                                        return { from: editor.getCursor(true), to: editor.getCursor(false) };
+                                    }
+                                    
+                                    function autoFormatSelection() {
+                                        var range = getSelectedRange();
+                                        editor.autoFormatRange(range.from, range.to);
+                                    }
+                                    
+                                    function commentSelection(isComment) {
+                                        var range = getSelectedRange();
+                                        editor.commentRange(isComment, range.from, range.to);
+                                    }
+                                    
+                                    autoFormatSelection();
+
+                                    editor.setSelection(editor.getCursor("start"))
+                                    editor.on("change", ()=>{
+                                        editor.save();
+                                        clearTimeout(delay);
+                                        delay = setTimeout(()=>{
+                                            var previewFrame = document.getElementById('preview');
+                                            var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
+                                            preview.open();
+                                            preview.write(editor.getValue());
+                                            preview.close();
+                                        }, 300)
+
+                                    })
+
+                                    editor.on("blur", ()=>{
+                                        clearTimeout(delay)
+                                        delay = setTimeout(()=>{
+                                            if(!editor.hasFocus()){
+                                                editor.toTextArea();
+                                            }
+                                        }, 10000)
+                                        
+                                    })
+
+                                    
+                                })
+                                
+                            }
+
+                            function blowUpPreview(){
+                                var prevFrame = document.getElementById('preview');
+                                prevFrame.classList.toggle("modal-display");
+                            }
+
+                            
+                            
+                                
+                                
+                        </script>
                         <!-- Action part -->
                     </div>
                 </div>
@@ -1895,7 +1854,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center">
-                   All Rights Reserved by Nice admin. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+                   All Rights Reserved by A.C.E., Inc. Designed and Developed by <a href="https://www.goshgo.com">GoshGo</a>.
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

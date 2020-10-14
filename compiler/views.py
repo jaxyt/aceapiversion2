@@ -1098,7 +1098,6 @@ def update_editor(request):
 
 
 def update_nice(request):
-    
     if request.COOKIES.get('sessionid'):
         id = request.GET.get('id', '')
         instance = get_object_or_404(Site, id=id)
