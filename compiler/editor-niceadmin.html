@@ -1782,7 +1782,8 @@
                             let pages = document.querySelector("table.pages-array-model-field");
                             let pageSelect = document.querySelector("#page-select");
                             let shortCodes = document.querySelector("table.shortcodes-array-model-field");
-                            let pagesBar = document.querySelectorAll("#pages-bar ul li.sidebar-item");
+                            let pagesBar = document.querySelector("#pages-bar");
+                            let pagesBarItems = document.querySelectorAll("#pages-bar ul li.sidebar-item");
                             let shortcodesBar = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
                             shortCodes.style = "display: none";
                             for (i=0; i < pages.children.length - 1; i++){
@@ -1791,9 +1792,14 @@
                                 pageOpt.value = `${i}`;
                                 pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
                                 pageSelect.append(pageOpt);*/
-                                pagesBar[i].id = `${i}`;
+                                pagesBaritems[i].id = `${i}`;
                             }
                             console.log(pagesBar);
+                            pagesBar.addEventListener("click", (e)=>{
+                                console.log(e);
+                                console.log(e.target);
+                            })
+
                             /*pageSelect.addEventListener("change", (e)=> {
                                 pageId = `#id_pages-${e.target.value}-content`;
                                 for (i=0; i < pages.children.length; i++){
