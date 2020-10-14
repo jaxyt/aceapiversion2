@@ -1821,7 +1821,9 @@
                                 //console.log(e.target);
                                 if (e.target.getAttribute("data-pageid") !== null){
                                     pageId = `#id_pages-${e.target.getAttribute("data-pageid")}-content`;
-                                    document.querySelector(pageId).classList.toggle("editing-form-inactive");
+                                    page = document.querySelector(pageId);
+                                    page.classList.toggle("editing-form-inactive");
+                                    page.focus();
                                 }
                                 
                                 /*for (i=0; i < pages.children.length; i++){
