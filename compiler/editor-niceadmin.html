@@ -406,7 +406,7 @@
                             </a>
                             <ul aria-expanded="false" class="collapse  first-level">
                                 {% for obj in instance.pages %}
-                                    <li class="sidebar-item">
+                                    <li id="{{ forloop.counter0 }}" class="sidebar-item">
                                         <a class="sidebar-link">
                                             <i class="mdi mdi-adjust"></i>
                                             <span class="hide-menu"> {{ obj.route }} </span>
@@ -1813,7 +1813,7 @@
                                 pageOpt.value = `${i}`;
                                 pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
                                 pageSelect.append(pageOpt);*/
-                                pagesBarItems[i].children[0].id = `${i}`;
+                                //pagesBarItems[i].children[0].id = `${i}`;
                             }
                             console.log(pagesBar);
                             pagesBar.addEventListener("click", (e)=>{
