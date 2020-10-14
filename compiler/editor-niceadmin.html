@@ -1863,6 +1863,7 @@
                             for (i=0; i < areas.length; i++){
                                 areas[i].rows = 5;
                                 areas[i].addEventListener("focusin", (e)=> {
+                                    let textAr = e.target;
                                     let editor = CodeMirror.fromTextArea(e.target, {
                                         lineNumbers: true,
                                         styleActiveLine: true,
@@ -1882,6 +1883,8 @@
                                         },
                                         gutters: ["CodeMirror-linenumbers"],
                                     });
+                                    editor.setSize(document.querySelector("div.right-part.mail-compose.bg-white.overflow-auto").clientWidth,
+                                        document.querySelector("div.right-part.mail-compose.bg-white.overflow-auto").clientHeight);
 
                                     CodeMirror.commands["selectAll"](editor);
 
@@ -1920,6 +1923,7 @@
                                         delay = setTimeout(()=>{
                                             if(!editor.hasFocus()){
                                                 editor.toTextArea();
+                                                textAr.classList.add("editing-form-inactive");
                                             }
                                         }, 10000)
                                         
