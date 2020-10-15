@@ -493,6 +493,71 @@
             shortCodes.style = "display: flex; flex-wrap: wrap;";
             pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
             editorBar.style = "display: flex; flex-wrap: wrap;";
+
+            function getSelectedRange(cmEditor) {
+                return { from: cmEditor.getCursor(true), to: cmEditor.getCursor(false) };
+            }
+            
+            function autoFormatSelection(cmEditor) {
+                var range = getSelectedRange(cmEditor);
+                editor.autoFormatRange(range.from, range.to);
+            }
+            
+            function commentSelection(isComment, cmEditor) {
+                var range = getSelectedRange(cmEditor);
+                editor.commentRange(isComment, range.from, range.to);
+            }
+            
+            
+
+            function initializeCodeEditor(x) {
+                if (oldEditor) {
+                    oldEditor.toTextArea();
+                }
+                if (oldText) {
+                    console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
+                }
+
+                let editor = CodeMirror.fromTextArea(x, {
+                    lineNumbers: true,
+                    styleActiveLine: true,
+                    mode: "htmlmixed",
+                    theme: "3024-night",
+                    matchBrackets: true,
+                    lineWrapping: true,
+                    extraKeys: {
+                        "F11": function(cm) {
+                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                        },
+                        "Esc": function(cm) {
+                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                        },
+                        "Ctrl-Space": "autocomplete",
+                        "Alt-F": "findPersistent"
+                    },
+                    gutters: ["CodeMirror-linenumbers"],
+                })
+
+                CodeMirror.commands["selectAll"](editor);
+
+                autoFormatSelection(editor);
+                editor.setSelection(editor.getCursor("start"))
+                editor.on("change", ()=>{
+                    editor.save();
+                })
+
+                oldEditor = editor;
+                oldText = x;
+                
+            }
+
+            editingForm.addEventListener("focusin", (e)=>{
+                if (e.target.nodeName === "TEXTAREA") {
+                    console.log(true);
+                } else {
+                    console.log(e.target.nodeName);
+                }
+            })
         </script>
     </div>
     
