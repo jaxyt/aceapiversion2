@@ -312,8 +312,8 @@
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin3">Edit As HTML</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin4">Print</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin5">Help</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin6"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin6"></a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin6">Undo</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin6">Redo</a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
@@ -427,7 +427,7 @@
             <div id="summernote">
                 {{ form }}
             </div>
-            <button disabled type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i> Save</button>
+            <button disabled type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i>Save</button>
             <button disabled type="submit" class="btn btn-dark m-t-20">Clone</button>
         </form>
         <script>
@@ -442,11 +442,13 @@
             let pagesBar = document.querySelector("#pages-bar ul.collapse.first-level");
             let pagesBarItems = document.querySelectorAll("#pages-bar ul li.sidebar-item");
             let shortcodesBar = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
+            let editorBar = document.querySelector("#pills-home");
             let editingForm = document.querySelector("#editingform");
             editingForm.style = "margin-top: 0px; display: grid;";
             pages.style = "display: flex; flex-wrap: wrap;";
             shortCodes.style = "display: flex; flex-wrap: wrap;";
-            pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;"
+            pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
+            editorBar.style = "display: flex; flex-wrap: wrap;";
         </script>
     </div>
     
