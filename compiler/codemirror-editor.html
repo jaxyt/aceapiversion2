@@ -525,8 +525,8 @@
         <div id="popup-1" class="popup">
             <div class="overlay">
                 <div class="content">
-                    <div class="close-btn" onclick="togglePopup()">&times;</div>
-                    <div id="rendered" contenteditable="true"></div>
+                    <div class="close-btn" onclick="togglePopup('x')">&times;</div>
+                    <div id="rendered" contenteditable="false"></div>
                 </div>
             </div>
         </div>
@@ -559,8 +559,20 @@
             pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
             editorBar.style = "display: flex; flex-wrap: wrap;";
 
-            function togglePopup(){
+            function togglePopup(xbtn=''){
+                
                 document.getElementById("popup-1").classList.toggle("active");
+                var rendered = document.querySelector("#rendered");
+                if (xbtn === 'x'){
+                    rendered.setAttribute("contenteditable", "false");
+                } else {
+                    if (rendered.getAttribute("contenteditable") === "false"){
+                        rendered.setAttribute("contenteditable", "true");
+                    } else {
+                        rendered.setAttribute("contenteditable", "false");
+                    }
+                }
+                
             }
 
             function getSelectedRange(cmEditor) {
