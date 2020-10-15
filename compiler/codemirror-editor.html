@@ -559,23 +559,9 @@
             }
 
             pagesBar.addEventListener("click", (e)=>{
-                console.log(e);
-                console.log(e.target.dataset);
-                console.log(e.target.dataset['pageid']);
-                //let t = pages.children[parseInt(e.target.getAtrribute("data-pageid"))];
-                //t.children[8].children[1].children[0].focus();
+                let t = pages.children[parseInt(e.target.dataset['pageid'])];
+                t.children[8].children[1].children[0].focus();
             })
-
-            /*editingForm.addEventListener("focusin", (e)=>{
-                if (e.target.nodeName === "TEXTAREA") {
-                    console.log(e)
-                    console.log(e.target)
-                    let arr = document.getElementById(`${e.target.id}`);
-                    startCodeEditor(arr);
-                } else {
-                    console.log(e.target.nodeName);
-                }
-            })*/
         </script>
     </div>
 </body>
