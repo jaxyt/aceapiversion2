@@ -229,6 +229,24 @@
         <input type="submit" value="Save" />
     </form>
     <script>
+        let delay;
+        let oldEditor;
+        let oldText;
+        let oldPreview;
+        let areas = document.querySelectorAll("textarea");
+        let pages = document.querySelector("table.pages-array-model-field");
+        let pageSelect = document.querySelector("#page-select");
+        let shortCodes = document.querySelector("table.shortcodes-array-model-field");
+        let pagesBar = document.querySelector("#pages-bar");
+        let pagesBarItems = document.querySelectorAll("#pages-bar ul li.sidebar-item");
+        let shortcodesBar = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
+        let editingForm = document.querySelector("#editingform");
+        editingForm.style = "margin-top: 0px; display: grid;";
+        pages.style = "display: flex; flex-wrap: wrap;";
+        shortCodes.style = "display: flex; flex-wrap: wrap;";
+        pagesBar.style = "display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;"
+    </script>
+    <script>
         /*console.log(document.querySelector("table.pages-array-model-field"));
         let areas = document.querySelectorAll("textarea");
         let pages = document.querySelector("table.pages-array-model-field");
