@@ -150,7 +150,7 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Basic Styles</h5>
                         <ul class="theme-color">
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin1">B</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('bold', oldEditor)" class="theme-link" data-logobg="skin1">B</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin2">i</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin3">U</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin4">S</a></li>
@@ -508,6 +508,17 @@
                 cmEditor.commentRange(isComment, range.from, range.to);
             }
             
+            function wrapOrInsertAtSelection(dataVal, cmEditor){
+                var string = cmEditor.getSelection();
+                switch(dataVal){
+                    case 'bold': 
+                        cmEditor.replaceSelection(`<strong>${string}</strong>`)
+                    break;
+                }
+
+            }
+
+            document.querySelector()
             
 
             function startCodeEditor(x) {
