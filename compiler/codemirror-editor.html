@@ -555,7 +555,8 @@
                 if (e.target.nodeName === "TEXTAREA") {
                     console.log(e)
                     console.log(e.target)
-                    //initializeCodeEditor(e.target);
+                    let arr = document.getElementById(`${e.target.id}`);
+                    initializeCodeEditor(arr);
                 } else {
                     console.log(e.target.nodeName);
                 }
