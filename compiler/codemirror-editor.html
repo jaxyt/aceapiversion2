@@ -477,7 +477,7 @@
             let oldEditor;
             let oldText;
             let oldPreview;
-            let areas = document.querySelectorAll("textarea");
+            //let areas = document.querySelectorAll("textarea");
             let pages = document.querySelector("table.pages-array-model-field");
             let pageSelect = document.querySelector("#page-select");
             let shortCodes = document.querySelector("table.shortcodes-array-model-field");
@@ -553,7 +553,9 @@
 
             editingForm.addEventListener("focusin", (e)=>{
                 if (e.target.nodeName === "TEXTAREA") {
-                    initializeCodeEditor(e.target);
+                    console.log(e)
+                    console.log(e.target)
+                    //initializeCodeEditor(e.target);
                 } else {
                     console.log(e.target.nodeName);
                 }
