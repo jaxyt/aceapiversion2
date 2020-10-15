@@ -518,7 +518,7 @@
                     console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
                 }
 
-                let editor = CodeMirror.fromTextArea(x, {
+                const editor = CodeMirror.fromTextArea(x, {
                     lineNumbers: true,
                     styleActiveLine: true,
                     mode: "htmlmixed",
