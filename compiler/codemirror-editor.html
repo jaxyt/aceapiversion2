@@ -351,7 +351,7 @@
                         <ul class="theme-color">
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin1">Fullscreen</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin2">Select All</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin3">Edit As HTML</a></li>
+                            <li class="theme-item"><a href="javascript:togglePopup()" class="theme-link" data-logobg="skin3">Edit As HTML</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin4">Print</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin5">Help</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin6">Undo</a></li>
@@ -465,7 +465,66 @@
         <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
     </aside>
     <div class="card-body">
-        <div id="rendered" contenteditable="true"></div>
+        <style>
+            .popup .overlay {
+                position:fixed;
+                top:0px;
+                left:0px;
+                width:100vw;
+                height:100vh;
+                background:rgba(0,0,0,0.7);
+                z-index:1;
+                display:none;
+              }
+              
+              .popup .content {
+                position:absolute;
+                top:8%;
+                left:50%;
+                transform:translate(-50%,-50%) scale(0);
+                background:#fff;
+                width:60vw;
+                height:95vh;
+                z-index:2;
+                text-align:center;
+                padding:20px;
+                box-sizing:border-box;
+                font-family:"Open Sans",sans-serif;
+              }
+              
+              .popup .close-btn {
+                cursor:pointer;
+                position:absolute;
+                right:20px;
+                top:20px;
+                width:30px;
+                height:30px;
+                background:#222;
+                color:#fff;
+                font-size:25px;
+                font-weight:600;
+                line-height:30px;
+                text-align:center;
+                border-radius:50%;
+              }
+              
+              .popup.active .overlay {
+                display:block;
+              }
+              
+              .popup.active .content {
+                transition:all 300ms ease-in-out;
+                transform:translate(-50%,-10%) scale(1);
+              }
+        </style>
+        <div id="popup-1" class="popup">
+            <div class="overlay">
+                <div class="content">
+                    <div class="close-btn" onclick="togglePopup()">&times;</div>
+                    <div id="rendered" contenteditable="true"></div>
+                </div>
+            </div>
+        </div>
         <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
             <div id="summernote">
                 {{ form }}
@@ -494,6 +553,10 @@
             shortCodes.style = "display: flex; flex-wrap: wrap;";
             pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
             editorBar.style = "display: flex; flex-wrap: wrap;";
+
+            function togglePopup(){
+                document.getElementById("popup-1").classList.toggle("active");
+            }
 
             function getSelectedRange(cmEditor) {
                 return { from: cmEditor.getCursor(true), to: cmEditor.getCursor(false) };
