@@ -553,7 +553,7 @@
 
             editingForm.addEventListener("focusin", (e)=>{
                 if (e.target.nodeName === "TEXTAREA") {
-                    console.log(true);
+                    initializeCodeEditor(e.target);
                 } else {
                     console.log(e.target.nodeName);
                 }
