@@ -477,7 +477,7 @@
             let oldEditor = null;
             let oldText = null;
             let oldPreview;
-            //let areas = document.querySelectorAll("textarea");
+            let areas = document.querySelectorAll("#editingform textarea");
             let pages = document.querySelector("table.pages-array-model-field");
             let pageSelect = document.querySelector("#page-select");
             let shortCodes = document.querySelector("table.shortcodes-array-model-field");
@@ -510,57 +510,65 @@
             
             
 
-            function initializeCodeEditor(x) {
-                if (oldEditor !== null) {
-                    oldEditor.toTextArea();
-                }
-                if (oldText !== null) {
-                    console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
-                }
-
-                const editor = CodeMirror.fromTextArea(x, {
-                    lineNumbers: true,
-                    styleActiveLine: true,
-                    mode: "htmlmixed",
-                    theme: "3024-night",
-                    matchBrackets: true,
-                    lineWrapping: true,
-                    extraKeys: {
-                        "F11": function(cm) {
-                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                        },
-                        "Esc": function(cm) {
-                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                        },
-                        "Ctrl-Space": "autocomplete",
-                        "Alt-F": "findPersistent"
-                    },
-                    gutters: ["CodeMirror-linenumbers"],
-                })
-
-                CodeMirror.commands["selectAll"](editor);
-
-                autoFormatSelection(editor);
-                editor.setSelection(editor.getCursor("start"))
-                editor.on("change", ()=>{
-                    editor.save();
-                })
-
-                oldEditor = editor;
-                oldText = x;
+            function startCodeEditor(x) {
+                
                 
             }
 
-            editingForm.addEventListener("focusin", (e)=>{
+            for (i=0;i<areas.length;i++){
+                areas[i].addEventListener("focusin", (e)=> {
+                    x = e.target;
+
+                    if (oldEditor !== null) {
+                        oldEditor.toTextArea();
+                    }
+                    if (oldText !== null) {
+                        console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
+                    }
+    
+                    const editor = CodeMirror.fromTextArea(x, {
+                        lineNumbers: true,
+                        styleActiveLine: true,
+                        mode: "htmlmixed",
+                        theme: "3024-night",
+                        matchBrackets: true,
+                        lineWrapping: true,
+                        extraKeys: {
+                            "F11": function(cm) {
+                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                            },
+                            "Esc": function(cm) {
+                                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                            },
+                            "Ctrl-Space": "autocomplete",
+                            "Alt-F": "findPersistent"
+                        },
+                        gutters: ["CodeMirror-linenumbers"],
+                    })
+    
+                    CodeMirror.commands["selectAll"](editor);
+    
+                    autoFormatSelection(editor);
+                    editor.setSelection(editor.getCursor("start"))
+                    editor.on("change", ()=>{
+                        editor.save();
+                    })
+    
+                    oldEditor = editor;
+                    oldText = x;
+                })
+            }
+
+            /*editingForm.addEventListener("focusin", (e)=>{
                 if (e.target.nodeName === "TEXTAREA") {
                     console.log(e)
                     console.log(e.target)
                     let arr = document.getElementById(`${e.target.id}`);
-                    initializeCodeEditor(arr);
+                    startCodeEditor(arr);
                 } else {
                     console.log(e.target.nodeName);
                 }
-            })
+            })*/
         </script>
     </div>
 </body>
