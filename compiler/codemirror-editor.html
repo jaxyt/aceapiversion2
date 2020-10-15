@@ -510,12 +510,16 @@
             
             function wrapOrInsertAtSelection(dataVal, cmEditor){
                 var string = cmEditor.getSelection();
-                switch(dataVal){
-                    case 'bold': 
+
+                switch(dataVal) {
+                    case 'bold':
                         cmEditor.replaceSelection(`<strong>${string}</strong>`);
-                    case 'italic': 
+                        break;
+                    case 'italic':
                         cmEditor.replaceSelection(`<em>${string}</em>`);
-                    break;
+                        break;
+                    default:
+                        break;
                 }
 
             }
