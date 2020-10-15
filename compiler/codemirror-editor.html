@@ -511,51 +511,50 @@
             
 
             function startCodeEditor(x) {
-                
+
+                if (oldEditor !== null) {
+                    oldEditor.toTextArea();
+                }
+                if (oldText !== null) {
+                    console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
+                }
+
+                const editor = CodeMirror.fromTextArea(x, {
+                    lineNumbers: true,
+                    styleActiveLine: true,
+                    mode: "htmlmixed",
+                    theme: "3024-night",
+                    matchBrackets: true,
+                    lineWrapping: true,
+                    extraKeys: {
+                        "F11": function(cm) {
+                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                        },
+                        "Esc": function(cm) {
+                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                        },
+                        "Ctrl-Space": "autocomplete",
+                        "Alt-F": "findPersistent"
+                    },
+                    gutters: ["CodeMirror-linenumbers"],
+                })
+
+                CodeMirror.commands["selectAll"](editor);
+
+                autoFormatSelection(editor);
+                editor.setSelection(editor.getCursor("start"))
+                editor.on("change", ()=>{
+                    editor.save();
+                })
+
+                oldEditor = editor;
+                oldText = x;
                 
             }
 
             for (i=0;i<areas.length;i++){
                 areas[i].addEventListener("focusin", (e)=> {
-                    x = e.target;
-
-                    if (oldEditor !== null) {
-                        oldEditor.toTextArea();
-                    }
-                    if (oldText !== null) {
-                        console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
-                    }
-    
-                    const editor = CodeMirror.fromTextArea(x, {
-                        lineNumbers: true,
-                        styleActiveLine: true,
-                        mode: "htmlmixed",
-                        theme: "3024-night",
-                        matchBrackets: true,
-                        lineWrapping: true,
-                        extraKeys: {
-                            "F11": function(cm) {
-                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                            },
-                            "Esc": function(cm) {
-                                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                            },
-                            "Ctrl-Space": "autocomplete",
-                            "Alt-F": "findPersistent"
-                        },
-                        gutters: ["CodeMirror-linenumbers"],
-                    })
-    
-                    CodeMirror.commands["selectAll"](editor);
-    
-                    autoFormatSelection(editor);
-                    editor.setSelection(editor.getCursor("start"))
-                    editor.on("change", ()=>{
-                        editor.save();
-                    })
-    
-                    oldEditor = editor;
-                    oldText = x;
+                    startCodeEditor(e.target);
                 })
             }
 
