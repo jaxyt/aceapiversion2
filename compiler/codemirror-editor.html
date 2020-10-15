@@ -151,7 +151,7 @@
                         <h5 class="font-medium m-b-10 m-t-10">Basic Styles</h5>
                         <ul class="theme-color">
                             <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('bold', oldEditor)" class="theme-link" data-logobg="skin1">B</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin2">i</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('italic', oldEditor)" class="theme-link" data-logobg="skin2">i</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin3">U</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin4">S</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin5">x 2</a></li>
@@ -512,7 +512,9 @@
                 var string = cmEditor.getSelection();
                 switch(dataVal){
                     case 'bold': 
-                        cmEditor.replaceSelection(`<strong>${string}</strong>`)
+                        cmEditor.replaceSelection(`<strong>${string}</strong>`);
+                    case 'italic': 
+                        cmEditor.replaceSelection(`<em>${string}</em>`);
                     break;
                 }
 
