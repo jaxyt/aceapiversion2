@@ -1896,9 +1896,13 @@
                             function copyHandler(e) {
                                 var doc = new DOMParser().parseFromString(document.getSelection(), 'text/html');
                                 var text = doc.body.textContent;
-                                e.preventDefault();
-                                document.execCommand('Copy', false, text);
-                                
+                                var input = document.createElement('textarea');
+                                document.body.appendChild(input);
+                                input.value = text;
+                                input.focus();
+                                input.select();
+                                document.execCommand('copy');
+                                input.remove();
                             }
 
                             function pasteHandler(e) {
