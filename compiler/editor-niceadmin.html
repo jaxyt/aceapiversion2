@@ -1914,7 +1914,6 @@
 
                             }
 
-                            getElemTotalWidthAndHeight(document.querySelector("footer"));
 
                             function copyHandler(e) {
                                 var doc = new DOMParser().parseFromString(document.getSelection(), 'text/html');
@@ -2034,6 +2033,8 @@
                                 oldText = x;
                 
                                 oldEditor.on("change", cmChangeHandler)
+                                
+                                getElemTotalWidthAndHeight(document.querySelector("footer"));
                                 
                             }
                 
