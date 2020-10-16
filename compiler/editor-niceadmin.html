@@ -1708,50 +1708,50 @@
                     <a class="ti-menu ti-close btn btn-success show-left-part d-block d-md-none" href="javascript:void(0)"></a>
                     <div class="scrollable" style="height:100%;">
                         <div class="p-15">
-                            <a id="compose_mail" class="waves-effect waves-light btn btn-danger d-block" href="javascript: void(0)">Compose</a>
+                            <a id="compose_mail" class="waves-effect waves-light btn btn-danger d-block" href="javascript: void(0)">Add Page</a>
                         </div>
                         <div class="divider"></div>
                         <ul class="list-group">
                             <li>
-                                <small class="p-15 grey-text text-lighten-1 db">Folders</small>
+                                <small class="p-15 grey-text text-lighten-1 db">Site Fields</small>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="active list-group-item-action"><i class="mdi mdi-inbox"></i> Inbox <span class="label label-success float-right">6</span></a>
+                                <a href="javascript:void(0)" class="active list-group-item-action"><i class="mdi mdi-inbox"></i> Metas <span class="label label-success float-right">6</span></a>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-star"></i> Starred </a>
+                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-star"></i> Links </a>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-send"></i> Draft <span class="label label-danger float-right">3</span></a></li>
+                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-send"></i> Style <span class="label label-danger float-right">3</span></a></li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-email"></i> Sent Mail </a>
+                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-email"></i> Scripts </a>
                             </li>
                             <li class="list-group-item">
                                 <hr>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-block-helper"></i> Spam </a>
+                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-block-helper"></i> Header </a>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-delete"></i> Trash </a>
+                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-delete"></i> Footer </a>
                             </li>
                             <li class="list-group-item">
                                 <hr>
                             </li>
                             <li>
-                                <small class="p-15 grey-text text-lighten-1 db">Labels</small>
+                                <small class="p-15 grey-text text-lighten-1 db">Page Fields</small>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-danger mdi mdi-checkbox-blank-circle"></i> Work </a>
+                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-danger mdi mdi-checkbox-blank-circle"></i> Metas </a>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-cyan mdi mdi-checkbox-blank-circle"></i> Business </a>
+                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-cyan mdi mdi-checkbox-blank-circle"></i> Links </a>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-warning mdi mdi-checkbox-blank-circle"></i> Family </a>
+                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-warning mdi mdi-checkbox-blank-circle"></i> Style </a>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-info mdi mdi-checkbox-blank-circle"></i> Friends </a>
+                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-info mdi mdi-checkbox-blank-circle"></i> Scripts </a>
                             </li>
                         </ul>
                     </div>
@@ -1831,17 +1831,12 @@
                                 overflow-y: scroll;
                             }
 
-                            #rendered * {
-                                all: unset;
-                                font-size: initial;
-                                color: initial;
-                                background: initial;
-                                margin: initial;
-                                font: initial;
-                                box-sizing: initial;
-                                outline: initial;
-                                display: initial;
-                                line-height: initial;
+                            #rendered > * {
+                                /*all: unset;
+                                font-size: initial;*/
+                                color: black;
+                                background: white;
+                                font-family: 'Times New Roman', Times, serif;
                                 text-align: left;
                             }
 
