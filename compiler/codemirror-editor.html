@@ -351,7 +351,7 @@
                         <ul class="theme-color">
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin1">Fullscreen</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin2">Select All</a></li>
-                            <li class="theme-item"><a href="javascript:togglePopup()" class="theme-link" data-logobg="skin3">Edit As HTML</a></li>
+                            <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="skin3">Edit As HTML</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin4">Print</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin5">Help</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin6">Undo</a></li>
@@ -525,7 +525,7 @@
         <div id="popup-1" class="popup">
             <div class="overlay">
                 <div class="content">
-                    <div class="close-btn" onclick="togglePopup('x')">&times;</div>
+                    <div class="close-btn" onclick="togglePopOff()">&times;</div>
                     <div id="rendered" contenteditable="false"></div>
                 </div>
             </div>
@@ -541,6 +541,7 @@
             let delay;
             let oldEditor = null;
             let oldText = null;
+            let rendered = document.querySelector("#rendered");
             let oldPreview;
             let areas = document.querySelectorAll("#editingform textarea");
             let pages = document.querySelector("table.pages-array-model-field");
@@ -573,6 +574,26 @@
                     }
                 }
                 
+            }
+
+            function changeHandler() {
+                CodeMirror.commands["selectAll"](oldEditor);
+                oldEditor.replaceSelection(`${rendered.innerHTML}`);
+                
+            }
+
+            function togglePopOn() {
+                document.getElementById("popup-1").classList.toggle("active");
+                rendered = document.querySelector("#rendered");
+                rendered.setAttribute("contenteditable", "true");
+                rendered.addEventListener("change", changeHandler);
+            }
+
+            function togglePopOff() {
+                document.getElementById("popup-1").classList.toggle("active");
+                rendered = document.querySelector("#rendered");
+                rendered.setAttribute("contenteditable", "false");
+                rendered.removeEventListener("change", changeHandler);
             }
 
             function getSelectedRange(cmEditor) {
