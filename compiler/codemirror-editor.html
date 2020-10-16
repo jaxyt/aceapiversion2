@@ -576,9 +576,16 @@
                 
             }
 
+            function cmChangeHandler() {
+                oldEditor.save();
+                document.querySelector("#rendered").innerHTML = oldEditor.getValue();
+            }
+
             function changeHandler() {
+                oldEditor.off("change", cmChangeHandler)
                 CodeMirror.commands["selectAll"](oldEditor);
                 oldEditor.replaceSelection(`${rendered.innerHTML}`);
+                oldEditor.on("change", cmChangeHandler)
             }
 
             function togglePopOn() {
@@ -659,13 +666,11 @@
 
                 autoFormatSelection(editor);
                 editor.setSelection(editor.getCursor("start"))
-                editor.on("change", ()=>{
-                    editor.save();
-                    document.querySelector("#rendered").innerHTML = editor.getValue();
-                })
 
                 oldEditor = editor;
                 oldText = x;
+
+                oldEditor.on("change", cmChangeHandler)
                 
             }
 
