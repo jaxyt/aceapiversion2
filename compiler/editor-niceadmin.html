@@ -1763,8 +1763,8 @@
                     <div class="p-20 border-bottom">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h4>Compose</h4>
-                                <span>create new message</span>
+                                <h4 id="route-display">Compose</h4>
+                                <span id="title-display">create new message</span>
                             </div>
                             <div class="ml-auto">
                                 <button id="cancel_compose" class="btn btn-dark">Back</button>
@@ -2033,14 +2033,7 @@
                 
                                 oldEditor.on("change", cmChangeHandler)
                                 
-                                document.querySelector(".card-body").style = "padding: 0px;"
-                                document.querySelectorAll("#editingform label").forEach(e=>e.style="display:none;")
-                                document.querySelectorAll("#editingform tbody").forEach(e=>e.classList.toggle("test-content"))
-                                document.querySelectorAll("#editingform textarea").forEach(e=>e.classList.toggle("test-content"))
-                                document.querySelectorAll("#editingform input").forEach(e=>e.style="display:none;")
-                                document.querySelectorAll(".pages-array-model-field tbody")[0].classList.toggle("test-content")
-                                document.querySelectorAll(".pages-array-model-field tbody")[0].children[8].children[1].children[0].classList.toggle("test-content")
-                                //oldEditor.setSize()
+                                
                                 
                             }
                 
@@ -2052,6 +2045,13 @@
                 
                             pagesBar.addEventListener("click", (e)=>{
                                 let t = pages.children[parseInt(e.target.dataset['pageid'])];
+                                document.querySelector(".card-body").style = "padding: 0px;"
+                                document.querySelectorAll("#editingform label").forEach(e=>e.classList.add("test-content"))
+                                document.querySelectorAll("#editingform tbody").forEach(e=>e.classList.add("test-content"))
+                                document.querySelectorAll("#editingform textarea").forEach(e=>e.classList.add("test-content"))
+                                document.querySelectorAll("#editingform input").forEach(e=>e.classList.toggle("test-content"))
+                                t.classList.remove("test-content")
+                                t.children[8].children[1].children[0].classList.remove("test-content")
                                 t.children[8].children[1].children[0].focus();
                             })
                         </script>
