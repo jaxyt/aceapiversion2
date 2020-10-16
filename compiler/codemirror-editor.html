@@ -585,6 +585,7 @@
                 oldEditor.off("change", cmChangeHandler)
                 CodeMirror.commands["selectAll"](oldEditor);
                 oldEditor.replaceSelection(`${rendered.innerHTML}`);
+                oldEditor.save();
                 oldEditor.on("change", cmChangeHandler)
             }
 
