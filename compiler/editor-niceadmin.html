@@ -1909,8 +1909,34 @@
 
                                 console.log(`
                                 width: ${width}
+                                height: ${height}
+                                
+                                `);
 
-                                height: ${height}`);
+                                return [width, height];
+
+                            }
+
+                            function getWindowWidthAndHeight() {
+
+                                let footer = getElemTotalWidthAndHeight(document.querySelector("footer"));
+                                let navbar = getElemTotalWidthAndHeight(document.querySelector("nav"));
+                                let sidebar = getElemTotalWidthAndHeight(document.querySelector("aside.left-sidebar"));
+                                let composeArea = getElemTotalWidthAndHeight(document.querySelector("div.left-part"));
+
+                                let totalScreenWidth = navbar[0];
+                                let totalScreenHeight = sidebar[1];
+                                let w = totalScreenWidth - sidebar[0] - composeArea[0];
+                                let h = totalScreenHeight - navbar[1] - footer[1];
+
+                                console.log(`
+                                available -
+                                    width: ${w}
+                                    height: ${h}
+                                
+                                `);
+
+
 
                             }
 
@@ -2034,10 +2060,7 @@
                 
                                 oldEditor.on("change", cmChangeHandler)
                                 
-                                getElemTotalWidthAndHeight(document.querySelector("footer"));
-                                getElemTotalWidthAndHeight(document.querySelector("nav"));
-                                getElemTotalWidthAndHeight(document.querySelector("aside.left-sidebar"));
-                                getElemTotalWidthAndHeight(document.querySelector("div.left-part"));
+                                
                                 
                             }
                 
