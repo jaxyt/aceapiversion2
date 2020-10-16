@@ -1893,52 +1893,18 @@
                             //pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
                             //editorBar.style = "display: flex; flex-wrap: wrap;";
 
-                            function getElemTotalWidthAndHeight(box) {
-                                let oWidth = box.offsetWidth;
-                                let oHeight = box.offsetHeight;
-                                let style = getComputedStyle(box);
-
-                                let marginLeft = parseInt(style.marginLeft);
-                                let marginRight = parseInt(style.marginRight);
-                                let marginTop = parseInt(style.marginTop);
-                                let marginBottom = parseInt(style.marginBottom);
-
-                                let width = marginLeft + oWidth + marginRight;
-
-                                let height = marginTop + oHeight + marginBottom;
-
-                                console.log(`
-                                width: ${width}
-                                height: ${height}
+                            
+                            function getWidthAndHeight() {
+                                let cardBodyWidth = document.querySelector(".card-body").offsetWidth;
+                                let windowHeight = window.innerHeight;
+                                let footerHeight = document.querySelector("footer").offsetHeight;
+                                let navHeight = document.querySelector("nav").offsetHeight;
+                                let availableHeight = windowHeight - footerHeight - navHeight;
+                                oldEditor.setSize(cardBodyWidth, availableHeight);
                                 
-                                `);
-
-                                return [width, height];
 
                             }
-
-                            function getWindowWidthAndHeight() {
-
-                                let footer = getElemTotalWidthAndHeight(document.querySelector("footer"));
-                                let navbar = getElemTotalWidthAndHeight(document.querySelector("nav"));
-                                let sidebar = getElemTotalWidthAndHeight(document.querySelector("aside.left-sidebar"));
-                                let composeArea = getElemTotalWidthAndHeight(document.querySelector("div.left-part"));
-
-                                let totalScreenWidth = navbar[0];
-                                let totalScreenHeight = sidebar[1];
-                                let w = totalScreenWidth - sidebar[0] - composeArea[0];
-                                let h = totalScreenHeight - navbar[1] - footer[1];
-
-                                console.log(`
-                                available -
-                                    width: ${w}
-                                    height: ${h}
-                                
-                                `);
-
-
-
-                            }
+                            
 
 
                             function copyHandler(e) {
@@ -2058,7 +2024,7 @@
                                 oldEditor = editor;
                                 oldText = x;
 
-                                getWindowWidthAndHeight()
+                                getWidthAndHeight();
                 
                                 oldEditor.on("change", cmChangeHandler)
                                 
