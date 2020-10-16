@@ -1844,6 +1844,15 @@
                                 line-height: initial;
                                 text-align: initial;
                             }
+
+                            #editor-commands {
+                                display: grid;
+                            }
+
+                            #editor-commands a {
+                                width: auto
+                            }
+
                         </style>
                         <div id="popup-1" class="popup">
                             <div class="overlay">
@@ -2091,8 +2100,8 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Basic Styles</h5>
                         <ul class="theme-color">
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('bold', oldEditor)" class="theme-link" data-logobg="skin1">B</a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('italic', oldEditor)" class="theme-link" data-logobg="skin2">i</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('bold', oldEditor)" class="theme-link" data-logobg="">B</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('italic', oldEditor)" class="theme-link" data-logobg="">i</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">U</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">S</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">x 2</a></li>
@@ -2103,7 +2112,7 @@
                     <div class="p-15 border-bottom">
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Editor Commands</h5>
-                        <ul class="theme-color">
+                        <ul id="editor-commands" class="theme-color">
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Fullscreen</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Select All</a></li>
                             <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
