@@ -1908,6 +1908,22 @@
                                 }
                                 
                             }
+
+                            function copyHandler(e) {
+                                console.log(e);
+                                console.log(document.getSelection());
+                                var doc = new DOMParser().parseFromString(document.getSelection(), 'text/html');
+                                console.log(doc.body.textContent);
+                                e.preventDefault();
+                                console.log(e);
+                            }
+
+                            function pasteHandler(e) {
+                                console.log(e);
+                                e.preventDefault();
+                                console.log(e);
+                                console.log((e.originalEvent || e).clipboardData.getData('text/plain'));
+                            }
                 
                             function cmChangeHandler() {
                                 oldEditor.save();
@@ -1927,6 +1943,8 @@
                                 rendered = document.querySelector("#rendered");
                                 rendered.setAttribute("contenteditable", "true");
                                 rendered.addEventListener("input", changeHandler);
+                                rendered.addEventListener("copy", copyHandler);
+                                rendered.addEventListener("paste", pasteHandler);
                             }
                 
                             function togglePopOff() {
@@ -1934,6 +1952,8 @@
                                 rendered = document.querySelector("#rendered");
                                 rendered.setAttribute("contenteditable", "false");
                                 rendered.removeEventListener("input", changeHandler);
+                                rendered.removeEventListener("copy", copyHandler);
+                                rendered.removeEventListener("paste", pasteHandler);
                             }
                 
                             function getSelectedRange(cmEditor) {
