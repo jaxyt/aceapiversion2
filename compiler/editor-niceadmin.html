@@ -426,10 +426,10 @@
                             </a>
                             <ul aria-expanded="false" class="collapse  first-level">
                                 {% for obj in instance.shortcodes %}
-                                    <li data-shortcodeid="{{ forloop.counter0 }}" class="sidebar-item">
-                                        <a class="sidebar-link">
-                                            <i class="mdi mdi-view-quilt"></i>
-                                            <span class="hide-menu"> {{ obj.name }} </span>
+                                    <li data-shortcodeid="{{ forloop.counter0 }}" data-shortcodename="{{ obj.name }}" class="sidebar-item">
+                                        <a data-shortcodeid="{{ forloop.counter0 }}" data-shortcodename="{{ obj.name }}" class="sidebar-link">
+                                            <i data-shortcodeid="{{ forloop.counter0 }}" data-shortcodename="{{ obj.name }}" class="mdi mdi-view-quilt"></i>
+                                            <span data-shortcodeid="{{ forloop.counter0 }}" data-shortcodename="{{ obj.name }}" class="hide-menu"> {{ obj.name }} </span>
                                         </a>
                                     </li>
                                 {% endfor %}
@@ -1774,229 +1774,231 @@
                     <!-- Action part -->
                     <!-- Button group part -->
                     <div class="card-body">
-                        <!--<a href="javascript:autoFormatSelection()">Autoformat Selected</a>
-                        <a href="javascript:blowUpPreview()">Preview Page</a>
-                        <iframe id="preview"></iframe>
-                        <select name="page-select" id="page-select"></select>-->
+                        <style>
+                            body {
+                                background-color: grey;
+                            }
+                
+                            .popup .overlay {
+                                position:fixed;
+                                top:0px;
+                                left:0px;
+                                width:100vw;
+                                height:100vh;
+                                background:rgba(0,0,0,0.7);
+                                z-index:80;
+                                display:none;
+                              }
+                              
+                              .popup .content {
+                                position:absolute;
+                                top:8%;
+                                left:50%;
+                                transform:translate(-50%,-50%) scale(0);
+                                background:#fff;
+                                width:60vw;
+                                height:95vh;
+                                z-index:70;
+                                text-align:center;
+                                padding:20px;
+                                box-sizing:border-box;
+                                font-family:"Open Sans",sans-serif;
+                              }
+                              
+                              .popup .close-btn {
+                                cursor:pointer;
+                                position:absolute;
+                                right:20px;
+                                top:20px;
+                                width:30px;
+                                height:30px;
+                                background:#222;
+                                color:#fff;
+                                font-size:25px;
+                                font-weight:600;
+                                line-height:30px;
+                                text-align:center;
+                                border-radius:50%;
+                              }
+                              
+                              .popup.active .overlay {
+                                display:block;
+                              }
+                              
+                              .popup.active .content {
+                                transition:all 300ms ease-in-out;
+                                transform:translate(-50%,-10%) scale(1);
+                              }
+                
+                              #rendered {
+                                  height: 90vh;
+                                  overflow-y: scroll;
+                              }
+                        </style>
+                        <div id="popup-1" class="popup">
+                            <div class="overlay">
+                                <div class="content">
+                                    <div class="close-btn" onclick="togglePopOff()">&times;</div>
+                                    <div id="rendered" contenteditable="false"></div>
+                                </div>
+                            </div>
+                        </div>
                         <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
                             <div id="summernote">
                                 {{ form }}
                             </div>
-                            <button type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i> Send</button>
-                            <button type="submit" class="btn btn-dark m-t-20">Discard</button>
+                            <button disabled type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i>Save</button>
+                            <button disabled type="submit" class="btn btn-dark m-t-20">Clone</button>
                         </form>
                         <script>
                             let delay;
-                            //let closeDelay;
-                            let oldEditor;
-                            let oldText;
-                            let areas = document.querySelectorAll("textarea");
+                            let oldEditor = null;
+                            let oldText = null;
+                            let rendered = document.querySelector("#rendered");
+                            let oldPreview;
+                            let areas = document.querySelectorAll("#editingform textarea");
                             let pages = document.querySelector("table.pages-array-model-field");
                             let pageSelect = document.querySelector("#page-select");
                             let shortCodes = document.querySelector("table.shortcodes-array-model-field");
-                            let pagesBar = document.querySelector("#pages-bar");
+                            let pagesBar = document.querySelector("#pages-bar ul.collapse.first-level");
                             let pagesBarItems = document.querySelectorAll("#pages-bar ul li.sidebar-item");
                             let shortcodesBar = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
+                            let editorBar = document.querySelector("#pills-home");
+                            let textColorPicker = document.querySelector("#text-color-picker");
+                            let backgroundColorPicker = document.querySelector("#background-color-picker");
                             let editingForm = document.querySelector("#editingform");
-                            editingForm.style = "margin-top: 20px;";
-
-                            function hideForms(){
-                                let editingLabels = document.querySelectorAll("#editingform label");
-                                let editingInputs = document.querySelectorAll("#editingform input");
-                                let editingtexts = document.querySelectorAll("#editingform textarea");
-                                let editingTBodies = document.querySelectorAll("#editingform tbody");
-
-                                for (i=0; i < editingLabels.length; i++){
-                                    editingLabels[i].classList.add("editing-form-inactive");
-                                }
-                                for (i=0; i < editingInputs.length; i++){
-                                    editingInputs[i].classList.add("editing-form-inactive");
-                                }
-                                for (i=0; i < editingtexts.length; i++){
-                                    editingtexts[i].classList.add("editing-form-inactive");
-                                }
-
-                                for (i=0; i < editingTBodies.length; i++){
-                                    editingTBodies[i].classList.add("editing-form-inactive");
-                                }
-                            }
-                            
-                            hideForms();
-                            
-                            
-
-                            //shortCodes.style = "display: none";
-                            for (i=0; i < pages.children.length - 1; i++){
-                                page = pages.children[i];
-                                /*let pageOpt = document.createElement("option");
-                                pageOpt.value = `${i}`;
-                                pageOpt.text = `${i}: ${page.children[0].children[1].children[0].value}`;
-                                pageSelect.append(pageOpt);*/
-                                //pagesBarItems[i].children[0].id = `${i}`;
-                            }
-                            
-                            pagesBar.addEventListener("click", (e)=>{
-                                hideForms();
-                                if (e.target.getAttribute("data-pageid") !== null){
-                                    pageId = `#id_pages-${e.target.getAttribute("data-pageid")}-content`;
-                                    page = document.querySelector(pageId);
-                                    let tBody = page.parentElement.parentElement.parentElement;
-                                    let route = tBody.children[0].children[1].children[0];
-                                    let title = tBody.children[1].children[1].children[0];
-                                    let meta = tBody.children[2].children[1].children[0];
-                                    
-                                    page.classList.remove("editing-form-inactive");
-                                    tBody.classList.remove("editing-form-inactive");
-                                    route.classList.remove("editing-form-inactive");
-                                    title.classList.remove("editing-form-inactive");
-                                    meta.classList.remove("editing-form-inactive");
-                                    
-                                    page.scrollIntoView();
-                                    page.focus();
-                                }
+                            editingForm.style = "margin-top: 0px;";
+                            //editingForm.style = "margin-top: 0px; display: grid;";
+                            //pages.style = "display: flex; flex-wrap: wrap;";
+                            //shortCodes.style = "display: flex; flex-wrap: wrap;";
+                            //pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
+                            //editorBar.style = "display: flex; flex-wrap: wrap;";
+                
+                            function togglePopup(xbtn=''){
                                 
-                                
-                            })
-
-                            
-                            for (i=0; i < areas.length; i++){
-                                areas[i].rows = 5;
-                                if(`${areas[i].id}`.match(/id_pages-\d-content/g)){
-                                    
-                                    areas[i].addEventListener("focusin", (e)=> {
-                                        if(oldEditor){
-                                            oldEditor.toTextArea();
-                                        }
-                                        if (oldText) {
-                                            oldText.classList.add("editing-form-inactive");
-                                            oldText.parentElement.parentElement.parentElement.classList.add("editing-form-inactive");
-                                            page.parentElement.parentElement.parentElement.children[0].children[1].children[0].classList.add("editing-form-inactive");
-                                            page.parentElement.parentElement.parentElement.children[1].children[1].children[0].classList.add("editing-form-inactive");
-                                            page.parentElement.parentElement.parentElement.children[2].children[1].children[0].classList.add("editing-form-inactive");
-                                        }
-
-                                        let textAr = e.target;
-                                        let editor = CodeMirror.fromTextArea(e.target, {
-                                            lineNumbers: true,
-                                            styleActiveLine: true,
-                                            mode: "htmlmixed",
-                                            theme: "3024-night",
-                                            matchBrackets: true,
-                                            lineWrapping: true,
-                                            extraKeys: {
-                                                "F11": function(cm) {
-                                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                                                },
-                                                "Esc": function(cm) {
-                                                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                                                },
-                                                "Ctrl-Space": "autocomplete",
-                                                "Alt-F": "findPersistent"
-                                            },
-                                            gutters: ["CodeMirror-linenumbers"],
-                                        });
-
-                                        CodeMirror.commands["selectAll"](editor);
-
-                                        function getSelectedRange() {
-                                            return { from: editor.getCursor(true), to: editor.getCursor(false) };
-                                        }
-                                        
-                                        function autoFormatSelection() {
-                                            var range = getSelectedRange();
-                                            editor.autoFormatRange(range.from, range.to);
-                                        }
-                                        
-                                        function commentSelection(isComment) {
-                                            var range = getSelectedRange();
-                                            editor.commentRange(isComment, range.from, range.to);
-                                        }
-                                        
-                                        autoFormatSelection();
-
-                                        editor.setSelection(editor.getCursor("start"))
-                                        editor.on("change", ()=>{
-                                            editor.save();
-
-                                        })
-
-                                        oldEditor = editor;
-                                        oldText = textAr;
-
-                                    })
+                                document.getElementById("popup-1").classList.toggle("active");
+                                var rendered = document.querySelector("#rendered");
+                                if (xbtn === 'x'){
+                                    rendered.setAttribute("contenteditable", "false");
                                 } else {
-                                    areas[i].addEventListener("focusin", (e)=> {
-
-                                        let textAr = e.target;
-                                        let editor = CodeMirror.fromTextArea(e.target, {
-                                            lineNumbers: true,
-                                            styleActiveLine: true,
-                                            mode: "htmlmixed",
-                                            theme: "3024-night",
-                                            matchBrackets: true,
-                                            lineWrapping: true,
-                                            extraKeys: {
-                                                "F11": function(cm) {
-                                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                                                },
-                                                "Esc": function(cm) {
-                                                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                                                },
-                                                "Ctrl-Space": "autocomplete",
-                                                "Alt-F": "findPersistent"
-                                            },
-                                            gutters: ["CodeMirror-linenumbers"],
-                                        });
-
-                                        CodeMirror.commands["selectAll"](editor);
-
-                                        function getSelectedRange() {
-                                            return { from: editor.getCursor(true), to: editor.getCursor(false) };
-                                        }
-                                        
-                                        function autoFormatSelection() {
-                                            var range = getSelectedRange();
-                                            editor.autoFormatRange(range.from, range.to);
-                                        }
-                                        
-                                        function commentSelection(isComment) {
-                                            var range = getSelectedRange();
-                                            editor.commentRange(isComment, range.from, range.to);
-                                        }
-                                        
-                                        autoFormatSelection();
-
-                                        editor.setSelection(editor.getCursor("start"))
-                                        editor.on("change", ()=>{
-                                            editor.save();
-
-                                        })
-
-                                        editor.on("blur", ()=>{
-                                            clearTimeout(delay)
-                                            delay = setTimeout(()=>{
-                                                if(!editor.hasFocus()){
-                                                    editor.toTextArea();
-                                                }
-                                            }, 10000)
-                                            
-                                        })
-
-                                        
-                                    })
+                                    if (rendered.getAttribute("contenteditable") === "false"){
+                                        rendered.setAttribute("contenteditable", "true");
+                                    } else {
+                                        rendered.setAttribute("contenteditable", "false");
+                                    }
                                 }
                                 
                             }
-
-                            function blowUpPreview(){
-                                var prevFrame = document.getElementById('preview');
-                                prevFrame.classList.toggle("modal-display");
+                
+                            function cmChangeHandler() {
+                                oldEditor.save();
+                                document.querySelector("#rendered").innerHTML = oldEditor.getValue();
                             }
-
+                
+                            function changeHandler() {
+                                oldEditor.off("change", cmChangeHandler)
+                                CodeMirror.commands["selectAll"](oldEditor);
+                                oldEditor.replaceSelection(`${rendered.innerHTML}`);
+                                oldEditor.save();
+                                oldEditor.on("change", cmChangeHandler)
+                            }
+                
+                            function togglePopOn() {
+                                document.getElementById("popup-1").classList.toggle("active");
+                                rendered = document.querySelector("#rendered");
+                                rendered.setAttribute("contenteditable", "true");
+                                rendered.addEventListener("input", changeHandler);
+                            }
+                
+                            function togglePopOff() {
+                                document.getElementById("popup-1").classList.toggle("active");
+                                rendered = document.querySelector("#rendered");
+                                rendered.setAttribute("contenteditable", "false");
+                                rendered.removeEventListener("input", changeHandler);
+                            }
+                
+                            function getSelectedRange(cmEditor) {
+                                return { from: cmEditor.getCursor(true), to: cmEditor.getCursor(false) };
+                            }
                             
+                            function autoFormatSelection(cmEditor) {
+                                var range = getSelectedRange(cmEditor);
+                                cmEditor.autoFormatRange(range.from, range.to);
+                            }
                             
+                            function commentSelection(isComment, cmEditor) {
+                                var range = getSelectedRange(cmEditor);
+                                cmEditor.commentRange(isComment, range.from, range.to);
+                            }
+                            
+                            function wrapOrInsertAtSelection(dataVal, cmEditor){
+                                var string = cmEditor.getSelection();
+                
+                                switch(dataVal) {
+                                    case 'bold':
+                                        cmEditor.replaceSelection(`<strong>${string}</strong>`);
+                                        break;
+                                    case 'italic':
+                                        cmEditor.replaceSelection(`<em>${string}</em>`);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                
+                            }
+                            
+                
+                            function startCodeEditor(x) {
+                
+                                if (oldEditor !== null) {
+                                    oldEditor.toTextArea();
+                                }
+                                if (oldText !== null) {
+                                    console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
+                                }
+                
+                                const editor = CodeMirror.fromTextArea(x, {
+                                    lineNumbers: true,
+                                    styleActiveLine: true,
+                                    mode: "htmlmixed",
+                                    theme: "3024-night",
+                                    matchBrackets: true,
+                                    lineWrapping: true,
+                                    extraKeys: {
+                                        "F11": function(cm) {
+                                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                        },
+                                        "Esc": function(cm) {
+                                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                                        },
+                                        "Ctrl-Space": "autocomplete",
+                                        "Alt-F": "findPersistent"
+                                    },
+                                    gutters: ["CodeMirror-linenumbers"],
+                                })
+                
+                                CodeMirror.commands["selectAll"](editor);
+                
+                                autoFormatSelection(editor);
+                                editor.setSelection(editor.getCursor("start"))
+                
+                                oldEditor = editor;
+                                oldText = x;
+                
+                                oldEditor.on("change", cmChangeHandler)
                                 
-                                
+                            }
+                
+                            for (i=0;i<areas.length;i++){
+                                areas[i].addEventListener("focusin", (e)=> {
+                                    startCodeEditor(e.target);
+                                })
+                            }
+                
+                            pagesBar.addEventListener("click", (e)=>{
+                                let t = pages.children[parseInt(e.target.dataset['pageid'])];
+                                t.children[8].children[1].children[0].focus();
+                            })
                         </script>
                         <!-- Action part -->
                     </div>
@@ -2077,6 +2079,33 @@
                     </div>
                     <div class="p-15 border-bottom">
                         <!-- Logo BG -->
+                        <h5 class="font-medium m-b-10 m-t-10">Basic Styles</h5>
+                        <ul class="theme-color">
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('bold', oldEditor)" class="theme-link" data-logobg="skin1">B</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('italic', oldEditor)" class="theme-link" data-logobg="skin2">i</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">U</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">S</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">x 2</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">x 2</a></li>
+                        </ul>
+                        <!-- Logo BG -->
+                    </div>
+                    <div class="p-15 border-bottom">
+                        <!-- Logo BG -->
+                        <h5 class="font-medium m-b-10 m-t-10">Editor Commands</h5>
+                        <ul class="theme-color">
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Fullscreen</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Select All</a></li>
+                            <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Print</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Help</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Undo</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Redo</a></li>
+                        </ul>
+                        <!-- Logo BG -->
+                    </div>
+                    <div class="p-15 border-bottom">
+                        <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Logo Backgrounds</h5>
                         <ul class="theme-color">
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin1"></a></li>
@@ -2114,6 +2143,40 @@
                         </ul>
                         <!-- Logo BG -->
                     </div>
+                </div>
+                <div class="p-15 border-bottom">
+                    <!-- Logo BG -->
+                    <h5 class="font-medium m-b-10 m-t-10">Text Color</h5>
+                    <ul id="text-color-picker" class="theme-color">
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin7"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin8"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin9"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin10"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin11"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin12"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin13"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin14"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin15"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin16"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin17"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin18"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin19"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin20"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin21"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin22"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin23"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin24"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin25"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin26"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin27"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin28"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin29"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin30"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin31"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin32"></a></li>
+                        <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin33"></a></li>
+                    </ul>
+                    <!-- Logo BG -->
                 </div>
                 <!-- End Tab 1 -->
                 <!-- Tab 2 -->
