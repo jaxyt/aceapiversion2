@@ -577,22 +577,22 @@
             }
 
             function changeHandler() {
-                console.log("pre")
                 CodeMirror.commands["selectAll"](oldEditor);
                 oldEditor.replaceSelection(`${rendered.innerHTML}`);
-                console.log("post")
             }
 
             function togglePopOn() {
                 document.getElementById("popup-1").classList.toggle("active");
+                rendered = document.querySelector("#rendered");
                 rendered.setAttribute("contenteditable", "true");
-                rendered.addEventListener("change", changeHandler);
+                rendered.addEventListener("input", changeHandler);
             }
 
             function togglePopOff() {
                 document.getElementById("popup-1").classList.toggle("active");
+                rendered = document.querySelector("#rendered");
                 rendered.setAttribute("contenteditable", "false");
-                rendered.removeEventListener("change", changeHandler);
+                rendered.removeEventListener("input", changeHandler);
             }
 
             function getSelectedRange(cmEditor) {
