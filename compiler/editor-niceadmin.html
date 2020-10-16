@@ -1892,37 +1892,19 @@
                             //shortCodes.style = "display: flex; flex-wrap: wrap;";
                             //pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
                             //editorBar.style = "display: flex; flex-wrap: wrap;";
-                
-                            function togglePopup(xbtn=''){
-                                
-                                document.getElementById("popup-1").classList.toggle("active");
-                                var rendered = document.querySelector("#rendered");
-                                if (xbtn === 'x'){
-                                    rendered.setAttribute("contenteditable", "false");
-                                } else {
-                                    if (rendered.getAttribute("contenteditable") === "false"){
-                                        rendered.setAttribute("contenteditable", "true");
-                                    } else {
-                                        rendered.setAttribute("contenteditable", "false");
-                                    }
-                                }
-                                
-                            }
 
                             function copyHandler(e) {
-                                console.log(e);
-                                console.log(document.getSelection());
                                 var doc = new DOMParser().parseFromString(document.getSelection(), 'text/html');
-                                console.log(doc.body.textContent);
+                                var text = doc.body.textContent;
                                 e.preventDefault();
-                                console.log(e);
+                                document.execCommand('Copy', false, text);
+                                
                             }
 
                             function pasteHandler(e) {
-                                console.log(e);
                                 e.preventDefault();
-                                console.log(e);
-                                console.log((e.originalEvent || e).clipboardData.getData('text/plain'));
+                                var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                                document.execCommand("insertHTML", false, text);
                             }
                 
                             function cmChangeHandler() {
