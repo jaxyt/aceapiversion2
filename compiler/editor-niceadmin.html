@@ -1716,42 +1716,42 @@
                                 <small class="p-15 grey-text text-lighten-1 db">Site Fields</small>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="active list-group-item-action"><i class="mdi mdi-inbox"></i> Metas <span class="label label-success float-right">6</span></a>
+                                <a href="javascript:startSiteField('sitemetas')" class="active list-group-item-action"><i class="mdi mdi-inbox" ></i> Metas <!--<span class="label label-success float-right" >6</span>--></a>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-star"></i> Links </a>
+                                <a href="javascript:startSiteField('sitelinks')" class="list-group-item-action"> <i class="mdi mdi-star"></i> Links </a>
                             </li>
+                            <li class="list-group-item" >
+                                <a href="javascript:startSiteField('sitestyle')"  class="list-group-item-action"> <i class="mdi mdi-send" ></i> Style <!--<span class="label label-danger float-right">3</span>--></a></li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-send"></i> Style <span class="label label-danger float-right">3</span></a></li>
-                            <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-email"></i> Scripts </a>
+                                <a href="javascript:startSiteField('sitescripts')" class="list-group-item-action"> <i class="mdi mdi-email"></i> Scripts </a>
                             </li>
                             <li class="list-group-item">
                                 <hr>
                             </li>
-                            <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-block-helper"></i> Header </a>
+                            <li class="list-group-item" >
+                                <a href="javascript:startSiteField('siteheader')" class="list-group-item-action"> <i class="mdi mdi-block-helper"></i> Header </a>
                             </li>
-                            <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"> <i class="mdi mdi-delete"></i> Footer </a>
+                            <li class="list-group-item" >
+                                <a href="javascript:startSiteField('sitefooter')"  class="list-group-item-action"> <i class="mdi mdi-delete" ></i> Footer </a>
                             </li>
                             <li class="list-group-item">
                                 <hr>
                             </li>
                             <li>
-                                <small class="p-15 grey-text text-lighten-1 db">Page Fields</small>
+                                <small id="page-id-util" data-pageid="0" class="p-15 grey-text text-lighten-1 db">Page Fields</small>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-danger mdi mdi-checkbox-blank-circle"></i> Metas </a>
+                                <a href="javascript:startPageField('pagemetas')" class="list-group-item-action"><i class="text-danger mdi mdi-checkbox-blank-circle" ></i> Metas </a>
+                            </li>
+                            <li class="list-group-item" >
+                                <a href="javascript:startPageField('pagelinks')" class="list-group-item-action"><i class="text-cyan mdi mdi-checkbox-blank-circle" ></i> Links </a>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-cyan mdi mdi-checkbox-blank-circle"></i> Links </a>
+                                <a href="javascript:startPageField('pagestyle')" class="list-group-item-action"><i class="text-warning mdi mdi-checkbox-blank-circle" ></i> Style </a>
                             </li>
                             <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-warning mdi mdi-checkbox-blank-circle"></i> Style </a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="javascript:void(0)" class="list-group-item-action"><i class="text-info mdi mdi-checkbox-blank-circle"></i> Scripts </a>
+                                <a href="javascript:startPageField('pagescripts')" class="list-group-item-action"><i class="text-info mdi mdi-checkbox-blank-circle" ></i> Scripts </a>
                             </li>
                         </ul>
                     </div>
@@ -1848,7 +1848,7 @@
                                 width: auto
                             }
 
-                            .test-content {
+                            .hide-content {
                                 display: none;
                             }
 
@@ -1895,15 +1895,12 @@
                             //editorBar.style = "display: flex; flex-wrap: wrap;";
 
                             
-                            function getWidthAndHeight() {
-                                let cardBodyWidth = document.querySelector(".card-body").offsetWidth;
-                                let windowHeight = window.innerHeight;
-                                let footerHeight = document.querySelector("footer").offsetHeight;
-                                let navHeight = document.querySelector("nav").offsetHeight;
-                                let availableHeight = windowHeight - footerHeight - navHeight;
-                                oldEditor.setSize(cardBodyWidth, availableHeight);
-                                
-
+                            function hideContent() {
+                                document.querySelector(".card-body").style = "padding: 0px;"
+                                document.querySelectorAll("#editingform label").forEach(e=>e.classList.add("hide-content"))
+                                document.querySelectorAll("#editingform tbody").forEach(e=>e.classList.add("hide-content"))
+                                document.querySelectorAll("#editingform textarea").forEach(e=>e.classList.add("hide-content"))
+                                document.querySelectorAll("#editingform input").forEach(e=>e.classList.add("hide-content"))
                             }
                             
 
@@ -2037,18 +2034,31 @@
                                     startCodeEditor(e.target);
                                 })
                             }
+
+                            function startSiteField(field) {
+                                hideContent();
+                                let textA = document.querySelector(`#id_${field}`);
+                                textA.classList.remove("hide-content");
+                                textA.focus()
+
+                            }
+
+                            function startPageField(field) {
+                                hideContent();
+                                let textA = document.querySelector(`#id_pages-${document.querySelector("#page-id-util").dataset['pageid']}-${field}`);
+                                textA.classList.remove("hide-content");
+                                textA.parentElement.parentElement.parentElement.classList.remove("hide-content")
+                                textA.focus()
+                            }
                 
                             pagesBar.addEventListener("click", (e)=>{
                                 let t = pages.children[parseInt(e.target.dataset['pageid'])];
-                                document.querySelector(".card-body").style = "padding: 0px;"
-                                document.querySelectorAll("#editingform label").forEach(e=>e.classList.add("test-content"))
-                                document.querySelectorAll("#editingform tbody").forEach(e=>e.classList.add("test-content"))
-                                document.querySelectorAll("#editingform textarea").forEach(e=>e.classList.add("test-content"))
-                                document.querySelectorAll("#editingform input").forEach(e=>e.classList.add("test-content"))
-                                t.classList.remove("test-content")
+                                document.querySelector("#page-id-util").dataset['pageid'] = e.target.dataset['pageid'];
+                                hideContent()
+                                t.classList.remove("hide-content")
                                 document.querySelector("#route-display").innerText = `Route: ${t.children[0].children[1].children[0].value}`;
                                 document.querySelector("#title-display").innerText = `Title: ${t.children[1].children[1].children[0].value}`;
-                                t.children[8].children[1].children[0].classList.remove("test-content")
+                                t.children[8].children[1].children[0].classList.remove("hide-content");
                                 t.children[8].children[1].children[0].focus();
                             })
                         </script>
