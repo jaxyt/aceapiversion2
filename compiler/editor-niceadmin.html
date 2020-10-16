@@ -1908,7 +1908,7 @@
                             function pasteHandler(e) {
                                 e.preventDefault();
                                 var text = (e.originalEvent || e).clipboardData.getData('text/plain');
-                                document.execCommand("insertHTML", false, text);
+                                document.execCommand('inserttext', false, text);
                             }
                 
                             function cmChangeHandler() {
