@@ -2161,6 +2161,9 @@
                                     case 'h4tag':
                                         cmEditor.replaceSelection(`<h4>${string}</h4>`);
                                         break;
+                                    case 'unorderedlist':
+                                        cmEditor.replaceSelection(`<ul style="list-style-type: circle;"><li><div>${string}</div></li></ul>`);
+                                        break;
                                     case 'code':
                                         cmEditor.replaceSelection(`<code>${string}</code>`);
                                         break;
@@ -2412,6 +2415,7 @@
                             <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h2tag', oldEditor)" class="theme-link" data-logobg="">H2</a></li>
                             <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h3tag', oldEditor)" class="theme-link" data-logobg="">H3</a></li>
                             <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h4tag', oldEditor)" class="theme-link" data-logobg="">H4</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('unorderedlist', oldEditor)" class="theme-link" data-logobg="">UL</a></li>
                             <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('code', oldEditor)" class="theme-link" data-logobg="">Code</a></li>
                         </ul>
                         <!-- Logo BG -->
