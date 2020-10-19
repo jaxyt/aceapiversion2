@@ -2739,6 +2739,11 @@
     <!--<script src="../../assets/libs/summernote/dist/summernote-bs4.min.js"></script>
     <script src="../../assets/libs/dropzone/dist/min/dropzone.min.js"></script>-->
     <script>
+        $("#main-wrapper").toggleClass("mini-sidebar"),
+        $(".sidebartoggler i").toggleClass("mdi-toggle-switch-off"),
+        $("#main-wrapper").hasClass("mini-sidebar") ? ($(".sidebartoggler").prop("checked", !0),
+        $("#main-wrapper").attr("data-sidebartype", "mini-sidebar")) : ($(".sidebartoggler").prop("checked", !1),
+        $("#main-wrapper").attr("data-sidebartype", "full"))
     /*$('#summernote').summernote({
         placeholder: 'Type your email Here',
         tabsize: 2,
