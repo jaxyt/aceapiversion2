@@ -1852,14 +1852,24 @@
                                 display: none;
                             }
 
-                            body[data-theme=dark] .link-options::before{
+                            .link-options {
+                                position: relative;
+                                margin-bottom: 0;
+                                vertical-align: top;
+                            }
+                            
+                            body[data-theme=dark] .link-options::before {
                                 background-color: #6c757d;
                             }
-
-                            .custom-checkbox .link-options::before{
+                            .custom-checkbox .link-options::before {
                                 border-radius: 2px;
                             }
-
+                            .link-options::after, .link-options::before {
+                                top: .15rem;
+                            }
+                            .link-options::before {
+                                transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+                            }
                             .link-options::before {
                                 position: absolute;
                                 top: .15625rem;
@@ -1872,15 +1882,10 @@
                                 background-color: #fff;
                                 border: #afb5c1 solid 1px;
                             }
-
+                            
                             .link-options::after, .link-options::before {
                                 top: .15rem;
                             }
-
-                            .link-options::before {
-                                transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-                            }
-
                             .link-options::after {
                                 position: absolute;
                                 top: .15625rem;
@@ -1891,6 +1896,7 @@
                                 content: "";
                                 background: no-repeat 50%/50% 50%;
                             }
+                            
 
                             
 
