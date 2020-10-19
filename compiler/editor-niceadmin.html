@@ -1965,7 +1965,8 @@
 
                             function linkHandler(){
                                 let submitLink = document.querySelector("#submit-link");
-                                let range = oldEditor.getAllMarks();
+                                let doc = oldEditor.getDoc()
+                                let range = doc.getAllMarks();
                                 console.log(`
                                 from: ${range[0].find().from}
                                 to: ${range[1].find().to ? range[1].find().to : "no length"}
