@@ -1852,19 +1852,47 @@
                                 display: none;
                             }
 
-                            body[data-theme=dark] .custom-control-label::before{
-
+                            body[data-theme=dark] .link-options::before{
+                                background-color: #6c757d;
                             }
 
-                            .custom-control-label::before {
-
+                            .custom-checkbox .link-options::before{
+                                border-radius: 2px;
                             }
 
-                            .custom-control-label::after, .custom-control-label::before {
-
+                            .link-options::before {
+                                position: absolute;
+                                top: .15625rem;
+                                left: -1.5rem;
+                                display: block;
+                                width: 1rem;
+                                height: 1rem;
+                                pointer-events: none;
+                                content: "";
+                                background-color: #fff;
+                                border: #afb5c1 solid 1px;
                             }
 
+                            .link-options::after, .link-options::before {
+                                top: .15rem;
+                            }
 
+                            .link-options::before {
+                                transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+                            }
+
+                            .link-options::after {
+                                position: absolute;
+                                top: .15625rem;
+                                left: -1.5rem;
+                                display: block;
+                                width: 1rem;
+                                height: 1rem;
+                                content: "";
+                                background: no-repeat 50%/50% 50%;
+                            }
+
+                            
 
                             
 
@@ -2134,27 +2162,27 @@
                         <h5 class="font-medium m-b-10 m-t-10">Add Link</h5>
                         <div class="custom-control custom-checkbox m-t-10">
                             <input type="url" class="custom-control-input" name="url-text-value" id="url-text-value">
-                            <label class="custom-control-label" for="url-text-value">URL</label>
+                            <label class="link-options" for="url-text-value">URL</label>
                         </div>
                         <div class="custom-control custom-checkbox m-t-10">
                             <input type="text" class="custom-control-input sidebartoggler" name="link-text-overlay" id="link-text-overlay">
-                            <label class="custom-control-label" for="link-text-overlay">Text</label>
+                            <label class="link-options" for="link-text-overlay">Text</label>
                         </div>
                         <div class="custom-control custom-checkbox m-t-10">
                             <input type="checkbox" class="custom-control-input" name="open-new-tab" id="open-new-tab">
                             <label class="custom-control-label" for="open-new-tab">Open In New Tab</label>
                         </div>
-                        <div class="custom-control custom-select m-t-10">
+                        <div class="custom-control custom-checkbox m-t-10">
                             <select class="custom-control-input" name="preset-links" id="preset-links">
                                 <option value="">None</option>
                                 <option value="https://www.goshgo.com">Goshgo</option>
                                 <option value="https://google.com">Google</option>
                             </select>
-                            <label class="custom-control-label" for="preset-links">Preset links</label>
+                            <label class="link-options" for="preset-links">Preset links</label>
                         </div>
                         <div class="custom-control custom-checkbox m-t-10">
                             <input type="submit" class="custom-control-input" name="submit-link" id="submit-link">
-                            <label class="custom-control-label" for="submit-link">Submit</label>
+                            <label class="link-options" for="submit-link">Submit</label>
                         </div>
                     </div>
                     <div class="p-15 border-bottom">
