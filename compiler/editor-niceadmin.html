@@ -1969,7 +1969,10 @@
                                 let submitLink = document.querySelector("#submit-link");
                                 let doc = oldEditor.getDoc()
                                 var cur = oldEditor.getCursor(), range = oldEditor.getViewport();
+                                console.log(cur);
+                                console.log(range);
                                 console.log(`
+                                line: ${cur.line}
                                 from: ${range.from}
                                 to: ${range.to ? range.to : "no length"}
                                 `);
