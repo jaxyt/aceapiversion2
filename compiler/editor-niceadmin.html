@@ -1967,7 +1967,7 @@
 
                             function linkHandler(){
                                 let submitLink = document.querySelector("#submit-link");
-                                let doc = oldEditor.getDoc()
+                                /*let doc = oldEditor.getDoc()
                                 var cur = oldEditor.getCursor(), range = oldEditor.getViewport();
                                 console.log(cur);
                                 console.log(range);
@@ -1975,6 +1975,17 @@
                                 line: ${cur.line}
                                 from: ${range.from}
                                 to: ${range.to ? range.to : "no length"}
+                                `);*/
+
+                                let urlInput = document.querySelector("#url-text-value");
+                                let textInput = document.querySelector("#link-text-overlay");
+                                let targ = document.querySelector("#open-new-tab");
+                                let presetLinks = document.querySelector("#preset-links");
+                                console.log(`
+                                url: ${urlInput.value}
+                                text: ${textInput.value}
+                                target: ${targ.checked ? "_blank" : ""}
+                                preset: ${presetLinks.value ? presetLinks.value : "not preset"}
                                 `);
                                 
                             }
