@@ -1987,6 +1987,33 @@
                                 target: ${targ.checked ? "_blank" : ""}
                                 preset: ${presetLinks.value ? presetLinks.value : "not preset"}
                                 `);
+                                let preppedLink = `<a href=`;
+
+                                if (presetLinks.value){
+                                    preppedLink += `${presetLinks.value}"`;
+                                    if (targ.checked) {
+                                        preppedLink += ` target="_blank"`;
+                                    }
+                                    preppedLink += `>`;
+                                    if (textInput.value){
+                                        preppedLink += `${textInput.value}`;
+                                    }
+                                    preppedLink += `</a>`;
+                                    oldEditor.replaceSelection(preppedLink);
+                                } else {
+                                    if (urlInput.value){
+                                        preppedLink += `${urlInput.value}"`;
+                                        if (targ.checked) {
+                                            preppedLink += ` target="_blank"`;
+                                        }
+                                        preppedLink += `>`;
+                                        if (textInput.value){
+                                            preppedLink += `${textInput.value}`;
+                                        }
+                                        preppedLink += `</a>`;
+                                        oldEditor.replaceSelection(preppedLink);
+                                    }
+                                }
                                 
                             }
                             
