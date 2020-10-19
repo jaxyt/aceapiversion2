@@ -1968,10 +1968,10 @@
                             function linkHandler(){
                                 let submitLink = document.querySelector("#submit-link");
                                 let doc = oldEditor.getDoc()
-                                let range = doc.getAllMarks();
+                                var cur = oldEditor.getCursor(), range = oldEditor.getViewport();
                                 console.log(`
-                                from: ${range[0].find().from}
-                                to: ${range[1].find().to ? range[1].find().to : "no length"}
+                                from: ${range.from}
+                                to: ${range.to ? range.to : "no length"}
                                 `);
                                 
                             }
@@ -2254,7 +2254,7 @@
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Georgia</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Impact</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Tahoma</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Times-New-Roman</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Times</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Verdana</a></li>
                         </ul>
                         <!-- Logo BG -->
