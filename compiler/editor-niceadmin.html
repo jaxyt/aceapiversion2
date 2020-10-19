@@ -1953,9 +1953,10 @@
                             </div>
                         </div>
                         <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
-                            <div id="summernote">
-                                {{ form }}
-                            </div>
+                            <!--<div id="summernote">
+                                
+                            </div>-->
+                            {{ form }}
                             <button disabled type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i>Save</button>
                             <button disabled type="submit" class="btn btn-dark m-t-20">Clone</button>
                         </form>
