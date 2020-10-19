@@ -1956,11 +1956,12 @@
                             let oldPreview;
                             let areas = document.querySelectorAll("#editingform textarea");
                             let pages = document.querySelector("table.pages-array-model-field");
+                            let pages = document.querySelector("table.shortcodes-array-model-field");
                             let pageSelect = document.querySelector("#page-select");
-                            let shortCodes = document.querySelector("table.shortcodes-array-model-field");
+                            let shortcodesBar = document.querySelector("#shortcodes-bar ul.collapse.first-level");
                             let pagesBar = document.querySelector("#pages-bar ul.collapse.first-level");
                             let pagesBarItems = document.querySelectorAll("#pages-bar ul li.sidebar-item");
-                            let shortcodesBar = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
+                            let shortcodesBarItems = document.querySelectorAll("#shortcodes-bar ul li.sidebar-item");
                             let editorBar = document.querySelector("#pills-home");
                             let textColorPicker = document.querySelector("#text-color-picker");
                             let backgroundColorPicker = document.querySelector("#background-color-picker");
@@ -2257,6 +2258,17 @@
                                 textA.parentElement.parentElement.parentElement.classList.remove("hide-content")
                                 textA.focus()
                             }
+                            
+                            shortcodesBar.addEventListener("click", (e)=>{
+                                let t = shortcodes.children[parseInt(e.target.dataset['shortcodeid'])];
+                                hideContent()
+                                t.classList.remove("hide-content")
+                                document.querySelector("#route-display").innerText = `Name: ${t.children[0].children[1].children[0].value}`;
+                                //document.querySelector("#title-display").innerText = `Title: ${t.children[1].children[1].children[0].value}`;
+                                t.children[1].children[1].children[0].classList.remove("hide-content");
+                                t.children[1].children[1].children[0].focus();
+                            })
+                            
                 
                             pagesBar.addEventListener("click", (e)=>{
                                 let t = pages.children[parseInt(e.target.dataset['pageid'])];
