@@ -2145,6 +2145,12 @@
 
                                 cmEditor.replaceSelection(`<span style="background-color: ${color}px;">${string}</span>`);
                             }
+
+                            function specialCharacterHandler(character, cmEditor){
+                                var string = cmEditor.getSelection();
+
+                                cmEditor.replaceSelection(`${character}`);
+                            }
                             
                 
                             function startCodeEditor(x) {
@@ -2311,6 +2317,20 @@
                     </div>
                     <div class="p-15 border-bottom">
                         <!-- Logo BG -->
+                        <h5 class="font-medium m-b-10 m-t-10">Editor Commands</h5>
+                        <ul id="editor-commands" class="theme-color">
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Fullscreen</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Select All</a></li>
+                            <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Print</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Help</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Undo</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Redo</a></li>
+                        </ul>
+                        <!-- Logo BG -->
+                    </div>
+                    <div class="p-15 border-bottom">
+                        <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Basic Styles</h5>
                         <ul class="theme-color">
                             <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('bold', oldEditor)" class="theme-link" data-logobg=""><strong>B</strong></a></li>
@@ -2358,20 +2378,6 @@
                             <li class="theme-item"><a href="javascript:fontSizeHandler(30, oldEditor)" class="theme-link" data-logobg="">30</a></li>
                             <li class="theme-item"><a href="javascript:fontSizeHandler(36, oldEditor)" class="theme-link" data-logobg="">36</a></li>
                             <li class="theme-item"><a href="javascript:fontSizeHandler(48, oldEditor)" class="theme-link" data-logobg="">48</a></li>
-                        </ul>
-                        <!-- Logo BG -->
-                    </div>
-                    <div class="p-15 border-bottom">
-                        <!-- Logo BG -->
-                        <h5 class="font-medium m-b-10 m-t-10">Editor Commands</h5>
-                        <ul id="editor-commands" class="theme-color">
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Fullscreen</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Select All</a></li>
-                            <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Print</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Help</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Undo</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Redo</a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
@@ -2440,6 +2446,20 @@
                             <li class="theme-item"><a href="javascript:backgroundColorHandler('#B8312F', oldEditor)" class="theme-link" data-logobg="skin31"></a></li>
                             <li class="theme-item"><a href="javascript:backgroundColorHandler('#7C706B', oldEditor)" class="theme-link" data-logobg="skin32"></a></li>
                             <li class="theme-item"><a href="javascript:backgroundColorHandler('#D1D5D8', oldEditor)" class="theme-link" data-logobg="skin33"></a></li>
+                        </ul>
+                        <!-- Logo BG -->
+                    </div>
+                    <div class="p-15 border-bottom">
+                        <!-- Logo BG -->
+                        <h5 class="font-medium m-b-10 m-t-10">Special Characters</h5>
+                        <ul class="theme-color">
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&sect;', oldEditor)" class="theme-link" data-logobg="">&sect;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&copy;', oldEditor)" class="theme-link" data-logobg="">&copy;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&trade;', oldEditor)" class="theme-link" data-logobg="">&trade;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&reg;', oldEditor)" class="theme-link" data-logobg="">&reg;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&OpenCurlyDoubleQuote; &CloseCurlyDoubleQuote;', oldEditor)" class="theme-link" data-logobg="">&OpenCurlyDoubleQuote; &CloseCurlyDoubleQuote;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&hellip;', oldEditor)" class="theme-link" data-logobg="">&hellip;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&uArr;', oldEditor)" class="theme-link" data-logobg="">&uArr;</a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
