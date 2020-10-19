@@ -1840,7 +1840,7 @@
                                 text-align: left;
                             }
 
-                            #editor-commands {
+                            #editor-commands, #font-family {
                                 display: grid;
                             }
 
@@ -2120,11 +2120,11 @@
                         <h5 class="font-medium m-b-10 m-t-10">Add Link</h5>
                         <div class="custom-control custom-checkbox m-t-10">
                             <input type="url" class="custom-control-input" name="url-text-value" id="url-text-value">
-                            <label class="custom-control-label" for="url-text-value">URL</label>
+                            <label class="link-options" for="url-text-value">URL</label>
                         </div>
                         <div class="custom-control custom-checkbox m-t-10">
                             <input type="text" class="custom-control-input sidebartoggler" name="link-text-overlay" id="link-text-overlay">
-                            <label class="custom-control-label" for="link-text-overlay">Text</label>
+                            <label class="link-options" for="link-text-overlay">Text</label>
                         </div>
                         <div class="custom-control custom-checkbox m-t-10">
                             <input type="checkbox" class="custom-control-input" name="open-new-tab" id="open-new-tab">
@@ -2136,11 +2136,11 @@
                                 <option value="https://www.goshgo.com">Goshgo</option>
                                 <option value="https://google.com">Google</option>
                             </select>
-                            <label class="custom-control-label" for="preset-links">Preset links</label>
+                            <label class="link-options" for="preset-links">Preset links</label>
                         </div>
                         <div class="custom-control custom-checkbox m-t-10">
                             <input type="submit" class="custom-control-input" name="submit-link" id="submit-link">
-                            <label class="custom-control-label" for="submit-link">Submit</label>
+                            <label class="link-options" for="submit-link">Submit</label>
                         </div>
                     </div>
                     <div class="p-15 border-bottom">
@@ -2172,12 +2172,12 @@
                     <div class="p-15 border-bottom">
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Font Family</h5>
-                        <ul class="theme-color">
+                        <ul id="font-family" class="theme-color">
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Arial</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Georgia</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Impact</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Tahoma</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Times New Roman</a></li>
+                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Times-New-Roman</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Verdana</a></li>
                         </ul>
                         <!-- Logo BG -->
