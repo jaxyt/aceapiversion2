@@ -1961,6 +1961,17 @@
                                 document.querySelectorAll("#editingform textarea").forEach(e=>e.classList.add("hide-content"))
                                 document.querySelectorAll("#editingform input").forEach(e=>e.classList.add("hide-content"))
                             }
+
+
+                            function linkHandler(){
+                                let submitLink = document.querySelector("#submit-link");
+                                let range = oldEditor.getAllMarks();
+                                console.log(`
+                                from: ${range[0].find().from}
+                                to: ${range[1].find().to ? range[1].find().to : "no length"}
+                                `);
+                                
+                            }
                             
 
 
@@ -2200,7 +2211,7 @@
                             <label class="link-options" for="preset-links">Preset links</label>
                         </div>
                         <div class="custom-control custom-checkbox m-t-10">
-                            <input type="submit" class="custom-control-link-input" name="submit-link" id="submit-link" value="Submit">
+                            <input type="button" class="custom-control-link-input" name="submit-link" id="submit-link" onclick="linkHandler()" value="Submit">
                             <label class="link-options" for="submit-link">Submit</label>
                         </div>
                     </div>
@@ -2558,16 +2569,6 @@
     <!--<script src="../../assets/libs/summernote/dist/summernote-bs4.min.js"></script>
     <script src="../../assets/libs/dropzone/dist/min/dropzone.min.js"></script>-->
     <script>
-
-        let submitLink = document.querySelector("#submit-link");
-        submitLink.addEventListener("submit", (e)=>{
-            e.preventDefault();
-            let range = oldEditor.getAllMarks();
-            console.log(`
-            from: ${range[0].find().from}
-            to: ${range[1].find().to ? range[1].find().to : "no length"}
-            `);
-        })
     /*$('#summernote').summernote({
         placeholder: 'Type your email Here',
         tabsize: 2,
