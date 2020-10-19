@@ -2092,10 +2092,58 @@
                                     case 'italic':
                                         cmEditor.replaceSelection(`<em>${string}</em>`);
                                         break;
+                                    case 'underline':
+                                        cmEditor.replaceSelection(`<u>${string}</u>`);
+                                        break;
+                                    case 'strikethrough':
+                                        cmEditor.replaceSelection(`<s>${string}</s>`);
+                                        break;
+                                    case 'superscript':
+                                        cmEditor.replaceSelection(`<sup>${string}</sup>`);
+                                        break;
+                                    case 'subscript':
+                                        cmEditor.replaceSelection(`<sub>${string}</sub>`);
+                                        break;
+                                    case 'paragraphtag':
+                                        cmEditor.replaceSelection(`<p>${string}</p>`);
+                                        break;
+                                    case 'h1tag':
+                                        cmEditor.replaceSelection(`<h1>${string}</h1>`);
+                                        break;
+                                    case 'h2tag':
+                                        cmEditor.replaceSelection(`<h2>${string}</h2>`);
+                                        break;
+                                    case 'h3tag':
+                                        cmEditor.replaceSelection(`<h3>${string}</h3>`);
+                                        break;
+                                    case 'h4tag':
+                                        cmEditor.replaceSelection(`<h4>${string}</h4>`);
+                                        break;
+                                    case 'code':
+                                        cmEditor.replaceSelection(`<code>${string}</code>`);
+                                        break;
                                     default:
                                         break;
                                 }
                 
+                            }
+
+                            function fontSizeHandler(size, cmEditor){
+                                var string = cmEditor.getSelection();
+
+                                cmEditor.replaceSelection(`<span style="font-size: ${size}px;">${string}</span>`);
+                            }
+
+                            function fontColorHandler(color, cmEditor){
+                                var string = cmEditor.getSelection();
+
+                                cmEditor.replaceSelection(`<span style="color: ${color};">${string}</span>`);
+                            }
+
+                            function backgroundColorHandler(color, cmEditor){
+                                var string = cmEditor.getSelection();
+
+                                cmEditor.replaceSelection(`<span style="background-color: ${color}px;">${string}</span>`);
                             }
                             
                 
@@ -2278,12 +2326,12 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Basic Tags</h5>
                         <ul class="theme-color">
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">P Tag</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">H1</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">H2</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">H3</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">H4</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Code</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('paragraphtag', oldEditor)" class="theme-link" data-logobg="">P</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h1tag', oldEditor)" class="theme-link" data-logobg="">H1</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h2tag', oldEditor)" class="theme-link" data-logobg="">H2</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h3tag', oldEditor)" class="theme-link" data-logobg="">H3</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h4tag', oldEditor)" class="theme-link" data-logobg="">H4</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('code', oldEditor)" class="theme-link" data-logobg="">Code</a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
@@ -2304,12 +2352,12 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Font Size</h5>
                         <ul class="theme-color">
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">14</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">18</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">24</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">30</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">36</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">48</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(14, oldEditor)" class="theme-link" data-logobg="">14</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(18, oldEditor)" class="theme-link" data-logobg="">18</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(24, oldEditor)" class="theme-link" data-logobg="">24</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(30, oldEditor)" class="theme-link" data-logobg="">30</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(36, oldEditor)" class="theme-link" data-logobg="">36</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(48, oldEditor)" class="theme-link" data-logobg="">48</a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
@@ -2331,33 +2379,33 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Text Color</h5>
                         <ul id="text-color-picker" class="theme-color">
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin7"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin8"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin9"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin10"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin11"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin12"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin13"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin14"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin15"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin16"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin17"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin18"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin19"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin20"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin21"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin22"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin23"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin24"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin25"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin26"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin27"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin28"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin29"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin30"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin31"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin32"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin33"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#61BD6D', oldEditor)" class="theme-link" data-logobg="skin7"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#1ABC9C', oldEditor)" class="theme-link" data-logobg="skin8"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#54ACD2', oldEditor)" class="theme-link" data-logobg="skin9"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#2C82C9', oldEditor)" class="theme-link" data-logobg="skin10"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#9365B8', oldEditor)" class="theme-link" data-logobg="skin11"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#475577', oldEditor)" class="theme-link" data-logobg="skin12"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#CCCCCC', oldEditor)" class="theme-link" data-logobg="skin13"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#41A85F', oldEditor)" class="theme-link" data-logobg="skin14"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#00A885', oldEditor)" class="theme-link" data-logobg="skin15"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#3D8EB9', oldEditor)" class="theme-link" data-logobg="skin16"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#2969B0', oldEditor)" class="theme-link" data-logobg="skin17"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#553982', oldEditor)" class="theme-link" data-logobg="skin18"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#28324E', oldEditor)" class="theme-link" data-logobg="skin19"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#000000', oldEditor)" class="theme-link" data-logobg="skin20"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#F7DA64', oldEditor)" class="theme-link" data-logobg="skin21"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#FBA026', oldEditor)" class="theme-link" data-logobg="skin22"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#EB6B56', oldEditor)" class="theme-link" data-logobg="skin23"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#E25041', oldEditor)" class="theme-link" data-logobg="skin24"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#A38F84', oldEditor)" class="theme-link" data-logobg="skin25"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#EFEFEF', oldEditor)" class="theme-link" data-logobg="skin26"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#FFFFFF', oldEditor)" class="theme-link" data-logobg="skin27"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#FAC51C', oldEditor)" class="theme-link" data-logobg="skin28"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#F37934', oldEditor)" class="theme-link" data-logobg="skin29"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#D14841', oldEditor)" class="theme-link" data-logobg="skin30"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#B8312F', oldEditor)" class="theme-link" data-logobg="skin31"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#7C706B', oldEditor)" class="theme-link" data-logobg="skin32"></a></li>
+                            <li class="theme-item"><a href="javascript:fontColorHandler('#D1D5D8', oldEditor)" class="theme-link" data-logobg="skin33"></a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
@@ -2365,33 +2413,33 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Background Color</h5>
                         <ul id="text-color-picker" class="theme-color">
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin7"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin8"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin9"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin10"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin11"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin12"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin13"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin14"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin15"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin16"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin17"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin18"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin19"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin20"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin21"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin22"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin23"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin24"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin25"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin26"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin27"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin28"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin29"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin30"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin31"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin32"></a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="skin33"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#61BD6D', oldEditor)" class="theme-link" data-logobg="skin7"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#1ABC9C', oldEditor)" class="theme-link" data-logobg="skin8"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#54ACD2', oldEditor)" class="theme-link" data-logobg="skin9"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#2C82C9', oldEditor)" class="theme-link" data-logobg="skin10"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#9365B8', oldEditor)" class="theme-link" data-logobg="skin11"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#475577', oldEditor)" class="theme-link" data-logobg="skin12"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#CCCCCC', oldEditor)" class="theme-link" data-logobg="skin13"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#41A85F', oldEditor)" class="theme-link" data-logobg="skin14"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#00A885', oldEditor)" class="theme-link" data-logobg="skin15"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#3D8EB9', oldEditor)" class="theme-link" data-logobg="skin16"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#2969B0', oldEditor)" class="theme-link" data-logobg="skin17"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#553982', oldEditor)" class="theme-link" data-logobg="skin18"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#28324E', oldEditor)" class="theme-link" data-logobg="skin19"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#000000', oldEditor)" class="theme-link" data-logobg="skin20"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#F7DA64', oldEditor)" class="theme-link" data-logobg="skin21"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#FBA026', oldEditor)" class="theme-link" data-logobg="skin22"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#EB6B56', oldEditor)" class="theme-link" data-logobg="skin23"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#E25041', oldEditor)" class="theme-link" data-logobg="skin24"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#A38F84', oldEditor)" class="theme-link" data-logobg="skin25"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#EFEFEF', oldEditor)" class="theme-link" data-logobg="skin26"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#FFFFFF', oldEditor)" class="theme-link" data-logobg="skin27"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#FAC51C', oldEditor)" class="theme-link" data-logobg="skin28"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#F37934', oldEditor)" class="theme-link" data-logobg="skin29"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#D14841', oldEditor)" class="theme-link" data-logobg="skin30"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#B8312F', oldEditor)" class="theme-link" data-logobg="skin31"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#7C706B', oldEditor)" class="theme-link" data-logobg="skin32"></a></li>
+                            <li class="theme-item"><a href="javascript:backgroundColorHandler('#D1D5D8', oldEditor)" class="theme-link" data-logobg="skin33"></a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
