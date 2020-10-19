@@ -1909,11 +1909,9 @@
                                 /*opacity: 0;*/
                             }
 
-                            
-
-                            
-
-                            
+                            .fullscreen {
+                                z-index: 70;
+                            }
 
                         </style>
                         <div id="popup-1" class="popup">
@@ -2018,6 +2016,10 @@
                             }
                             
 
+                            function fullscreenHandler(cm){
+                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                document.querySelector(".CodeMirror").classList.add("fullscreen");
+                            }
 
                             function copyHandler(e) {
                                 var doc = new DOMParser().parseFromString(document.getSelection(), 'text/html');
@@ -2173,9 +2175,13 @@
                                     extraKeys: {
                                         "F11": function(cm) {
                                             cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                            document.querySelector(".CodeMirror").classList.add("fullscreen");
                                         },
                                         "Esc": function(cm) {
-                                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                                            if (cm.getOption("fullScreen")) {
+                                                cm.setOption("fullScreen", false);
+                                                document.querySelector(".CodeMirror").classList.remove("fullscreen");
+                                            }
                                         },
                                         "Ctrl-Space": "autocomplete",
                                         "Alt-F": "findPersistent",
@@ -2319,7 +2325,7 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Editor Commands</h5>
                         <ul id="editor-commands" class="theme-color">
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Fullscreen</a></li>
+                            <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Select All</a></li>
                             <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
                             <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Print</a></li>
