@@ -2004,12 +2004,13 @@
                                 let textInput = document.querySelector("#link-text-overlay");
                                 let targ = document.querySelector("#open-new-tab");
                                 let presetLinks = document.querySelector("#preset-links");
-                                console.log(`
+                                /*console.log(`
                                 url: ${urlInput.value}
                                 text: ${textInput.value}
                                 target: ${targ.checked ? "_blank" : ""}
                                 preset: ${presetLinks.value ? presetLinks.value : "not preset"}
-                                `);
+                                innerText: ${presetLinks.options[presetLinks.selectedIndex].text}
+                                `);*/
                                 let preppedLink = `<a href="`;
 
                                 if (presetLinks.value){
@@ -2020,6 +2021,8 @@
                                     preppedLink += `>`;
                                     if (textInput.value){
                                         preppedLink += `${textInput.value}`;
+                                    } else {
+                                        preppedLink += `${presetLinks.options[presetLinks.selectedIndex].text}`;
                                     }
                                     preppedLink += `</a>`;
                                     oldEditor.replaceSelection(preppedLink);
@@ -2387,19 +2390,6 @@
                             <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h3tag', oldEditor)" class="theme-link" data-logobg="">H3</a></li>
                             <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h4tag', oldEditor)" class="theme-link" data-logobg="">H4</a></li>
                             <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('code', oldEditor)" class="theme-link" data-logobg="">Code</a></li>
-                        </ul>
-                        <!-- Logo BG -->
-                    </div>
-                    <div class="p-15 border-bottom">
-                        <!-- Logo BG -->
-                        <h5 class="font-medium m-b-10 m-t-10">Font Family</h5>
-                        <ul id="font-family" class="theme-color">
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Arial</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Georgia</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Impact</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Tahoma</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Times</a></li>
-                            <li class="theme-item"><a href="javascript:void(0)" class="theme-link" data-logobg="">Verdana</a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
