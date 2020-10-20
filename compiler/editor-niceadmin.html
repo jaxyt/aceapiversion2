@@ -1971,6 +1971,8 @@
                             let oldPreview;
                             let areas = document.querySelectorAll("#editingform textarea");
                             let pages = document.querySelector("table.pages-array-model-field");
+                            pages.lastChild.remove();
+                            document.querySelector("#id_pages-TOTAL_FORMS").value = document.querySelector("#id_pages-TOTAL_FORMS").valie - 1;
                             let shortcodes = document.querySelector("table.shortcodes-array-model-field");
                             let pageSelect = document.querySelector("#page-select");
                             let shortcodesBar = document.querySelector("#shortcodes-bar ul.collapse.first-level");
@@ -2275,6 +2277,41 @@
                                 textA.classList.remove("hide-content");
                                 textA.parentElement.parentElement.parentElement.classList.remove("hide-content")
                                 textA.focus()
+                            }
+
+                            function addNewPage() {
+                                let totalPageForms = document.querySelector("#id_pages-TOTAL_FORMS");
+                                let lastPage = totalPageForms.value - 1
+
+                                let newPageLink = document.createElement("li");
+                                newPageLink.classList.add("sidebar-item")
+                                newPageLink.setAttribute("data-pageid", totalPageForms.value)
+                                pagesBar.appendChild(newPageLink);
+                                newPageLink.innerHTML = `<a data-pageid="${totalPageForms.value}" class="sidebar-link">
+                                    <i data-pageid="${totalPageForms.value}" class="mdi mdi-adjust"></i>
+                                    <span data-pageid="${totalPageForms.value}" class="hide-menu"> additional/page/${totalPageForms.value} </span>
+                                </a>`
+
+                                let newPageForm = document.createElement("tbody");
+                                pages.append(newPageForm);
+                                newPageForm.innerHTML = `<tr><th><label for="id_pages-${totalPageForms.value}-route">Route:</label></th><td><input type="text" name="pages-${totalPageForms.value}-route" maxlength="200" id="id_pages-${totalPageForms.value}-route"></td></tr>
+                                <tr><th><label for="id_pages-${totalPageForms.value}-title">Title:</label></th><td><input type="text" name="pages-${totalPageForms.value}-title" maxlength="200" id="id_pages-${totalPageForms.value}-title"></td></tr>
+                                <tr><th><label for="id_pages-${totalPageForms.value}-pagemetas">Pagemetas:</label></th><td><textarea name="pages-${totalPageForms.value}-pagemetas" cols="40" rows="10" id="id_pages-${totalPageForms.value}-pagemetas"></textarea></td></tr>
+                                <tr><th><label for="id_pages-${totalPageForms.value}-pagelinks">Pagelinks:</label></th><td><textarea name="pages-${totalPageForms.value}-pagelinks" cols="40" rows="10" id="id_pages-${totalPageForms.value}-pagelinks"></textarea></td></tr>
+                                <tr><th><label for="id_pages-${totalPageForms.value}-pagescripts">Pagescripts:</label></th><td><textarea name="pages-${totalPageForms.value}-pagescripts" cols="40" rows="10" id="id_pages-${totalPageForms.value}-pagescripts"></textarea></td></tr>
+                                <tr><th><label for="id_pages-${totalPageForms.value}-pagestyle">Pagestyle:</label></th><td><textarea name="pages-${totalPageForms.value}-pagestyle" cols="40" rows="10" id="id_pages-${totalPageForms.value}-pagestyle"></textarea></td></tr>
+                                <tr><th><label for="id_pages-${totalPageForms.value}-pageheader">Pageheader:</label></th><td><textarea name="pages-${totalPageForms.value}-pageheader" cols="40" rows="10" id="id_pages-${totalPageForms.value}-pageheader"></textarea></td></tr>
+                                <tr><th><label for="id_pages-${totalPageForms.value}-pagefooter">Pagefooter:</label></th><td><textarea name="pages-${totalPageForms.value}-pagefooter" cols="40" rows="10" id="id_pages-${totalPageForms.value}-pagefooter"></textarea></td></tr>
+                                <tr><th><label for="id_pages-${totalPageForms.value}-content">Content:</label></th><td><textarea name="pages-${totalPageForms.value}-content" cols="40" rows="10" id="id_pages-${totalPageForms.value}-content"></textarea></td></tr>
+                                <tr><th><label for="id_pages-${totalPageForms.value}-DELETE">Delete:</label></th><td><input type="checkbox" name="pages-${totalPageForms.value}-DELETE" id="id_pages-${totalPageForms.value}-DELETE"></td></tr>`;
+
+                                totalPageForms.value = totalPageForms.value + 1
+
+                                newPageForm.children[8].children[1].children[0].addEventListener("focusin", (e)=> {
+                                    startCodeEditor(e.target);
+                                })
+
+
                             }
                             
                             shortcodesBar.addEventListener("click", (e)=>{
@@ -2739,11 +2776,6 @@
     <!--<script src="../../assets/libs/summernote/dist/summernote-bs4.min.js"></script>
     <script src="../../assets/libs/dropzone/dist/min/dropzone.min.js"></script>-->
     <script>
-        $("#main-wrapper").toggleClass("mini-sidebar"),
-        $(".sidebartoggler i").toggleClass("mdi-toggle-switch-off"),
-        $("#main-wrapper").hasClass("mini-sidebar") ? ($(".sidebartoggler").prop("checked", !0),
-        $("#main-wrapper").attr("data-sidebartype", "mini-sidebar")) : ($(".sidebartoggler").prop("checked", !1),
-        $("#main-wrapper").attr("data-sidebartype", "full"))
     /*$('#summernote').summernote({
         placeholder: 'Type your email Here',
         tabsize: 2,
