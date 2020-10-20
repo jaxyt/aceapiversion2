@@ -1952,14 +1952,15 @@
                                 </div>
                             </div>
                         </div>
-                        <form id="editingform" method="POST" style="margin-top: 150px;"> {% csrf_token %}
+                        <form id="editingform" method="POST" action="" style="margin-top: 150px;" target="background-submit"> {% csrf_token %}
                             <!--<div id="summernote">
                                 
                             </div>-->
                             {{ form }}
                             <button type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i>Save</button>
-                            <button disabled type="submit" class="btn btn-dark m-t-20">Clone</button>
+                            <div id="clone-btn" class="btn btn-dark m-t-20">Clone</div>
                         </form>
+                        <IFRAME style="display:none" name="background-submit"></IFRAME>
                         <script>
                             let delay;
                             let oldEditor = null;
@@ -2343,7 +2344,7 @@
                                 t.children[8].children[1].children[0].focus();
                             })
 
-                            
+                            document.querySelector("#clone-btn").addEventListener("click", )
                         </script>
                         <!-- Action part -->
                     </div>
