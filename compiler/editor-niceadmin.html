@@ -1991,6 +1991,17 @@
                             //pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
                             //editorBar.style = "display: flex; flex-wrap: wrap;";
 
+                            let cloneButton = document.querySelector("#clone-btn");
+                            cloneButton.addEventListener("click", ()=>{
+                                cloneButton.classList.toggle("btn-dark");
+                                cloneButton.classList.toggle("btn-danger");
+                                if (cloneButton.classList.contains("btn-danger")){
+                                    editingForm.action = "";
+                                } else {
+                                    editingForm.action = "/auth/site/create/";
+                                }
+                            })
+
                             function togglePopup(){
                 
                                 document.getElementById("popup-2").classList.toggle("active");
