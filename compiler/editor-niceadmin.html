@@ -1993,13 +1993,18 @@
 
                             let cloneButton = document.querySelector("#clone-btn");
                             cloneButton.addEventListener("click", ()=>{
-                                cloneButton.classList.toggle("btn-dark");
-                                cloneButton.classList.toggle("btn-danger");
                                 if (cloneButton.classList.contains("btn-danger")){
                                     editingForm.action = "";
+                                    cloneButton.classList.add("btn-dark");
+                                    cloneButton.classList.remove("btn-danger");
                                 } else {
                                     editingForm.action = "/auth/site/create/";
+                                    cloneButton.classList.remove("btn-dark");
+                                    cloneButton.classList.add("btn-danger");
                                 }
+                                
+                                
+                                
                             })
 
                             function togglePopup(){
