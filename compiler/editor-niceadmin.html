@@ -2281,19 +2281,18 @@
 
                             function addNewPage() {
                                 let totalPageForms = document.querySelector("#id_pages-TOTAL_FORMS");
-                                let lastPage = parseInt(totalPageForms.value) - 1
 
                                 let newPageLink = document.createElement("li");
-                                newPageLink.classList.add("sidebar-item")
-                                newPageLink.setAttribute("data-pageid", parseInt(totalPageForms.value))
+                                newPageLink.classList.add("sidebar-item");
+                                newPageLink.setAttribute("data-pageid", parseInt(totalPageForms.value));
                                 pagesBar.appendChild(newPageLink);
                                 newPageLink.innerHTML = `<a data-pageid="${parseInt(totalPageForms.value)}" class="sidebar-link">
                                     <i data-pageid="${parseInt(totalPageForms.value)}" class="mdi mdi-adjust"></i>
                                     <span data-pageid="${parseInt(totalPageForms.value)}" class="hide-menu"> additional/page/${parseInt(totalPageForms.value)} </span>
-                                </a>`
+                                </a>`;
 
                                 let newPageForm = document.createElement("tbody");
-                                newPageForm.classList.add("hide-content")
+                                newPageForm.classList.add("hide-content");
                                 pages.append(newPageForm);
                                 newPageForm.innerHTML = `<tr><th><label class="hide-content" for="id_pages-${parseInt(totalPageForms.value)}-route">Route:</label></th><td><input type="text" name="pages-${parseInt(totalPageForms.value)}-route" maxlength="200" id="id_pages-${parseInt(totalPageForms.value)}-route"></td></tr>
                                 <tr><th><label class="hide-content" for="id_pages-${parseInt(totalPageForms.value)}-title">Title:</label></th><td><input class="hide-content" type="text" name="pages-${parseInt(totalPageForms.value)}-title" maxlength="200" id="id_pages-${parseInt(totalPageForms.value)}-title"></td></tr>
@@ -2306,11 +2305,13 @@
                                 <tr><th><label class="hide-content" for="id_pages-${parseInt(totalPageForms.value)}-content">Content:</label></th><td><textarea class="hide-content" name="pages-${parseInt(totalPageForms.value)}-content" cols="40" rows="10" id="id_pages-${parseInt(totalPageForms.value)}-content"></textarea></td></tr>
                                 <tr><th><label class="hide-content" for="id_pages-${parseInt(totalPageForms.value)}-DELETE">Delete:</label></th><td><input class="hide-content" type="checkbox" name="pages-${parseInt(totalPageForms.value)}-DELETE" id="id_pages-${parseInt(totalPageForms.value)}-DELETE"></td></tr>`;
 
-                                totalPageForms.value = parseInt(totalPageForms.value) + 1
+                                totalPageForms.value = parseInt(totalPageForms.value) + 1;
 
                                 newPageForm.children[8].children[1].children[0].addEventListener("focusin", (e)=> {
                                     startCodeEditor(e.target);
                                 })
+
+                                newPageForm.children[8].children[1].children[0].focus();
 
 
                             }
