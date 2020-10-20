@@ -2081,7 +2081,7 @@
 
                             function fullscreenHandler(cm){
                                 cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                                document.querySelector(".CodeMirror").classList.add("fullscreen");
+                                document.querySelector(".CodeMirror").classList.toggle("fullscreen");
                             }
 
                             function copyHandler(e) {
