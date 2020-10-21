@@ -2140,59 +2140,17 @@
 
                             function linkHandler(){
                                 let submitLink = document.querySelector("#submit-link");
-                                /*let doc = oldEditor.getDoc()
-                                var cur = oldEditor.getCursor(), range = oldEditor.getViewport();
-                                console.log(cur);
-                                console.log(range);
-                                console.log(`
-                                line: ${cur.line}
-                                from: ${range.from}
-                                to: ${range.to ? range.to : "no length"}
-                                `);*/
+                                
 
                                 let urlInput = document.querySelector("#url-text-value");
                                 let textInput = document.querySelector("#link-text-overlay");
                                 let targ = document.querySelector("#open-new-tab");
                                 let presetLinks = document.querySelector("#preset-links");
-                                /*console.log(`
-                                url: ${urlInput.value}
-                                text: ${textInput.value}
-                                target: ${targ.checked ? "_blank" : ""}
-                                preset: ${presetLinks.value ? presetLinks.value : "not preset"}
-                                innerText: ${presetLinks.options[presetLinks.selectedIndex].text}
-                                `);*/
-                                let preppedLink = `<a href="`;
-                                console.log(`<a href="${urlInput.value ? urlInput.value : (presetLinks.value ? presetLinks.value : '#')}" target="${targ.checked ? '_blank' : ''}">${textInput.value ? textInput.value : (oldEditor.getSelection() ? oldEditor.getSelection() : (urlInput.value ? urlInput.value : (presetLinks.value ? presetLinks.options[presetLinks.selectedIndex].text : 'Link')))}</a>`);
-
                                 
+                                let preppedLink = `<a href="${urlInput.value ? urlInput.value : (presetLinks.value ? presetLinks.value : '#')}" target="${targ.checked ? '_blank' : ''}">${textInput.value ? textInput.value : (oldEditor.getSelection() ? oldEditor.getSelection() : (urlInput.value ? urlInput.value : (presetLinks.value ? presetLinks.options[presetLinks.selectedIndex].text : 'Link')))}</a>`;
+                                console.log();
 
-                                if (presetLinks.value){
-                                    preppedLink += `${presetLinks.value}"`;
-                                    if (targ.checked) {
-                                        preppedLink += ` target="_blank"`;
-                                    }
-                                    preppedLink += `>`;
-                                    if (textInput.value){
-                                        preppedLink += `${textInput.value}`;
-                                    } else {
-                                        preppedLink += `${presetLinks.options[presetLinks.selectedIndex].text}`;
-                                    }
-                                    preppedLink += `</a>`;
-                                    oldEditor.replaceSelection(preppedLink);
-                                } else {
-                                    if (urlInput.value){
-                                        preppedLink += `${urlInput.value}"`;
-                                        if (targ.checked) {
-                                            preppedLink += ` target="_blank"`;
-                                        }
-                                        preppedLink += `>`;
-                                        if (textInput.value){
-                                            preppedLink += `${textInput.value}`;
-                                        }
-                                        preppedLink += `</a>`;
-                                        oldEditor.replaceSelection(preppedLink);
-                                    }
-                                }
+                                oldEditor.replaceSelection(preppedLink);
                                 
                             }
                             
