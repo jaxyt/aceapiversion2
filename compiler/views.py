@@ -1099,6 +1099,10 @@ def update_editor(request):
 
 def update_nice(request):
     if request.COOKIES.get('sessionid'):
+        if request.method == 'GET':
+            pass
+        else:
+            pass
         id = request.GET.get('id', '')
         instance = get_object_or_404(Site, id=id)
         form = SiteForm(request.POST or None, instance=instance)
@@ -1110,7 +1114,10 @@ def update_nice(request):
             'instance': instance
         }
 
-        return render(request, "editor-niceadmin.html", context)
+        if request.method == 'GET':
+            return render(request, "editor-niceadmin.html", context)
+        else:
+            return HttpResponse('<script>window.close()<script>')
     else:
         return HttpResponse('FORBIDDEN')
 
