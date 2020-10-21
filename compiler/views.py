@@ -1117,7 +1117,26 @@ def update_nice(request):
         if request.method == 'GET':
             return render(request, "editor-niceadmin.html", context)
         else:
-            return HttpResponse('<script>window.close()<script>')
+            return HttpResponse("""<!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="utf-8">
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                        <!-- Tell the browser to be responsive to screen width -->
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <meta name="description" content="">
+                        <meta name="author" content="">
+                    </head>
+                    <body>
+                        <div>Success<div>
+                        <script>
+                            setTimeout(()=>{
+                                window.close();
+                            },300);  
+                        <script>
+                    </body>
+                    </html>
+                """)
     else:
         return HttpResponse('FORBIDDEN')
 
