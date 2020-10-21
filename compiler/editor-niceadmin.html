@@ -1932,26 +1932,133 @@
                                 <div class="content">
                                     <div class="close-btn" onclick="togglePopup()">&times;</div>
                                     <div id="help-page">
+                                        <h2>Add Link</h2>
+                                        <p>
+                                            This function is comprised of 4 possible inputs:
+                                            <ul>
+                                                <li>Url: optional field that is set to the href attribute of the resulting &lt;a&gt; tag; useful for custom urls </li>
+                                                <li>Text: optional field that is set to the inner text of the resulting tag like <a href="javascript:void(0)">this</a></li>
+                                                <li>Open in New Tab: if checked, this sets the &lt;a&gt; tags target attribute to '_blank' which causes the link to open in a new browser tab </li>
+                                                <li>The last field is a list of preset links which I can expand upon request</li>
+                                            </ul>
+                                            To use, before you fill out the fields, either click on the spot where you want the link inserted into the editor, or highlight a selection of text that you want to replace with a link and fill out the fields to get the desired effect.
+                                            <h3>Notes:</h3>
+                                            <ul>
+                                                <li>if a preset link is chosen and the Text field is filled, the resulting &lt;a&gt; tags inner text will reflect the Text fields value.</li>
+                                                <li>to wrap a selection of text with a link, highlight the selection and leave the text field blank</li>
+                                            </ul>
+                                        </p>
+                                        <h2>Undo/Redo</h2>
+                                        <p>
+                                            You can use these buttons to navigate backwards and forward through your past fity changes to the current editor, however, each time a new page is chosen, the previous editor instance is destroyed and replaced with a new one.
+                                            <h3>Shortcuts</h3>
+                                            <dl>
+                                                <dt>Ctrl+Z</dt>
+                                                <dd>Undo</dd>
+                                                <dt>Ctrl+Shift+Z</dt>
+                                                <dd>Redo</dd>
+                                            </dl>
+                                        </p>
+                                        <h2>Edit as HTML</h2>
+                                        <p>
+                                            This toggles the contenteditable mode of the preview &lt;div&gt; . This mode is text only and is meant to give a general idea of what the code will look like rendered and allow for minor edits. The other editor functions will not work here. 
+                                        </p>
+                                        <h2>Fullscreen</h2>
+                                        <p>
+                                            Expands the editor width and height to maximum. The editor buttons are still available to you in this mode.
+                                            <h3>Shortcuts</h3>
+                                            <dl>
+                                                <dt>F11</dt>
+                                                <dd>Expands</dd>
+                                                <dt>Esc</dt>
+                                                <dd>Shrinks</dd>
+                                            </dl>
+                                        </p>
+                                        <h2>Select All</h2>
+                                        <p>
+                                            Selects all text in the current editor.
+                                            <h3>Shortcuts</h3>
+                                            <dl>
+                                                <dt>Ctrl+A</dt>
+                                                <dd>Select All</dd>
+                                            </dl>
+                                        </p>
+                                        <h2>Find</h2>
+                                        <p>
+                                            The editor supports two search tool types:
+                                            <ul>
+                                                <li>Search: opens a one time dialog box where a search term can be entered.</li>
+                                                <li>And Persistent Search: opens a dialog box that doesnt not close automatically, and can easily cycle through its results using Enter and Shift+Enter</li>
+                                            </ul>
+                                            Persistent Search is mapped to the find button, and when pressed, opens a search dialog that can match words/terms or regular expressions in javascript format. e.g. /\w+\d[A-z]{2,}/
+                                            <hr>
+                                            Matches are highlighted
+                                            <h3>Shortcuts</h3>
+                                            <dl>
+                                                <dt>Ctrl+F</dt>
+                                                <dd>Start Search</dd>
+                                                <dt>Ctrl+G</dt>
+                                                <dd>Next Result</dd>
+                                                <dt>Ctrl+Shift+G</dt>
+                                                <dd>Previous Result</dd>
+                                                <dt>Alt+G</dt>
+                                                <dd>Jump to Line</dd>
+                                                <dt>Alt+F</dt>
+                                                <dd>Start Persistent Search</dd>
+                                                
+                                            </dl>
+                                        </p>
+                                        <h2>ReplaceAll</h2>
+                                        <p>
+                                            The editor supports two Replace tool types:
+                                            <ul>
+                                                <li>Replace</li>
+                                                <li>And ReplaceAll</li>
+                                            </ul>
+                                            ReplaceAll is mapped to the ReplaceAll button, and when pressed, opens a replace dialog that can match words/terms or regular expressions in javascript format. e.g. /\w+\d[A-z]{2,}/
+                                            <hr>
+                                            To use, fill in a search term in the dialog box and press enter. The dialog will then change to "With: ". type in what you would like to replace all matches with and press enter. Voila.
+                                            <h3>Shortcuts</h3>
+                                            <dl>
+                                                <dt>Shift+Ctrl+F</dt>
+                                                <dd>Replace</dd>
+                                                <dt>Shift+Ctrl+R</dt>
+                                                <dd>ReplaceAll</dd>
+                                            </dl>
+                                        </p>
+                                        <h2>Comment/Uncomment</h2>
+                                        <p>
+                                            wrap or unwrap a selection of text in the comment syntax of the text type. e.g. javascript/css: /*comment*/; html: &lt;!--comment--&gt;;
+                                        </p>
+                                        <h2>Basic Styles, Tags, Font Size, and Colors</h2>
+                                        <p>
+                                            wrap a selection of text in or insert the desired style or tag type. e.g. bold: &lt;strong&gt;<strong>Bold</strong>&lt;/strong&gt;
+                                        </p>
+                                        <h2>SpecialCharacters</h2>
+                                        <p>
+                                            replace a selection of text with an available character or insert it into an empty space
+                                        </p>
+                                        <h2>Dark Editor</h2>
+                                        <p>
+                                            toggles the dark and bright editor style sheets
+                                        </p>
+                                        <h2>Dark Theme</h2>
+                                        <p>
+                                            toggles the dark and bright menu backgrounds
+                                        </p>
+                                        <h2>Collapse Sidebar</h2>
+                                        <p>
+                                            toggles the left side bars state, defaults to rigid open, but the collapsed mode opens the side bar when hovered over
+                                        </p>
+                                        <h2><u><i>Update Notes</i></u></h2>
+                                        <p>
+                                            <ul><li>Version 1.1</li></ul>
+                                        </p>
+                                        <h3>General Keyboard Shortcuts</h3>
                                         <dl>
-                                            <dt>Ctrl-F / Cmd-F</dt><dd>Start searching</dd>
-                                            <dt>Ctrl-G / Cmd-G</dt><dd>Find next</dd>
-                                            <dt>Shift-Ctrl-G / Shift-Cmd-G</dt><dd>Find previous</dd>
-                                            <dt>Shift-Ctrl-F / Cmd-Option-F</dt><dd>Replace</dd>
-                                            <dt>Shift-Ctrl-R / Shift-Cmd-Option-F</dt><dd>Replace all</dd>
-                                            <dt>Alt-F</dt><dd>Persistent search (dialog doesn't autoclose,
-                                            enter to find next, Shift-Enter to find previous)</dd>
-                                            <dt>Alt-G</dt><dd>Jump to line</dd>
                                             <dt>Copy</dt><dd>Ctrl+C</dd>	
                                             <dt>Cut</dt><dd>Ctrl+X</dd>	
                                             <dt>Paste</dt><dd>Ctrl+V</dd>	
-                                            <dt>Undo</dt><dd>Ctrl+Z</dd>	
-                                            <dt>Redo</dt><dd>Ctrl+Shift+Z</dd>	
-                                            <dt>Insert Link</dt><dd>Ctrl+K</dd> 	
-                                            <dt>Select All</dt><dd>Ctrl+A</dd>	
-                                            <dt>Bold</dt><dd>Ctrl+B</dd>	
-                                            <dt>Italic</dt><dd>Ctrl+I</dd>	
-                                            <dt>Underline</dt><dd>Ctrl+U</dd>	
-                                            <dt>Strikethrough</dt><dd>Ctrl+S</dd> 
                                         </dl>
                                     </div>
                                 </div>
@@ -2011,6 +2118,10 @@
                                 
                             })
 
+                            function getSelectedRange(cmEditor) {
+                                return { from: cmEditor.getCursor(true), to: cmEditor.getCursor(false) };
+                            }
+
                             function togglePopup(){
                 
                                 document.getElementById("popup-2").classList.toggle("active");
@@ -2051,6 +2162,9 @@
                                 innerText: ${presetLinks.options[presetLinks.selectedIndex].text}
                                 `);*/
                                 let preppedLink = `<a href="`;
+                                console.log(`<a href="${urlInput.value ? urlInput.value : (presetLinks.value ? presetLinks.value : '#')}" target="${targ.checked ? '_blank' : ''}">${textInput.value ? textInput.value : (oldEditor.getSelection() ? oldEditor.getSelection() : (urlInput.value ? urlInput.value : (presetLinks.value ? presetLinks.options[presetLinks.selectedIndex].text : 'Link')))}</a>`);
+
+                                
 
                                 if (presetLinks.value){
                                     preppedLink += `${presetLinks.value}"`;
@@ -2137,9 +2251,7 @@
                                 rendered.removeEventListener("paste", pasteHandler);
                             }
                 
-                            function getSelectedRange(cmEditor) {
-                                return { from: cmEditor.getCursor(true), to: cmEditor.getCursor(false) };
-                            }
+                            
                             
                             function autoFormatSelection(cmEditor) {
                                 var range = getSelectedRange(cmEditor);
