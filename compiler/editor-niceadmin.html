@@ -2359,6 +2359,13 @@
                                 })
                             }*/
 
+                            
+                            function selectTheme(cmEditor) {
+                                let themeInput = document.getElementById("theme-select");
+                                let theme = themeInput.checked ? "3024-night" : "default";
+                                cmEditor.setOption("theme", theme);
+                            }
+
                             function startSiteField(field) {
                                 hideContent();
                                 let textA = document.querySelector(`#id_${field}`);
@@ -2695,6 +2702,10 @@
                     <div class="p-15 border-bottom">
                         <!-- Sidebar -->
                         <h5 class="font-medium m-b-10 m-t-10">Layout Settings</h5>
+                        <div class="custom-control custom-checkbox m-t-10">
+                            <input oninput="selectTheme(oldEditor)" type="checkbox" class="custom-control-input" name="theme-select" id="theme-select">
+                            <label class="custom-control-label" for="theme-select">Dark Editor</label>
+                        </div>
                         <div class="custom-control custom-checkbox m-t-10">
                             <input type="checkbox" class="custom-control-input" name="theme-view" id="theme-view">
                             <label class="custom-control-label" for="theme-view">Dark Theme</label>
