@@ -1133,7 +1133,7 @@ def update_nice(request):
                             setTimeout(()=>{
                                 window.close();
                             },300);  
-                        <script>
+                        </script>
                     </body>
                     </html>
                 """)
