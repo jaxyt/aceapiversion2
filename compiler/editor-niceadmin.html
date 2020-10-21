@@ -1823,6 +1823,22 @@
                                 text-align:center;
                                 border-radius:50%;
                             }
+
+                            .popup .preview-save-btn {
+                                cursor:pointer;
+                                position:absolute;
+                                right:60px;
+                                top:20px;
+                                width:30px;
+                                height:30px;
+                                background:#222;
+                                color:#fff;
+                                font-size:25px;
+                                font-weight:600;
+                                line-height:30px;
+                                text-align:center;
+                                border-radius:50%;
+                            }
                               
                             .popup.active .overlay {
                                 display:block;
@@ -1922,6 +1938,7 @@
                         <div id="popup-1" class="popup">
                             <div class="overlay">
                                 <div class="content">
+                                    <div class="preview-save-btn" onclick="goClickSave()">&sext;</div>
                                     <div class="close-btn" onclick="togglePopOff()">&times;</div>
                                     <div id="rendered" contenteditable="false"></div>
                                 </div>
@@ -2073,7 +2090,7 @@
                                 
                             </div>-->
                             {{ form }}
-                            <button type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i>Save</button>
+                            <button id="save-button" type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i>Save</button>
                             <div id="clone-btn" class="btn btn-dark m-t-20">Clone</div>
                         </form>
                         <!--<IFRAME style="display:none" name="background-submit"></IFRAME>-->
@@ -2442,6 +2459,14 @@
                                 cmEditor.setOption("theme", theme);
                             }
 
+                            function highlighHs(){
+                                console.log("highlight search")
+                            }
+
+                            function goClickSave() {
+                                document.querySelector('#save-button').click();
+                            }
+
                             function startSiteField(field) {
                                 hideContent();
                                 let textA = document.querySelector(`#id_${field}`);
@@ -2641,6 +2666,7 @@
                             <li class="theme-item"><a href="javascript:activateFunction('redo', oldEditor)" class="theme-link" data-logobg="">Redo</a></li>
                             <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
                             <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('highlighHs', oldEditor)" class="theme-link" data-logobg="">Highlight H's</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('selectAll', oldEditor)" class="theme-link" data-logobg="">Select All</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('findPersistent', oldEditor)" class="theme-link" data-logobg="">Find</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('replaceAll', oldEditor)" class="theme-link" data-logobg="">ReplaceAll</a></li>
