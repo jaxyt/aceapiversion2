@@ -199,6 +199,20 @@
     return '<span class="CodeMirror-search-label">' + cm.phrase("Replace?") + '</span> <button>' + cm.phrase("Yes") + '</button> <button>' + cm.phrase("No") + '</button> <button>' + cm.phrase("All") + '</button> <button>' + cm.phrase("Stop") + '</button> ';
   }
 
+  function hSearch(cm, rev, persistent, immediate) {
+    var state = getSearchState(cm);
+    if (state.query) return findNext(cm, rev);
+    // var q = cm.getSelection() || state.lastQuery;
+    var query = /<\/?h[1-6].*>/ || state.lastQuery;
+    
+    if (query && !state.query) cm.operation(function() {
+      startSearch(cm, state, query);
+      state.posFrom = state.posTo = cm.getCursor();
+      findNext(cm, rev);
+    });
+    
+  }
+
   function replaceAll(cm, query, text) {
     cm.operation(function() {
       for (var cursor = getSearchCursor(cm, query); cursor.findNext();) {
@@ -249,6 +263,7 @@
   }
 
   CodeMirror.commands.find = function(cm) {clearSearch(cm); doSearch(cm);};
+  CodeMirror.commands.highlightHs = function(cm) {clearSearch(cm); hSearch(cm);};
   CodeMirror.commands.findPersistent = function(cm) {clearSearch(cm); doSearch(cm, false, true);};
   CodeMirror.commands.findPersistentNext = function(cm) {doSearch(cm, false, true, true);};
   CodeMirror.commands.findPersistentPrev = function(cm) {doSearch(cm, true, true, true);};
