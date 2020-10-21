@@ -2223,7 +2223,7 @@
                                 CodeMirror.commands[`${cmd}`](codeEditor);
                             }
 
-                            function startCodeEditor(x) {
+                            function startCodeEditor(x, pagetype='htmlmixed') {
                 
                                 if (oldEditor !== null) {
                                     oldEditor.toTextArea();
@@ -2235,7 +2235,7 @@
                                 const editor = CodeMirror.fromTextArea(x, {
                                     lineNumbers: true,
                                     styleActiveLine: true,
-                                    mode: "htmlmixed",
+                                    mode: pagetype,
                                     theme: "3024-night",
                                     matchBrackets: true,
                                     lineWrapping: true,
@@ -2476,14 +2476,17 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Editor Commands</h5>
                         <ul id="editor-commands" class="theme-color">
-                            <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
-                            <li class="theme-item"><a href="javascript:activateFunction('selectAll', oldEditor)" class="theme-link" data-logobg="">Select All</a></li>
-                            <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
-                            <li class="theme-item"><a href="javascript:activateFunction('findPersistent', oldEditor)" class="theme-link" data-logobg="">Find</a></li>
-                            <li class="theme-item"><a href="javascript:activateFunction('replaceAll', oldEditor)" class="theme-link" data-logobg="">ReplaceAll</a></li>
-                            <li class="theme-item"><a href="javascript:togglePopup()" class="theme-link" data-logobg="">Help</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('undo', oldEditor)" class="theme-link" data-logobg="">Undo</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('redo', oldEditor)" class="theme-link" data-logobg="">Redo</a></li>
+                            <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
+                            <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('selectAll', oldEditor)" class="theme-link" data-logobg="">Select All</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('findPersistent', oldEditor)" class="theme-link" data-logobg="">Find</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('replaceAll', oldEditor)" class="theme-link" data-logobg="">ReplaceAll</a></li>
+                            <li class="theme-item"><a href="javascript:commentSelection(true, oldEditor)" class="theme-link" data-logobg="">Comment</a></li>
+                            <li class="theme-item"><a href="javascript:commentSelection(false, oldEditor)" class="theme-link" data-logobg="">Uncomment</a></li>
+                            <li class="theme-item"><a href="javascript:togglePopup()" class="theme-link" data-logobg="">Help</a></li>
+                            
                         </ul>
                         <!-- Logo BG -->
                     </div>
