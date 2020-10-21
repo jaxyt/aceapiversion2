@@ -1128,7 +1128,7 @@ def update_nice(request):
                         <meta name="author" content="">
                     </head>
                     <body>
-                        <div>Success<div>
+                        <div>Success</div>
                         <script>
                             setTimeout(()=>{
                                 window.close();
