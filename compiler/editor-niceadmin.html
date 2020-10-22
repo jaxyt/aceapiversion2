@@ -1163,7 +1163,7 @@
 
                             function closeIframePreview(cmEditor, textar) {
                                 if (frameDoc !== undefined)
-                                    frameDoc.removeEventListener("change", ifrmChangeHandler(e));
+                                    frameDoc.removeEventListener("change", ifrmChangeHandler);
                                 if(container.children[0] !== undefined)
                                     container.children[0].remove();
                                 
