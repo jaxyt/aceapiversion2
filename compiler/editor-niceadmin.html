@@ -1143,6 +1143,9 @@
                             }
 
                             function startIframePreview(cmEditor, textar) {
+                                if (document.querySelector("#ifrm"))
+                                    closeIframePreview(cmEditor, textar)
+                                    
                                 iframe = document.createElement("iframe");
                                 iframe.id = "ifrm";
                                 iframe.frameBorder = "1";
@@ -1219,7 +1222,7 @@
                 
                                 oldEditor = editor;
                                 oldText = x;
-                                
+
                                 oldEditor.on("change", cmChangeHandler)
 
                                 activateFunction('highlightHs', oldEditor);
