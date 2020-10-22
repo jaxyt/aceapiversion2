@@ -1159,8 +1159,9 @@
                                 
                                 //frameDoc.addEventListener("change", ifrmChangeHandler);
 
-                                $('#ifrm').on("mouseenter",function(){
+                                $('#ifrm').on("load", function(){
                                     //then set up some access points
+                                    console.log("loaded");
                                     var contents = $(this).contents(); // contents of the iframe
                                     $(contents).find("body").on('change', function(event) { 
                                         alert('test'); 
