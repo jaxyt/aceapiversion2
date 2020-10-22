@@ -351,6 +351,8 @@
           for (var opt in options){
               local[opt] = options[opt];
           }
+          console.log(`local[opt] = options[opt];`);
+          console.log(local);
       }
       return CodeMirror.hint.xml(cm, local);
     }
