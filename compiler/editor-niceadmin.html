@@ -25,7 +25,7 @@
     <![endif]-->
     <!--<link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/doc/docs.css' %}">-->
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/lib/codemirror.css' %}">
-    <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/theme/3024-night.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/theme/oceanic-next.css' %}">
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/display/fullscreen.css' %}">
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/fold/foldgutter.css' %}" />
     <link rel="stylesheet" href="{% static 'codemirror/codemirror-5.57.0/addon/hint/show-hint.css' %}" />
@@ -1234,7 +1234,7 @@
                                         lineNumbers: true,
                                         styleActiveLine: true,
                                         mode: pagetype,
-                                        theme: "3024-night",
+                                        theme: "oceanic-next",
                                         matchBrackets: true,
                                         lineWrapping: true,
                                         matchTags: {bothTags: true},
@@ -1263,7 +1263,7 @@
                                         styleActiveLine: true,
                                         mode: 'spell-checker',
                                         backdrop: pagetype,
-                                        theme: "3024-night",
+                                        theme: "oceanic-next",
                                         matchBrackets: true,
                                         lineWrapping: true,
                                         matchTags: {bothTags: true},
@@ -1386,7 +1386,7 @@
                             
                             function selectTheme(cmEditor) {
                                 let themeInput = document.getElementById("theme-select");
-                                let theme = themeInput.checked ? "default" : "3024-night";
+                                let theme = themeInput.checked ? "default" : "oceanic-next";
                                 cmEditor.setOption("theme", theme);
                             }
 
