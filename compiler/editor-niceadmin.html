@@ -919,6 +919,7 @@
                             let iframe;
                             let content;
                             let frameDoc;
+                            let frameBody;
                             editingForm.style = "margin-top: 0px;";
                             //editingForm.style = "margin-top: 0px; display: grid;";
                             //pages.style = "display: flex; flex-wrap: wrap;";
@@ -1129,8 +1130,7 @@
                             }
 
                             function ifrmChangeHandler(targ) {
-                                console.log(frameDoc.innerHTML);
-                                console.log(targ.target)
+                                console.log(targ.target.innerHTML);
                             }
 
                             function startIframePreview(cmEditor, textar) {
@@ -1139,8 +1139,6 @@
                                 iframe.frameBorder = "1";
                                 container.append(iframe);
                                 frameDoc = iframe.document;
-                                console.log(iframe);
-                                console.log(iframe.document)
 
                                 if (iframe.contentWindow)
                                     frameDoc = iframe.contentWindow.document;
@@ -1151,28 +1149,12 @@
                                 frameDoc.writeln(content);
                                 frameDoc.close();
 
-                                console.log(iframe);
-                                console.log(iframe.document)
-
                                 console.log(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true">`.length);
                                 console.log(`</body></html>`.length);
                                 
-                                //frameDoc.addEventListener("change", ifrmChangeHandler);
+                                frameBody = frameDoc.body;
 
-                                /*$('#ifrm').on("load", function(){
-                                    //then set up some access points
-                                    console.log($(this).contents());
-                                    var contents = $(this).contents(); // contents of the iframe
-                                    console.log($(contents).find("body"));
-                                    $(contents).find("body").on('change', function(e) { 
-                                        console.log("found"); 
-                                    });
-                                });*/
-
-                                iframe.contentWindow.document.querySelector("body").addEventListener('change', (e)=>{
-                                    console.log(e);
-                                    console.log(e.target);
-                                }, false);
+                                frameBody.addEventListener('keyup', ifrmChangeHandler, false);
                                 
                             }
 
