@@ -886,7 +886,7 @@
                         <div id="popup-3" class="popup">
                             <div class="overlay">
                                 <div class="content">
-                                    <div class="close-btn" onclick="togglePopup3()">&times;</div>
+                                    <div class="close-btn" onclick="closeIframePreview(oldEditor, oldText)">&times;</div>
                                     <div class="p3-iframe-container">
                                         <!--<iframe id="ifrm" frameborder="1"></iframe>-->
                                     </div>
@@ -1012,6 +1012,7 @@
                             function cmChangeHandler() {
                                 oldEditor.save();
                                 document.querySelector("#rendered").innerHTML = oldEditor.getValue();
+                                frameBody.innerHTML = oldEditor.getValue();
                             }
                 
                             function changeHandler() {
@@ -1129,8 +1130,12 @@
                                 CodeMirror.commands[`${cmd}`](codeEditor);
                             }
 
-                            function ifrmChangeHandler(targ) {
-                                console.log(targ.target.innerHTML);
+                            function ifrmChangeHandler() {
+                                oldEditor.off("change", cmChangeHandler)
+                                CodeMirror.commands["selectAll"](oldEditor);
+                                oldEditor.replaceSelection(`${frameBody.innerHTML}`);
+                                oldEditor.save();
+                                oldEditor.on("change", cmChangeHandler)
                             }
 
                             function startIframePreview(cmEditor, textar) {
@@ -1155,19 +1160,20 @@
                                 frameBody = frameDoc.body;
 
                                 frameBody.addEventListener('keyup', ifrmChangeHandler, false);
+                                document.getElementById("popup-3").classList.add("active");
                                 
                             }
 
                             function closeIframePreview(cmEditor, textar) {
-                                //if (frameDoc !== undefined)
-                                    //frameDoc.removeEventListener("change", ifrmChangeHandler);
+                                document.getElementById("popup-3").classList.remove("active");
+                                if (frameBody)
+                                    frameBody.removeEventListener("change", ifrmChangeHandler);
                                 if(container.children[0] !== undefined)
                                     container.children[0].remove();
                                 
                             }
 
                             function startCodeEditor(x, pagetype='htmlmixed') {
-                                closeIframePreview(oldEditor, oldText);
                 
                                 if (oldEditor !== null) {
                                     oldEditor.toTextArea();
@@ -1214,11 +1220,6 @@
                                 oldEditor.on("change", cmChangeHandler)
 
                                 activateFunction('highlightHs', oldEditor);
-
-                                if (pagetype === 'htmlmixed')
-                                    startIframePreview(oldEditor, oldText);
-                                
-                                
                                 
                             }
 
@@ -1516,7 +1517,7 @@
                             <li class="theme-item"><a href="javascript:activateFunction('undo', oldEditor)" class="theme-link" data-logobg="">Undo</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('redo', oldEditor)" class="theme-link" data-logobg="">Redo</a></li>
                             <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
-                            <li class="theme-item"><a href="javascript:togglePopup3()" class="theme-link" data-logobg="">Edit iFrameDoc</a></li>
+                            <li class="theme-item"><a href="javascript:startIframePreview(oldEditor, oldText);" class="theme-link" data-logobg="">Edit iFrameDoc</a></li>
                             <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('highlightHs', oldEditor)" class="theme-link" data-logobg="">Highlight H's</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('selectAll', oldEditor)" class="theme-link" data-logobg="">Select All</a></li>
