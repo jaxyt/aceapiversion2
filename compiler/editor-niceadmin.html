@@ -590,7 +590,7 @@
                             .popup .close-btn {
                                 cursor:pointer;
                                 position:absolute;
-                                right:20px;
+                                left:20px;
                                 top:20px;
                                 width:30px;
                                 height:30px;
@@ -606,7 +606,23 @@
                             .popup .preview-save-btn {
                                 cursor:pointer;
                                 position:absolute;
-                                right:60px;
+                                left:60px;
+                                top:20px;
+                                width:30px;
+                                height:30px;
+                                background:#222;
+                                color:#fff;
+                                font-size:25px;
+                                font-weight:600;
+                                line-height:30px;
+                                text-align:center;
+                                border-radius:50%;
+                            }
+
+                            .popup .iframe-save-btn {
+                                cursor:pointer;
+                                position:absolute;
+                                left:60px;
                                 top:20px;
                                 width:30px;
                                 height:30px;
@@ -629,8 +645,9 @@
                             }
                 
                             #rendered, #help-page {
-                                height: 90vh;
+                                height: 80vh;
                                 overflow-y: scroll;
+                                margin-top: 5vh;
                             }
 
                             #rendered * {
@@ -886,6 +903,7 @@
                         <div id="popup-3" class="popup">
                             <div class="overlay">
                                 <div class="content">
+                                    <div class="iframe-save-btn" onclick="goClickSave()">&sext;</div>
                                     <div class="close-btn" onclick="closeIframePreview(oldEditor, oldText)">&times;</div>
                                     <div class="p3-iframe-container">
                                         <!--<iframe id="ifrm" frameborder="1"></iframe>-->
