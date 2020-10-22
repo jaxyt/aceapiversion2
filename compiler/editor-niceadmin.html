@@ -1157,13 +1157,21 @@
                                 console.log(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true">`.length);
                                 console.log(`</body></html>`.length);
                                 
-                                frameDoc.addEventListener("change", ifrmChangeHandler);
+                                //frameDoc.addEventListener("change", ifrmChangeHandler);
+
+                                $('#ifrm').load(function(){
+                                    //then set up some access points
+                                    var contents = $(this).contents(); // contents of the iframe
+                                    $(contents).find("body").on('change', function(event) { 
+                                        alert('test'); 
+                                    });
+                                });
                                 
                             }
 
                             function closeIframePreview(cmEditor, textar) {
-                                if (frameDoc !== undefined)
-                                    frameDoc.removeEventListener("change", ifrmChangeHandler);
+                                //if (frameDoc !== undefined)
+                                    //frameDoc.removeEventListener("change", ifrmChangeHandler);
                                 if(container.children[0] !== undefined)
                                     container.children[0].remove();
                                 
