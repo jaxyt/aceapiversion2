@@ -203,7 +203,7 @@
     var state = getSearchState(cm);
     if (state.query) return findNext(cm, rev);
     // var q = cm.getSelection() || state.lastQuery;
-    var query = `"/<\/?h[1-6].*>/"` || state.lastQuery;
+    var query = "/<\\/?h[1-6].*>/" || state.lastQuery;
     
     if (query && !state.query) cm.operation(function() {
       startSearch(cm, state, query);
