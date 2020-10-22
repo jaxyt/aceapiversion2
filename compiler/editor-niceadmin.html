@@ -951,6 +951,10 @@
                             //pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
                             //editorBar.style = "display: flex; flex-wrap: wrap;";
 
+                            CodeMirrorSpellChecker({
+                                codeMirrorInstance: CodeMirror,
+                            });
+
                             let cloneButton = document.querySelector("#clone-btn");
                             cloneButton.addEventListener("click", ()=>{
                                 if (cloneButton.classList.contains("btn-danger")){
@@ -1372,7 +1376,7 @@
                                     startCodeEditor(e.target);
                                 })
                                 pages.children[i].children[8].children[1].children[0].addEventListener("focusin", (e)=> {
-                                    startCodeEditor(e.target, ptype);
+                                    startCodeEditor(e.target, ptype, true);
                                 })
                                 
                             }
@@ -1610,7 +1614,7 @@
                             <li class="theme-item"><a href="javascript:startIframePreview(oldEditor, oldText);" class="theme-link" data-logobg="">Edit iFrameDoc</a></li>
                             <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('highlightHs', oldEditor)" class="theme-link" data-logobg="">Highlight H's</a></li>
-                            <li class="theme-item"><a href="javascript:startSpellChecker(oldEditor, oldText);" class="theme-link" data-logobg="">Edit iFrameDoc</a></li>
+                            <li class="theme-item"><a href="javascript:startSpellChecker(oldEditor, oldText);" class="theme-link" data-logobg="">Toggle SpellCheck</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('selectAll', oldEditor)" class="theme-link" data-logobg="">Select All</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('findPersistent', oldEditor)" class="theme-link" data-logobg="">Find</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('replaceAll', oldEditor)" class="theme-link" data-logobg="">ReplaceAll</a></li>
