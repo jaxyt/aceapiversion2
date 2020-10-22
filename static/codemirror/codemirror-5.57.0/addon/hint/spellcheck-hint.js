@@ -343,8 +343,10 @@
     CodeMirror.htmlSchema = data;
     function htmlHint(cm, options) {
       var local = {schemaInfo: data};
+      console.log(`var local = {schemaInfo: data};`);
       console.log(local);
       if (options){
+        console.log(`options`);
           console.log(options)
           for (var opt in options){
               local[opt] = options[opt];
