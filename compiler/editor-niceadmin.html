@@ -951,10 +951,6 @@
                             //pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
                             //editorBar.style = "display: flex; flex-wrap: wrap;";
 
-                            CodeMirrorSpellChecker({
-                                codeMirrorInstance: CodeMirror,
-                            });
-
                             let cloneButton = document.querySelector("#clone-btn");
                             cloneButton.addEventListener("click", ()=>{
                                 if (cloneButton.classList.contains("btn-danger")){
@@ -1261,6 +1257,10 @@
                                     })
 
                                 } else {
+
+                                    CodeMirrorSpellChecker({
+                                        codeMirrorInstance: CodeMirror,
+                                    });
 
                                     editor = CodeMirror.fromTextArea(x, {
                                         lineNumbers: true,
