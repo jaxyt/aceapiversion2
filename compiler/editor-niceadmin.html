@@ -1256,6 +1256,18 @@
                                         gutters: ["CodeMirror-linenumbers"],
                                     })
 
+                                    CodeMirror.commands["selectAll"](editor);
+                
+                                    autoFormatSelection(editor);
+                                    editor.setSelection(editor.getCursor("start"))
+                    
+                                    oldEditor = editor;
+                                    oldText = x;
+
+                                    oldEditor.on("change", cmChangeHandler)
+
+                                    activateFunction('highlightHs', oldEditor);
+
                                 } else {
 
                                     CodeMirrorSpellChecker({
@@ -1291,22 +1303,24 @@
                                             },
                                             gutters: ["CodeMirror-linenumbers"],
                                         })
+
+                                        CodeMirror.commands["selectAll"](editor);
+                
+                                        autoFormatSelection(editor);
+                                        editor.setSelection(editor.getCursor("start"))
+                        
+                                        oldEditor = editor;
+                                        oldText = x;
+
+                                        oldEditor.on("change", cmChangeHandler)
+
+                                        activateFunction('highlightHs', oldEditor);
                                     }, 300)
 
                                     
                                 }
                 
-                                CodeMirror.commands["selectAll"](editor);
-                
-                                autoFormatSelection(editor);
-                                editor.setSelection(editor.getCursor("start"))
-                
-                                oldEditor = editor;
-                                oldText = x;
-
-                                oldEditor.on("change", cmChangeHandler)
-
-                                activateFunction('highlightHs', oldEditor);
+                                
                                 
                             }
 
