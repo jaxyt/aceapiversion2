@@ -1194,6 +1194,9 @@
                                 frameBody = frameDoc.body;
 
                                 frameBody.addEventListener('keyup', ifrmChangeHandler, false);
+                                rendered.addEventListener("copy", copyHandler);
+                                rendered.addEventListener("paste", pasteHandler);
+
                                 document.getElementById("popup-3").classList.add("active");
                                 
                             }
@@ -1204,6 +1207,9 @@
                                     frameBody.removeEventListener("change", ifrmChangeHandler);
                                 if(container.children[0] !== undefined)
                                     container.children[0].remove();
+                                
+                                rendered.removeEventListener("copy", copyHandler);
+                                rendered.removeEventListener("paste", pasteHandler);
                                 
                             }
 
