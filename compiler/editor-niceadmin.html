@@ -1159,7 +1159,7 @@
                                 
                                 //frameDoc.addEventListener("change", ifrmChangeHandler);
 
-                                $('#ifrm').on("load", function(){
+                                /*$('#ifrm').on("load", function(){
                                     //then set up some access points
                                     console.log($(this).contents());
                                     var contents = $(this).contents(); // contents of the iframe
@@ -1167,7 +1167,12 @@
                                     $(contents).find("body").on('change', function(e) { 
                                         console.log("found"); 
                                     });
-                                });
+                                });*/
+
+                                iframe.contentWindow.document.querySelector("body").addEventListener('change', (e)=>{
+                                    console.log(e);
+                                    console.log(e.target);
+                                }, false);
                                 
                             }
 
