@@ -1145,13 +1145,13 @@
                             }
 
                             function closeIframePreview(cmEditor, textar) {
-                                if(container.children)
+                                if(container.children[0])
                                     container.children[0].remove();
                                 
                             }
 
                             function startCodeEditor(x, pagetype='htmlmixed') {
-                                closeIframePreview(oldEditor, x);
+                                closeIframePreview(oldEditor, oldText);
                 
                                 if (oldEditor !== null) {
                                     oldEditor.toTextArea();
