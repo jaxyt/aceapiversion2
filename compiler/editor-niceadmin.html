@@ -1262,32 +1262,38 @@
                                         codeMirrorInstance: CodeMirror,
                                     });
 
-                                    editor = CodeMirror.fromTextArea(x, {
-                                        lineNumbers: true,
-                                        styleActiveLine: true,
-                                        mode: 'spell-checker',
-                                        backdrop: pagetype,
-                                        theme: "oceanic-next",
-                                        matchBrackets: true,
-                                        lineWrapping: true,
-                                        matchTags: {bothTags: true},
-                                        extraKeys: {
-                                            "F11": function(cm) {
-                                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                                                document.querySelector(".CodeMirror").classList.add("fullscreen");
+                                    console.log("spellcheck on")
+
+                                    setTimeout(()=>{
+                                        editor = CodeMirror.fromTextArea(x, {
+                                            lineNumbers: true,
+                                            styleActiveLine: true,
+                                            mode: 'spell-checker',
+                                            backdrop: pagetype,
+                                            theme: "oceanic-next",
+                                            matchBrackets: true,
+                                            lineWrapping: true,
+                                            matchTags: {bothTags: true},
+                                            extraKeys: {
+                                                "F11": function(cm) {
+                                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                                    document.querySelector(".CodeMirror").classList.add("fullscreen");
+                                                },
+                                                "Esc": function(cm) {
+                                                    if (cm.getOption("fullScreen")) {
+                                                        cm.setOption("fullScreen", false);
+                                                        document.querySelector(".CodeMirror").classList.remove("fullscreen");
+                                                    }
+                                                },
+                                                "Ctrl-Space": "autocomplete",
+                                                "Alt-F": "findPersistent",
+                                                "Ctrl-J": "toMatchingTag"
                                             },
-                                            "Esc": function(cm) {
-                                                if (cm.getOption("fullScreen")) {
-                                                    cm.setOption("fullScreen", false);
-                                                    document.querySelector(".CodeMirror").classList.remove("fullscreen");
-                                                }
-                                            },
-                                            "Ctrl-Space": "autocomplete",
-                                            "Alt-F": "findPersistent",
-                                            "Ctrl-J": "toMatchingTag"
-                                        },
-                                        gutters: ["CodeMirror-linenumbers"],
-                                    })
+                                            gutters: ["CodeMirror-linenumbers"],
+                                        })
+                                    }, 300)
+
+                                    
                                 }
                 
                                 CodeMirror.commands["selectAll"](editor);
