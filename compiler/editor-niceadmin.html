@@ -1012,7 +1012,8 @@
                             function cmChangeHandler() {
                                 oldEditor.save();
                                 document.querySelector("#rendered").innerHTML = oldEditor.getValue();
-                                frameBody.innerHTML = oldEditor.getValue();
+                                if (frameBody)
+                                    frameBody.innerHTML = oldEditor.getValue();
                             }
                 
                             function changeHandler() {
