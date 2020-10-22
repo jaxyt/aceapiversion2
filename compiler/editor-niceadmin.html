@@ -1163,8 +1163,9 @@
                                     //then set up some access points
                                     console.log($(this).contents());
                                     var contents = $(this).contents(); // contents of the iframe
-                                    $(contents).find("body").on('change', function(event) { 
-                                        alert('test'); 
+                                    console.log($(contents).find("body"));
+                                    $(contents).find("body").on('change', function(e) { 
+                                        console.log("found"); 
                                     });
                                 });
                                 
