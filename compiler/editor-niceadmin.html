@@ -754,7 +754,7 @@
                                 <div class="content">
                                     <div class="preview-save-btn" onclick="goClickSave()">&sext;</div>
                                     <div class="close-btn" onclick="togglePopOff()">&times;</div>
-                                    <div id="rendered" contenteditable="false"></div>
+                                    <div id="rendered" contenteditable="false" spellcheck="true"></div>
                                 </div>
                             </div>
                         </div>
@@ -1193,14 +1193,11 @@
                                 if (iframe.contentWindow)
                                     frameDoc = iframe.contentWindow.document;
 
-                                content = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true">${cmEditor.getValue()}</body></html>`;
+                                content = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true" spellcheck="true">${cmEditor.getValue()}</body></html>`;
                                 
                                 frameDoc.open();
                                 frameDoc.writeln(content);
                                 frameDoc.close();
-
-                                console.log(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true">`.length);
-                                console.log(`</body></html>`.length);
                                 
                                 frameBody = frameDoc.body;
 
