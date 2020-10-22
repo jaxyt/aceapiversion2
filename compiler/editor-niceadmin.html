@@ -951,6 +951,10 @@
                             //pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
                             //editorBar.style = "display: flex; flex-wrap: wrap;";
 
+                            CodeMirrorSpellChecker({
+                                codeMirrorInstance: CodeMirror,
+                            });
+
                             let cloneButton = document.querySelector("#clone-btn");
                             cloneButton.addEventListener("click", ()=>{
                                 if (cloneButton.classList.contains("btn-danger")){
@@ -1226,101 +1230,45 @@
                                 if (oldText !== null) {
                                     console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
                                 }
-                                let editor
-
-                                if (spellCheck == false) {
-
-                                    editor = CodeMirror.fromTextArea(x, {
-                                        lineNumbers: true,
-                                        styleActiveLine: true,
-                                        mode: pagetype,
-                                        theme: "oceanic-next",
-                                        matchBrackets: true,
-                                        lineWrapping: true,
-                                        matchTags: {bothTags: true},
-                                        extraKeys: {
-                                            "F11": function(cm) {
-                                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                                                document.querySelector(".CodeMirror").classList.add("fullscreen");
-                                            },
-                                            "Esc": function(cm) {
-                                                if (cm.getOption("fullScreen")) {
-                                                    cm.setOption("fullScreen", false);
-                                                    document.querySelector(".CodeMirror").classList.remove("fullscreen");
-                                                }
-                                            },
-                                            "Ctrl-Space": "autocomplete",
-                                            "Alt-F": "findPersistent",
-                                            "Ctrl-J": "toMatchingTag"
-                                        },
-                                        gutters: ["CodeMirror-linenumbers"],
-                                    })
-
-                                    CodeMirror.commands["selectAll"](editor);
-                
-                                    autoFormatSelection(editor);
-                                    editor.setSelection(editor.getCursor("start"))
-                    
-                                    oldEditor = editor;
-                                    oldText = x;
-
-                                    oldEditor.on("change", cmChangeHandler)
-
-                                    activateFunction('highlightHs', oldEditor);
-
-                                } else {
-
-                                    CodeMirrorSpellChecker({
-                                        codeMirrorInstance: CodeMirror,
-                                    });
-
-                                    console.log("spellcheck on")
-
-                                    setTimeout(()=>{
-                                        editor = CodeMirror.fromTextArea(x, {
-                                            lineNumbers: true,
-                                            styleActiveLine: true,
-                                            mode: 'spell-checker',
-                                            backdrop: pagetype,
-                                            theme: "oceanic-next",
-                                            matchBrackets: true,
-                                            lineWrapping: true,
-                                            matchTags: {bothTags: true},
-                                            extraKeys: {
-                                                "F11": function(cm) {
-                                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                                                    document.querySelector(".CodeMirror").classList.add("fullscreen");
-                                                },
-                                                "Esc": function(cm) {
-                                                    if (cm.getOption("fullScreen")) {
-                                                        cm.setOption("fullScreen", false);
-                                                        document.querySelector(".CodeMirror").classList.remove("fullscreen");
-                                                    }
-                                                },
-                                                "Ctrl-Space": "autocomplete",
-                                                "Alt-F": "findPersistent",
-                                                "Ctrl-J": "toMatchingTag"
-                                            },
-                                            gutters: ["CodeMirror-linenumbers"],
-                                        })
-
-                                        CodeMirror.commands["selectAll"](editor);
-                
-                                        autoFormatSelection(editor);
-                                        editor.setSelection(editor.getCursor("start"))
-                        
-                                        oldEditor = editor;
-                                        oldText = x;
-
-                                        oldEditor.on("change", cmChangeHandler)
-
-                                        activateFunction('highlightHs', oldEditor);
-                                    }, 300)
-
-                                    
-                                }
-                
                                 
+                                const editor = CodeMirror.fromTextArea(x, {
+                                    lineNumbers: true,
+                                    styleActiveLine: true,
+                                    mode: 'spell-checker',
+                                    backdrop: pagetype,
+                                    theme: "oceanic-next",
+                                    matchBrackets: true,
+                                    lineWrapping: true,
+                                    matchTags: {bothTags: true},
+                                    extraKeys: {
+                                        "F11": function(cm) {
+                                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                            document.querySelector(".CodeMirror").classList.add("fullscreen");
+                                        },
+                                        "Esc": function(cm) {
+                                            if (cm.getOption("fullScreen")) {
+                                                cm.setOption("fullScreen", false);
+                                                document.querySelector(".CodeMirror").classList.remove("fullscreen");
+                                            }
+                                        },
+                                        "Ctrl-Space": "autocomplete",
+                                        "Alt-F": "findPersistent",
+                                        "Ctrl-J": "toMatchingTag"
+                                    },
+                                    gutters: ["CodeMirror-linenumbers"],
+                                })
+                
+                                CodeMirror.commands["selectAll"](editor);
+                
+                                autoFormatSelection(editor);
+                                editor.setSelection(editor.getCursor("start"))
+                
+                                oldEditor = editor;
+                                oldText = x;
+
+                                oldEditor.on("change", cmChangeHandler)
+
+                                activateFunction('highlightHs', oldEditor);
                                 
                             }
 
@@ -1396,7 +1344,7 @@
                                     startCodeEditor(e.target);
                                 })
                                 pages.children[i].children[8].children[1].children[0].addEventListener("focusin", (e)=> {
-                                    startCodeEditor(e.target, ptype, true);
+                                    startCodeEditor(e.target, ptype);
                                 })
                                 
                             }
