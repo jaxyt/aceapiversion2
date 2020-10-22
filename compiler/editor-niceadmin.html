@@ -1128,6 +1128,11 @@
                                 CodeMirror.commands[`${cmd}`](codeEditor);
                             }
 
+                            function ifrmChangeHandler(targ) {
+                                console.log(framedoc.innerHTML);
+                                console.log(targ.target)
+                            }
+
                             function startIframePreview(cmEditor, textar) {
                                 iframe = document.createElement("iframe");
                                 iframe.id = "ifrm";
@@ -1138,18 +1143,22 @@
                                 if (iframe.contentWindow)
                                     frameDoc = iframe.contentWindow.document;
 
-                                content = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true">${cmEditor.getValue() || "<p>Choose a page first</p>"}</body></html>`
+                                content = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true">${cmEditor.getValue()}</body></html>`;
                                 
                                 frameDoc.open();
                                 frameDoc.writeln(content);
                                 frameDoc.close();
 
-                                console.log(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true">`.length)
-                                console.log(`</body></html>`.length)
+                                console.log(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true">`.length);
+                                console.log(`</body></html>`.length);
+
+                                framedoc.addEventListener("change", ifrmChangeHandler(e));
                                 
                             }
 
                             function closeIframePreview(cmEditor, textar) {
+                                if (framedoc)
+                                    framedoc.removeEventListener("change", ifrmChangeHandler(e));
                                 if(container.children[0])
                                     container.children[0].remove();
                                 
