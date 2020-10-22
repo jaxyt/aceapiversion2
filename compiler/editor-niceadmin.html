@@ -1027,6 +1027,9 @@
                             function togglePopOn() {
                                 if (document.getElementById("popup-1").classList.contains("active"))
                                     togglePopOff()
+
+                                if (document.getElementById("popup-3").classList.contains("active"))
+                                    closeIframePreview(oldEditor, oldText);
                                 document.getElementById("popup-1").classList.add("active");
                                 rendered = document.querySelector("#rendered");
                                 rendered.setAttribute("contenteditable", "true");
@@ -1147,6 +1150,9 @@
                             function startIframePreview(cmEditor, textar) {
                                 if (document.querySelector("#ifrm"))
                                     closeIframePreview(cmEditor, textar)
+
+                                if (document.getElementById("popup-1").classList.contains("active"))
+                                    togglePopOff()
 
                                 iframe = document.createElement("iframe");
                                 iframe.id = "ifrm";
