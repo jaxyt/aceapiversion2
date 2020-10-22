@@ -1028,7 +1028,9 @@
                                 document.getElementById("popup-1").classList.toggle("active");
                                 rendered = document.querySelector("#rendered");
                                 rendered.setAttribute("contenteditable", "true");
-                                cmChangeHandler()
+
+                                rendered.innerHTML = `${oldEditor.getValue()}`;
+
                                 rendered.addEventListener("input", changeHandler);
                                 rendered.addEventListener("copy", copyHandler);
                                 rendered.addEventListener("paste", pasteHandler);
@@ -1217,8 +1219,7 @@
                 
                                 oldEditor = editor;
                                 oldText = x;
-
-                                cmChangeHandler();
+                                
                                 oldEditor.on("change", cmChangeHandler)
 
                                 activateFunction('highlightHs', oldEditor);
