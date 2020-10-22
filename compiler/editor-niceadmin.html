@@ -1157,9 +1157,9 @@
                             }
 
                             function closeIframePreview(cmEditor, textar) {
-                                if (framedoc)
+                                if (framedoc !== undefined)
                                     framedoc.removeEventListener("change", ifrmChangeHandler(e));
-                                if(container.children[0])
+                                if(container.children[0] !== undefined)
                                     container.children[0].remove();
                                 
                             }
