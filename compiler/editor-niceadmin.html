@@ -1025,7 +1025,9 @@
                             }
                 
                             function togglePopOn() {
-                                document.getElementById("popup-1").classList.toggle("active");
+                                if (document.getElementById("popup-1").classList.contains("active"))
+                                    togglePopOff()
+                                document.getElementById("popup-1").classList.add("active");
                                 rendered = document.querySelector("#rendered");
                                 rendered.setAttribute("contenteditable", "true");
 
@@ -1037,7 +1039,7 @@
                             }
                 
                             function togglePopOff() {
-                                document.getElementById("popup-1").classList.toggle("active");
+                                document.getElementById("popup-1").classList.remove("active");
                                 rendered = document.querySelector("#rendered");
                                 rendered.setAttribute("contenteditable", "false");
                                 rendered.removeEventListener("input", changeHandler);
@@ -1145,7 +1147,7 @@
                             function startIframePreview(cmEditor, textar) {
                                 if (document.querySelector("#ifrm"))
                                     closeIframePreview(cmEditor, textar)
-                                    
+
                                 iframe = document.createElement("iframe");
                                 iframe.id = "ifrm";
                                 iframe.frameBorder = "1";
