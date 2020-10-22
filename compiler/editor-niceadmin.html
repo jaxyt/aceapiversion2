@@ -918,7 +918,7 @@
                             let container = document.querySelector(".p3-iframe-container");
                             let iframe;
                             let content;
-                            let framedoc;
+                            let frameDoc;
                             editingForm.style = "margin-top: 0px;";
                             //editingForm.style = "margin-top: 0px; display: grid;";
                             //pages.style = "display: flex; flex-wrap: wrap;";
@@ -1129,7 +1129,7 @@
                             }
 
                             function ifrmChangeHandler(targ) {
-                                console.log(framedoc.innerHTML);
+                                console.log(frameDoc.innerHTML);
                                 console.log(targ.target)
                             }
 
@@ -1138,7 +1138,9 @@
                                 iframe.id = "ifrm";
                                 iframe.frameBorder = "1";
                                 container.append(iframe);
-                                framedoc = iframe.document;
+                                frameDoc = iframe.document;
+                                console.log(iframe);
+                                console.log(iframe.document)
 
                                 if (iframe.contentWindow)
                                     frameDoc = iframe.contentWindow.document;
@@ -1149,16 +1151,19 @@
                                 frameDoc.writeln(content);
                                 frameDoc.close();
 
+                                console.log(iframe);
+                                console.log(iframe.document)
+
                                 console.log(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Inner</title></head><body contenteditable="true">`.length);
                                 console.log(`</body></html>`.length);
-
-                                framedoc.addEventListener("change", ifrmChangeHandler(e));
+                                
+                                frameDoc.addEventListener("change", ifrmChangeHandler(e));
                                 
                             }
 
                             function closeIframePreview(cmEditor, textar) {
-                                if (framedoc !== undefined)
-                                    framedoc.removeEventListener("change", ifrmChangeHandler(e));
+                                if (frameDoc !== undefined)
+                                    frameDoc.removeEventListener("change", ifrmChangeHandler(e));
                                 if(container.children[0] !== undefined)
                                     container.children[0].remove();
                                 
