@@ -1548,7 +1548,10 @@
 
                             function activateCompletion(editor, event) {
                                 var __Cursor = editor.getDoc().getCursor();
-                                        var __Token = editor.getTokenAt(__Cursor);
+                                var __Token = editor.getTokenAt(__Cursor);
+
+                                console.log(editor.state);
+                                console.log(__Token);
 
                                 if (!editor.state.completionActive &&
                                     !ExcludedIntelliSenseTriggerKeys[(event.keyCode || event.which).toString()] &&
