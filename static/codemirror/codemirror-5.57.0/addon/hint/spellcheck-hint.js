@@ -58153,6 +58153,7 @@ const longText = `aardvark
     }
 
     console.log(list)
+    console.log(longText.match(re))
 
     return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
   });
