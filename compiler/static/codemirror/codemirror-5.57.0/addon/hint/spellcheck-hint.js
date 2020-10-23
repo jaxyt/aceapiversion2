@@ -58177,8 +58177,8 @@
     //, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)
 
     //console.log(testList);
-    re = new RegExp('sun', 'g');
+    re = new RegExp('sun[A-z]+', 'g');
     list = longText.match(re);
-    return {list: list, supportsSelection: supportsSelection};
+    return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end), supportsSelection: supportsSelection};
   });
 });
