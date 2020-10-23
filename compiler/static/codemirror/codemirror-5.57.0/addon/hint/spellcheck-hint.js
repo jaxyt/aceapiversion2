@@ -1,7 +1,22 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-const longText = `aardvark
+
+(function(mod) {
+  if (typeof exports == "object" && typeof module == "object") // CommonJS
+    mod(require("../../lib/codemirror"));
+  else if (typeof define == "function" && define.amd) // AMD
+    define(["../../lib/codemirror"], mod);
+  else // Plain browser env
+    mod(CodeMirror);
+})(function(CodeMirror) {
+  "use strict";
+
+  var WORD = /[\w$]+/, RANGE = 500;
+
+
+  CodeMirror.registerHelper("hint", "anyword", function(editor, options) {
+    let longText = `aardvark
   aardwolf
   aaron
   aback
@@ -58113,19 +58128,6 @@ const longText = `aardvark
   zulus`;
 
 
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-  "use strict";
-
-  var WORD = /[\w$]+/, RANGE = 500;
-
-  CodeMirror.registerHelper("hint", "anyword", function(editor, options) {
     var word = options && options.word || WORD;
     var range = options && options.range || RANGE;
     var cur = editor.getCursor(), curLine = editor.getLine(cur.line);
@@ -58141,10 +58143,11 @@ const longText = `aardvark
       console.log(endLine);
       for (; line != endLine; line += dir) {
         var text = editor.getLine(line), m;
-        console.log(re.exec(text));
+        //console.log(re.exec(text));
         while (m = re.exec(text)) {
           if (line == cur.line && m[0] === curWord) continue;
           if ((!curWord || m[0].lastIndexOf(curWord, 0) == 0) && !Object.prototype.hasOwnProperty.call(seen, m[0])) {
+            console.log(m[0])
             seen[m[0]] = true;
             list.push(m[0]);
           }
