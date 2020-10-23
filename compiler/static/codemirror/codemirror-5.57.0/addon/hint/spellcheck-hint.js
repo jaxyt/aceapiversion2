@@ -24,7 +24,7 @@
     while (start && word.test(curLine.charAt(start - 1))) --start;
     
     var re = new RegExp(`[A-z]*${editor.getRange(CodeMirror.Pos(cur.line, start),CodeMirror.Pos(cur.line, end))}[A-z]* `, 'gi');
-    var list = CodeMirror.Pos(cur.line, end)['ch'] - CodeMirror.Pos(cur.line, start)['ch'] > 2 ? longText.match(re) : longText.match(/(process )|(servers? )/gi);
+    var list = CodeMirror.Pos(cur.line, end)['ch'] - CodeMirror.Pos(cur.line, start)['ch'] > 2 ? longText.match(re) : longText.match(/([A-z]*process[A-z]* )|([A-z]*servers?[A-z]* )/gi);
     return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end), supportsSelection: true};
   });
 });
