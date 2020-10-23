@@ -1234,9 +1234,13 @@
 
                                 //CodeMirror.commands.autocomplete(editor, null, { completeSingle: false });
 
-                                CodeMirror.commands.autocomplete = function(cm) {
+                                /*CodeMirror.commands.autocomplete = function(cm) {
                                     cm.showHint({hint: CodeMirror.hint.anyword});
-                                }
+                                }*/
+
+                                editor.on("keyup",function(cm){ 
+                                    CodeMirror.showHint(cm,CodeMirror.hint.anyword,{supportsSelection: true});
+                                });
                                 
                                 const editor = CodeMirror.fromTextArea(x, {
                                     lineNumbers: true,
