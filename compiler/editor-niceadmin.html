@@ -1046,9 +1046,7 @@
                                 document.querySelector("#rendered").innerHTML = oldEditor.getValue();
                                 if (frameBody)
                                     frameBody.innerHTML = oldEditor.getValue();
-
-                                if (oldEditor.somethingSelected())
-                                    CodeMirror.showHint(cm,CodeMirror.hint.anyword,{supportsSelection: true});
+                                    
                             }
                 
                             function changeHandler() {
@@ -1263,7 +1261,9 @@
                                                 document.querySelector(".CodeMirror").classList.remove("fullscreen");
                                             }
                                         },
-                                        "Ctrl-Space": "autocomplete",
+                                        "Ctrl-Space": function(cm) {
+                                            CodeMirror.showHint(cm,CodeMirror.hint.anyword,{supportsSelection: true});
+                                        },
                                         "Alt-F": "findPersistent",
                                         "Ctrl-J": "toMatchingTag"
                                     },
