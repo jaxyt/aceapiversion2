@@ -15,7 +15,7 @@
   var WORD = /[\w$]+/, RANGE = 500;
 
 
-  CodeMirror.registerHelper("hint", "anyword", function(editor, options, supportsSelection=true) {
+  CodeMirror.registerHelper("hint", "anyword", function(editor, options) {
     let longText = `aardvark
   aardwolf
   aaron
@@ -58130,13 +58130,11 @@
 
     var word = options && options.word || WORD;
     var cur = editor.getCursor(), curLine = editor.getLine(cur.line);
-    console.log(cur)
-    console.log(curLine)
     var end = cur.ch, start = end;
     while (start && word.test(curLine.charAt(start - 1))) --start;
     
     var re = new RegExp(`${editor.getRange(CodeMirror.Pos(cur.line, start),CodeMirror.Pos(cur.line, end))}[A-z]+`, 'g');
     var list = longText.match(re);
-    return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end), supportsSelection: supportsSelection};
+    return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end), supportsSelection: true};
   });
 });
