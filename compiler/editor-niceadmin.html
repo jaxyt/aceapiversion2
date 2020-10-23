@@ -1550,10 +1550,6 @@
                                 var __Cursor = editor.getDoc().getCursor();
                                 var __Token = editor.getTokenAt(__Cursor);
 
-                                console.log(editor.state);
-                                console.log(__Token);
-                                //(__Token.type == "tag" || __Token.string == " " || __Token.string == "<" || __Token.string == "/")
-
                                 if (!editor.state.completionActive &&
                                     !ExcludedIntelliSenseTriggerKeys[(event.keyCode || event.which).toString()] &&
                                     (__Token.type == "tag" || `${__Token.string}`.match(/[A-z]+/) || __Token.string == "<" || __Token.string == "/"))
