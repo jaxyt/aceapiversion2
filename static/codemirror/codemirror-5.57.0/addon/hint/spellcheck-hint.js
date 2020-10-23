@@ -24,11 +24,7 @@
     while (start && word.test(curLine.charAt(start - 1))) --start;
     
     var re = new RegExp(`[A-z]*${editor.getRange(CodeMirror.Pos(cur.line, start),CodeMirror.Pos(cur.line, end))}[A-z]* `, 'gi');
-    console.log(CodeMirror.Pos(cur.line, start));
-    console.log(CodeMirror.Pos(cur.line, end));
-    console.log(editor.getRange(CodeMirror.Pos(cur.line, start),CodeMirror.Pos(cur.line, end)));
-    console.log(CodeMirror.Pos(cur.line, end)['ch'] - CodeMirror.Pos(cur.line, start)['ch']);
-    var list = longText.match(re);
+    var list = CodeMirror.Pos(cur.line, end)['ch'] - CodeMirror.Pos(cur.line, start)['ch'] > 2 ? longText.match(re) : [""];
     return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end), supportsSelection: true};
   });
 });
