@@ -25,7 +25,7 @@
     
     var re = new RegExp(`[A-z]*${editor.getRange(CodeMirror.Pos(cur.line, start),CodeMirror.Pos(cur.line, end))}[A-z]*(?= )`, 'gi');
     var list = CodeMirror.Pos(cur.line, end)['ch'] - CodeMirror.Pos(cur.line, start)['ch'] > 1 ? longText.match(re) : longText.match(/([A-z]*process[A-z]*(?= ))|([A-z]*servers?[A-z]*(?= ))/gi);
-    if (!list.length) {
+    if (list === null) {
       list = longText.match(/([A-z]*process[A-z]*(?= ))|([A-z]*servers?[A-z]*(?= ))/gi);
     }
     return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end), supportsSelection: true};
