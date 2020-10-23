@@ -32,7 +32,7 @@
     // A hint function can have a `supportsSelection` property to
     // indicate that it can handle selections.
     if (this.somethingSelected()) {
-      console.log(options)
+      //console.log(options)
       if (!options.hint.supportsSelection) return;
       // Don't try with cross-line selections
       for (var i = 0; i < selections.length; i++)
