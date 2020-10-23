@@ -24,6 +24,9 @@
     while (start && word.test(curLine.charAt(start - 1))) --start;
     
     var re = new RegExp(`[A-z]*${editor.getRange(CodeMirror.Pos(cur.line, start),CodeMirror.Pos(cur.line, end))}[A-z]* `, 'gi');
+    console.log(CodeMirror.Pos(cur.line, start));
+    console.log(CodeMirror.Pos(cur.line, end));
+    console.log(editor.getRange(CodeMirror.Pos(cur.line, start),CodeMirror.Pos(cur.line, end)));
     var list = longText.match(re);
     return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end), supportsSelection: true};
   });
