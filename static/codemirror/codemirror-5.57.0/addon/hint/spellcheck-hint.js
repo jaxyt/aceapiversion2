@@ -58138,7 +58138,7 @@ const longText = `aardvark
     for (var dir = -1; dir <= 1; dir += 2) {
       var line = cur.line, endLine = Math.min(Math.max(line + dir * range, editor.firstLine()), editor.lastLine()) + dir;
       console.log(line);
-      console.log(endline);
+      console.log(endLine);
       for (; line != endLine; line += dir) {
         var text = editor.getLine(line), m;
         console.log(re.exec(text));
