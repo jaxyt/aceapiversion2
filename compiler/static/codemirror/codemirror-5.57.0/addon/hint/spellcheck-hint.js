@@ -58181,6 +58181,7 @@
     list = longText.match(re);
     console.log(CodeMirror.Pos(cur.line, start))
     console.log(CodeMirror.Pos(cur.line, end))
+    console.log(editor.getRange(CodeMirror.Pos(cur.line, start),CodeMirror.Pos(cur.line, end)))
     return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end), supportsSelection: supportsSelection};
   });
 });
