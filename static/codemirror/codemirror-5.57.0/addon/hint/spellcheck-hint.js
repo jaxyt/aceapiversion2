@@ -58157,7 +58157,7 @@
             're': re,
             'dir': dir,
             'line': line,
-            'endlineequation': `Math.min(Math.max(${line} + ${dir} * ${range}, ${editor.firstLine()}), ${editor.lastLine()}) + ${dir} = ${endline}`,
+            'endlineequation': `Math.min(Math.max(${line} + ${dir} * ${range}, ${editor.firstLine()}), ${editor.lastLine()}) + ${dir} = ${endLine}`,
             'endLine': endLine,
             'text': text,
             'm': m,
