@@ -58144,7 +58144,7 @@
       for (; line != endLine; line += dir) {
         var text = editor.getLine(line), m;
         while (m = re.exec(text)) {
-          testList.push({
+          /*testList.push({
             'word': word,
             'range': range,
             'cur': cur,
@@ -58162,7 +58162,7 @@
             'text': text,
             'm': m,
             'loopResult': line == cur.line && m[0] === curWord
-          })
+          })*/
           if (line == cur.line && m[0] === curWord) continue;
           if ((!curWord || m[0].lastIndexOf(curWord, 0) == 0) && !Object.prototype.hasOwnProperty.call(seen, m[0])) {
             seen[m[0]] = true;
@@ -58172,7 +58172,7 @@
       }
     }
 
-    console.log(testList);
+    //console.log(testList);
     return {list: list, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
   });
 });

@@ -1232,6 +1232,10 @@
                                     console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
                                 }
 
+                                console.log(CodeMirror.hint.auto);
+
+                                //CodeMirror.commands.autocomplete(editor, null, { completeSingle: false });
+
                                 CodeMirror.commands.autocomplete = function(cm) {
                                     cm.showHint({hint: CodeMirror.hint.anyword});
                                 }
