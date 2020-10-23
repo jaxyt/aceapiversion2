@@ -792,9 +792,13 @@
                                                 <dd>Redo</dd>
                                             </dl>
                                         </p>
-                                        <h2>Edit as HTML</h2>
+                                        <!--<h2>Edit as HTML</h2>
                                         <p>
                                             This toggles the contenteditable mode of the preview &lt;div&gt; . This mode is text only and is meant to give a general idea of what the code will look like rendered and allow for minor edits. The other editor functions will not work here. 
+                                        </p>-->
+                                        <h2>Edit as HTML</h2>
+                                        <p>
+                                            This toggles the contenteditable mode of the &lt;iframe id="ifrm"&gt; document. This mode is text only and only renders inline styles to give a more exact picture of how the code will look and act stylistically. The other editor functions will not work here. Also, the button to the right of the "x" button is an alternate save button
                                         </p>
                                         <h2>Fullscreen</h2>
                                         <p>
@@ -886,6 +890,10 @@
                                         <h2>Cloning</h2>
                                         <p>
                                             Cloning is toggled on and off by clicking on the clone button next to the save button
+                                        </p>
+                                        <h2>Toggle Autocomplete</h2>
+                                        <p>
+                                            defaults to on and when ever a new page is selected, can be toggled on and off by clicking the Toggle Autocomplete button in the Editor Commands section
                                         </p>
                                         <h2><u><i>Update Notes</i></u></h2>
                                         <p>
@@ -1636,8 +1644,8 @@
                         <ul id="editor-commands" class="theme-color">
                             <li class="theme-item"><a href="javascript:activateFunction('undo', oldEditor)" class="theme-link" data-logobg="">Undo</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('redo', oldEditor)" class="theme-link" data-logobg="">Redo</a></li>
-                            <li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>
-                            <li class="theme-item"><a href="javascript:startIframePreview(oldEditor, oldText);" class="theme-link" data-logobg="">Edit iFrameDoc</a></li>
+                            <!--<li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>-->
+                            <li class="theme-item"><a href="javascript:startIframePreview(oldEditor, oldText);" class="theme-link" data-logobg="">Edit as HTML</a></li>
                             <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('highlightHs', oldEditor)" class="theme-link" data-logobg="">Highlight H's</a></li>
                             <li class="theme-item"><a href="javascript:startSpellChecker(oldEditor);" class="theme-link" data-logobg="">Toggle Autocomplete</a></li>
