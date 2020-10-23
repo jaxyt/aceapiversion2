@@ -924,9 +924,6 @@
                             let delay;
                             let oldEditor = null;
                             let oldText = null;
-                            let oldRoute = null;
-                            let oldTitle = null;
-                            let oldName = null;
                             let rendered = document.querySelector("#rendered");
                             let oldPreview;
                             let areas = document.querySelectorAll("#editingform textarea");
@@ -1001,11 +998,6 @@
                                 "220": "backslash",
                                 "222": "quote"
                             }
-                            //editingForm.style = "margin-top: 0px; display: grid;";
-                            //pages.style = "display: flex; flex-wrap: wrap;";
-                            //shortCodes.style = "display: flex; flex-wrap: wrap;";
-                            //pagesBar.style = "display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;";
-                            //editorBar.style = "display: flex; flex-wrap: wrap;";
 
                             CodeMirrorSpellChecker({
                                 codeMirrorInstance: CodeMirror,
@@ -1224,6 +1216,29 @@
                                 CodeMirror.commands[`${cmd}`](codeEditor);
                             }
 
+                            function activateCompletion(editor, event) {
+                                var __Cursor = editor.getDoc().getCursor();
+                                var __Token = editor.getTokenAt(__Cursor);
+
+                                if (!editor.state.completionActive &&
+                                    !ExcludedIntelliSenseTriggerKeys[(event.keyCode || event.which).toString()] &&
+                                    (__Token.type == "tag" || `${__Token.string}`.match(/[A-z]+/) || __Token.string == "<" || __Token.string == "/"))
+                                {
+                                    CodeMirror.showHint(editor,CodeMirror.hint.anyword,{ completeSingle: false });
+                                }
+                            }
+
+
+                            function startSpellChecker(cmEditor) {
+                                spellCheckOn = !spellCheckOn;
+                                if (spellCheckOn === true){
+                                    cmEditor.on("keyup", activateCompletion);
+                                } else {
+                                    cmEditor.off("keyup", activateCompletion);
+                                }
+                                
+                            }
+
                             function ifrmChangeHandler() {
                                 oldEditor.off("change", cmChangeHandler)
                                 CodeMirror.commands["selectAll"](oldEditor);
@@ -1284,14 +1299,6 @@
                                 if (oldText !== null) {
                                     console.log(`${oldText.id} is now inactive, prepping ${x.id}`);
                                 }
-
-                                //CodeMirror.commands.autocomplete(editor, null, { completeSingle: false });
-
-                                /*CodeMirror.commands.autocomplete = function(cm) {
-                                    cm.showHint({hint: CodeMirror.hint.anyword});
-                                }*/
-
-                                
                                 
                                 const editor = CodeMirror.fromTextArea(x, {
                                     lineNumbers: true,
@@ -1332,11 +1339,11 @@
 
                                 oldEditor.on("change", cmChangeHandler)
 
-                                /*oldEditor.on("keyup",function(cm){ 
-                                    CodeMirror.showHint(cm,CodeMirror.hint.anyword,{supportsSelection: true});
-                                });*/
-
                                 activateFunction('highlightHs', oldEditor);
+
+                                spellCheckOn = false;
+
+                                startSpellChecker(oldEditor);
                                 
                             }
 
@@ -1416,12 +1423,6 @@
                                 })
                                 
                             }
-
-                            /*for (i=0;i<areas.length;i++){
-                                areas[i].addEventListener("focusin", (e)=> {
-                                    startCodeEditor(e.target);
-                                })
-                            }*/
 
                             
                             function selectTheme(cmEditor) {
@@ -1546,29 +1547,7 @@
                                 t.children[8].children[1].children[0].focus();
                             })
 
-                            function activateCompletion(editor, event) {
-                                var __Cursor = editor.getDoc().getCursor();
-                                var __Token = editor.getTokenAt(__Cursor);
-
-                                if (!editor.state.completionActive &&
-                                    !ExcludedIntelliSenseTriggerKeys[(event.keyCode || event.which).toString()] &&
-                                    (__Token.type == "tag" || `${__Token.string}`.match(/[A-z]+/) || __Token.string == "<" || __Token.string == "/"))
-                                {
-                                    CodeMirror.showHint(editor,CodeMirror.hint.anyword,{ completeSingle: false });
-                                }
-                            }
-
-
-                            function startSpellChecker(cmEditor) {
-                                console.log("checking");
-                                spellCheckOn = !spellCheckOn;
-                                if (spellCheckOn === true){
-                                    cmEditor.on("keyup", activateCompletion);
-                                } else {
-                                    cmEditor.off("keyup", activateCompletion);
-                                }
-                                
-                            }
+                            
                         </script>
                         <!-- Action part -->
                     </div>
@@ -1661,7 +1640,7 @@
                             <li class="theme-item"><a href="javascript:startIframePreview(oldEditor, oldText);" class="theme-link" data-logobg="">Edit iFrameDoc</a></li>
                             <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('highlightHs', oldEditor)" class="theme-link" data-logobg="">Highlight H's</a></li>
-                            <li class="theme-item"><a href="javascript:startSpellChecker(oldEditor);" class="theme-link" data-logobg="">Toggle SpellCheck</a></li>
+                            <li class="theme-item"><a href="javascript:startSpellChecker(oldEditor);" class="theme-link" data-logobg="">Toggle Autocomplete</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('selectAll', oldEditor)" class="theme-link" data-logobg="">Select All</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('findPersistent', oldEditor)" class="theme-link" data-logobg="">Find</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('replaceAll', oldEditor)" class="theme-link" data-logobg="">ReplaceAll</a></li>
@@ -1986,6 +1965,10 @@
     /*setTimeout(()=>{
         document.querySelector("i.mdi").click();
     }, 1000);*/
+
+    window.addEventListener('load', (e)=> {
+        document.querySelector("#pages-bar ul.collapse.first-level").children[0].click();
+    })
     </script>
 </body>
 
