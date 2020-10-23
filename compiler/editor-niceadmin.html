@@ -1046,6 +1046,9 @@
                                 document.querySelector("#rendered").innerHTML = oldEditor.getValue();
                                 if (frameBody)
                                     frameBody.innerHTML = oldEditor.getValue();
+
+                                if (oldEditor.somethingSelected())
+                                    CodeMirror.showHint(cm,CodeMirror.hint.anyword,{supportsSelection: true});
                             }
                 
                             function changeHandler() {
@@ -1238,9 +1241,7 @@
                                     cm.showHint({hint: CodeMirror.hint.anyword});
                                 }*/
 
-                                editor.on("keyup",function(cm){ 
-                                    CodeMirror.showHint(cm,CodeMirror.hint.anyword,{supportsSelection: true});
-                                });
+                                
                                 
                                 const editor = CodeMirror.fromTextArea(x, {
                                     lineNumbers: true,
@@ -1278,6 +1279,10 @@
                                 oldText = x;
 
                                 oldEditor.on("change", cmChangeHandler)
+
+                                /*oldEditor.on("keyup",function(cm){ 
+                                    CodeMirror.showHint(cm,CodeMirror.hint.anyword,{supportsSelection: true});
+                                });*/
 
                                 activateFunction('highlightHs', oldEditor);
                                 
