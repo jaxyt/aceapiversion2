@@ -58178,7 +58178,7 @@
 
     //console.log(testList);
     re = new RegExp('sun', 'g');
-    list = re.match(longText);
+    list = longText.match(re);
     return {list: list, supportsSelection: supportsSelection};
   });
 });
