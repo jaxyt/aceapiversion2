@@ -1554,7 +1554,7 @@
                                     !ExcludedIntelliSenseTriggerKeys[(event.keyCode || event.which).toString()] &&
                                     (__Token.type == "tag" || __Token.string == " " || __Token.string == "<" || __Token.string == "/"))
                                 {
-                                    CodeMirror.showHint(cmEditor,CodeMirror.hint.anyword,{ completeSingle: false });
+                                    CodeMirror.showHint(editor,CodeMirror.hint.anyword,{ completeSingle: false });
                                 }
                             }
 
