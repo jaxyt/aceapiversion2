@@ -15,7 +15,7 @@
   var WORD = /[\w$]+/, RANGE = 500;
 
 
-  CodeMirror.registerHelper("hint", "anyword", function(editor, options) {
+  CodeMirror.registerHelper("hint", "anyword", function(editor, options, supportsSelection=true) {
     let longText = `aardvark
   aardwolf
   aaron
