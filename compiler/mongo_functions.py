@@ -102,7 +102,7 @@ def cosine_sim_vectors(vec1, vec2):
     vec2 = vec2.reshape(1, -1)
     return cosine_similarity(vec1, vec2)[0][0]
 
-def lev_and_cos_search(searchterm):
+def ra_search(searchterm):
     results = {}
     agents = list(map(add_to_map, coll_ra.find()))
     for i in agents:
@@ -289,6 +289,7 @@ def compiler_v3(s, t, r, arr):
                 comp = re.sub(r"XXstateacronymXX", "", comp)
         elif len(arr) == 5:
             from urllib.parse import unquote
+            from .tests2 import lev_and_cos_search
             agents_info = """<div class="registered-agents">"""
             k = arr[3]
             q = unquote(arr[4])
