@@ -204,11 +204,11 @@ def compiler_v3(s, t, r, arr):
             q = re.sub(r'[^\w\s]','',q)
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
-            q = "|".join(q.split(" "))
-            print(q)
-            query = re.compile(q, re.IGNORECASE)
-            #for k in lev_and_cos_search(arr[4]):
-            for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
+            #q = "|".join(q.split(" "))
+            #print(q)
+            #query = re.compile(q, re.IGNORECASE)
+            for k in lev_and_cos_search(arr[4])[0:30]:
+                #for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
