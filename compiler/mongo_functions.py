@@ -201,14 +201,15 @@ def compiler_v3(s, t, r, arr):
             from urllib.parse import unquote
             agents_info = """<div class="registered-agents">"""
             k = arr[3]
-            q = unquote(arr[4])
+            q = arr[4]
             q = re.sub(r'[^\w\s]','',q)
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
-            #q = "|".join(q.split(" "))
+            q = "|".join(q.split(" "))
             print(q)
-            for m in lev_and_cos_search(q)[0:50]:
-                i = coll_ra.find_one({'id': int(m[0])})
+            query = re.compile(q, re.IGNORECASE)
+            #for k in lev_and_cos_search(arr[4]):
+            for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
@@ -220,20 +221,6 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
                     "</ul>"
                 ])
-            #query = re.compile(q, re.IGNORECASE)
-            #for k in lev_and_cos_search(arr[4]):
-            #for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
-            #    slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
-            #    agents_info += "".join([
-            #        f"""<ul id="{i['id']}" class="agent-container">""",
-            #        f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
-            #        f"""<li class="agency">{"Alt-Name" if i["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
-            #        f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
-            #        f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}">{i['city'].title()}</a></li>""" if i['city'] else "",
-            #        f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
-            #        f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
-            #        "</ul>"
-            #    ])
             agents_info += "</div>"
             comp = re.sub("XXagentsXX", agents_info, comp)
             comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
