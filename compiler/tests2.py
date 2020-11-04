@@ -65,7 +65,8 @@ def lev_and_cos_search(searchterm):
     results = {}
     agents = list(map(add_to_map, coll_ra.find()))
 
-    for n in trange(len(agents), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
+    #for n in trange(len(agents), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
+    for n in range(len(agents), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Fore.RESET)):
         i = agents[n]
         sentences = [searchterm]
         combined = ""
