@@ -298,7 +298,7 @@ def compiler_v3(s, t, r, arr):
             q = q.strip(" ")
             print(q)
             search_results = lev_and_cos_search(q)
-            for m in search_results[0:10]:
+            for m in search_results[0:50]:
                 current_agent = coll_ra.find_one({'id': int(m[0])})
                 print(current_agent['company'] if current_agent['company'] else (current_agent['agency'] if current_agent['agency'] else "not found"))
             q = "|".join(q.split(" "))
