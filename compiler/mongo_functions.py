@@ -257,7 +257,7 @@ def compiler_v3(s, t, r, arr):
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
-            corps_in_states = """<div class="state-corps-links">"""
+            corps_in_states = """<div class="process-server-corp-state-links">"""
             for i in coll_st.find():
                 corps_in_states += f"""<a href="{"/".join(arr)}/{"-".join(i['statename'].split(" "))}">{i['statename'].title()}</a>"""
             corps_in_states += """</div>"""
@@ -292,7 +292,7 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
-            corps_in_cities = """<div class="state-corps-links">"""
+            corps_in_cities = """<div class="process-server-corps-city-links">"""
             for i in coll_ra.find({k: query, 'state': state_query}).distinct('city'):
                 corps_in_cities += f"""<a href="{"/".join(arr)}/{"-".join(i.lower().split(" "))}">{i.title()}</a>""" if i else ""
             corps_in_cities += """</div>"""
@@ -362,7 +362,7 @@ def compiler_v3(s, t, r, arr):
             agents_info += "</div>"
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
-            corps_in_cities = """<div class="state-corps-links">"""
+            corps_in_cities = """<div class="corps-in-city-links">"""
             for i in coll_ra.find({'state': state_query}).distinct('city'):
                 corps_in_cities += f"""<a href="{"/".join(arr)}/{"-".join(i.lower().split(" "))}">{i.title()}</a>""" if i else ""
             corps_in_cities += """</div>"""
