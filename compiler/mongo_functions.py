@@ -198,20 +198,17 @@ def compiler_v3(s, t, r, arr):
             else:
                 comp = re.sub(r"XXstateacronymXX", "", comp)
         elif len(arr) == 5:
-            from urllib.parse import unquote
             agents_info = """<div class="registered-agents">"""
             k = arr[3]
-            q = unquote(arr[4])
-            q = re.sub(r'[^\w\s]',' ',q)
+            q = arr[4]
+            q = re.sub(r'[^\w\s]','',q)
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
-            #q = "|".join(q.split(" "))
+            q = "|".join(q.split(" "))
             print(q)
-            #query = re.compile(q, re.IGNORECASE)
-            for k in lev_and_cos_search(q)[0:30]:
-                #for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
-                i = coll_ra.find_one({'id': int(k[0])})
-                print(i)
+            query = re.compile(q, re.IGNORECASE)
+            #for k in lev_and_cos_search(arr[4]):
+            for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
