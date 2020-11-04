@@ -209,6 +209,7 @@ def compiler_v3(s, t, r, arr):
             #query = re.compile(q, re.IGNORECASE)
             for k in lev_and_cos_search(arr[4])[0:30]:
                 #for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"state": query},{"agency": query},{"address": query},{"website": query},{"city": query}]}},{"$sort": { k: 1 }}]):
+                i = coll_ra.find_one({'id': int(k[0])})
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<ul id="{i['id']}" class="agent-container">""",
