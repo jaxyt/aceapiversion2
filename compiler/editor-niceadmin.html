@@ -1337,10 +1337,10 @@
                                     gutters: ["CodeMirror-linenumbers"],
                                 })
                 
-                                CodeMirror.commands["selectAll"](editor);
+                                /*CodeMirror.commands["selectAll"](editor);
                 
                                 autoFormatSelection(editor);
-                                editor.setSelection(editor.getCursor("start"))
+                                editor.setSelection(editor.getCursor("start"))*/
                 
                                 oldEditor = editor;
                                 oldText = x;
@@ -1644,7 +1644,7 @@
                         <ul id="editor-commands" class="theme-color">
                             <li class="theme-item"><a href="javascript:activateFunction('undo', oldEditor)" class="theme-link" data-logobg="">Undo</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('redo', oldEditor)" class="theme-link" data-logobg="">Redo</a></li>
-                            <!--<li class="theme-item"><a href="javascript:togglePopOn()" class="theme-link" data-logobg="">Edit As HTML</a></li>-->
+                            <li class="theme-item"><a href="javascript:autoFormatSelection(oldEditor)" class="theme-link" data-logobg="">Auto Format</a></li>
                             <li class="theme-item"><a href="javascript:startIframePreview(oldEditor, oldText);" class="theme-link" data-logobg="">Edit as HTML</a></li>
                             <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
                             <li class="theme-item"><a href="javascript:activateFunction('highlightHs', oldEditor)" class="theme-link" data-logobg="">Highlight H's</a></li>
