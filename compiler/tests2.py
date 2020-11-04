@@ -95,6 +95,6 @@ def lev_and_cos_search(searchterm):
         results[f"{i['id']}"] = avg_similarity
     return sorted(results.items(), key=lambda x: x[1], reverse=True)
 
-for m in lev_and_cos_search(input("enter search term:  "))[0:10]:
+for m in lev_and_cos_search(input("enter search term:  "))[0:30]:
     pp.pprint(coll_ra.find_one({'id': int(m[0])}))
 
