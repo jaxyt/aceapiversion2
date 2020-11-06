@@ -313,7 +313,7 @@ def compiler_v3(s, t, r, arr):
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
             search_results = lev_and_cos_search(q)
-            for m in search_results[0:100]:
+            for m in search_results[0:50]:
                 current_agent = coll_ra.find_one({'id': int(m[0])})
                 slug = slugify(f"""{current_agent['company'] if current_agent['company'] else (current_agent['agency'] if current_agent['agency'] else "")}-service-of-process-{current_agent['id']}""")
                 agents_info += "".join([
