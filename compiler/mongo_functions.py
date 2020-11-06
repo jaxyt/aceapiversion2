@@ -306,7 +306,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Details</th>
                             </tr>
                         </thead>
-                        <tbody>"""
+                        <tbody id="ra-datatable">"""
             k = arr[3]
             q = unquote(arr[4])
             q = re.sub(r'[^\w\s]','',q)
