@@ -295,7 +295,7 @@ def compiler_v3(s, t, r, arr):
         <div class="card shadow-sm">
             <div class="p-4 text-center">
                 <div class="table-responsive">
-                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
+                    <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
                                 <th>Agency</th>
@@ -313,7 +313,7 @@ def compiler_v3(s, t, r, arr):
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
             search_results = lev_and_cos_search(q)
-            for m in search_results[0:50]:
+            for m in search_results:
                 current_agent = coll_ra.find_one({'id': int(m[0])})
                 slug = slugify(f"""{current_agent['company'] if current_agent['company'] else (current_agent['agency'] if current_agent['agency'] else "")}-service-of-process-{current_agent['id']}""")
                 agents_info += "".join([
