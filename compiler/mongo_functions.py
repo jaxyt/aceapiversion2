@@ -290,10 +290,7 @@ def compiler_v3(s, t, r, arr):
         elif len(arr) == 5:
             from urllib.parse import unquote
             from .tests2 import lev_and_cos_search
-            agents_info = """<div class="row justify-content-center bg-light p-3">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
-            <div class="p-4 text-center">
+            agents_info = """
                 <div class="table-responsive">
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
@@ -338,10 +335,7 @@ def compiler_v3(s, t, r, arr):
                         </tfoot>
                     </table>
                 </div>
-            </div>	
-        </div>
-    </div>
-</div>"""
+            """
             comp = re.sub("XXagentsXX", agents_info, comp)
             comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
             #f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
