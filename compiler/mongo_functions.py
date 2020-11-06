@@ -290,7 +290,23 @@ def compiler_v3(s, t, r, arr):
         elif len(arr) == 5:
             from urllib.parse import unquote
             from .tests2 import lev_and_cos_search
-            agents_info = """<div class="registered-agents">"""
+            agents_info = """<div class="row justify-content-center bg-light p-3">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="p-4 text-center">
+                <div class="table-responsive">
+                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
+                        <thead>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Address</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>"""
             k = arr[3]
             q = unquote(arr[4])
             q = re.sub(r'[^\w\s]','',q)
@@ -301,16 +317,31 @@ def compiler_v3(s, t, r, arr):
                 current_agent = coll_ra.find_one({'id': int(m[0])})
                 slug = slugify(f"""{current_agent['company'] if current_agent['company'] else (current_agent['agency'] if current_agent['agency'] else "")}-service-of-process-{current_agent['id']}""")
                 agents_info += "".join([
-                    f"""<ul id="{current_agent['id']}" class="agent-container">""",
-                    f"""<li class="company">Agency:&nbsp;<a href="/registered-agents/search/company/{current_agent['company']}">{current_agent['company'].title()}</a></li>""" if current_agent['company'] else "",
-                    f"""<li class="agency">{"Alt-Name" if current_agent["company"] else "Agency"}:&nbsp;<a href="/registered-agents/search/agency/{current_agent['agency']}">{current_agent['agency'].title()}</a></li>""" if current_agent['agency'] else "",
-                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{current_agent['state']}">{current_agent['state'].title()}</a></li>""" if current_agent['state'] else "",
-                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{current_agent['city']}, {current_agent['state']}">{current_agent['city'].title()}</a></li>""" if current_agent['city'] and current_agent['state'] else "",
-                    f"""<li class="address">Address:&nbsp;{current_agent['address'].title()}</li>""" if current_agent['address'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
-                    "</ul>"
+                    f"""<tr id="{current_agent['id']}">""",
+                    f"""<td><a href="/registered-agents/search/company/{current_agent['company']}">{current_agent['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{current_agent['agency']}">{current_agent['company'].title()}</a></td>""" if current_agent['company'] and current_agent['agency'] else (f"""<td><a href="/registered-agents/search/company/{current_agent['company']}">{current_agent['company'].title()}</a></td><td>N/A</td>""" if current_agent['company'] else (f"""<td><a href="/registered-agents/search/agency/{current_agent['agency']}">{current_agent['company'].title()}</a></td><td>N/A</td>""" if current_agent['agency'] else "<td>N/A</td><td>N/A</td>")),
+                    f"""<td><a href="/registered-agents/search/state/{current_agent['state']}">{current_agent['state'].title()}</a></td>""" if current_agent['state'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{current_agent['city']}, {current_agent['state']}">{current_agent['city'].title()}</a></td>""" if current_agent['state'] and current_agent['city'] else "<td>N/A</td>",
+                    f"""<td>{current_agent['address'].title()}</td>""" if current_agent['address'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    "</tr>"
                 ])
-            agents_info += "</div>"
+            agents_info += """</tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Address</th>
+                                <th>Details</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>	
+        </div>
+    </div>
+</div>"""
             comp = re.sub("XXagentsXX", agents_info, comp)
             comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
             #f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
