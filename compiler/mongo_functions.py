@@ -310,7 +310,7 @@ def compiler_v3(s, t, r, arr):
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
             #search_results = lev_and_cos_search(q)
-            search_results = coll_ra.find({"$text":{"$search":q}},{"score":{"$meta":"textScore"}}).sort({"score":{"$meta":"textScore"}})
+            search_results = coll_ra.find({"$text":{"$search":q}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})])
             for m in search_results:
                 #current_agent = coll_ra.find_one({'id': int(m[0])})
                 slug = slugify(f"""{m.company if m.company else (m.agency if m.agency else "")}-service-of-process-{m.id}""")
