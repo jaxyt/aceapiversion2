@@ -289,7 +289,7 @@ def compiler_v3(s, t, r, arr):
                 comp = re.sub(r"XXstateacronymXX", "", comp)
         elif len(arr) == 5:
             from urllib.parse import unquote
-            from .tests2 import lev_and_cos_search
+            #from .tests2 import lev_and_cos_search
             agents_info = """
                 <div class="table-responsive">
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
@@ -309,16 +309,17 @@ def compiler_v3(s, t, r, arr):
             q = re.sub(r'[^\w\s]','',q)
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
-            search_results = lev_and_cos_search(q)
-            for m in search_results[0:200]:
-                current_agent = coll_ra.find_one({'id': int(m[0])})
-                slug = slugify(f"""{current_agent['company'] if current_agent['company'] else (current_agent['agency'] if current_agent['agency'] else "")}-service-of-process-{current_agent['id']}""")
+            #search_results = lev_and_cos_search(q)
+            search_results = coll_ra.find({"$text":{"$search":q}},{"score":{"$meta":"textScore"}}).sort({"score":{"$meta":"textScore"}})
+            for m in search_results:
+                #current_agent = coll_ra.find_one({'id': int(m[0])})
+                slug = slugify(f"""{m.company if m.company else (m.agency if m.agency else "")}-service-of-process-{m.id}""")
                 agents_info += "".join([
-                    f"""<tr id="{current_agent['id']}">""",
-                    f"""<td><a href="/registered-agents/search/company/{current_agent['company']}">{current_agent['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{current_agent['agency']}">{current_agent['agency'].title()}</a></td>""" if current_agent['company'] and current_agent['agency'] else (f"""<td><a href="/registered-agents/search/company/{current_agent['company']}">{current_agent['company'].title()}</a></td><td>N/A</td>""" if current_agent['company'] else (f"""<td><a href="/registered-agents/search/agency/{current_agent['agency']}">{current_agent['agency'].title()}</a></td><td>N/A</td>""" if current_agent['agency'] else "<td>N/A</td><td>N/A</td>")),
-                    f"""<td><a href="/registered-agents/search/state/{current_agent['state']}">{current_agent['state'].title()}</a></td>""" if current_agent['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{current_agent['city']}, {current_agent['state']}">{current_agent['city'].title()}</a></td>""" if current_agent['state'] and current_agent['city'] else "<td>N/A</td>",
-                    f"""<td class="address">{current_agent['address'].title()}</td>""" if current_agent['address'] else "<td>N/A</td>",
+                    f"""<tr id="{m.id}">""",
+                    f"""<td><a href="/registered-agents/search/company/{m.company}">{m.company.title()}</a></td><td><a href="/registered-agents/search/agency/{m.agency}">{m.agency.title()}</a></td>""" if m.company and m.agency else (f"""<td><a href="/registered-agents/search/company/{m.company}">{m.company.title()}</a></td><td>N/A</td>""" if m.company else (f"""<td><a href="/registered-agents/search/agency/{m.agency}">{m.agency.title()}</a></td><td>N/A</td>""" if m.agency else "<td>N/A</td><td>N/A</td>")),
+                    f"""<td><a href="/registered-agents/search/state/{m.state}">{m.state.title()}</a></td>""" if m.state else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{m.city}, {m.state}">{m.city.title()}</a></td>""" if m.state and m.city else "<td>N/A</td>",
+                    f"""<td class="address">{m.address.title()}</td>""" if m.address else "<td>N/A</td>",
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
                 ])
