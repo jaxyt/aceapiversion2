@@ -11,6 +11,10 @@
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="https://www.boc3process.com/main/assets/images/favicon.png">
     <title>GoshGo Editor v6 - The Ultimate Multipurpose site editor</title>
+    <!-- EditorStyles -->
+    <link href="https://www.boc3process.com/main/assets/libs/codemirror/codemirror-5.58.1/lib/codemirror.css" rel="stylesheet">
+    
+
     <!-- Custom CSS -->
     <link href="https://www.boc3process.com/main/dist/css/style.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -408,6 +412,17 @@
                                     <button id="save-button" type="submit" class="btn btn-success m-t-20"><i class="far fa-envelope"></i>Save</button>
                                     <div id="clone-btn" class="btn btn-dark m-t-20">Clone</div>
                                 </form>
+
+                                <div>
+                                    Select buffer: <select id=buffers_top></select>
+                                    &nbsp; &nbsp; <button onclick="newBuf('top')">New buffer</button>
+                                </div>
+                                <div id=code_top></div>
+                                <div>
+                                    Select buffer: <select id=buffers_bot></select>
+                                    &nbsp; &nbsp; <button onclick="newBuf('bot')">New buffer</button>
+                                </div>
+                                <div id=code_bot></div>
                             </div>
                         </div>
                     </div>
@@ -568,14 +583,23 @@
     <script src="https://www.boc3process.com/main/dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="https://www.boc3process.com/main/dist/js/custom.min.js"></script>
-
+    <!-- Editor Scripts -->
+    <script src="https://www.boc3process.com/main/assets/libs/codemirror/codemirror-5.58.1/lib/codemirror.js"></script>
+    
+    
+    <!--<script src="https://www.boc3process.com/main/assets/libs/codemirror/codemirror-5.58.1/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="https://www.boc3process.com/main/assets/libs/codemirror/codemirror-5.58.1/mode/php/php.js"></script>
+    <script src="https://www.boc3process.com/main/assets/libs/codemirror/codemirror-5.58.1/mode/django/django.js"></script>
+    <script src="https://www.boc3process.com/main/assets/libs/codemirror/codemirror-5.58.1/mode/python/python.js"></script>-->
     <script>
-        let formLabels = document.querySelectorAll("#editingform label");
+        /*let formLabels = document.querySelectorAll("#editingform label");
         for (let i = 0; i < formLabels.length; i++) {
             const element = formLabels[i];
             element.style = "display: none;";
             
-        }
+        }*/
+
+        
     </script>
 </body>
 
