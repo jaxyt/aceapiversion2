@@ -568,6 +568,15 @@
     <script src="https://www.boc3process.com/main/dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="https://www.boc3process.com/main/dist/js/custom.min.js"></script>
+
+    <script>
+        let formLabels = document.querySelectorAll("#editingform label");
+        for (let i = 0; i < formLabels.length; i++) {
+            const element = formLabels[i];
+            element.style = "display: none;";
+            
+        }
+    </script>
 </body>
 
 </html>
