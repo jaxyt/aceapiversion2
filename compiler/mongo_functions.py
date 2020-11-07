@@ -313,13 +313,13 @@ def compiler_v3(s, t, r, arr):
             search_results = coll_ra.find({"$text":{"$search":q}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})])
             for m in search_results:
                 #current_agent = coll_ra.find_one({'id': int(m[0])})
-                slug = slugify(f"""{m.company if m.company else (m.agency if m.agency else "")}-service-of-process-{m.id}""")
+                slug = slugify(f"""{m['company'] if m['company'] else (m['agency'] if m['agency'] else "")}-service-of-process-{m['id']}""")
                 agents_info += "".join([
-                    f"""<tr id="{m.id}">""",
-                    f"""<td><a href="/registered-agents/search/company/{m.company}">{m.company.title()}</a></td><td><a href="/registered-agents/search/agency/{m.agency}">{m.agency.title()}</a></td>""" if m.company and m.agency else (f"""<td><a href="/registered-agents/search/company/{m.company}">{m.company.title()}</a></td><td>N/A</td>""" if m.company else (f"""<td><a href="/registered-agents/search/agency/{m.agency}">{m.agency.title()}</a></td><td>N/A</td>""" if m.agency else "<td>N/A</td><td>N/A</td>")),
-                    f"""<td><a href="/registered-agents/search/state/{m.state}">{m.state.title()}</a></td>""" if m.state else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{m.city}, {m.state}">{m.city.title()}</a></td>""" if m.state and m.city else "<td>N/A</td>",
-                    f"""<td class="address">{m.address.title()}</td>""" if m.address else "<td>N/A</td>",
+                    f"""<tr id="{m['id']}">""",
+                    f"""<td><a href="/registered-agents/search/company/{m['company']}">{m['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{m['agency']}">{m['agency'].title()}</a></td>""" if m['company'] and m['agency'] else (f"""<td><a href="/registered-agents/search/company/{m['company']}">{m['company'].title()}</a></td><td>N/A</td>""" if m['company'] else (f"""<td><a href="/registered-agents/search/agency/{m['agency']}">{m['agency'].title()}</a></td><td>N/A</td>""" if m['agency'] else "<td>N/A</td><td>N/A</td>")),
+                    f"""<td><a href="/registered-agents/search/state/{m['state']}">{m['state'].title()}</a></td>""" if m['state'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{m['city']}, {m['state']}">{m['city'].title()}</a></td>""" if m['state'] and m['city'] else "<td>N/A</td>",
+                    f"""<td class="address">{m['address'].title()}</td>""" if m['address'] else "<td>N/A</td>",
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
                 ])
