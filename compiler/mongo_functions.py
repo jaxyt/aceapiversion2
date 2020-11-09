@@ -45,95 +45,6 @@ def no_html_tags(text):
     return re.sub(clean, '', text)
 
 
-def text_score_search(arr):
-    res = []
-    k = arr[3]
-    q = re.sub(r"[^A-z0-9\s]+", "", arr[4])
-    qu = "("+re.sub(r"\s+", ")|(", q.strip())+")"
-    query = re.compile(qu, re.IGNORECASE)
-    for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
-        res.append(i)
-    return sort_results(res, q)
-
-def sort_results(results, quer):
-    scores = []
-    sorted_scores = []
-    for val in results:
-        avg_cnt = 0
-        if val['company']:
-            avg_cnt += 1
-        if val['agency']:
-            avg_cnt += 1
-        if val['state']:
-            avg_cnt += 1
-        if val['city']:
-            avg_cnt += 1
-        scores.append({"obj": val, "averagescore": (similar_text(val['company'], quer)+similar_text(val['agency'], quer)+similar_text(val['state'], quer)+similar_text(val['city'], quer))/4, "scorearr": [similar_text(val['company'], quer), similar_text(val['agency'], quer), similar_text(val['state'], quer), similar_text(val['city'], quer)]})
-    for val in scores:
-        if len(sorted_scores) == 0:
-            sorted_scores.append(val)
-        else:
-            for idx, n in enumerate(sorted_scores):
-                if val['averagescore'] > n['averagescore']:
-                    sorted_scores.insert(idx, val)
-                    break
-                elif idx == len(sorted_scores) - 1 and val['averagescore'] < n['averagescore']:
-                    sorted_scores.append(val)
-                    break
-                elif val['averagescore'] == n['averagescore']:
-                    if max(val['scorearr']) > max(n['scorearr']):
-                        sorted_scores.insert(idx, val)
-                        break
-    return sorted_scores
-
-
-def add_to_map(ob):
-    return ob
-
-def clean_string(text):
-    text = ''.join([word for word in text if word not in string.punctuation])
-    text = text.lower()
-    text = ' '.join([word for word in text.split() if word not in stopwords])
-
-    return text
-
-def cosine_sim_vectors(vec1, vec2):
-    vec1 = vec1.reshape(1, -1)
-    vec2 = vec2.reshape(1, -1)
-    return cosine_similarity(vec1, vec2)[0][0]
-
-def ra_search(searchterm):
-    results = {}
-    agents = list(map(add_to_map, coll_ra.find()))
-    for i in agents:
-        sentences = [searchterm]
-        combined = ""
-        if i['company']:
-            sentences.append(i['company'])
-            combined += f"{i['company']} "
-        if i['agency']:
-            sentences.append(i['agency'])
-            combined += f"{i['agency']} "
-        if i['state']:
-            sentences.append(i['state'])
-            combined += f"{i['state']} "
-        if i['city']:
-            sentences.append(i['city'])
-            combined += f"{i['city']}"
-        sentences.append(combined)
-        cleaned = list(map(clean_string, sentences))
-        vectorizer = CountVectorizer().fit_transform(cleaned)
-        vectors = vectorizer.toarray()
-        #csim = cosine_similarity(vectors)
-        similarities = [cosine_sim_vectors(vectors[0], k) for k in vectors[1:]]
-        """for k in vectors[1:]:
-            similarities.append(cosine_sim_vectors(vectors[0], k))"""
-        #max_similarity = max(similarities)
-        avg_similarity = sum(similarities)/(len(similarities) + 1)
-        results[f"{i['id']}"] = avg_similarity
-    return [coll_ra.find_one({'id': int(m[0])}) for m in sorted(results.items(), key=lambda x: x[1], reverse=True) if m[1]]
-
-
 def compiler_v3(s, t, r, arr):
     page = ""
     spage = None
@@ -693,7 +604,93 @@ def render_xml_sitemap(s, t, rt):
     return sitemap
 
 
+def text_score_search(arr):
+    res = []
+    k = arr[3]
+    q = re.sub(r"[^A-z0-9\s]+", "", arr[4])
+    qu = "("+re.sub(r"\s+", ")|(", q.strip())+")"
+    query = re.compile(qu, re.IGNORECASE)
+    for i in coll_ra.aggregate([{"$match": {"$or" : [{"company": query},{"agency": query},{"state": query},{"city": query}]}},{"$sort": { k: 1 }}]):
+        res.append(i)
+    return sort_results(res, q)
 
+def sort_results(results, quer):
+    scores = []
+    sorted_scores = []
+    for val in results:
+        avg_cnt = 0
+        if val['company']:
+            avg_cnt += 1
+        if val['agency']:
+            avg_cnt += 1
+        if val['state']:
+            avg_cnt += 1
+        if val['city']:
+            avg_cnt += 1
+        scores.append({"obj": val, "averagescore": (similar_text(val['company'], quer)+similar_text(val['agency'], quer)+similar_text(val['state'], quer)+similar_text(val['city'], quer))/4, "scorearr": [similar_text(val['company'], quer), similar_text(val['agency'], quer), similar_text(val['state'], quer), similar_text(val['city'], quer)]})
+    for val in scores:
+        if len(sorted_scores) == 0:
+            sorted_scores.append(val)
+        else:
+            for idx, n in enumerate(sorted_scores):
+                if val['averagescore'] > n['averagescore']:
+                    sorted_scores.insert(idx, val)
+                    break
+                elif idx == len(sorted_scores) - 1 and val['averagescore'] < n['averagescore']:
+                    sorted_scores.append(val)
+                    break
+                elif val['averagescore'] == n['averagescore']:
+                    if max(val['scorearr']) > max(n['scorearr']):
+                        sorted_scores.insert(idx, val)
+                        break
+    return sorted_scores
+
+
+def add_to_map(ob):
+    return ob
+
+def clean_string(text):
+    text = ''.join([word for word in text if word not in string.punctuation])
+    text = text.lower()
+    text = ' '.join([word for word in text.split() if word not in stopwords])
+
+    return text
+
+def cosine_sim_vectors(vec1, vec2):
+    vec1 = vec1.reshape(1, -1)
+    vec2 = vec2.reshape(1, -1)
+    return cosine_similarity(vec1, vec2)[0][0]
+
+def ra_search(searchterm):
+    results = {}
+    agents = list(map(add_to_map, coll_ra.find()))
+    for i in agents:
+        sentences = [searchterm]
+        combined = ""
+        if i['company']:
+            sentences.append(i['company'])
+            combined += f"{i['company']} "
+        if i['agency']:
+            sentences.append(i['agency'])
+            combined += f"{i['agency']} "
+        if i['state']:
+            sentences.append(i['state'])
+            combined += f"{i['state']} "
+        if i['city']:
+            sentences.append(i['city'])
+            combined += f"{i['city']}"
+        sentences.append(combined)
+        cleaned = list(map(clean_string, sentences))
+        vectorizer = CountVectorizer().fit_transform(cleaned)
+        vectors = vectorizer.toarray()
+        #csim = cosine_similarity(vectors)
+        similarities = [cosine_sim_vectors(vectors[0], k) for k in vectors[1:]]
+        """for k in vectors[1:]:
+            similarities.append(cosine_sim_vectors(vectors[0], k))"""
+        #max_similarity = max(similarities)
+        avg_similarity = sum(similarities)/(len(similarities) + 1)
+        results[f"{i['id']}"] = avg_similarity
+    return [coll_ra.find_one({'id': int(m[0])}) for m in sorted(results.items(), key=lambda x: x[1], reverse=True) if m[1]]
 
 #for m in lev_and_cos_search()[0:10]:
     #pp.pprint(coll_ra.find_one({'id': int(m[0])}))

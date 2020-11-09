@@ -23,64 +23,7 @@ module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'registered_agents.json')
 
 
-def compile_v4(request, *args, **kwargs):
-    from .raclone import compiler_v4, render_xml_sitemap, replace_shortcodes
-    site_id = request.GET.get('id', '2')
-    route = request.GET.get('route', '/')
-    page_uri_array = route.split('/')
-    site = Site.objects.get(id=int(site_id))
-    template = Template.objects.get(id=site.templateid)
-    try:
-        if re.search(r'sitemap(-[0-9]+)?\.xml$', route) is not None:
-            compiled = render_xml_sitemap(site, template, route)
-            response = HttpResponse("", content_type="application/xml; charset=utf-8")
-            response.write(compiled)
-            return response
-        elif re.search(r'robots\.txt$', route) is not None:
-            compiled = create_robots(site)
-            response = HttpResponse("", content_type="text/plain; charset=utf-8")
-            response.write(compiled)
-            return response
-        elif re.search(r'\.xml$', route) is not None:
-            compiled = determine_page(route, site, template)
-            response = HttpResponse("", content_type="application/xml; charset=utf-8")
-            response.write(compiled)
-        elif re.search(r'\.css$', route) is not None:
-            compiled = determine_page(route, site, template)
-            compiled = replace_shortcodes(site, template, compiled)
-            response = HttpResponse("", content_type="text/css; charset=utf-8")
-            response.write(compiled)
-            return response
-        elif re.search(r'\.js$', route) is not None:
-            compiled = determine_page(route, site, template)
-            compiled = replace_shortcodes(site, template, compiled)
-            response = HttpResponse("", content_type="text/javascript; charset=utf-8")
-            response.write(compiled)
-            return response
-        elif re.search(r'\.sch$', route) is not None:
-            compiled = determine_page(route, site, template)
-            compiled = replace_shortcodes(site, template, compiled)
-            response = HttpResponse("", content_type="application/ld+json; charset=utf-8")
-            response.write(compiled)
-            return response
-        elif re.search(r'\.json$', route) is not None:
-            compiled = determine_page(route, site, template)
-            compiled = replace_shortcodes(site, template, compiled)
-            response = HttpResponse("", content_type="application/json; charset=utf-8")
-            response.write(compiled)
-            return response
-        if re.search(r'\.ppp$', route) is not None:
-            compiled = determine_page(route, site, template)
-            compiled = replace_shortcodes(site, template, compiled)
-            response = HttpResponse("", content_type="application/x-httpd-php; charset=utf-8")
-            response.write(compiled)
-            return response
-        else:
-            compiled = compiler_v4(site, template, route, page_uri_array)
-            return HttpResponse(compiled, content_type="text/html")
-    except Exception as e:
-        print(e)
-        return HttpResponse("<h1>This Page Does Not Exist</h1><br><a href='/'>Return Home</a>", content_type="text/html")
+
 
 
 def test_send(request):
