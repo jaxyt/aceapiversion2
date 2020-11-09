@@ -258,9 +258,9 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub('XXblogauthorXX', blog_post['blogauthor'] if blog_post['blogauthor'] else "", comp)
     elif arr[1] == "registered-agents":
         if len(arr) == 3:
-            agent = coll_ra.find({'id': int(arr[2].split("-")[-1])})
+            onelist = coll_ra.find({'id': int(arr[2].split("-")[-1])})
             print(agent)
-            for m in agent:
+            for agent in onelist:
                 agent_info = "".join([
                     f"""<div class="registered-agent"><ul id="{agent.id}" class="agent-container">""",
                     f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{agent.company}">{agent.company.title()}</a></li>""" if agent.company else "",
