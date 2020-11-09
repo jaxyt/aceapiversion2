@@ -261,18 +261,18 @@ def compiler_v3(s, t, r, arr):
             agent = coll_ra.find({'id': int(arr[2].split("-")[-1])})
             print(agent)
             agent_info = "".join([
-                f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">""",
-                f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{agent['company']}">{agent['company'].title()}</a></li>""" if agent['company'] else "",
-                f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{agent['agency']}">{agent['agency'].title()}</a></li>""" if agent['agency'] else "",
-                f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{agent['state']}">{agent['state'].title()}</a></li>""" if agent['state'] else "",
-                f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{agent['city']}, {agent['state']}">{agent['city'].title()}</a></li>""" if agent['city'] and agent['state'] else "",
-                f"""<li class="contact-point">Contact:&nbsp;{agent['contact'].title()}</li>""" if agent['contact'] else "",
-                f"""<li class="address">Address:&nbsp;{agent['address'].title()}</li>""" if agent['address'] else "",
-                f"""<li class="mail">Mailing Address:&nbsp;{agent['mail'].title()}</li>"""  if agent['mail'] else "",
-                f"""<li class="ra-phone">Phone:&nbsp;{agent['phone'].title()}</li>""" if agent['phone'] else "",
-                f"""<li class="fax">Fax:&nbsp;{agent['fax'].title()}</li>""" if agent['fax'] else "",
-                f"""<li class="email">Email:&nbsp;{agent['email'].title()}</li>""" if agent['email'] else "",
-                f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else "",
+                f"""<div class="registered-agent"><ul id="{agent.id}" class="agent-container">""",
+                f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{agent.company}">{agent.company.title()}</a></li>""" if agent.company else "",
+                f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{agent.agency}">{agent.agency.title()}</a></li>""" if agent.agency else "",
+                f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{agent.state}">{agent.state.title()}</a></li>""" if agent.state else "",
+                f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{agent.state}, {agent.state}">{agent.state.title()}</a></li>""" if agent.state and agent.state else "",
+                f"""<li class="contact-point">Contact:&nbsp;{agent.contact.title()}</li>""" if agent.contact else "",
+                f"""<li class="address">Address:&nbsp;{agent.address.title()}</li>""" if agent.address else "",
+                f"""<li class="mail">Mailing Address:&nbsp;{agent.mail.title()}</li>"""  if agent.mail else "",
+                f"""<li class="ra-phone">Phone:&nbsp;{agent.phone.title()}</li>""" if agent.phone else "",
+                f"""<li class="fax">Fax:&nbsp;{agent.fax.title()}</li>""" if agent.fax else "",
+                f"""<li class="email">Email:&nbsp;{agent.email.title()}</li>""" if agent.email else "",
+                f"""<li class="website">Website:&nbsp;{agent.website.title()}</li>""" if agent.website else "",
                 "</ul></div>"
             ])
             comp = re.sub("XXagentXX", agent_info, comp)
