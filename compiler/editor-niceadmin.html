@@ -88,6 +88,10 @@
             height: 68vh;
             font-size: 16px;
         }
+
+        textarea {
+            font-size: 16px;
+        }
         
     </style>
 </head>
@@ -1644,19 +1648,19 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Editor Commands</h5>
                         <ul id="editor-commands" class="theme-color">
-                            <li class="theme-item"><a href="javascript:activateFunction('undo', oldEditor)" class="theme-link" data-logobg="">Undo</a></li>
-                            <li class="theme-item"><a href="javascript:activateFunction('redo', oldEditor)" class="theme-link" data-logobg="">Redo</a></li>
-                            <li class="theme-item"><a href="javascript:autoFormatSelection(oldEditor)" class="theme-link" data-logobg="">Auto Format</a></li>
-                            <li class="theme-item"><a href="javascript:startIframePreview(oldEditor, oldText);" class="theme-link" data-logobg="">Edit as HTML</a></li>
-                            <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link" data-logobg="">Fullscreen</a></li>
-                            <li class="theme-item"><a href="javascript:activateFunction('highlightHs', oldEditor)" class="theme-link" data-logobg="">Highlight H's</a></li>
-                            <li class="theme-item"><a href="javascript:startSpellChecker(oldEditor);" class="theme-link" data-logobg="">Toggle Autocomplete</a></li>
-                            <li class="theme-item"><a href="javascript:activateFunction('selectAll', oldEditor)" class="theme-link" data-logobg="">Select All</a></li>
-                            <li class="theme-item"><a href="javascript:activateFunction('findPersistent', oldEditor)" class="theme-link" data-logobg="">Find</a></li>
-                            <li class="theme-item"><a href="javascript:activateFunction('replaceAll', oldEditor)" class="theme-link" data-logobg="">ReplaceAll</a></li>
-                            <li class="theme-item"><a href="javascript:commentSelection(true, oldEditor)" class="theme-link" data-logobg="">Comment</a></li>
-                            <li class="theme-item"><a href="javascript:commentSelection(false, oldEditor)" class="theme-link" data-logobg="">Uncomment</a></li>
-                            <li class="theme-item"><a href="javascript:togglePopup()" class="theme-link" data-logobg="">Help</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('undo', oldEditor)" class="theme-link">Undo</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('redo', oldEditor)" class="theme-link">Redo</a></li>
+                            <li class="theme-item"><a href="javascript:autoFormatSelection(oldEditor)" class="theme-link">Auto Format</a></li>
+                            <li class="theme-item"><a href="javascript:startIframePreview(oldEditor, oldText);" class="theme-link">Edit as HTML</a></li>
+                            <li class="theme-item"><a href="javascript:fullscreenHandler(oldEditor)" class="theme-link">Fullscreen</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('highlightHs', oldEditor)" class="theme-link">Highlight H's</a></li>
+                            <li class="theme-item"><a href="javascript:startSpellChecker(oldEditor);" class="theme-link">Toggle Autocomplete</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('selectAll', oldEditor)" class="theme-link">Select All</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('findPersistent', oldEditor)" class="theme-link">Find</a></li>
+                            <li class="theme-item"><a href="javascript:activateFunction('replaceAll', oldEditor)" class="theme-link">ReplaceAll</a></li>
+                            <li class="theme-item"><a href="javascript:commentSelection(true, oldEditor)" class="theme-link">Comment</a></li>
+                            <li class="theme-item"><a href="javascript:commentSelection(false, oldEditor)" class="theme-link">Uncomment</a></li>
+                            <li class="theme-item"><a href="javascript:togglePopup()" class="theme-link">Help</a></li>
                             
                         </ul>
                         <!-- Logo BG -->
@@ -1665,12 +1669,12 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Basic Styles</h5>
                         <ul class="theme-color">
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('bold', oldEditor)" class="theme-link" data-logobg=""><strong>B</strong></a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('italic', oldEditor)" class="theme-link" data-logobg=""><em>i</em></a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('underline', oldEditor)" class="theme-link" data-logobg=""><u>U</u></a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('strikethrough', oldEditor)" class="theme-link" data-logobg=""><s>S</s></a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('superscript', oldEditor)" class="theme-link" data-logobg="">x<sup>2</sup></a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('subscript', oldEditor)" class="theme-link" data-logobg="">x<sub>2</sub></a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('bold', oldEditor)" class="theme-link"><strong>B</strong></a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('italic', oldEditor)" class="theme-link"><em>i</em></a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('underline', oldEditor)" class="theme-link"><u>U</u></a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('strikethrough', oldEditor)" class="theme-link"><s>S</s></a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('superscript', oldEditor)" class="theme-link">x<sup>2</sup></a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('subscript', oldEditor)" class="theme-link">x<sub>2</sub></a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
@@ -1678,13 +1682,13 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Basic Tags</h5>
                         <ul class="theme-color">
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('paragraphtag', oldEditor)" class="theme-link" data-logobg="">P</a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h1tag', oldEditor)" class="theme-link" data-logobg="">H1</a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h2tag', oldEditor)" class="theme-link" data-logobg="">H2</a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h3tag', oldEditor)" class="theme-link" data-logobg="">H3</a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h4tag', oldEditor)" class="theme-link" data-logobg="">H4</a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('unorderedlist', oldEditor)" class="theme-link" data-logobg="">UL</a></li>
-                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('code', oldEditor)" class="theme-link" data-logobg="">Div</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('paragraphtag', oldEditor)" class="theme-link">P</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h1tag', oldEditor)" class="theme-link">H1</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h2tag', oldEditor)" class="theme-link">H2</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h3tag', oldEditor)" class="theme-link">H3</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('h4tag', oldEditor)" class="theme-link">H4</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('unorderedlist', oldEditor)" class="theme-link">UL</a></li>
+                            <li class="theme-item"><a href="javascript:wrapOrInsertAtSelection('code', oldEditor)" class="theme-link">Div</a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
@@ -1692,12 +1696,12 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Font Size</h5>
                         <ul class="theme-color">
-                            <li class="theme-item"><a href="javascript:fontSizeHandler(14, oldEditor)" class="theme-link" data-logobg="">14</a></li>
-                            <li class="theme-item"><a href="javascript:fontSizeHandler(18, oldEditor)" class="theme-link" data-logobg="">18</a></li>
-                            <li class="theme-item"><a href="javascript:fontSizeHandler(24, oldEditor)" class="theme-link" data-logobg="">24</a></li>
-                            <li class="theme-item"><a href="javascript:fontSizeHandler(30, oldEditor)" class="theme-link" data-logobg="">30</a></li>
-                            <li class="theme-item"><a href="javascript:fontSizeHandler(36, oldEditor)" class="theme-link" data-logobg="">36</a></li>
-                            <li class="theme-item"><a href="javascript:fontSizeHandler(48, oldEditor)" class="theme-link" data-logobg="">48</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(14, oldEditor)" class="theme-link">14</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(18, oldEditor)" class="theme-link">18</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(24, oldEditor)" class="theme-link">24</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(30, oldEditor)" class="theme-link">30</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(36, oldEditor)" class="theme-link">36</a></li>
+                            <li class="theme-item"><a href="javascript:fontSizeHandler(48, oldEditor)" class="theme-link">48</a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
@@ -1705,14 +1709,14 @@
                         <!-- Logo BG -->
                         <h5 class="font-medium m-b-10 m-t-10">Special Characters</h5>
                         <ul class="theme-color">
-                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&sect;', oldEditor)" class="theme-link" data-logobg="">&sect;</a></li>
-                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&copy;', oldEditor)" class="theme-link" data-logobg="">&copy;</a></li>
-                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&trade;', oldEditor)" class="theme-link" data-logobg="">&trade;</a></li>
-                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&reg;', oldEditor)" class="theme-link" data-logobg="">&reg;</a></li>
-                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&OpenCurlyDoubleQuote; &CloseCurlyDoubleQuote;', oldEditor)" class="theme-link" data-logobg="">&OpenCurlyDoubleQuote; &CloseCurlyDoubleQuote;</a></li>
-                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&hellip;', oldEditor)" class="theme-link" data-logobg="">&hellip;</a></li>
-                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&uArr;', oldEditor)" class="theme-link" data-logobg="">&uArr;</a></li>
-                            <li class="theme-item"><a href="javascript:specialCharacterHandler('<br>', oldEditor)" class="theme-link" data-logobg="">&lt;br&gt;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&sect;', oldEditor)" class="theme-link">&sect;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&copy;', oldEditor)" class="theme-link">&copy;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&trade;', oldEditor)" class="theme-link">&trade;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&reg;', oldEditor)" class="theme-link">&reg;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&OpenCurlyDoubleQuote; &CloseCurlyDoubleQuote;', oldEditor)" class="theme-link">&OpenCurlyDoubleQuote; &CloseCurlyDoubleQuote;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&hellip;', oldEditor)" class="theme-link">&hellip;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('&uArr;', oldEditor)" class="theme-link">&uArr;</a></li>
+                            <li class="theme-item"><a href="javascript:specialCharacterHandler('<br>', oldEditor)" class="theme-link">&lt;br&gt;</a></li>
                         </ul>
                         <!-- Logo BG -->
                     </div>
@@ -1979,10 +1983,10 @@
 
     window.addEventListener('load', (e)=> {
         document.querySelector("#pages-bar ul.collapse.first-level").children[0].click();
-        document.querySelector("#pages-bar").addEventListener("click", ()=>{
+        setInterval(()=>{
             $('.scroll-sidebar').perfectScrollbar('update');
-        })    
-    })
+        }, 2000);
+    });
     </script>
 </body>
 
