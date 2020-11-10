@@ -712,7 +712,7 @@ def telecom_search(searchterm, model_keys):
 
 
 def do_mongo_query():
-    res = list(map(add_to_map, coll_ra.distinct("agency")))
+    res = list(map(add_to_map, coll_ra.distinct("company")))
     return json.dumps(res)
 
 
