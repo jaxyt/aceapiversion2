@@ -290,7 +290,7 @@ def compiler_v3(s, t, r, arr):
                 corps_in_states += f"""<a href="{"/".join(arr)}/{"-".join(i['statename'].split(" "))}">{i['statename'].title()}</a>"""
             corps_in_states += """</div>"""
             comp = re.sub('XXcorpsinstatesXX', corps_in_states, comp)
-        elif len(arr) == 4:
+        elif len(arr) == 4 or (len(arr) == 5 and arr[4] == ""):
             agents_info = """<div class="registered-agents">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
             st = " ".join(arr[3].split("-"))
