@@ -69,7 +69,7 @@ def compiler_v3(s, t, r, arr):
     elif arr[1] == "process-server":
         if len(arr) == 3:
             page = "/process-server/id"
-        elif len(arr) == 4:
+        elif len(arr) == 4 or (len(arr) == 5 and arr[4] == ""):
             page = "/process-server/id/state"
         elif len(arr) == 5:
             page = "/process-server/id/state/city"
