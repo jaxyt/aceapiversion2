@@ -1978,6 +1978,9 @@
 
     window.addEventListener('load', (e)=> {
         document.querySelector("#pages-bar ul.collapse.first-level").children[0].click();
+        document.querySelector("#pages-bar").addEventListener("click", ()=>{
+            $('.scroll-sidebar').perfectScrollbar('update');
+        })    
     })
     </script>
 </body>
