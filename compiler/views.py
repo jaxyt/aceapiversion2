@@ -1100,3 +1100,8 @@ def update_code(request):
     else:
         return HttpResponse('FORBIDDEN')
 
+
+def get_json_from_db(request):
+    from .mongo_functions import do_mongo_query
+    return HttpResponse(f"{do_mongo_query()}", content_type="application/json")
+

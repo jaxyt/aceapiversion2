@@ -709,3 +709,10 @@ def telecom_search(searchterm, model_keys):
     res = [coll_tel.find_one({"id": int(l[0])}) for l in sorted(results.items(), key=lambda x: x[1], reverse=True) if l[1] > 50]
     return res
 
+
+
+def do_mongo_query():
+    res = list(map(add_to_map, coll_ra.distinct("agency")))
+    return json.dumps(res)
+
+
