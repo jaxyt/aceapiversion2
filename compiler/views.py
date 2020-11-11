@@ -17,7 +17,7 @@ from counties.models import County
 from cities.models import City
 from registeredagents.models import RegisteredAgent, TelecomCorps
 from django.contrib.auth.models import User
-from .forms import SiteForm, TemplateForm, BlogForm, StateForm, CountyForm, CityForm, RegisteredAgentForm, TelecomCorpsForm, UploadFileForm
+from .forms import SiteForm, TemplateForm, BlogForm, StateForm, CountyForm, CityForm, RegisteredAgentForm, TelecomCorpsForm, UploadFileForm, DbUpdateForm
 import os
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'registered_agents.json')
@@ -1042,10 +1042,6 @@ def update_editor(request):
 
 def update_nice(request):
     if request.COOKIES.get('sessionid'):
-        if request.method == 'GET':
-            pass
-        else:
-            pass
         id = request.GET.get('id', '')
         instance = get_object_or_404(Site, id=id)
         form = SiteForm(request.POST or None, instance=instance)
@@ -1102,6 +1098,36 @@ def update_code(request):
 
 
 def get_json_from_db(request):
-    from .mongo_functions import do_mongo_query
-    return HttpResponse(f"{do_mongo_query()}", content_type="application/json")
+    if request.COOKIES.get('sessionid'):
+        form = DbUpdateForm(request.POST or None)
+
+        if request.method == 'GET':
+            context = {
+                'form': form,
+            }
+            return render(request, "dbupdate.html", context)
+        else:
+            if form.is_valid():
+                from .mongo_functions import do_mongo_query
+                # return HttpResponse(f"{do_mongo_query()}", content_type="application/json")
+                responz = do_mongo_query(f"{form.cleaned_data['iden']}", f"{form.cleaned_data['cit']}")
+                print(response)
+            return HttpResponse("""<!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="utf-8">
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                        <!-- Tell the browser to be responsive to screen width -->
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <meta name="description" content="">
+                        <meta name="author" content="">
+                    </head>
+                    <body>
+                        <div>Success</div>
+                    </body>
+                    </html>
+                """)
+    else:
+        return HttpResponse('FORBIDDEN')
+    
 
