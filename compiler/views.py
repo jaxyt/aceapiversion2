@@ -1107,11 +1107,15 @@ def get_json_from_db(request):
             }
             return render(request, "dbupdate.html", context)
         else:
-            if form.is_valid():
-                from .mongo_functions import do_mongo_query
-                # return HttpResponse(f"{do_mongo_query()}", content_type="application/json")
-                responz = do_mongo_query(f"{form.cleaned_data['iden']}", f"{form.cleaned_data['cit']}")
-                print(response)
+            from .mongo_functions import do_mongo_query
+            idn = form['iden'].value()
+            c = form['cit'].value()
+            print(idn)
+            print(c)
+            try:
+                do_mongo_query(idn, c)
+            except Exception as e:
+                print(e)
             return HttpResponse("""<!DOCTYPE html>
                     <html>
                     <head>
@@ -1123,7 +1127,7 @@ def get_json_from_db(request):
                         <meta name="author" content="">
                     </head>
                     <body>
-                        <div>Success</div>
+                        <div>Done</div>
                     </body>
                     </html>
                 """)
