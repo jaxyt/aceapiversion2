@@ -259,7 +259,26 @@ def compiler_v3(s, t, r, arr):
             #f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
     elif arr[1] == "process-server":
         if len(arr) == 3:
-            agents_info = """<div class="registered-agents">"""
+            agents_info = """
+                <div class="table-responsive">
+                    <table id="default_order" class="table table-striped table-bordered no-wrap">
+                        <thead>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ra-datatable">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
             k = corp['searchkey']
             q = corp['searchvalue']
@@ -267,22 +286,40 @@ def compiler_v3(s, t, r, arr):
             for i in coll_ra.find({k: query}):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
-                    f"""<ul id="{i['id']}" class="agent-container">""",
-                    f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
-                    f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
-                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
-                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></li>""" if i['city'] and {i['state']} else "",
-                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
-                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
-                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
-                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
-                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
-                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
-                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
-                    "</ul>"
+                    f"""<tr id="{i['id']}">""",
+                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
+                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
+                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
+                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
+                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
+                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
+                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
+                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    "</tr>"
                 ])
-            agents_info += "</div>"
+            agents_info += """</tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            """
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
             corps_in_states = """<div class="process-server-corp-state-links">"""
@@ -291,7 +328,26 @@ def compiler_v3(s, t, r, arr):
             corps_in_states += """</div>"""
             comp = re.sub('XXcorpsinstatesXX', corps_in_states, comp)
         elif len(arr) == 4 or (len(arr) == 5 and arr[4] == ""):
-            agents_info = """<div class="registered-agents">"""
+            agents_info = """
+                <div class="table-responsive">
+                    <table id="default_order" class="table table-striped table-bordered no-wrap">
+                        <thead>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ra-datatable">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
             st = " ".join(arr[3].split("-"))
             k = corp['searchkey']
@@ -301,22 +357,40 @@ def compiler_v3(s, t, r, arr):
             for i in coll_ra.find({k: query, 'state': state_query}):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
-                    f"""<ul id="{i['id']}" class="agent-container">""",
-                    f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
-                    f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
-                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
-                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></li>""" if i['city'] and {i['state']} else "",
-                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
-                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
-                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
-                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
-                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
-                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
-                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
-                    "</ul>"
+                    f"""<tr id="{i['id']}">""",
+                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
+                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
+                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
+                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
+                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
+                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
+                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
+                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    "</tr>"
                 ])
-            agents_info += "</div>"
+            agents_info += """</tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            """
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
@@ -327,7 +401,26 @@ def compiler_v3(s, t, r, arr):
             corps_in_cities = re.sub(r'(?<!https:)//', "/", corps_in_cities)
             comp = re.sub('XXcitycorpsXX', corps_in_cities, comp)
         elif len(arr) == 5:
-            agents_info = """<div class="registered-agents">"""
+            agents_info = """
+                <div class="table-responsive">
+                    <table id="default_order" class="table table-striped table-bordered no-wrap">
+                        <thead>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ra-datatable">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
             st = " ".join(arr[3].split("-"))
             cit = " ".join(arr[4].split("-"))
@@ -339,22 +432,40 @@ def compiler_v3(s, t, r, arr):
             for i in coll_ra.find({k: query, 'state': state_query, 'city': city_query}):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
-                    f"""<ul id="{i['id']}" class="agent-container">""",
-                    f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
-                    f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
-                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
-                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></li>""" if i['city'] and {i['state']} else "",
-                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
-                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
-                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
-                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
-                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
-                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
-                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
-                    "</ul>"
+                    f"""<tr id="{i['id']}">""",
+                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
+                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
+                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
+                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
+                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
+                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
+                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
+                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    "</tr>"
                 ])
-            agents_info += "</div>"
+            agents_info += """</tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            """
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXcorpXX', corp['name'], comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
@@ -367,28 +478,65 @@ def compiler_v3(s, t, r, arr):
             corps_in_states += """</div>"""
             comp = re.sub('XXcorpsinstatesXX', corps_in_states, comp)
         elif len(arr) == 3:
-            agents_info = """<div class="registered-agents">"""
+            agents_info = """
+                <div class="table-responsive">
+                    <table id="default_order" class="table table-striped table-bordered no-wrap">
+                        <thead>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ra-datatable">"""
             st = " ".join(arr[2].split("-"))
             state_query = re.compile(st.lower(), re.IGNORECASE)
             for i in coll_ra.find({'state': state_query}):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
-                    f"""<ul id="{i['id']}" class="agent-container">""",
-                    f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
-                    f"""<li class="agency">{"Alt-Name" if i['company'] else "Agent"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
-                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
-                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></li>""" if i['city'] and {i['state']} else "",
-                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
-                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
-                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
-                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
-                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
-                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
-                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
-                    "</ul>"
+                    f"""<tr id="{i['id']}">""",
+                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
+                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
+                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
+                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
+                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
+                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
+                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
+                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    "</tr>"
                 ])
-            agents_info += "</div>"
+            agents_info += """</tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            """
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
             corps_in_cities = """<div class="corps-in-city-links">"""
@@ -397,7 +545,26 @@ def compiler_v3(s, t, r, arr):
             corps_in_cities += """</div>"""
             comp = re.sub('XXcitycorpsXX', corps_in_cities, comp)
         elif len(arr) == 4:
-            agents_info = """<div class="registered-agents">"""
+            agents_info = """
+                <div class="table-responsive">
+                    <table id="default_order" class="table table-striped table-bordered no-wrap">
+                        <thead>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ra-datatable">"""
             st = " ".join(arr[2].split("-"))
             cit = " ".join(arr[3].split("-"))
             state_query = re.compile(st.lower(), re.IGNORECASE)
@@ -405,22 +572,40 @@ def compiler_v3(s, t, r, arr):
             for i in coll_ra.find({'state': state_query, 'city': city_query}):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
-                    f"""<ul id="{i['id']}" class="agent-container">""",
-                    f"""<li class="company">Agent:&nbsp;<a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></li>""" if i['company'] else "",
-                    f"""<li class="agency">{"Alt-Name" if i['company'] else "Agent"}:&nbsp;<a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></li>""" if i['agency'] else "",
-                    f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></li>""" if i['state'] else "",
-                    f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></li>""" if i['city'] and {i['state']} else "",
-                    f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
-                    f"""<li class="address">Address:&nbsp;{i['address'].title()}</li>""" if i['address'] else "",
-                    f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
-                    f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
-                    f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
-                    f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
-                    f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
-                    f"""<li class="agent-details"><a href="/registered-agents/{slug}"><button>Go to Details</button></a></li>""",
-                    "</ul>"
+                    f"""<tr id="{i['id']}">""",
+                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
+                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
+                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
+                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
+                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
+                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
+                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
+                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    "</tr>"
                 ])
-            agents_info += "</div>"
+            agents_info += """</tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Agency</th>
+                                <th>Alt name</th>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Mailing Addr.</th>
+                                <th>Phone</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Details</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            """
             comp = re.sub('XXagentsXX', agents_info, comp)
             comp = re.sub('XXstatequeryXX', st.title(), comp)
             comp = re.sub('XXcityqueryXX', cit.title(), comp)
