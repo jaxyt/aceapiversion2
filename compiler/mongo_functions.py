@@ -715,7 +715,8 @@ def telecom_search(searchterm, model_keys):
 def do_mongo_query(iden, cit):
     res = False
     try:
-        coll_ra.update({"id": iden}, {"$set": {"city": cit}})
+        x = coll_ra.update({"id": iden}, {"$set": {"city": cit}})
+        print(x.modified_count)
         res = True
     except Exception as e:
         print(e)
