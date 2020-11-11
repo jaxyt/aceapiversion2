@@ -1113,7 +1113,8 @@ def get_json_from_db(request):
             print(idn)
             print(c)
             try:
-                print(do_mongo_query(idn, c))
+                # print(do_mongo_query(idn, c))
+                return HttpResponse(do_mongo_query(idn, c), content_type="application/json")
             except Exception as e:
                 print(e)
             return HttpResponse("""<!DOCTYPE html>
