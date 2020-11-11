@@ -715,7 +715,7 @@ def telecom_search(searchterm, model_keys):
 def do_mongo_query(iden, cit):
     res = False
     try:
-        #, {"$set": {"city": cit}}
+        # json.dumps(list(map(add_to_map, coll_ra.find({"": iden, "": cit}))))
         x = coll_ra.update({"id": int(iden)}, {"$set": {"city": cit}})
         print(x)
         res = True
