@@ -716,7 +716,7 @@ def do_mongo_query(iden, cit):
     res = False
     try:
         #, {"$set": {"city": cit}}
-        x = list(map(add_to_map, coll_ra.find({"city": "New York"})))
+        x = list(map(add_to_map, coll_ra.find({"id": int(iden)})))
         print(x)
         res = True
     except Exception as e:
