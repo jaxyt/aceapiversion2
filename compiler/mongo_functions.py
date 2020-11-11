@@ -715,10 +715,11 @@ def telecom_search(searchterm, model_keys):
 def do_mongo_query(iden, cit):
     res = False
     try:
-        # json.dumps(list(map(add_to_map, coll_ra.find({"": iden, "": cit}))))
-        x = coll_ra.update({"id": int(iden)}, {"$set": {"city": cit}})
-        print(x)
-        res = True
+        # json.dumps(list(map(add_to_map, coll_ra.find({"address": ""}))))
+        # x = coll_ra.update({"id": int(iden)}, {"$set": {"city": cit}})
+        # print(x)
+        res = json.dumps(list(map(add_to_map, coll_ra.find({"address": ""}))))
+        return res
     except Exception as e:
         print(e)
     return res
