@@ -658,9 +658,16 @@ def compiler_v3(s, t, r, arr):
                                 <th>Business</th>
                                 <th>Holding Co.</th>
                                 <th>HQ Addr.</th>
+                                <th>HQ Addr. 2</th>
+                                <th>HQ Addr. 3</th>
                                 <th>Alt. Trade Name</th>
+                                <th>Alt. Trade Name 2</th>
+                                <th>Alt. Trade Name 3</th>
+                                <th>Alt. Trade Name 4</th>
                                 <th>DC Agent</th>
+                                <th>DC Agent 2</th>
                                 <th>Alt. Agent</th>
+                                <th>Alt. Agent 2</th>
                             </tr>
                         </thead>
                         <tbody id="ra-datatable">"""
@@ -674,12 +681,20 @@ def compiler_v3(s, t, r, arr):
                 slug = slugify(f"""{m['carriername'] if m['carriername'] else (m['businessname'] if m['businessname'] else "")}-service-of-process-{m['id']}""")
                 agents_info += "".join([
                     f"""<tr id="{m['id']}">""",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['carriername']}">{m['carriername'].title()}</a></td><td><a href="/telecom-agents/search/businessname/{m['businessname']}">{m['businessname'].title()}</a></td>""" if m['carriername'] and m['businessname'] else (f"""<td><a href="/telecom-agents/search/carriername/{m['carriername']}">{m['carriername'].title()}</a></td><td>N/A</td>""" if m['carriername'] else (f"""<td><a href="/telecom-agents/search/businessname/{m['businessname']}">{m['businessname'].title()}</a></td><td>N/A</td>""" if m['businessname'] else "<td>N/A</td><td>N/A</td>")),
-                    f"""<td><a href="/telecom-agents/search/holdingcompany/{m['holdingcompany']}">{m['holdingcompany'].title()}</a></td>""" if m['holdingcompany'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/hqaddress1/{m['hqaddress1']}">{m['hqaddress1'].title()}</a></td>""" if m['hqaddress1'] else (f"""<td><a href="/telecom-agents/search/hqaddress2/{m['hqaddress2']}">{m['hqaddress2'].title()}</a></td>""" if m['hqaddress2'] else (f"""<td><a href="/telecom-agents/search/hqaddress3/{m['hqaddress3']}">{m['hqaddress3'].title()}</a></td>""" if m['hqaddress3'] else "<td>N/A</td>")),
-                    f"""<td><a href="/telecom-agents/search/othertradename1/{m['othertradename1']}">{m['othertradename1'].title()}</a></td>""" if m['othertradename1'] else (f"""<td><a href="/telecom-agents/search/othertradename2/{m['othertradename2']}">{m['othertradename2'].title()}</a></td>""" if m['othertradename2'] else (f"""<td><a href="/telecom-agents/search/othertradename3/{m['othertradename3']}">{m['othertradename3'].title()}</a></td>""" if m['othertradename3'] else (f"""<td><a href="/telecom-agents/search/othertradename4/{m['othertradename4']}">{m['othertradename4'].title()}</a></td>""" if m['othertradename4'] else "<td>N/A</td>"))),
-                    f"""<td><a href="/telecom-agents/search/dcagent/{m['dcagent1']}">{m['dcagent1'].title()}</a></td>""" if m['dcagent1'] else (f"""<td><a href="/telecom-agents/search/dcagent/{m['dcagent2']}">{m['dcagent2'].title()}</a></td>""" if m['dcagent2'] else "<td>N/A</td>"),
-                    f"""<td><a href="/telecom-agents/search/alternateagent1/{m['alternateagent1']}">{m['alternateagent1'].title()}</a></td>""" if m['alternateagent1'] else (f"""<td><a href="/telecom-agents/search/alternateagent2/{m['alternateagent2']}">{m['alternateagent2'].title()}</a></td>""" if m['alternateagent2'] else "<td>N/A</td>"),
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['carriername']}">{m['carriername']}</a></td>""" if m['carriername'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['businessname']}">{m['businessname']}</a></td>""" if m['businessname'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['holdingcompany']}">{m['holdingcompany']}</a></td>""" if m['holdingcompany'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/hqaddress1/{m['hqaddress1']}">{m['hqaddress1']}</a></td>""" if m['hqaddress1'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/hqaddress2/{m['hqaddress2']}">{m['hqaddress2']}</a></td>""" if m['hqaddress2'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/hqaddress3/{m['hqaddress3']}">{m['hqaddress3']}</a></td>""" if m['hqaddress3'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename1']}">{m['othertradename1']}</a></td>""" if m['othertradename1'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename2']}">{m['othertradename2']}</a></td>""" if m['othertradename2'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename3']}">{m['othertradename3']}</a></td>""" if m['othertradename3'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename4']}">{m['othertradename4']}</a></td>""" if m['othertradename4'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['dcagent1']}">{m['dcagent1']}</a></td>""" if m['dcagent1'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['dcagent2']}">{m['dcagent2']}</a></td>""" if m['dcagent2'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['alternateagent1']}">{m['alternateagent1']}</a></td>""" if m['alternateagent1'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['alternateagent2']}">{m['alternateagent2']}</a></td>""" if m['alternateagent2'] else "<td>N/A</td>",
                     f"""<td><a href="/telecom-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
                 ])
@@ -687,12 +702,19 @@ def compiler_v3(s, t, r, arr):
                         <tfoot>
                             <tr>
                                 <th>Carrier</th>
-                                <th>Business Name</th>
+                                <th>Business</th>
                                 <th>Holding Co.</th>
                                 <th>HQ Addr.</th>
+                                <th>HQ Addr. 2</th>
+                                <th>HQ Addr. 3</th>
                                 <th>Alt. Trade Name</th>
+                                <th>Alt. Trade Name 2</th>
+                                <th>Alt. Trade Name 3</th>
+                                <th>Alt. Trade Name 4</th>
                                 <th>DC Agent</th>
+                                <th>DC Agent 2</th>
                                 <th>Alt. Agent</th>
+                                <th>Alt. Agent 2</th>
                             </tr>
                         </tfoot>
                     </table>
