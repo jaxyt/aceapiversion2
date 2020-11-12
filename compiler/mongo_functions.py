@@ -654,6 +654,8 @@ def compiler_v3(s, t, r, arr):
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
+                                <th>DC Agent</th>
+                                <th>DC Agent 2</th>
                                 <th>Carrier</th>
                                 <th>Business</th>
                                 <th>Holding Co.</th>
@@ -664,8 +666,6 @@ def compiler_v3(s, t, r, arr):
                                 <th>Alt. Trade Name 2</th>
                                 <th>Alt. Trade Name 3</th>
                                 <th>Alt. Trade Name 4</th>
-                                <th>DC Agent</th>
-                                <th>DC Agent 2</th>
                                 <th>Alt. Agent</th>
                                 <th>Alt. Agent 2</th>
                                 <th>Details</th>
@@ -682,6 +682,8 @@ def compiler_v3(s, t, r, arr):
                 slug = slugify(f"""{m['carriername'] if m['carriername'] else (m['businessname'] if m['businessname'] else "")}-service-of-process-{m['id']}""")
                 agents_info += "".join([
                     f"""<tr id="{m['id']}">""",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['dcagent1']}">{m['dcagent1']}</a></td>""" if m['dcagent1'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['dcagent2']}">{m['dcagent2']}</a></td>""" if m['dcagent2'] else "<td>N/A</td>",
                     f"""<td><a href="/telecom-agents/search/carriername/{m['carriername']}">{m['carriername']}</a></td>""" if m['carriername'] else "<td>N/A</td>",
                     f"""<td><a href="/telecom-agents/search/carriername/{m['businessname']}">{m['businessname']}</a></td>""" if m['businessname'] else "<td>N/A</td>",
                     f"""<td><a href="/telecom-agents/search/carriername/{m['holdingcompany']}">{m['holdingcompany']}</a></td>""" if m['holdingcompany'] else "<td>N/A</td>",
@@ -692,8 +694,6 @@ def compiler_v3(s, t, r, arr):
                     f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename2']}">{m['othertradename2']}</a></td>""" if m['othertradename2'] else "<td>N/A</td>",
                     f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename3']}">{m['othertradename3']}</a></td>""" if m['othertradename3'] else "<td>N/A</td>",
                     f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename4']}">{m['othertradename4']}</a></td>""" if m['othertradename4'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['dcagent1']}">{m['dcagent1']}</a></td>""" if m['dcagent1'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['dcagent2']}">{m['dcagent2']}</a></td>""" if m['dcagent2'] else "<td>N/A</td>",
                     f"""<td><a href="/telecom-agents/search/carriername/{m['alternateagent1']}">{m['alternateagent1']}</a></td>""" if m['alternateagent1'] else "<td>N/A</td>",
                     f"""<td><a href="/telecom-agents/search/carriername/{m['alternateagent2']}">{m['alternateagent2']}</a></td>""" if m['alternateagent2'] else "<td>N/A</td>",
                     f"""<td><a href="/telecom-agents/{slug}"><button>Go</button></a></td>""",
@@ -702,6 +702,8 @@ def compiler_v3(s, t, r, arr):
             agents_info += """</tbody>
                         <tfoot>
                             <tr>
+                                <th>DC Agent</th>
+                                <th>DC Agent 2</th>
                                 <th>Carrier</th>
                                 <th>Business</th>
                                 <th>Holding Co.</th>
@@ -712,8 +714,6 @@ def compiler_v3(s, t, r, arr):
                                 <th>Alt. Trade Name 2</th>
                                 <th>Alt. Trade Name 3</th>
                                 <th>Alt. Trade Name 4</th>
-                                <th>DC Agent</th>
-                                <th>DC Agent 2</th>
                                 <th>Alt. Agent</th>
                                 <th>Alt. Agent 2</th>
                                 <th>Details</th>
