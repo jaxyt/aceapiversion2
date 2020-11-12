@@ -651,7 +651,7 @@ def compiler_v3(s, t, r, arr):
             from urllib.parse import unquote
             agents_info = """
                 <div class="table-responsive">
-                    <table id="default_order" class="table table-striped table-bordered no-wrap">
+                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
                                 <th>Carrier</th>
