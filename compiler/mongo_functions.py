@@ -648,31 +648,56 @@ def compiler_v3(s, t, r, arr):
             ])
             comp = re.sub("XXagentXX", agent_info, comp)
         elif len(arr) == 5:
-            agents_info = """<div class="registered-agents">"""
+            from urllib.parse import unquote
+            agents_info = """
+                <div class="table-responsive">
+                    <table id="default_order" class="table table-striped table-bordered no-wrap">
+                        <thead>
+                            <tr>
+                                <th>Carrier</th>
+                                <th>Business</th>
+                                <th>Holding Co.</th>
+                                <th>HQ Addr.</th>
+                                <th>Alt. Trade Name</th>
+                                <th>DC Agent</th>
+                                <th>Alt. Agent</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ra-datatable">"""
             k = arr[3]
-            query = re.compile(arr[4], re.IGNORECASE)
-            for i in coll_tel.aggregate([{"$match": {"$or" : [{"carriername": query},{"businessname": query},{"holdingcompany": query},{"othertradename1": query},{"othertradename2": query},{"othertradename3": query},{"othertradename4": query},{"dcagent1": query},{"dcagent2": query},{"alternateagent1": query},{"alternateagent2": query}]}},{"$sort": { k: 1 }}]):
-                slug = slugify(f"""{i['carriername'] if i['carriername'] else (i['businessname'] if i['businessname'] else "")}-{i['dcagent1'] if i['dcagent1'] else (i['dcagent2'] if i['dcagent2'] else "")}-service-of-process-{i['id']}""")
+            q = unquote(arr[4])
+            q = re.sub(r'[^\w\s]','',q)
+            q = re.sub(r'\s{2,}','',q)
+            q = q.strip(" ")
+            search_results = coll_tel.find({"$text":{"$search":q}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})])
+            for m in search_results:
+                slug = slugify(f"""{m['carriername'] if m['carriername'] else (m['businessname'] if m['businessname'] else "")}-service-of-process-{m['id']}""")
                 agents_info += "".join([
-                    f"""<ul id="{i['id']}" class="agent-container">""",
-                    f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['carriername'])}">{i['carriername'] if i['carriername'] else ""}</a></li>""",
-                    f"""<li class="businessname">Business Name:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['businessname'])}">{i['businessname'] if i['businessname'] else ""}</a></li>""",
-                    f"""<li class="holdingcompany">Holding Company:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['holdingcompany'])}">{i['holdingcompany'] if i['holdingcompany'] else ""}</a></li>""",
-                    f"""<li class="hqaddress">HQ Address:&nbsp;{i['hqaddress1'] if i['hqaddress1'] else ""}{", "+i['hqaddress2'] if i['hqaddress2'] else ""}{", "+i['hqaddress3'] if i['hqaddress3'] else ""}</li>""",
-                    f"""<li class="othertradenames"><ul class="other-trade-names">Other Trade Names""" if i['othertradename1'] else "",
-                    f"""<li class="othertradenames1"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename1'])}">{i['othertradename1']}</a></li>""" if i['othertradename1'] else "",
-                    f"""<li class="othertradenames2"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename2'])}">{i['othertradename2']}</a></li>""" if i['othertradename2'] else "",
-                    f"""<li class="othertradenames3"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename3'])}">{i['othertradename3']}</a></li>""" if i['othertradename3'] else "",
-                    f"""<li class="othertradenames4"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['othertradename4'])}">{i['othertradename4']}</a></li>""" if i['othertradename4'] else "",
-                    f"""</ul></li>""" if i['othertradename1'] else "",
-                    f"""<li class="dcagent1">Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['dcagent1'])}">{i['dcagent1']}</a></li>""" if i['dcagent1'] else "",
-                    f"""<li class="dcagent2">Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['dcagent2'])}">{i['dcagent2']}</a></li>""" if i['dcagent2'] else "",
-                    f"""<li class="alternateagent1">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent1'])}">{i['alternateagent1']}</a></li>""" if i['alternateagent1'] else "",
-                    f"""<li class="alternateagent2">Alt Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(i['alternateagent2'])}">{i['alternateagent2']}</a></li>""" if i['alternateagent2'] else "",
-                    f"""<li class="agent-details"><a href="/telecom-agents/{slug}"><button>Go to Details</button></a></li>""",
-                    "</ul>"
+                    f"""<tr id="{m['id']}">""",
+                    f"""<td><a href="/telecom-agents/search/carriername/{m['carriername']}">{m['carriername'].title()}</a></td><td><a href="/telecom-agents/search/businessname/{m['businessname']}">{m['businessname'].title()}</a></td>""" if m['carriername'] and m['businessname'] else (f"""<td><a href="/telecom-agents/search/carriername/{m['carriername']}">{m['carriername'].title()}</a></td><td>N/A</td>""" if m['carriername'] else (f"""<td><a href="/telecom-agents/search/businessname/{m['businessname']}">{m['businessname'].title()}</a></td><td>N/A</td>""" if m['businessname'] else "<td>N/A</td><td>N/A</td>")),
+                    f"""<td><a href="/telecom-agents/search/holdingcompany/{m['holdingcompany']}">{m['holdingcompany'].title()}</a></td>""" if m['holdingcompany'] else "<td>N/A</td>",
+                    f"""<td><a href="/telecom-agents/search/hqaddress1/{m['hqaddress1']}">{m['hqaddress1'].title()}</a></td>""" if m['hqaddress1'] else (f"""<td><a href="/telecom-agents/search/hqaddress2/{m['hqaddress2']}">{m['hqaddress2'].title()}</a></td>""" if m['hqaddress2'] else (f"""<td><a href="/telecom-agents/search/hqaddress3/{m['hqaddress3']}">{m['hqaddress3'].title()}</a></td>""" if m['hqaddress3'] else "<td>N/A</td>")),
+                    f"""<td><a href="/telecom-agents/search/othertradename1/{m['othertradename1']}">{m['othertradename1'].title()}</a></td>""" if m['othertradename1'] else (f"""<td><a href="/telecom-agents/search/othertradename2/{m['othertradename2']}">{m['othertradename2'].title()}</a></td>""" if m['othertradename2'] else (f"""<td><a href="/telecom-agents/search/othertradename3/{m['othertradename3']}">{m['othertradename3'].title()}</a></td>""" if m['othertradename3'] else (f"""<td><a href="/telecom-agents/search/othertradename4/{m['othertradename4']}">{m['othertradename4'].title()}</a></td>""" if m['othertradename4'] else "<td>N/A</td>"))),
+                    f"""<td><a href="/telecom-agents/search/dcagent/{m['dcagent1']}">{m['dcagent1'].title()}</a></td>""" if m['dcagent1'] else (f"""<td><a href="/telecom-agents/search/dcagent/{m['dcagent2']}">{m['dcagent2'].title()}</a></td>""" if m['dcagent2'] else "<td>N/A</td>"),
+                    f"""<td><a href="/telecom-agents/search/alternateagent1/{m['alternateagent1']}">{m['alternateagent1'].title()}</a></td>""" if m['alternateagent1'] else (f"""<td><a href="/telecom-agents/search/alternateagent2/{m['alternateagent2']}">{m['alternateagent2'].title()}</a></td>""" if m['alternateagent2'] else "<td>N/A</td>"),
+                    f"""<td><a href="/telecom-agents/{slug}"><button>Go</button></a></td>""",
+                    "</tr>"
                 ])
-            agents_info += "</div>"
+            agents_info += """</tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Carrier</th>
+                                <th>Business Name</th>
+                                <th>Holding Co.</th>
+                                <th>HQ Addr.</th>
+                                <th>Alt. Trade Name</th>
+                                <th>DC Agent</th>
+                                <th>Alt. Agent</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            """
             comp = re.sub("XXagentsXX", agents_info, comp)
             comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
     corp_links = """<div class="corp-links">"""
