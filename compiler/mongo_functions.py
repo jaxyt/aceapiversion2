@@ -699,10 +699,6 @@ def compiler_v3(s, t, r, arr):
                                 <th>HQ Addr.</th>
                                 <th>HQ Addr. 2</th>
                                 <th>HQ Addr. 3</th>
-                                <th>Alt. Trade Name</th>
-                                <th>Alt. Trade Name 2</th>
-                                <th>Alt. Trade Name 3</th>
-                                <th>Alt. Trade Name 4</th>
                                 <th>DC Agent</th>
                                 <th>DC Agent 2</th>
                                 <th>Alt. Agent</th>
