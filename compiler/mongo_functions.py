@@ -677,7 +677,7 @@ def compiler_v3(s, t, r, arr):
             q = re.sub(r'[^\w\s]','',q)
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
-            search_results = coll_tel.find({"$text":{"$search":q}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})])
+            search_results = coll_tel.find({"$text":{"$search":q}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})]) if arr[4] != "" else coll_tel.find()
             for m in search_results:
                 slug = slugify(f"""{m['carriername'] if m['carriername'] else (m['businessname'] if m['businessname'] else "")}-service-of-process-{m['id']}""")
                 agents_info += "".join([
