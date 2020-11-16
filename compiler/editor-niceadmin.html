@@ -1561,6 +1561,13 @@
                                 t.children[8].children[1].children[0].focus();
                             })
 
+                            let metadatas = ["sitedisplayname", "organizationname", "sitedescription", "facebookurl", "twitterusername", "linkedinurl", "searchroute", "logoroute", "logowidth", "logoheight",]
+                            function toggleMetaData() {
+                                for (i=0;i<metadatas.length;i++){
+                                    document.querySelector(`#id_${metadatas[i]}`).classList.toggle("hide-content");
+                                }
+                            }
+
                             
                         </script>
                         <!-- Action part -->
@@ -1661,6 +1668,7 @@
                             <li class="theme-item"><a href="javascript:commentSelection(true, oldEditor)" class="theme-link">Comment</a></li>
                             <li class="theme-item"><a href="javascript:commentSelection(false, oldEditor)" class="theme-link">Uncomment</a></li>
                             <li class="theme-item"><a href="javascript:togglePopup()" class="theme-link">Help</a></li>
+                            <li class="theme-item"><a href="javascript:toggleMetaData()" class="theme-link">Toggle Metadata</a></li>
                             
                         </ul>
                         <!-- Logo BG -->
