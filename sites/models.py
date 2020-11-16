@@ -56,8 +56,17 @@ class PageForm(forms.ModelForm):
         )
 
 class Site(models.Model):
-
     sitename = models.CharField(max_length=200)
+    sitedisplayname = models.CharField(max_length=200, blank=True)
+    organizationname = models.CharField(max_length=200, blank=True)
+    sitedescription = models.TextField(blank=True)
+    facebookurl = models.TextField(blank=True)
+    twitterusername = models.CharField(max_length=200, blank=True)
+    linkedinurl = models.TextField(blank=True)
+    searchroute = models.TextField(blank=True)
+    logoroute = models.TextField(blank=True)
+    logowidth = models.IntegerField(blank=True)
+    logoheight = models.IntegerField(blank=True)
     templateid = models.IntegerField()
     sitemetas = models.TextField(blank=True)
     sitelinks = models.TextField(blank=True)
