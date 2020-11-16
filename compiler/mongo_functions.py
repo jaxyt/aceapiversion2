@@ -94,7 +94,26 @@ def compiler_v3(s, t, r, arr):
         if i.route == page:
             tpage = i
     states_links = "".join(["""<div class="states-links">""", "".join(list(map(lambda x: f"""<a href="/locations/{'-'.join(x['statename'].split(' '))}">{x['statename'].title()}</a>""", coll_st.find()))), "</div>"])
-    comp = f"""<!DOCTYPE html><html lang="en"><head>{s.sitemetas if s.sitemetas else t.sitemetas if t.sitemetas else ""}{spage.pagemetas if spage.pagemetas else tpage.pagemetas if tpage.pagemetas else ""}{s.sitelinks if s.sitelinks else t.sitelinks if t.sitelinks else ""}{spage.pagelinks if spage.pagelinks else tpage.pagelinks if tpage.pagelinks else ""}<title>{spage.title if spage.title else tpage.title if tpage.title else ""}</title>{spage.pagestyle if spage.pagestyle else s.sitestyle if s.sitestyle else tpage.pagestyle if tpage.pagestyle else t.sitestyle if t.sitestyle else ""}</head><body>{spage.pageheader if spage.pageheader else s.siteheader if s.siteheader else tpage.pageheader if tpage.pageheader else t.siteheader if t.siteheader else ""}{spage.content if spage.content else tpage.content if tpage.content else ""}{spage.pagefooter if spage.pagefooter else s.sitefooter if s.sitefooter else tpage.pagefooter if tpage.pagefooter else t.sitefooter if t.sitefooter else ""}{s.sitescripts if s.sitescripts else t.sitescripts if t.sitescripts else ""}{spage.pagescripts if spage.pagescripts else tpage.pagescripts if tpage.pagescripts else ""}</body></html>"""
+    comp = "\n".join([ 
+        "<!DOCTYPE html>",
+        """<html lang="en">""",
+        "<head>",
+        f"""{s.sitemetas if s.sitemetas else t.sitemetas if t.sitemetas else ""}""",
+        f"""{spage.pagemetas if spage.pagemetas else tpage.pagemetas if tpage.pagemetas else ""}""",
+        f"""{s.sitelinks if s.sitelinks else t.sitelinks if t.sitelinks else ""}""",
+        f"""{spage.pagelinks if spage.pagelinks else tpage.pagelinks if tpage.pagelinks else ""}""",
+        f"""<title>{spage.title if spage.title else tpage.title if tpage.title else ""}</title>""",
+        f"""{spage.pagestyle if spage.pagestyle else s.sitestyle if s.sitestyle else tpage.pagestyle if tpage.pagestyle else t.sitestyle if t.sitestyle else ""}""",
+        "</head>",
+        "<body>",
+        f"""{spage.pageheader if spage.pageheader else s.siteheader if s.siteheader else tpage.pageheader if tpage.pageheader else t.siteheader if t.siteheader else ""}""",
+        f"""{spage.content if spage.content else tpage.content if tpage.content else ""}""",
+        f"""{spage.pagefooter if spage.pagefooter else s.sitefooter if s.sitefooter else tpage.pagefooter if tpage.pagefooter else t.sitefooter if t.sitefooter else ""}""",
+        f"""{s.sitescripts if s.sitescripts else t.sitescripts if t.sitescripts else ""}""",
+        f"""{spage.pagescripts if spage.pagescripts else tpage.pagescripts if tpage.pagescripts else ""}""",
+        "</body>",
+        "</html>",
+    ])
     
     site_state = coll_st.find_one({'id': s.location.stateid})
     site_state_acronym = site_state['stateacronym']
