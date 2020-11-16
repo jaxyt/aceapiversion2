@@ -269,12 +269,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
                         </thead>
@@ -292,11 +287,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
                     f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
                     f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
-                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
-                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
-                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
-                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
-                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
                 ])
@@ -308,12 +299,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                               
                                 <th>Details</th>
                             </tr>
                         </tfoot>
@@ -338,12 +324,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
                         </thead>
@@ -362,12 +343,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
                     f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
                     f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
-                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
-                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
-                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
-                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
-                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
-                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                   
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
                 ])
@@ -379,12 +355,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
                         </tfoot>
@@ -411,12 +382,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
                         </thead>
@@ -437,12 +403,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
                     f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
                     f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
-                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
-                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
-                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
-                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
-                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
-                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                   
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
                 ])
@@ -454,12 +415,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
                         </tfoot>
@@ -488,12 +444,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
                         </thead>
@@ -508,12 +459,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
                     f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
                     f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
-                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
-                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
-                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
-                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
-                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
-                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                    
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
                 ])
@@ -525,12 +471,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                               
                                 <th>Details</th>
                             </tr>
                         </tfoot>
@@ -555,12 +496,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                               
                                 <th>Details</th>
                             </tr>
                         </thead>
@@ -577,12 +513,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
                     f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
                     f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
-                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
-                    f"""<td>{i['mail'].title()}</td>""" if i['mail'] else "<td>N/A</td>",
-                    f"""<td>{i['phone'].title()}</td>""" if i['phone'] else "<td>N/A</td>",
-                    f"""<td>{i['fax'].title()}</td>""" if i['fax'] else "<td>N/A</td>",
-                    f"""<td>{i['email'].title()}</td>""" if i['email'] else "<td>N/A</td>",
-                    f"""<td>{i['website'].title()}</td>""" if i['website'] else "<td>N/A</td>",
+                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                    
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
                 ])
@@ -594,12 +525,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>State</th>
                                 <th>City</th>
                                 <th>Contact</th>
-                                <th>Address</th>
-                                <th>Mailing Addr.</th>
-                                <th>Phone</th>
-                                <th>Fax</th>
-                                <th>Email</th>
-                                <th>Website</th>
+                                <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
                         </tfoot>
