@@ -267,8 +267,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Agency</th>
                                 <th>Alt name</th>
                                 <th>State</th>
-                                <th>City</th>
-                                <th>Contact</th>
+                                <th>City</th>                                
                                 <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
@@ -284,8 +283,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<tr id="{i['id']}">""",
                     f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
                     f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
-                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
                     f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
                     
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
@@ -297,8 +295,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Agency</th>
                                 <th>Alt name</th>
                                 <th>State</th>
-                                <th>City</th>
-                                <th>Contact</th>
+                                <th>City</th>                                
                                 <th>Address</th>                               
                                 <th>Details</th>
                             </tr>
@@ -322,8 +319,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Agency</th>
                                 <th>Alt name</th>
                                 <th>State</th>
-                                <th>City</th>
-                                <th>Contact</th>
+                                <th>City</th>                                
                                 <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
@@ -341,8 +337,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<tr id="{i['id']}">""",
                     f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
                     f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
-                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
                     f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                   
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
@@ -353,8 +348,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Agency</th>
                                 <th>Alt name</th>
                                 <th>State</th>
-                                <th>City</th>
-                                <th>Contact</th>
+                                <th>City</th>                                
                                 <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
@@ -380,8 +374,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Agency</th>
                                 <th>Alt name</th>
                                 <th>State</th>
-                                <th>City</th>
-                                <th>Contact</th>
+                                <th>City</th>                               
                                 <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
@@ -401,8 +394,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<tr id="{i['id']}">""",
                     f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
                     f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
-                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
                     f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                   
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
@@ -413,8 +405,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Agency</th>
                                 <th>Alt name</th>
                                 <th>State</th>
-                                <th>City</th>
-                                <th>Contact</th>
+                                <th>City</th>                                
                                 <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
@@ -443,7 +434,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Alt name</th>
                                 <th>State</th>
                                 <th>City</th>
-                                <th>Contact</th>
+                                
                                 <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
@@ -457,8 +448,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<tr id="{i['id']}">""",
                     f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
                     f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
-                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
                     f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                    
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
@@ -469,8 +459,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Agency</th>
                                 <th>Alt name</th>
                                 <th>State</th>
-                                <th>City</th>
-                                <th>Contact</th>
+                                <th>City</th>                                
                                 <th>Address</th>                               
                                 <th>Details</th>
                             </tr>
@@ -494,8 +483,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Agency</th>
                                 <th>Alt name</th>
                                 <th>State</th>
-                                <th>City</th>
-                                <th>Contact</th>
+                                <th>City</th>                                
                                 <th>Address</th>                               
                                 <th>Details</th>
                             </tr>
@@ -511,8 +499,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<tr id="{i['id']}">""",
                     f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
                     f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",
-                    f"""<td>{i['contact'].title()}</td>""" if i['contact'] else "<td>N/A</td>",
+                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
                     f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                    
                     f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
                     "</tr>"
@@ -523,8 +510,7 @@ def compiler_v3(s, t, r, arr):
                                 <th>Agency</th>
                                 <th>Alt name</th>
                                 <th>State</th>
-                                <th>City</th>
-                                <th>Contact</th>
+                                <th>City</th>                                
                                 <th>Address</th>                                
                                 <th>Details</th>
                             </tr>
