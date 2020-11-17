@@ -60,6 +60,7 @@ class Site(models.Model):
     sitedisplayname = models.CharField(max_length=200, blank=True)
     organizationname = models.CharField(max_length=200, blank=True)
     sitedescription = models.TextField(blank=True)
+    siteauthor = models.CharField(max_length=200, blank=True)
     facebookurl = models.TextField(blank=True)
     twitterusername = models.CharField(max_length=200, blank=True)
     linkedinurl = models.TextField(blank=True)
