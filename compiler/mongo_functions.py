@@ -100,6 +100,7 @@ def compiler_v3(s, t, r, arr):
             cont = no_html_tags(spage.content)
             cont = re.sub(r'"', '', cont)
             cont = re.sub(r"'", "", cont)
+            cont = re.sub(r"\n", " ", cont)
             cont = re.sub(r"\s{2,}", " ", cont)
             read_time = round(len(cont.split(" "))/250)
             print(read_time)
