@@ -98,9 +98,10 @@ def compiler_v3(s, t, r, arr):
     if spage:
         if spage.pagemetas:
             cont = no_html_tags(spage.content)
-            read_time = round(len(cont.split(" "))/250)
             cont = re.sub(r'"', '', cont)
             cont = re.sub(r"'", "", cont)
+            cont = re.sub(r"\s{2,}", " ", cont)
+            read_time = round(len(cont.split(" "))/250)
             print(read_time)
             meta_data = "".join([
                 f"""<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">""",
@@ -147,7 +148,7 @@ def compiler_v3(s, t, r, arr):
                 f""" "@id":"https://www.XXsitenameXX.com/#website",""",
                 f""" "url":"https://www.XXsitenameXX.com/",""",
                 f""" "name":"{s.sitedisplayname if s.sitedisplayname else 'XXsitenameXX'}",""",
-                f""" "description":"{cont[0:100]}",""" if cont else '',
+                f""" "description":"{cont[0:100]+'...'}",""" if cont else '',
                 f""" "publisher":""",
                 """ {""",
                 f""" "@id":"https://www.XXsitenameXX.com/#organization" """,
@@ -166,7 +167,7 @@ def compiler_v3(s, t, r, arr):
                 """ {""",
                 f""" "@id":"https://www.XXsitenameXX.com/#organization" """,
                 """ },""",
-                f""" "description":"{cont[0:100]}",""" if cont else '',
+                f""" "description":"{cont[0:100]+'...'}",""" if cont else '',
                 """ "inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":[ "https://www.XXsitenameXX.comXXrouteXX"] }] }] }""",
                 f"""</script>""",
             ])
