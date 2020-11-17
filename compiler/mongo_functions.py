@@ -103,7 +103,6 @@ def compiler_v3(s, t, r, arr):
             cont = re.sub(r"\n", " ", cont)
             cont = re.sub(r"\s{2,}", " ", cont)
             read_time = round(len(cont.split(" "))/250)
-            print(read_time)
             meta_data = "".join([
                 f"""<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">""",
                 f"""<link rel="canonical" href="https://www.XXsitenameXX.comXXrouteXX">""",
