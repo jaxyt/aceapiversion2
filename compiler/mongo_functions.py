@@ -98,6 +98,7 @@ def compiler_v3(s, t, r, arr):
     if s.sitemetas:
         cont = no_html_tags(spage.content)
         read_time = round(len(cont.split(" "))/250)
+        print(read_time)
         meta_data = "".join([
             f"""<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">""",
             f"""<link rel="canonical" href="https://www.XXsitenameXX.comXXrouteXX">""",
