@@ -112,7 +112,6 @@ def compiler_v3(s, t, r, arr):
                 f"""<meta property="og:url" content="https://www.XXsitenameXX.comXXrouteXX">""",
                 f"""<meta property="og:site_name" content="{s.sitedisplayname if s.sitedisplayname else 'XXsitenameXX'}">""",
                 f"""<meta property="article:publisher" content="{s.facebookurl}">""" if s.facebookurl else '',
-                f"""<meta property="article:modified_time" content="2020-11-16T14:15:41+00:00">""",
                 f"""<meta name="twitter:card" content="summary_large_image">""",
                 f"""<meta name="twitter:creator" content="@{s.twitterusername}">""" if s.twitterusername else '',
                 f"""<meta name="twitter:site" content="@{s.twitterusername}">""" if s.twitterusername else '',
