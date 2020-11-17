@@ -109,7 +109,7 @@ def compiler_v3(s, t, r, arr):
                 f"""<meta property="og:locale" content="en_US">""",
                 f"""<meta property="og:type" content="website">""",
                 f"""<meta property="og:title" content="{spage.title if spage.title else tpage.title if tpage.title else ""}{' - ' + s.sitedisplayname if s.sitedisplayname else 'XXsitenameXX'}">""",
-                f"""<meta property="og:description" content="{''.join(cont.split(' ')[0:50])+'...'}">""" if cont else '',
+                f"""<meta property="og:description" content="{' '.join(cont.split(' ')[0:50])+'...'}">""" if cont else '',
                 f"""<meta property="og:url" content="https://www.XXsitenameXX.comXXrouteXX">""",
                 f"""<meta property="og:site_name" content="{s.sitedisplayname if s.sitedisplayname else 'XXsitenameXX'}">""",
                 f"""<meta property="article:publisher" content="{s.facebookurl}">""" if s.facebookurl else '',
@@ -167,7 +167,7 @@ def compiler_v3(s, t, r, arr):
                 """ {""",
                 f""" "@id":"https://www.XXsitenameXX.com/#organization" """,
                 """ },""",
-                f""" "description":"{''.join(cont.split(' ')[0:50])+'...'}",""" if cont else '',
+                f""" "description":"{' '.join(cont.split(' ')[0:50])+'...'}",""" if cont else '',
                 """ "inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":[ "https://www.XXsitenameXX.comXXrouteXX"] }] }] }""",
                 f"""</script>""",
             ])
