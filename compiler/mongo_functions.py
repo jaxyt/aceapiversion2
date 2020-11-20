@@ -290,10 +290,13 @@ def compiler_v3(s, t, r, arr):
             comp = re.sub("XXagentaddressXX", f"""{agent['address'].title() if agent['address'] else ""}""", comp)
             comp = re.sub("XXcorpXX", f"""{agent['company'].title() if agent['company'] else agent['agency'].title() if agent['agency'] else ""}""", comp)
             if agent['state']:
-                rege = re.compile(agent['state'], re.IGNORECASE)
-                agent_state = coll_st.find_one({"statename": rege})
-                state_acronym = agent_state['stateacronym']
-                comp = re.sub(r"XXstateacronymXX", state_acronym, comp)
+                if agent['state'] != 'DC':
+                    rege = re.compile(agent['state'], re.IGNORECASE)
+                    agent_state = coll_st.find_one({"statename": rege})
+                    state_acronym = agent_state['stateacronym']
+                    comp = re.sub(r"XXstateacronymXX", state_acronym, comp)
+                else:
+                    comp = re.sub(r"XXstateacronymXX", 'DC', comp)
             else:
                 comp = re.sub(r"XXstateacronymXX", "", comp)
         elif len(arr) == 5:
