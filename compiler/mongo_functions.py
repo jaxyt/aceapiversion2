@@ -537,8 +537,7 @@ def compiler_v3(s, t, r, arr):
                             </tr>
                         </thead>
                         <tbody id="ra-datatable">"""
-            print(re.match('washington-district-of-columbia', arr[2]))
-            st = " ".join(arr[2].split("-"))
+            st = " ".join(arr[2].split("-")) if re.match('washington-district-of-columbia', arr[2]) is None else "dc"
             state_query = re.compile(st.lower(), re.IGNORECASE)
             for i in coll_ra.find({'state': state_query}):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
