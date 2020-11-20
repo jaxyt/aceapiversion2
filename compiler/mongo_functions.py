@@ -282,7 +282,6 @@ def compiler_v3(s, t, r, arr):
                 f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else "",
                 "</ul></div>"
             ])
-            print(agent_info)
             comp = re.sub("XXagentXX", agent_info, comp)
             comp = re.sub("XXagentagencyXX", f"""{agent['agency'].title() if agent['agency'] else ""}""", comp)
             comp = re.sub("XXagentcompanyXX", f"""{agent['company'].title() if agent['company'] else ""}""", comp)
@@ -792,6 +791,8 @@ def compiler_v3(s, t, r, arr):
     comp = re.sub(r'District of columbia', "District of Columbia", comp)
     comp = replace_shortcodes(s, t, comp)
     comp = replace_shortcodes(s, t, comp)
+    if page == '/registered-agents/id':
+        print(comp)
     return comp
 
 
