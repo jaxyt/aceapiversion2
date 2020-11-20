@@ -267,8 +267,6 @@ def compiler_v3(s, t, r, arr):
     elif arr[1] == "registered-agents":
         if len(arr) == 3:
             agent = coll_ra.find_one({'id': int(arr[2].split("-")[-1])})
-            print(agent)
-            print(agent['id'])
             agent_info = "".join([
                 f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">""",
                 f"""<li class="company">Company:&nbsp;<a href="/registered-agents/search/company/{agent['company']}">{agent['company'].title()}</a></li>""" if agent['company'] else "",
@@ -284,6 +282,7 @@ def compiler_v3(s, t, r, arr):
                 f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else "",
                 "</ul></div>"
             ])
+            print(agent_info)
             comp = re.sub("XXagentXX", agent_info, comp)
             comp = re.sub("XXagentagencyXX", f"""{agent['agency'].title() if agent['agency'] else ""}""", comp)
             comp = re.sub("XXagentcompanyXX", f"""{agent['company'].title() if agent['company'] else ""}""", comp)
