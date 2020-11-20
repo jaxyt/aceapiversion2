@@ -791,7 +791,7 @@ def compiler_v3(s, t, r, arr):
     comp = re.sub(r'District of columbia', "District of Columbia", comp)
     comp = replace_shortcodes(s, t, comp)
     comp = replace_shortcodes(s, t, comp)
-    if page == '/registered-agents/id':
+    if re.match(r'-9$', r):
         print(comp)
     return comp
 
