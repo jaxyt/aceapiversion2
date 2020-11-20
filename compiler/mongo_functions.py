@@ -424,6 +424,7 @@ def compiler_v3(s, t, r, arr):
                         <tbody id="ra-datatable">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
             st = " ".join(arr[3].split("-"))
+            st = re.sub('Washington District of Columbia', 'DC', st)
             k = corp['searchkey']
             q = corp['searchvalue']
             query = re.compile(q, re.IGNORECASE)
@@ -479,6 +480,7 @@ def compiler_v3(s, t, r, arr):
                         <tbody id="ra-datatable">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
             st = " ".join(arr[3].split("-"))
+            st = re.sub('Washington District of Columbia', 'DC', st)
             cit = " ".join(arr[4].split("-"))
             k = corp['searchkey']
             q = corp['searchvalue']
