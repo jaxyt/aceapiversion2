@@ -752,7 +752,7 @@ def compiler_v3(s, t, r, arr):
     html_sitemap += """</ul></div>"""
     corps_in_states = """<div class="state-corps-links">"""
     for i in coll_st.find():
-        corps_in_states += f"""<a href="/agents-by-state/{"-".join(i['statename'].split(" "))}">{i['statename'].title()}</a>"""
+        corps_in_states += f"""<a class="btn btn-info" role="button" href="/agents-by-state/{"-".join(i['statename'].split(" "))}">{i['statename'].title()}</a>"""
     corps_in_states += """</div>"""
     comp = re.sub('XXcorpsinstatesXX', corps_in_states, comp)
     comp = re.sub('XXsitemapXX', html_sitemap, comp)
