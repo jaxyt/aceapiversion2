@@ -976,10 +976,7 @@ def do_mongo_query(iden, cit):
 
 
 def get_distinct_column_rows(col):
-    res = []
-    for i in coll_tel.find():
-        res += i
-    return res
+    return json.dumps(list(map(add_to_map, coll_tel.find({}, {'_id': 0}))))
     
     
 
