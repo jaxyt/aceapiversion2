@@ -976,8 +976,8 @@ def do_mongo_query(iden, cit):
 
 
 def get_distinct_column_rows(col):
-    res = list(map(add_to_map, coll_tel.distinct(col)))
-    return pp.pformat(res, indent=4)
+    res = json.dumps(list(map(add_to_map, coll_tel.find())))
+    return res
     
     
 
