@@ -38,7 +38,7 @@ def add_to_map(ob):
 
 def get_distinct_column_rows(col):
     res = list(map(add_to_map, coll_tel.distinct(col)))
-    return pprint.pformat(res, indent=4)
+    return pp.pformat(res, indent=4)
 
 print(get_distinct_column_rows("carriername"))
 
