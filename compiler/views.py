@@ -1107,14 +1107,15 @@ def get_json_from_db(request):
             }
             return render(request, "dbupdate.html", context)
         else:
-            from .mongo_functions import do_mongo_query
+            from .mongo_functions import do_mongo_query, get_distinct_column_rows
             idn = form['iden'].value()
             c = form['cit'].value()
             print(idn)
             print(c)
             try:
                 # print(do_mongo_query(idn, c))
-                return HttpResponse(do_mongo_query(idn, c), content_type="application/json")
+                # return HttpResponse(do_mongo_query(idn, c), content_type="application/json")
+                return HttpResponse(get_distinct_column_rows(idn), content_type="text/plain")
             except Exception as e:
                 print(e)
             return HttpResponse("""<!DOCTYPE html>
