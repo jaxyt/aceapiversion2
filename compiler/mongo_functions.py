@@ -968,7 +968,7 @@ def do_mongo_query(iden, cit):
         # json.dumps(list(map(add_to_map, coll_ra.find({"address": ""}))))
         # x = coll_ra.update({"id": int(iden)}, {"$set": {"city": cit}})
         # print(x)
-        res = json.dumps(list(map(add_to_map, coll_tel.find({"carriername": ""}))))
+        res = json.dumps(list(map(add_to_map, coll_ra.find({"address": ""}))))
         return res
     except Exception as e:
         print(e)
@@ -976,7 +976,9 @@ def do_mongo_query(iden, cit):
 
 
 def get_distinct_column_rows(col):
-    res = json.dumps(list(map(add_to_map, coll_tel.find())))
+    res = []
+    for i in coll_tel.find():
+        res += i
     return res
     
     
