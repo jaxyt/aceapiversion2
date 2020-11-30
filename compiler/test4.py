@@ -41,7 +41,7 @@ def get_distinct_column_rows():
     #for i in coll_tel.find():
     #    res.append(json.dumps(i))
     # return pp.pformat(list(map(add_to_map, coll_tel.find())), indent=4)
-    return json.dumps(list(map(add_to_map, coll_tel.find())), indent=4)
+    return json.dumps(list(map(add_to_map, coll_tel.find({}, {'_id': 0}))))
 
 print(get_distinct_column_rows())
 
