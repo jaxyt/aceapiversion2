@@ -36,11 +36,11 @@ coll_tel = db.registeredagents_telecomcorps
 def add_to_map(ob):
     return ob
 
-def get_distinct_column_rows(col):
-    res = list(map(add_to_map, coll_tel.distinct(col)))
-    return pp.pformat(res, indent=4)
+def get_distinct_column_rows():
+    for i in coll_tel.find():
+        pp.pprint(i)
 
-print(get_distinct_column_rows("carriername"))
+get_distinct_column_rows()
 
 
 
