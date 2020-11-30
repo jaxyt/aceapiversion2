@@ -37,10 +37,10 @@ def add_to_map(ob):
     return ob
 
 def get_distinct_column_rows():
-    res = []
-    for i in coll_tel.find():
-        res.append(json.dumps(i))
-    return res
+    #res = []
+    #for i in coll_tel.find():
+    #    res.append(json.dumps(i))
+    return pp.pformat(coll_tel.find(), indent=4)
 
 print(get_distinct_column_rows())
 
