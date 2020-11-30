@@ -33,6 +33,8 @@ coll_bl = db.blogs_blog
 coll_cp = db.registeredagents_corporation
 coll_tel = db.registeredagents_telecomcorps
 
+def add_to_map(ob):
+    return ob
 
 def get_distinct_column_rows(col):
     res = list(map(add_to_map, coll_tel.distinct(col)))
