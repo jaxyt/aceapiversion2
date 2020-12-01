@@ -15,9 +15,9 @@ from blogs.models import Blog
 from states.models import State
 from counties.models import County
 from cities.models import City
-from registeredagents.models import RegisteredAgent, TelecomCorps
+from registeredagents.models import RegisteredAgent, TelecomCorps, Telecom
 from django.contrib.auth.models import User
-from .forms import SiteForm, TemplateForm, BlogForm, StateForm, CountyForm, CityForm, RegisteredAgentForm, TelecomCorpsForm, UploadFileForm, DbUpdateForm
+from .forms import SiteForm, TemplateForm, BlogForm, StateForm, CountyForm, CityForm, RegisteredAgentForm, TelecomCorpsForm, TelecomForm, UploadFileForm, DbUpdateForm
 import os
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'registered_agents.json')
@@ -843,6 +843,20 @@ def update_city(request):
         }
 
         return render(request, "city.html", context)
+    else:
+        return HttpResponse('FORBIDDEN')
+
+
+def create_telecoms(request):
+    if request.COOKIES.get('sessionid'):
+        try:
+            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'telecomagents.json')) as f:
+                data = json.load(f)
+                for i in data:
+                    Telecom.objects.create(**i)
+                return HttpResponse('Done')
+        except Exception as e:
+            return HttpResponse(f"{e}")
     else:
         return HttpResponse('FORBIDDEN')
 
