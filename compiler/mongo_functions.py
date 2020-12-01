@@ -31,7 +31,8 @@ coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
 coll_cp = db.registeredagents_corporation
-coll_tel = db.registeredagents_telecomcorps
+# coll_tel = db.registeredagents_telecomcorps
+coll_tel = db.registeredagents_telecom
 
 def registered_agent_search(k, q):
     res = []
@@ -273,13 +274,7 @@ def compiler_v3(s, t, r, arr):
                 f"""<li class="agency">Agent:&nbsp;<a href="/registered-agents/search/agency/{agent['agency']}">{agent['agency'].title()}</a></li>""" if agent['agency'] else "",
                 f"""<li class="state">State:&nbsp;<a href="/registered-agents/search/state/{agent['state']}">{agent['state'].title()}</a></li>""" if agent['state'] else "",
                 f"""<li class="city">City:&nbsp;<a href="/registered-agents/search/city/{agent['city']}, {agent['state']}">{agent['city'].title()}</a></li>""" if agent['city'] and agent['state'] else "",
-                f"""<li class="contact-point">Contact:&nbsp;{agent['contact'].title()}</li>""" if agent['contact'] else "",
                 f"""<li class="address">Address:&nbsp;{agent['address'].title()}</li>""" if agent['address'] else "",
-                f"""<li class="mail">Mailing Address:&nbsp;{agent['mail'].title()}</li>"""  if agent['mail'] else "",
-                f"""<li class="ra-phone">Phone:&nbsp;{agent['phone'].title()}</li>""" if agent['phone'] else "",
-                f"""<li class="fax">Fax:&nbsp;{agent['fax'].title()}</li>""" if agent['fax'] else "",
-                f"""<li class="email">Email:&nbsp;{agent['email'].title()}</li>""" if agent['email'] else "",
-                f"""<li class="website">Website:&nbsp;{agent['website'].title()}</li>""" if agent['website'] else "",
                 "</ul></div>"
             ])
             comp = re.sub("XXagentXX", agent_info, comp)
@@ -307,12 +302,9 @@ def compiler_v3(s, t, r, arr):
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>
-                                <th>Address</th>
                                 <th>Details</th>
+                                <th>Registered Agent</th>
+                                <th>Address</th>
                             </tr>
                         </thead>
                         <tbody id="ra-datatable">"""
@@ -328,24 +320,12 @@ def compiler_v3(s, t, r, arr):
                 slug = slugify(f"""{m['company'] if m['company'] else (m['agency'] if m['agency'] else "")}-service-of-process-{m['id']}""")
                 agents_info += "".join([
                     f"""<tr id="{m['id']}">""",
-                    f"""<td><a href="/registered-agents/search/company/{m['company']}">{m['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{m['agency']}">{m['agency'].title()}</a></td>""" if m['company'] and m['agency'] else (f"""<td><a href="/registered-agents/search/company/{m['company']}">{m['company'].title()}</a></td><td>N/A</td>""" if m['company'] else (f"""<td><a href="/registered-agents/search/agency/{m['agency']}">{m['agency'].title()}</a></td><td>N/A</td>""" if m['agency'] else "<td>N/A</td><td>N/A</td>")),
-                    f"""<td><a href="/registered-agents/search/state/{m['state']}">{m['state'].title()}</a></td>""" if m['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{m['city']}, {m['state']}">{m['city'].title()}</a></td>""" if m['state'] and m['city'] else "<td>N/A</td>",
-                    f"""<td class="address">{m['address'].title()}</td>""" if m['address'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
+                    f"""<td>{m['company']}">{m['company'].title() if m['company'] else m['agency'].title()}</td>""",
+                    f"""<td class="address"><a href="/registered-agents/{slug}">{m['address'].title()}</a></td>""" if m['address'] else "<td></td>",
                     "</tr>"
                 ])
             agents_info += """</tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>
-                                <th>Address</th>
-                                <th>Details</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             """
@@ -364,42 +344,27 @@ def compiler_v3(s, t, r, arr):
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>                                
-                                <th>Address</th>                                
                                 <th>Details</th>
+                                <th>Registered Agent</th>                             
+                                <th>Address</th>                                
                             </tr>
                         </thead>
                         <tbody id="ra-datatable">"""
             corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
             k = corp['searchkey']
             q = corp['searchvalue']
+            # <a href="/registered-agents/search/city/{i['city']}, {i['state']}">
             query = re.compile(q, re.IGNORECASE)
             for i in coll_ra.find({k: query}):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<tr id="{i['id']}">""",
-                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
-                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
-                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",
-                    
-                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
+                    f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",                    
+                    f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",
                     "</tr>"
                 ])
             agents_info += """</tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>                                
-                                <th>Address</th>                               
-                                <th>Details</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             """
@@ -416,12 +381,9 @@ def compiler_v3(s, t, r, arr):
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>                                
-                                <th>Address</th>                                
                                 <th>Details</th>
+                                <th>Registered Agent</th>                              
+                                <th>Address</th>                                
                             </tr>
                         </thead>
                         <tbody id="ra-datatable">"""
@@ -436,24 +398,12 @@ def compiler_v3(s, t, r, arr):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<tr id="{i['id']}">""",
-                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
-                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
-                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                   
-                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
+                    f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",                    
+                    f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",                   
                     "</tr>"
                 ])
             agents_info += """</tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>                                
-                                <th>Address</th>                                
-                                <th>Details</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             """
@@ -472,12 +422,9 @@ def compiler_v3(s, t, r, arr):
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>                               
-                                <th>Address</th>                                
                                 <th>Details</th>
+                                <th>Registered Agent</th>                             
+                                <th>Address</th>                                
                             </tr>
                         </thead>
                         <tbody id="ra-datatable">"""
@@ -494,24 +441,12 @@ def compiler_v3(s, t, r, arr):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<tr id="{i['id']}">""",
-                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
-                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
-                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                   
-                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
+                    f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",                    
+                    f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",                   
                     "</tr>"
                 ])
             agents_info += """</tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>                                
-                                <th>Address</th>                                
-                                <th>Details</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             """
@@ -532,13 +467,9 @@ def compiler_v3(s, t, r, arr):
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>
-                                
-                                <th>Address</th>                                
                                 <th>Details</th>
+                                <th>Registered Agent</th>
+                                <th>Address</th>                                
                             </tr>
                         </thead>
                         <tbody id="ra-datatable">"""
@@ -548,24 +479,12 @@ def compiler_v3(s, t, r, arr):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<tr id="{i['id']}">""",
-                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
-                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
-                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                    
-                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
+                    f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",                    
+                    f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",                    
                     "</tr>"
                 ])
             agents_info += """</tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>                                
-                                <th>Address</th>                               
-                                <th>Details</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             """
@@ -582,12 +501,9 @@ def compiler_v3(s, t, r, arr):
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>                                
-                                <th>Address</th>                               
                                 <th>Details</th>
+                                <th>Registered Agent</th>                                
+                                <th>Address</th>                               
                             </tr>
                         </thead>
                         <tbody id="ra-datatable">"""
@@ -599,24 +515,12 @@ def compiler_v3(s, t, r, arr):
                 slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
                 agents_info += "".join([
                     f"""<tr id="{i['id']}">""",
-                    f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td>""" if i['company'] and i['agency'] else (f"""<td><a href="/registered-agents/search/company/{i['company']}">{i['company'].title()}</a></td><td>N/A</td>""" if i['company'] else (f"""<td><a href="/registered-agents/search/agency/{i['agency']}">{i['agency'].title()}</a></td><td>N/A</td>""" if i['agency'] else "<td>N/A</td><td>N/A</td>")),
-                    f"""<td><a href="/registered-agents/search/state/{i['state']}">{i['state'].title()}</a></td>""" if i['state'] else "<td>N/A</td>",
-                    f"""<td><a href="/registered-agents/search/city/{i['city']}, {i['state']}">{i['city'].title()}</a></td>""" if i['state'] and i['city'] else "<td>N/A</td>",                    
-                    f"""<td class="address">{i['address'].title()}</td>""" if i['address'] else "<td>N/A</td>",                    
-                    f"""<td><a href="/registered-agents/{slug}"><button>Go</button></a></td>""",
+                    f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
+                    f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",
+                    f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",                    
                     "</tr>"
                 ])
             agents_info += """</tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Agency</th>
-                                <th>Alt name</th>
-                                <th>State</th>
-                                <th>City</th>                                
-                                <th>Address</th>                                
-                                <th>Details</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             """
@@ -629,35 +533,12 @@ def compiler_v3(s, t, r, arr):
             agent = coll_tel.find_one({'id': int(arr[2].split("-")[-1])})
             agent_info = "".join([
                 f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">""",
-                f"""<li class="carriername">Carrier:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['carriername'])}">{agent['carriername'] if agent['carriername'] else ""}</a></li>""",
-                f"""<li class="businessname">Business Name:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['businessname'])}">{agent['businessname'] if agent['businessname'] else ""}</a></li>""",
-                f"""<li class="holdingcompany">Holding Company:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['holdingcompany'])}">{agent['holdingcompany'] if agent['holdingcompany'] else ""}</a></li>""",
-                f"""<li class="hqaddress">HQ Address:&nbsp;{agent['hqaddress1'] if agent['hqaddress1'] else ""}{", "+agent['hqaddress2'] if agent['hqaddress2'] else ""}{", "+agent['hqaddress3'] if agent['hqaddress3'] else ""}</li>""",
-                f"""<li class="othertradenames"><ul class="other-trade-names">Other Trade Names""" if agent['othertradename1'] else "",
-                f"""<li class="othertradenames1"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename1'])}">{agent['othertradename1']}</a></li>""" if agent['othertradename1'] else "",
-                f"""<li class="othertradenames2"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename2'])}">{agent['othertradename2']}</a></li>""" if agent['othertradename2'] else "",
-                f"""<li class="othertradenames3"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename3'])}">{agent['othertradename3']}</a></li>""" if agent['othertradename3'] else "",
-                f"""<li class="othertradenames4"><a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['othertradename4'])}">{agent['othertradename4']}</a></li>""" if agent['othertradename4'] else "",
-                f"""</ul></li>""" if agent['othertradename1'] else "",
-                f"""<li class="dcagents"><ul class="dc-agents">DC Agents""" if agent['dcagent1'] else "",
-                f"""<li class="dcagent1">Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['dcagent1'])}">{agent['dcagent1']}</a></li>""" if agent['dcagent1'] else "",
-                f"""<li class="dcagent2">Agent Two:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['dcagent2'])}">{agent['dcagent2']}</a></li>""" if agent['dcagent2'] else "",
-                f"""<li class="dcagentaddress">Address:&nbsp;{agent['dcagentaddress1']}{", "+agent['dcagentaddress2'] if agent['dcagentaddress2'] else ""}{", "+agent['dcagentaddress3'] if agent['dcagentaddress3'] else ""}</li>""" if agent['dcagentaddress1'] else "",
-                f"""</ul></li>""" if agent['dcagent1'] else "",
-                f"""<li class="alternateagents"><ul class="alternate-agents">Alternate Agents""" if agent['alternateagent1'] else "",
-                f"""<li class="alternateagent1">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['alternateagent1'])}">{agent['alternateagent1']}</a></li>""" if agent['alternateagent1'] else "",
-                f"""<li class="alternateagent2">Alt Agent:&nbsp;<a href="/telecom-agents/search/carriername/{urllib.parse.quote(agent['alternateagent2'])}">{agent['alternateagent2']}</a></li>""" if agent['alternateagent2'] else "",
-                f"""<li class="alternateagenttelephone">Phone:&nbsp;{agent['alternateagenttelephone']}</li>""" if agent['alternateagenttelephone'] else "",
-                f"""<li class="alternateagentext">Ext:&nbsp;{agent['alternateagentext']}</li>""" if agent['alternateagentext'] else "",
-                f"""<li class="alternateagentfax">Fax:&nbsp;{agent['alternateagentfax']}</li>""" if agent['alternateagentfax'] else "",
-                f"""<li class="alternateagentemail">Email:&nbsp;{agent['alternateagentemail']}</li>""" if agent['alternateagentemail'] else "",
-                f"""<li class="alternateagentaddress">Address:&nbsp;{agent['alternateagentaddress1']}{", "+agent['alternateagentaddress2'] if agent['alternateagentaddress2'] else ""}{", "+agent['alternateagentaddress3'] if agent['alternateagentaddress3'] else ""}{", "+agent['alternateagentcity'] if agent['alternateagentcity'] else ""}{", "+agent['alternateagentstate'] if agent['alternateagentstate'] else ""}{", "+agent['alternateagent1zip'] if agent['alternateagent1zip'] else ""}</li>""" if agent['alternateagentaddress1'] else "",
-                f"""<ul><li>""" if agent['alternateagent1'] else "",
-                f"""<li class="notes"><ul class="other-trade-names">Notes""" if agent['note1'] else "",
-                f"""<li class="note1">{agent['note1']}</li>""" if agent['note1'] else "",
-                f"""<li class="note2">{agent['note2']}</li>""" if agent['note2'] else "",
-                f"""<li class="note3">{agent['note3']}</li>""" if agent['note3'] else "",
-                f"""</ul></li>""" if agent['note1'] else "",
+                f"""<li class="othertradenames">Registered Agent(s): {agent['dcagent1']}</li>""",
+                f"""<li class="carriername">Legal Name of Carrier: {agent['carriername']}</li>""",
+                f"""<li class="businessname">Business Name: {agent['businessname']}</li>""" if agent['businessname'] else "",
+                f"""<li class="holdingcompany">Holding Company: {agent['holdingcompany']}</li>""" if agent['holdingcompany'] else "",
+                f"""<li class="othertradenames">Other Trade Names: {agent['othertradenames1']}</li>""" if agent['othertradenames1'] else "",
+                f"""<li class="dcagentaddress">Address: {agent['dcagentaddress1']}</li>""",
                 "</ul></div>"
             ])
             comp = re.sub("XXagentXX", agent_info, comp)
@@ -668,71 +549,29 @@ def compiler_v3(s, t, r, arr):
                     <table id="default_order" class="table table-striped table-bordered no-wrap">
                         <thead>
                             <tr>
-                                <th>DC Agent</th>
-                                <th>DC Agent 2</th>
-                                <th>Carrier</th>
-                                <th>Business</th>
-                                <th>Holding Co.</th>
-                                <th>HQ Addr.</th>
-                                <th>HQ Addr. 2</th>
-                                <th>HQ Addr. 3</th>
-                                <th>Alt. Trade Name</th>
-                                <th>Alt. Trade Name 2</th>
-                                <th>Alt. Trade Name 3</th>
-                                <th>Alt. Trade Name 4</th>
-                                <th>Alt. Agent</th>
-                                <th>Alt. Agent 2</th>
                                 <th>Details</th>
+                                <th>Registered Agent</th>
+                                <th>Carrier</th>
+                                <th>Agent Address</th>
                             </tr>
                         </thead>
                         <tbody id="ra-datatable">"""
-            k = arr[3]
             q = unquote(arr[4])
             q = re.sub(r'[^\w\s]','',q)
             q = re.sub(r'\s{2,}','',q)
             q = q.strip(" ")
             search_results = coll_tel.find({"$text":{"$search":q}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})]) if arr[4] != "" else coll_tel.find()
             for m in search_results:
-                slug = slugify(f"""{m['carriername'] if m['carriername'] else (m['businessname'] if m['businessname'] else "")}-service-of-process-{m['id']}""")
+                slug = slugify(f"""{m['carriername']}-{m['dcagent1']}-service-of-process-{m['id']}""")
                 agents_info += "".join([
                     f"""<tr id="{m['id']}">""",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['dcagent1']}">{m['dcagent1']}</a></td>""" if m['dcagent1'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['dcagent2']}">{m['dcagent2']}</a></td>""" if m['dcagent2'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['carriername']}">{m['carriername']}</a></td>""" if m['carriername'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['businessname']}">{m['businessname']}</a></td>""" if m['businessname'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['holdingcompany']}">{m['holdingcompany']}</a></td>""" if m['holdingcompany'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/hqaddress1/{m['hqaddress1']}">{m['hqaddress1']}</a></td>""" if m['hqaddress1'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/hqaddress2/{m['hqaddress2']}">{m['hqaddress2']}</a></td>""" if m['hqaddress2'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/hqaddress3/{m['hqaddress3']}">{m['hqaddress3']}</a></td>""" if m['hqaddress3'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename1']}">{m['othertradename1']}</a></td>""" if m['othertradename1'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename2']}">{m['othertradename2']}</a></td>""" if m['othertradename2'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename3']}">{m['othertradename3']}</a></td>""" if m['othertradename3'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['othertradename4']}">{m['othertradename4']}</a></td>""" if m['othertradename4'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['alternateagent1']}">{m['alternateagent1']}</a></td>""" if m['alternateagent1'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/search/carriername/{m['alternateagent2']}">{m['alternateagent2']}</a></td>""" if m['alternateagent2'] else "<td>N/A</td>",
-                    f"""<td><a href="/telecom-agents/{slug}"><button>Go</button></a></td>""",
+                    f"""<td><a href="/telecom-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
+                    f"""<td>{m['dcagent1']}</td>""",
+                    f"""<td>{m['carriername']}</td>""",
+                    f"""<td><a href="/telecom-agents/{slug}">{m['dcagentaddress1']}</a></td>""",
                     "</tr>"
                 ])
             agents_info += """</tbody>
-                        <tfoot>
-                            <tr>
-                                <th>DC Agent</th>
-                                <th>DC Agent 2</th>
-                                <th>Carrier</th>
-                                <th>Business</th>
-                                <th>Holding Co.</th>
-                                <th>HQ Addr.</th>
-                                <th>HQ Addr. 2</th>
-                                <th>HQ Addr. 3</th>
-                                <th>Alt. Trade Name</th>
-                                <th>Alt. Trade Name 2</th>
-                                <th>Alt. Trade Name 3</th>
-                                <th>Alt. Trade Name 4</th>
-                                <th>Alt. Agent</th>
-                                <th>Alt. Agent 2</th>
-                                <th>Details</th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             """
