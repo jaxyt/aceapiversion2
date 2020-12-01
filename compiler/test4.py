@@ -31,7 +31,8 @@ coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
 coll_cp = db.registeredagents_corporation
-coll_tel = db.registeredagents_telecomcorps
+# coll_tel = db.registeredagents_telecomcorps
+coll_tel = db.registeredagents_telecom
 
 def add_to_map(ob):
     return ob
@@ -43,7 +44,13 @@ def get_distinct_column_rows():
     # return pp.pformat(list(map(add_to_map, coll_tel.find())), indent=4)
     return json.dumps(list(map(add_to_map, coll_tel.find({}, {'_id': 0}))))
 
-print(get_distinct_column_rows())
+# print(get_distinct_column_rows())
+
+
+def find_mistakes():
+    pp.pprint(coll_tel.find({'dcagent1': r'None?;?'}))
+
+find_mistakes()
 
 
 
