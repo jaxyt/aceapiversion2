@@ -321,7 +321,7 @@ def compiler_v3(s, t, r, arr):
                 agents_info += "".join([
                     f"""<tr id="{m['id']}">""",
                     f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
-                    f"""<td>{m['company']}">{m['company'].title() if m['company'] else m['agency'].title()}</td>""",
+                    f"""<td>{m['company'].title() if m['company'] else m['agency'].title()}</td>""",
                     f"""<td class="address"><a href="/registered-agents/{slug}">{m['address'].title()}</a></td>""" if m['address'] else "<td></td>",
                     "</tr>"
                 ])
