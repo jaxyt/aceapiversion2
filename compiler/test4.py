@@ -48,7 +48,8 @@ def get_distinct_column_rows():
 
 
 def find_mistakes():
-    pp.pprint(coll_tel.find({'dcagent1': r'None?;?'}))
+    for i in coll_tel.find({'dcagent1': r'None?;?'}):
+        pp.pprint(i)
 
 find_mistakes()
 
