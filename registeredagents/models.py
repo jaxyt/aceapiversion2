@@ -59,3 +59,24 @@ class TelecomCorps(models.Model):
     note1 = models.CharField(max_length=200, blank=True)
     note2 = models.CharField(max_length=200, blank=True)
     note3 = models.CharField(max_length=200, blank=True)
+
+
+class Telecom(models.Model):
+    carriername = models.TextField()
+    businessname = models.TextField(blank=True)
+    holdingcompany = models.TextField(blank=True)
+    hqaddress1 = models.TextField(blank=True)
+    othertradename1 = models.TextField(blank=True)
+    dcagent1 = models.TextField()
+    dcagentaddress1 = models.TextField()
+    dcagentcity = models.TextField()
+    dcagentstate = models.TextField()
+    dcagentzip = models.TextField(blank=True)
+    alternateagent1 = models.TextField(blank=True)
+    alternateagenttelephone = models.TextField(blank=True)
+    alternateagentemail = models.TextField(blank=True)
+    alternateagentaddress1 = models.TextField(blank=True)
+    alternateagentcity = models.TextField(blank=True)
+    alternateagentstate = models.TextField(blank=True)
+    alternateagentzip = models.TextField(blank=True)
+    
