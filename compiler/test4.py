@@ -48,8 +48,12 @@ def get_distinct_column_rows():
 
 
 def find_mistakes():
-    for i in coll_tel.find():
-        pp.pprint(i)
+    query = re.compile('(non)|(none)|(systmes)', re.IGNORECASE)
+    for i in coll_ra.find({'dcagent1': query}):
+        print(f"""
+        {i['id']}
+        {i['dcagent1']}
+        """)
 
 find_mistakes()
 
