@@ -358,16 +358,17 @@ def compiler_v3(s, t, r, arr):
         elif arr[1] == "process-server":
             if len(arr) == 3:
                 agents_info = """
-                    <div class="table-responsive">
-                        <table id="default_order" class="table table-striped table-bordered no-wrap">
-                            <thead>
-                                <tr>
-                                    <th>Details</th>
-                                    <th>Registered Agent</th>                             
-                                    <th>Address</th>                                
-                                </tr>
-                            </thead>
-                            <tbody id="ra-datatable">"""
+<div class="table-responsive">
+    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th>Registered Agent</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+                """
                 corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
                 k = corp['searchkey']
                 q = corp['searchvalue']
@@ -375,16 +376,17 @@ def compiler_v3(s, t, r, arr):
                 query = re.compile(q, re.IGNORECASE)
                 for i in coll_ra.find({k: query}):
                     slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
-                    agents_info += "".join([
-                        f"""<tr id="{i['id']}">""",
-                        f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
-                        f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",                    
-                        f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",
-                        "</tr>"
-                    ])
-                agents_info += """</tbody>
-                        </table>
-                    </div>
+                    agents_info += f"""
+            <tr>
+                <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
+                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
+            </tr>
+                    """
+                agents_info += """
+        </tbody>
+    </table>
+</div>
                 """
                 comp = re.sub('XXagentsXX', agents_info, comp)
                 comp = re.sub('XXcorpXX', corp['name'], comp)
@@ -395,16 +397,17 @@ def compiler_v3(s, t, r, arr):
                 comp = re.sub('XXcorpsinstatesXX', corps_in_states, comp)
             elif len(arr) == 4 or (len(arr) == 5 and arr[4] == ""):
                 agents_info = """
-                    <div class="table-responsive">
-                        <table id="default_order" class="table table-striped table-bordered no-wrap">
-                            <thead>
-                                <tr>
-                                    <th>Details</th>
-                                    <th>Registered Agent</th>                              
-                                    <th>Address</th>                                
-                                </tr>
-                            </thead>
-                            <tbody id="ra-datatable">"""
+<div class="table-responsive">
+    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th>Registered Agent</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+                """
                 corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
                 st = " ".join(arr[3].split("-"))
                 st = re.sub('Washington District of Columbia', 'DC', st)
@@ -414,16 +417,17 @@ def compiler_v3(s, t, r, arr):
                 state_query = re.compile(st.lower(), re.IGNORECASE)
                 for i in coll_ra.find({k: query, 'state': state_query}):
                     slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
-                    agents_info += "".join([
-                        f"""<tr id="{i['id']}">""",
-                        f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
-                        f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",                    
-                        f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",                   
-                        "</tr>"
-                    ])
-                agents_info += """</tbody>
-                        </table>
-                    </div>
+                    agents_info += f"""
+            <tr>
+                <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
+                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
+            </tr>
+                    """
+                agents_info += """
+        </tbody>
+    </table>
+</div>
                 """
                 comp = re.sub('XXagentsXX', agents_info, comp)
                 comp = re.sub('XXcorpXX', corp['name'], comp)
@@ -436,16 +440,17 @@ def compiler_v3(s, t, r, arr):
                 comp = re.sub('XXcitycorpsXX', corps_in_cities, comp)
             elif len(arr) == 5:
                 agents_info = """
-                    <div class="table-responsive">
-                        <table id="default_order" class="table table-striped table-bordered no-wrap">
-                            <thead>
-                                <tr>
-                                    <th>Details</th>
-                                    <th>Registered Agent</th>                             
-                                    <th>Address</th>                                
-                                </tr>
-                            </thead>
-                            <tbody id="ra-datatable">"""
+<div class="table-responsive">
+    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th>Registered Agent</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+                """
                 corp = coll_cp.find_one({'id': int(arr[2].split("-")[-1])})
                 st = " ".join(arr[3].split("-"))
                 st = re.sub('Washington District of Columbia', 'DC', st)
@@ -457,16 +462,17 @@ def compiler_v3(s, t, r, arr):
                 city_query = re.compile(cit.lower(), re.IGNORECASE)
                 for i in coll_ra.find({k: query, 'state': state_query, 'city': city_query}):
                     slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
-                    agents_info += "".join([
-                        f"""<tr id="{i['id']}">""",
-                        f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
-                        f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",                    
-                        f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",                   
-                        "</tr>"
-                    ])
-                agents_info += """</tbody>
-                        </table>
-                    </div>
+                    agents_info += f"""
+            <tr>
+                <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
+                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
+            </tr>
+                    """
+                agents_info += """
+        </tbody>
+    </table>
+</div>
                 """
                 comp = re.sub('XXagentsXX', agents_info, comp)
                 comp = re.sub('XXcorpXX', corp['name'], comp)
@@ -481,30 +487,32 @@ def compiler_v3(s, t, r, arr):
                 comp = re.sub('XXcorpsinstatesXX', corps_in_states, comp)
             elif len(arr) == 3:
                 agents_info = """
-                    <div class="table-responsive">
-                        <table id="default_order" class="table table-striped table-bordered no-wrap">
-                            <thead>
-                                <tr>
-                                    <th>Details</th>
-                                    <th>Registered Agent</th>
-                                    <th>Address</th>                                
-                                </tr>
-                            </thead>
-                            <tbody id="ra-datatable">"""
+<div class="table-responsive">
+    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th>Registered Agent</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+                """
                 st = " ".join(arr[2].split("-")) if re.match('washington-district-of-columbia', arr[2]) is None else "dc"
                 state_query = re.compile(st.lower(), re.IGNORECASE)
                 for i in coll_ra.find({'state': state_query}):
                     slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
-                    agents_info += "".join([
-                        f"""<tr id="{i['id']}">""",
-                        f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
-                        f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",                    
-                        f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",                    
-                        "</tr>"
-                    ])
-                agents_info += """</tbody>
-                        </table>
-                    </div>
+                    agents_info += f"""
+            <tr>
+                <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
+                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
+            </tr>
+                    """
+                agents_info += """
+        </tbody>
+    </table>
+</div>
                 """
                 comp = re.sub('XXagentsXX', agents_info, comp)
                 comp = re.sub('XXstatequeryXX', st.title(), comp)
@@ -515,32 +523,34 @@ def compiler_v3(s, t, r, arr):
                 comp = re.sub('XXcitycorpsXX', corps_in_cities, comp)
             elif len(arr) == 4:
                 agents_info = """
-                    <div class="table-responsive">
-                        <table id="default_order" class="table table-striped table-bordered no-wrap">
-                            <thead>
-                                <tr>
-                                    <th>Details</th>
-                                    <th>Registered Agent</th>                                
-                                    <th>Address</th>                               
-                                </tr>
-                            </thead>
-                            <tbody id="ra-datatable">"""
+<div class="table-responsive">
+    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th>Registered Agent</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+                """
                 st = " ".join(arr[2].split("-"))
                 cit = " ".join(arr[3].split("-"))
                 state_query = re.compile(st.lower(), re.IGNORECASE)
                 city_query = re.compile(cit.lower(), re.IGNORECASE)
                 for i in coll_ra.find({'state': state_query, 'city': city_query}):
                     slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
-                    agents_info += "".join([
-                        f"""<tr id="{i['id']}">""",
-                        f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
-                        f"""<td>{i['company'].title() if i['company'] else i['agency'].title()}</td>""",
-                        f"""<td class="address"><a href="/registered-agents/{slug}">{i['address'].title()}</a></td>""" if i['address'] else "<td></td>",                    
-                        "</tr>"
-                    ])
-                agents_info += """</tbody>
-                        </table>
-                    </div>
+                    agents_info += f"""
+            <tr>
+                <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
+                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
+            </tr>
+                    """
+                agents_info += """
+        </tbody>
+    </table>
+</div>
                 """
                 comp = re.sub('XXagentsXX', agents_info, comp)
                 comp = re.sub('XXstatequeryXX', st.title(), comp)
