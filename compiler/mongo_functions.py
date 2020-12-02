@@ -189,7 +189,7 @@ def compiler_v3(s, t, r, arr):
                 ])
         comp = "\n".join([ 
             "<!DOCTYPE html>",
-            """<html lang="en">""",
+            """<html dir="ltr" lang="en">""",
             "<head>",
             f"""{s.sitemetas if s.sitemetas else t.sitemetas if t.sitemetas else ""}""",
             f"""{spage.pagemetas if spage.pagemetas else tpage.pagemetas if tpage.pagemetas else ""}""",
@@ -314,7 +314,7 @@ def compiler_v3(s, t, r, arr):
                 #from .tests2 import lev_and_cos_search
                 agents_info = """
                     <div class="table-responsive">
-                        <table id="default_order" class="table table-striped table-bordered no-wrap">
+                        <table id="default_order" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th>Details</th>
