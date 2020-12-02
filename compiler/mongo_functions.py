@@ -546,7 +546,7 @@ def compiler_v3(s, t, r, arr):
             
             if len(arr) == 3:
                 print(arr[2])
-                agent = coll_tel.find({'id': int(arr[2].split("-")[-1])})
+                agent = coll_tel.find_one({'id': int(arr[2].split("-")[-1])})
                 agent_info = "".join([
                     f"""<div class="registered-agent"><ul id="{agent['id']}" class="agent-container">""",
                     f"""<li class="t-agent">Registered Agent(s): {agent['dcagent1']}</li>""",
