@@ -23,6 +23,19 @@ module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'registered_agents.json')
 
 
+import linecache
+import sys
+
+def PrintException():
+    exc_type, exc_obj, tb = sys.exc_info()
+    f = tb.tb_frame
+    lineno = tb.tb_lineno
+    filename = f.f_code.co_filename
+    linecache.checkcache(filename)
+    line = linecache.getline(filename, lineno, f.f_globals)
+    print(f"""EXCEPTION IN ({filename}, LINE {lineno} "{line.strip()}"): {exc_obj}""")
+
+
 
 
 
@@ -82,6 +95,7 @@ def test_send(request):
             compiled = compiler_v3(site, template, route, page_uri_array)
             return HttpResponse(compiled, content_type="text/html")
     except Exception as e:
+        PrintException()
         print(e)
         return HttpResponse("<h1>This Page Does Not Exist</h1><br><a href='/'>Return Home</a>", content_type="text/html")
 
