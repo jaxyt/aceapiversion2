@@ -34,6 +34,9 @@ coll_cp = db.registeredagents_corporation
 # coll_tel = db.registeredagents_telecomcorps
 coll_tel = db.registeredagents_telecom
 
+states = coll_ra.find().distinct('state')
+cities = coll_ra.find().distinct('city')
+
 def add_to_map(ob):
     return ob
 
@@ -62,7 +65,22 @@ def find_mistakes():
         """)
 
 
-find_mistakes()
+results = []
+
+for i in states:
+    s = coll_st.find_one({'statename': f"{i}".lower()})
+    for n in cities:
+        try:
+            c = coll_ci.find({'stateid': s['id'], 'cityname': f"{n}".lower()})
+            for k in c:
+                try:
+                   results.append(f"{k['cityname']}".capitalize()+", "+f"{k['statename']}".capitalize())
+                except Exception as e:
+                    pass
+        except Exception as e:
+                pass
+
+print(results)
 
 
 
