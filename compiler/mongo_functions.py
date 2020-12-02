@@ -346,12 +346,6 @@ def compiler_v3(s, t, r, arr):
                 """
                 comp = re.sub("XXagentsXX", agents_info, comp)
                 comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
-                #f"""<li class="contact-point">Contact:&nbsp;{i['contact'].title()}</li>""" if i['contact'] else "",
-                #f"""<li class="mail">Mailing Address:&nbsp;{i['mail'].title()}</li>""" if i['mail'] else "",
-                #f"""<li class="ra-phone">Phone:&nbsp;{i['phone'].title()}</li>""" if i['phone'] else "",
-                #f"""<li class="fax">Fax:&nbsp;{i['fax'].title()}</li>""" if i['fax'] else "",
-                #f"""<li class="email">Email:&nbsp;{i['email'].title()}</li>""" if i['email'] else "",
-                #f"""<li class="website">Website:&nbsp;{i['website'].title()}</li>""" if i['website'] else "",
         elif arr[1] == "process-server":
             if len(arr) == 3:
                 agents_info = """
