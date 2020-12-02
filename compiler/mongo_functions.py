@@ -574,17 +574,18 @@ def compiler_v3(s, t, r, arr):
             elif len(arr) == 5:
                 from urllib.parse import unquote
                 agents_info = """
-                    <div class="table-responsive">
-                        <table id="default_order" class="table table-striped table-bordered no-wrap">
-                            <thead>
-                                <tr>
-                                    <th>Details</th>
-                                    <th>Registered Agent</th>
-                                    <th>Carrier</th>
-                                    <th>Agent Address</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ra-datatable">"""
+<div class="table-responsive">
+    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th>Registered Agent</th>
+                <th>Agent Address</th>
+                <th>Carrier</th>
+            </tr>
+        </thead>
+        <tbody>
+                """
                 q = unquote(arr[4])
                 q = re.sub(r'[^\w\s]','',q)
                 q = re.sub(r'\s{2,}','',q)
@@ -592,17 +593,18 @@ def compiler_v3(s, t, r, arr):
                 search_results = coll_tel.find({"$text":{"$search":q}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})]) if arr[4] != "" else coll_tel.find()
                 for m in search_results:
                     slug = slugify(f"""{m['carriername']}-{m['dcagent1']}-service-of-process-{m['id']}""")
-                    agents_info += "".join([
-                        f"""<tr id="{m['id']}">""",
-                        f"""<td><a href="/telecom-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
-                        f"""<td>{m['dcagent1']}</td>""",
-                        f"""<td>{m['carriername']}</td>""",
-                        f"""<td><a href="/telecom-agents/{slug}">{m['dcagentaddress1']}</a></td>""",
-                        "</tr>"
-                    ])
-                agents_info += """</tbody>
-                        </table>
-                    </div>
+                    agents_info += f"""
+            <tr id="{m['id']}">
+                <td><a href="/telecom-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
+                <td>{m['dcagent1']}</td>
+                <td><a href="/telecom-agents/{slug}">{m['dcagentaddress1']}</a></td>
+                <td>{m['carriername']}</td>
+            </tr>
+                    """
+                agents_info += """
+        </tbody>
+    </table>
+</div>
                 """
                 comp = re.sub("XXagentsXX", agents_info, comp)
                 comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
