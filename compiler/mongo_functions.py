@@ -553,7 +553,7 @@ def compiler_v3(s, t, r, arr):
                     f"""<li class="carriername">Legal Name of Carrier: {agent['carriername']}</li>""",
                     f"""<li class="businessname">Business Name: {agent['businessname']}</li>""" if agent['businessname'] else "",
                     f"""<li class="holdingcompany">Holding Company: {agent['holdingcompany']}</li>""" if agent['holdingcompany'] else "",
-                    # f"""<li class="othertradenames">Other Trade Names: {agent['othertradenames1']}</li>""" if agent['othertradenames1'] else "",
+                    f"""<li class="othertradenames">Other Trade Names: {agent['othertradename1']}</li>""" if agent['othertradename1'] else "",
                     f"""<li class="dcagentaddress">Address: {agent['dcagentaddress1']}</li>""",
                     "</ul></div>"
                 ])
