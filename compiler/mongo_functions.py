@@ -313,16 +313,17 @@ def compiler_v3(s, t, r, arr):
                 from urllib.parse import unquote
                 #from .tests2 import lev_and_cos_search
                 agents_info = """
-                    <div class="table-responsive">
-                        <table id="default_order" class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Details</th>
-                                    <th>Registered Agent</th>
-                                    <th>Address</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ra-datatable">"""
+<div class="table-responsive">
+    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th>Registered Agent</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+                """
                 k = arr[3]
                 q = unquote(arr[4])
                 q = re.sub(r'[^\w\s]','',q)
@@ -333,16 +334,24 @@ def compiler_v3(s, t, r, arr):
                 for m in search_results:
                     #current_agent = coll_ra.find_one({'id': int(m[0])})
                     slug = slugify(f"""{m['company'] if m['company'] else (m['agency'] if m['agency'] else "")}-service-of-process-{m['id']}""")
-                    agents_info += "".join([
-                        f"""<tr id="{m['id']}">""",
-                        f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
-                        f"""<td>{m['company'].title() if m['company'] else m['agency'].title()}</td>""",
-                        f"""<td class="address"><a href="/registered-agents/{slug}">{m['address'].title()}</a></td>""" if m['address'] else "<td></td>",
-                        "</tr>"
-                    ])
-                agents_info += """</tbody>
-                        </table>
-                    </div>
+                    agents_info += f"""
+            <tr>
+                <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
+                <td>{m['company'].title() if m['company'] else m['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{m['address'].title() if m['address'] else ""}</a></td>
+            </tr>
+                    """
+                    #  agents_info += "".join([
+                    #      f"""<tr id="{m['id']}">""",
+                    #      f"""<td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>""",
+                    #      f"""<td>{m['company'].title() if m['company'] else m['agency'].title()}</td>""",
+                    #      f"""<td class="address"><a href="/registered-agents/{slug}">{m['address'].title()}</a></td>""" if m['address'] else "<td></td>",
+                    #      "</tr>"
+                    #  ])
+                agents_info += """
+        </tbody>
+    </table>
+</div>
                 """
                 comp = re.sub("XXagentsXX", agents_info, comp)
                 comp = re.sub("XXagentsqueryXX", arr[4].title(), comp)
