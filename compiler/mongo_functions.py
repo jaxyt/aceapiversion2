@@ -655,7 +655,7 @@ def compiler_v3(s, t, r, arr):
     except Exception as e:
         PrintException()
         print(e)
-        return e
+        raise Exception(e)
 
 
 

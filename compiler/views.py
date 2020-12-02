@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, SimpleCookie, HttpResponseRedirect
+from django.http import HttpResponse, SimpleCookie, HttpResponseRedirect, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from pymongo import MongoClient
@@ -97,7 +97,8 @@ def test_send(request):
     except Exception as e:
         PrintException()
         print(e)
-        return HttpResponse("<h1>This Page Does Not Exist</h1><br><a href='/'>Return Home</a>", content_type="text/html")
+        # return HttpResponse("<h1>This Page Does Not Exist</h1><br><a href='/'>Return Home</a>", content_type="text/html")
+        return Http404()
 
 def handle_uploaded_file(f, t):
     with open(os.path.join(module_dir, t), 'wb+') as destination:
