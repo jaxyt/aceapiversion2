@@ -842,7 +842,7 @@ def do_mongo_query():
         # json.dumps(list(map(add_to_map, coll_ra.find({"address": ""}))))
         # x = coll_ra.update({"id": int(iden)}, {"$set": {"city": cit}})
         # print(x)
-        res = json.dumps(list(map(add_to_map, coll_ra.find())))
+        res = json.dumps(list(map(add_to_map, coll_ra.find({}, {'_id': 0}))))
         return res
     except Exception as e:
         print(e)
