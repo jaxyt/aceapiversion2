@@ -44,7 +44,7 @@ urlpatterns = [
     path('auth/city/update/', views.update_city, name='city_update'),
     path('auth/nice/update/', views.update_site, name='nice_update'),
     path('auth/code/update/', views.update_code, name='code_update'),
-    # path('auth/db/json/', views.get_json_from_db, name='get_json_from_db'),
+    path('auth/db/json/', views.get_json_from_db, name='get_json_from_db'),
     # path('auth/db/json/', views.create_telecoms, name='get_json_from_db'),
     path('admin/', admin.site.urls),
     path('auth/upload/', views.upload_file, name='file_upload'),

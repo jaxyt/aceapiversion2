@@ -836,13 +836,13 @@ def telecom_search(searchterm, model_keys):
 
 
 # coll_ra.find({"$text":{"$search":"dothan"}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})])
-def do_mongo_query(iden, cit):
+def do_mongo_query():
     res = False
     try:
         # json.dumps(list(map(add_to_map, coll_ra.find({"address": ""}))))
         # x = coll_ra.update({"id": int(iden)}, {"$set": {"city": cit}})
         # print(x)
-        res = json.dumps(list(map(add_to_map, coll_ra.find({"address": ""}))))
+        res = json.dumps(list(map(add_to_map, coll_ra.find())))
         return res
     except Exception as e:
         print(e)
