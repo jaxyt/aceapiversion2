@@ -1167,14 +1167,14 @@ def get_json_from_db(request):
     else:
         return HttpResponse('FORBIDDEN')
 
-def ret_jason(request):
+def ret_jason(request, collection):
     if request.COOKIES.get('sessionid'):
         from .mongo_functions import do_mongo_query
         try:
             # print(do_mongo_query(idn, c))
             # return HttpResponse(do_mongo_query(idn, c), content_type="application/json")
             # return HttpResponse(get_distinct_column_rows(c), content_type="text/plain")
-            return HttpResponse(do_mongo_query(), content_type="application/json")
+            return HttpResponse(do_mongo_query(collection), content_type="application/json")
             # return HttpResponse(get_distinct_column_rows(c), content_type="text/plain")
         except Exception as e:
             PrintException()

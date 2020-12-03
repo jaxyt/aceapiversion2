@@ -45,7 +45,7 @@ coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
 coll_cp = db.registeredagents_corporation
-# coll_tel = db.registeredagents_telecomcorps
+coll_telco = db.registeredagents_telecomcorps
 coll_tel = db.registeredagents_telecom
 
 def registered_agent_search(k, q):
@@ -836,13 +836,32 @@ def telecom_search(searchterm, model_keys):
 
 
 # coll_ra.find({"$text":{"$search":"dothan"}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})])
-def do_mongo_query():
+def do_mongo_query(collection):
     res = False
     try:
         # json.dumps(list(map(add_to_map, coll_ra.find({"address": ""}))))
         # x = coll_ra.update({"id": int(iden)}, {"$set": {"city": cit}})
         # print(x)
-        res = json.dumps(list(map(add_to_map, coll_ra.find({}, {'_id': 0}))))
+        if collection == 'ra':
+          res = json.dumps(list(map(add_to_map, coll_ra.find({}, {'_id': 0}))))
+        elif collection == 'st':
+          res = json.dumps(list(map(add_to_map, coll_st.find({}, {'_id': 0}))))
+        elif collection == 'co':
+          res = json.dumps(list(map(add_to_map, coll_co.find({}, {'_id': 0}))))
+        elif collection == 'ci':
+          res = json.dumps(list(map(add_to_map, coll_ci.find({}, {'_id': 0}))))
+        elif collection == 'si':
+          res = json.dumps(list(map(add_to_map, coll_si.find({}, {'_id': 0}))))
+        elif collection == 'te':
+          res = json.dumps(list(map(add_to_map, coll_te.find({}, {'_id': 0}))))
+        elif collection == 'bl':
+          res = json.dumps(list(map(add_to_map, coll_bl.find({}, {'_id': 0}))))
+        elif collection == 'cp':
+          res = json.dumps(list(map(add_to_map, coll_cp.find({}, {'_id': 0}))))
+        elif collection == 'telco':
+          res = json.dumps(list(map(add_to_map, coll_telco.find({}, {'_id': 0}))))
+        elif collection == 'tel':
+          res = json.dumps(list(map(add_to_map, coll_tel.find({}, {'_id': 0}))))
         return res
     except Exception as e:
         print(e)
