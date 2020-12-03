@@ -855,7 +855,7 @@ def do_mongo_query(collection):
         elif collection == 'te':
           res = json.dumps(list(map(add_to_map, coll_te.find({}, {'_id': 0}))))
         elif collection == 'bl':
-          res = json.dumps(list(map(add_to_map, coll_bl.find({}, {'_id': 0}))))
+          res = json.dumps(list(map(add_to_map, coll_bl.find({}, {'_id': 0, 'blogdate': 0}))))
         elif collection == 'cp':
           res = json.dumps(list(map(add_to_map, coll_cp.find({}, {'_id': 0}))))
         elif collection == 'telco':
