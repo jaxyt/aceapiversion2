@@ -849,7 +849,7 @@ def do_mongo_query(collection):
         elif collection == 'co':
           res = json.dumps(list(map(add_to_map, coll_co.find({}, {'_id': 0}))))
         elif collection == 'ci':
-          res = json.dumps(list(map(add_to_map, coll_ci.find({}, {'_id': 0}))))
+          res = json.dumps(list(map(add_to_map, coll_ci.find({}, {'_id': 0, 'cityngram': 0}))))
         elif collection == 'si':
           res = json.dumps(list(map(add_to_map, coll_si.find({}, {'_id': 0}))))
         elif collection == 'te':
