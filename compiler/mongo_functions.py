@@ -19,6 +19,7 @@ from colorama import Fore
 from fuzzywuzzy import process, fuzz
 import urllib.parse
 from django.template.defaultfilters import slugify
+from urllib.parse import quote, unquote
 
 
 import linecache
@@ -706,16 +707,16 @@ def render_xml_sitemap(s, t, rt):
                 sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/blog/posts/{n['bloguri'] if n['bloguri'] else ""}-{n['id']}</loc></url>""", coll_bl.find({'blogcategory': s.blogcategory})))))
         elif re.search(r'^/registered-agents/', i.route) is not None:
             if re.search(r'^/registered-agents/search', i.route) is not None:
-                import urllib.parse
+                
                 for n in ["company", "agency", "state", "city"]:
-                    sitemap_urls.append("".join(list(map(lambda k: "".join([f"""<url><loc>https://www.{s.sitename}.com""", urllib.parse.quote(f"""/registered-agents/search/{n}/{k.lower()}"""), "</loc></url>"]), coll_ra.find().distinct(n)))))
+                    sitemap_urls.append("".join(list(map(lambda k: "".join([f"""<url><loc>https://www.{s.sitename}.com""", quote(f"""/registered-agents/search/{n}/{k.lower()}"""), "</loc></url>"]), coll_ra.find().distinct(n)))))
             else:
                 sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/registered-agents/service-of-process-{n['id']}</loc></url>""", coll_ra.find()))))
         elif re.search(r'^/telecom-agents/', i.route) is not None:
             if re.search(r'^/telecom-agents/search', i.route) is not None:
-                import urllib.parse
+                
                 for n in ['carriername', 'businessname', 'holdingcompany', 'othertradename1', 'othertradename2', 'othertradename3', 'othertradename4', 'dcagent1', 'dcagent2', 'dcagentcity', 'dcagentstate']:
-                    sitemap_urls.append("".join(list(map(lambda k: "".join([f"""<url><loc>https://www.{s.sitename}.com""", urllib.parse.quote(f"""/telecom-agents/search/{n}/{k.lower()}"""), "</loc></url>"]), coll_tel.find().distinct(n)))))
+                    sitemap_urls.append("".join(list(map(lambda k: "".join([f"""<url><loc>https://www.{s.sitename}.com""", quote(f"""/telecom-agents/search/{n}/{k.lower()}"""), "</loc></url>"]), coll_tel.find().distinct(n)))))
             else:
                 sitemap_urls.append("".join(list(map(lambda n: f"""<url><loc>https://www.{s.sitename}.com/telecom-agents/service-of-process-{n['id']}</loc></url>""", coll_tel.find()))))
         elif re.search(r'^/process-server/', i.route) is not None:
@@ -727,6 +728,222 @@ def render_xml_sitemap(s, t, rt):
                 sitemap_urls.append(f"""<url><loc>https://www.{s.sitename}.com{i.route}</loc></url>""")
     sitemap = "".join(["""<?xml version="1.0" encoding="utf-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""", "".join(sitemap_urls), """</urlset>"""])
     return sitemap
+
+
+desired_states = [
+    'new york',
+    'arizona',
+    'california',
+    'arkansas',
+    'nevada',
+    'florida',
+    'colorado',
+    'michigan',
+    'texas',
+    'pennsylvania',
+    'oregon',
+    'north carolina',
+    'new jersey',
+]
+st_combined = "(" + ")|(".join(desired_states) + ")"
+st_rx = re.compile(st_combined, re.IGNORECASE)
+
+
+def myFunc(e):
+        return len(e)
+
+
+def process_server_sitemap(s, rt, m):
+    """
+    docstring
+    """
+    locs = []
+    for i in coll_cp.find({}, {'_id': 0}):
+        locs.append(f"https://www.{s['sitename']}.com{m}{slugify(i['searchvalue'])}-{i['id']}")
+        for n in coll_ci.find({}, {'_id': 0}):
+            if re.search(st_rx, n['statename']):
+                # locs.append(f"https://www.{s['sitename']}.com{m}{slugify(i['searchvalue'])}-{i['id']}/{slugify(n['statename'])}")
+                locs.append(f"https://www.{s['sitename']}.com{m}{slugify(i['searchvalue'])}-{i['id']}/{slugify(n['statename'])}/{slugify(n['cityname'])}")
+    return list(set(locs)) if locs != [] else None
+
+
+def registered_agents_sitemap(s, rt, m):
+    """
+    docstring
+    """
+    locs = []
+    for i in coll_ra.find({}, {'_id': 0}):
+        locs.append(f"https://www.{s['sitename']}.com{m}{slugify(i['company'] if i['company'] else i['agency'])}-registered-agent-service-of-process-{i['id']}")
+        locs.append(f"https://www.{s['sitename']}.com{m}search/registered-agent-process-servers/"+quote(f"{i['company'] if i['company'] else i['agency']}".capitalize()))
+        if i['state']:
+            locs.append(f"https://www.{s['sitename']}.com{m}search/registered-agent-process-servers/"+quote(f"{i['company'] if i['company'] else i['agency']}".capitalize()+", "+f"{i['state']}".capitalize()))
+            if i['city']:
+                locs.append(f"https://www.{s['sitename']}.com{m}search/registered-agent-process-servers/"+quote(f"{i['state']}".capitalize()+", "+f"{i['city']}".capitalize()))
+    return list(set(locs)) if locs != [] else None
+
+
+def telecom_agents_sitemap(s, rt, m):
+    """
+    docstring
+    """
+    locs = []
+    for i in coll_tel.find({}, {'_id': 0}):
+        locs.append(f"https://www.{s['sitename']}.com{m}{slugify(i['carriername'])}-{slugify(i['dcagent1'])}-registered-agent-service-of-process-washington-dc-{i['id']}")
+        locs.append(f"https://www.{s['sitename']}.com{m}washington-dc-telecom-registered-agent-process-servers/"+quote(f"{i['carriername']}".capitalize()))
+        locs.append(f"https://www.{s['sitename']}.com{m}washington-dc-telecom-registered-agent-process-servers/"+quote(f"{i['dcagent1']}".capitalize()))
+    return list(set(locs))
+
+
+def agents_by_state_sitemap(s, rt, m):
+    """
+    docstring
+    """
+    locs = []
+    for i in coll_ra.find({}, {'_id': 0}):
+        if i['state']:
+            locs.append(f"https://www.{s['sitename']}.com{m}{slugify(i['state'])}")
+            if i['city']:
+                locs.append(f"https://www.{s['sitename']}.com{m}{slugify(i['state'])}/{slugify(i['city'])}")
+    return list(set(locs))
+
+
+def locations_sitemap(s, rt, m):
+    """
+    docstring
+    """
+    locs = []
+    for i in coll_ci.find({}, {'_id': 0}):
+        locs.append(f"https://www.{s['sitename']}.com{m}{slugify(i['statename'])}")
+        locs.append(f"https://www.{s['sitename']}.com{m}{slugify(i['statename'])}/{slugify(i['countyname'])}-{i['countyid']}/{slugify(i['cityname'])}-{i['id']}")
+    return list(set(locs))
+
+
+def blog_posts_sitemap(s, rt, m):
+    """
+    docstring
+    """
+    res = list(map(lambda x: f"https://www.{s['sitename']}.com{m}{slugify(x['title'])}-{x['id']}", coll_bl.find({'blogcategory': s['blogcategory']}, {'_id': 0})))
+    return res
+
+
+
+def render_xml_sitemap2(s, rt):
+    dynamics = [
+        '^/registered-agents/',
+        '^/blog/posts/',
+        '^/process-server/',
+        '^/agents-by-state/',
+        '^/telecom-agents/',
+        '^/locations/',   
+    ]
+    params = [
+        '/id',
+        '/key',
+        '/value',
+        '/state',
+        '/county',
+        '/city',
+    ]
+    excluded_extensions = [
+        '\.js$',
+        '\.css$',
+        '\.py$',
+        '\.xml$',
+        '\.json$',
+        '\.scss$',
+        '\.pdf$',
+        '^\.htaccess$',
+        '\.txt$',
+        '\.java$',
+        '\.svg$',
+    ]
+    dy_combined = "(" + ")|(".join(dynamics) + ")"
+    pa_combined = "(" + ")|(".join(params) + ")"
+    ex_combined = "(" + ")|(".join(excluded_extensions) + ")"
+    url_count = 0
+    sitemap_num = int(re.search(r'\d+', rt).group()) if re.search(r'\d+', rt) else 1
+    sitemap_map = {
+        'registeredagents': [],
+        'blogposts': [],
+        'processserver': [],
+        'agentsbystate': [],
+        'telecomagents': [],
+        'locations': [],
+    }
+    sitemap_urls = []
+    sitemap_index = []
+    sitemaps_needed = 1
+    sitemap_open = """<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> \n\t<url>\n\t\t<loc>"""
+    sitemap_close = """</loc>\n\t</url>\n</urlset>"""
+    max_urls = 100
+    sitemap_size = 0
+    sitemap = ''
+    pages = s['pages']
+    # print(len(pages))
+    for idx, val in enumerate(pages):
+        # print(f"""{idx}: {val['route']}""")
+        if re.search(ex_combined, val['route']):
+            pass
+        else:
+            if not re.match(dy_combined, val['route']):
+                sitemap_urls.append(val['route'])
+                url_count += 1
+            else:
+                dy_route = re.match(dy_combined, val['route']).group()
+                if dy_route == '/registered-agents/':
+                    if re.search('/id', val['route']):
+                        sitemap_map['registeredagents'] = registered_agents_sitemap(s, val['route'], dy_route)
+                elif dy_route == '/blog/posts/':
+                    if re.search('/id', val['route']):
+                        sitemap_map['blogposts'] = blog_posts_sitemap(s, val['route'], dy_route)
+                elif dy_route == '/process-server/':
+                    if re.search('/city', val['route']):
+                        sitemap_map['processserver'] = process_server_sitemap(s, val['route'], dy_route)
+                elif dy_route == '/agents-by-state/':
+                    if re.search('/city', val['route']):
+                        sitemap_map['agentsbystate'] = agents_by_state_sitemap(s, val['route'], dy_route)
+                elif dy_route == '/telecom-agents/':
+                    if re.search('/id', val['route']):
+                        sitemap_map['telecomagents'] = telecom_agents_sitemap(s, val['route'], dy_route)
+                elif dy_route == '/locations/':
+                    if re.search('/city', val['route']):
+                        sitemap_map['locations'] = locations_sitemap(s, val['route'], dy_route)
+    for i in ['telecomagents', 'registeredagents', 'agentsbystate', 'processserver', 'locations']:
+        for n in sitemap_map[i]:
+            sitemap_urls.append(n)
+    sitemap_urls = list(set(sitemap_urls))
+    sitemap_urls.sort(key=myFunc, reverse=True)
+    # print(sitemap_urls)
+    url_count = len(sitemap_urls)
+    sitemaps_needed = url_count//max_urls
+    # print(f"{sitemaps_needed} sitemap(s) needed.")
+    if sitemaps_needed == 1:
+        sitemap_urls.sort(key=myFunc, reverse=True)
+        sitemap = f"{sitemap_open}"+"</loc>\n\t</url>\n\t<url>\n\t\t<loc>".join(sitemap_urls)+f"{sitemap_close}"
+        return sitemap
+    else:
+        for i in range(sitemaps_needed):
+            nmap = []
+            for n in range(i*max_urls, (i+1)*max_urls):
+                if n < url_count:
+                    nmap.append(sitemap_urls[n])
+                else:
+                    break
+            sitemap_index.append(nmap)
+        #print(sitemap_num.group())
+        sitemap_index[sitemap_num].sort(key=myFunc, reverse=True)
+        sitemap = f"{sitemap_open}"+"</loc>\n\t</url>\n\t<url>\n\t\t<loc>".join(sitemap_index[sitemap_num])+f"{sitemap_close}"
+        # print(f"{len(sitemap_index[sitemap_num])} urls")
+        # print(f"Total Filesize: {sys.getsizeof(sitemap)*(1/1000000)}MBs")
+        # print(f"{sitemap[0:1000]}")
+        # print("...")
+        # print(f"{sitemap[-1000:]}")
+        # f_name = os.path.join(os.path.dirname(__file__), f"{rt}".split("/")[-1])
+        # f = open(f_name, 'w')
+        # f.write(sitemap)
+        # f.close()
+        # os.path.abspath(f_name)
+        return sitemap
 
 
 def text_score_search(arr):
