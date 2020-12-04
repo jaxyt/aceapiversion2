@@ -873,8 +873,8 @@ def render_xml_sitemap2(s, rt):
     sitemap_urls = []
     sitemap_index = []
     sitemaps_needed = 1
-    sitemap_open = """<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> \n\t<url>\n\t\t<loc>"""
-    sitemap_close = """</loc>\n\t</url>\n</urlset>"""
+    sitemap_open = """<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>"""
+    sitemap_close = """</loc></url></urlset>"""
     max_urls = 100
     sitemap_size = 0
     sitemap = ''
@@ -919,7 +919,7 @@ def render_xml_sitemap2(s, rt):
     # print(f"{sitemaps_needed} sitemap(s) needed.")
     if sitemaps_needed == 1:
         sitemap_urls.sort(key=myFunc, reverse=True)
-        sitemap = f"{sitemap_open}"+"</loc>\n\t</url>\n\t<url>\n\t\t<loc>".join(sitemap_urls)+f"{sitemap_close}"
+        sitemap = f"{sitemap_open}"+"</loc></url><url><loc>".join(sitemap_urls)+f"{sitemap_close}"
         return sitemap
     else:
         for i in range(sitemaps_needed):
@@ -932,7 +932,7 @@ def render_xml_sitemap2(s, rt):
             sitemap_index.append(nmap)
         #print(sitemap_num.group())
         sitemap_index[sitemap_num].sort(key=myFunc, reverse=True)
-        sitemap = f"{sitemap_open}"+"</loc>\n\t</url>\n\t<url>\n\t\t<loc>".join(sitemap_index[sitemap_num])+f"{sitemap_close}"
+        sitemap = f"{sitemap_open}"+"</loc></url><url><loc>".join(sitemap_index[sitemap_num])+f"{sitemap_close}"
         # print(f"{len(sitemap_index[sitemap_num])} urls")
         # print(f"Total Filesize: {sys.getsizeof(sitemap)*(1/1000000)}MBs")
         # print(f"{sitemap[0:1000]}")
