@@ -379,7 +379,7 @@ def compiler_v3(s, t, r, arr):
                     agents_info += f""" 
             <tr>
                 <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td>{i[corp['searchkey']].title()}</td>
                 <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
             </tr>
                     """
