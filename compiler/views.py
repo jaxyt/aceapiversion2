@@ -40,7 +40,7 @@ def PrintException():
 
 
 def test_send(request):
-    from .mongo_functions import compiler_v3, render_xml_sitemap2, replace_shortcodes
+    from .mongo_functions import compiler_v3, render_xml_sitemap, replace_shortcodes
     site_id = request.GET.get('id', '2')
     route = request.GET.get('route', '/')
     page_uri_array = route.split('/')
@@ -48,7 +48,7 @@ def test_send(request):
     template = Template.objects.get(id=site.templateid)
     try:
         if re.search(r'sitemap(-[0-9]+)?\.xml$', route) is not None:
-            compiled = render_xml_sitemap2(site, route)
+            compiled = render_xml_sitemap(site, template, route)
             response = HttpResponse("", content_type="application/xml; charset=utf-8")
             response.write(compiled)
             return response
