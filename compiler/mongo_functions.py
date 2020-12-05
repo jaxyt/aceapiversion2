@@ -375,7 +375,7 @@ def compiler_v3(s, t, r, arr):
                 # <a href="/registered-agents/search/city/{i['city']}, {i['state']}">
                 query = re.compile(q, re.IGNORECASE)
                 for i in coll_ra.find({k: query}):
-                    slug = slugify(f"""{i['company'] if i['company'] else (i['agency'] if i['agency'] else "")}-service-of-process-{i['id']}""")
+                    slug = slugify(f"""{i[corp['searchkey']]}-service-of-process-{i['id']}""")
                     agents_info += f"""
             <tr>
                 <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
