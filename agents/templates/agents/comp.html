@@ -53,28 +53,11 @@
         <script src="https://www.telecomprocess.com/main/dist/js/custom.min.js"></script>-->
         <!-- This Page JS -->
         <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/tinymce.min.js"></script>
-        <!--<script src="https://www.telecomprocess.com/main/assets/libs/tinymce/themes/modern/theme.min.js"></script>-->
-        <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/themes/inlite/theme.min.js"></script>
+        <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/themes/modern/theme.min.js"></script>
+        <!--<script src="https://www.telecomprocess.com/main/assets/libs/tinymce/themes/inlite/theme.min.js"></script>-->
         <script>
-            var emailHeaderConfig = {
-                selector: '.tinymce-heading',
-                menubar: false,
-                inline: true,
-                plugins: [
-                  'lists',
-                  'powerpaste',
-                  'autolink'
-                ],
-                toolbar: 'undo redo | bold italic underline',
-                valid_elements: 'strong,em,span[style],a[href]',
-                valid_styles: {
-                  '*': 'font-size,font-family,color,text-decoration,text-align'
-                },
-                powerpaste_word_import: 'clean',
-                powerpaste_html_import: 'clean',
-            };
               
-            var emailBodyConfig = {
+            /*var emailBodyConfig = {
                 selector: '.tinymce-body',
                 menubar: false,
                 inline: true,
@@ -95,36 +78,26 @@
                 },
                 powerpaste_word_import: 'clean',
                 powerpaste_html_import: 'clean',
+            };*/
+
+            var emailBodyConfig = {
+                selector: '.tinymce-body',
+                menubar: false,
+                inline: true,
+                plugins: [
+                    "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "save table contextmenu directionality emoticons template paste textcolor"
+                ],
+                toolbar: [
+                  'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+                ],
             };
               
               //tinymce.init(emailHeaderConfig);
               tinymce.init(emailBodyConfig);
             /*$(document).ready(function () {
-                var bodyConfig = {
-                    selector: 'div#mymce',
-                    menubar: false,
-                    inline: true,
-                    plugins: [
-                      'link',
-                      'lists',
-                      'powerpaste',
-                      'autolink',
-                      'tinymcespellchecker'
-                    ],
-                    toolbar: [
-                      'undo redo | bold italic underline | fontselect fontsizeselect',
-                      'alignleft aligncenter alignright alignfull | forecolor backcolor | numlist bullist outdent indent'
-                    ],
-                    valid_elements: 'p[style],strong,em,span[style],a[href],ul,ol,li',
-                    valid_styles: {
-                      '*': 'font-size,font-family,color,text-decoration,text-align'
-                    },
-                    powerpaste_word_import: 'clean',
-                    powerpaste_html_import: 'clean',
-                };
-                if ($("#mymce").length > 0) {
-                    tinymce.init(bodyConfig);
-                }
+                
                 
                 if ($("#mymce").length > 0) {
                     tinymce.init({
