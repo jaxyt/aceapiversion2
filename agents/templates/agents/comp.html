@@ -16,10 +16,9 @@
     <title>Instant Serve</title>
   </head>
   <body>
-      
-    <div {% if request.user %} id="mymce" {% endif %} class="ui container">
-        <h1>{{ page.route }}</h1>
-        <div>{{ page.content|safe }}</div>
+      <h1>{{ page.route }}</h1>
+    <div class="ui container {% if request.user %}tinymce-body{% endif %}">
+        {{ page.content|safe }}
     </div>
     <!--<div class="ui container">
         <h1>{{ site.sitename }}</h1>
@@ -56,7 +55,50 @@
         <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/tinymce.min.js"></script>
         <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/themes/modern/theme.min.js"></script>
         <script>
-            $(document).ready(function () {
+            var emailHeaderConfig = {
+                selector: '.tinymce-heading',
+                menubar: false,
+                inline: true,
+                plugins: [
+                  'lists',
+                  'powerpaste',
+                  'autolink'
+                ],
+                toolbar: 'undo redo | bold italic underline',
+                valid_elements: 'strong,em,span[style],a[href]',
+                valid_styles: {
+                  '*': 'font-size,font-family,color,text-decoration,text-align'
+                },
+                powerpaste_word_import: 'clean',
+                powerpaste_html_import: 'clean',
+            };
+              
+            var emailBodyConfig = {
+                selector: '.tinymce-body',
+                menubar: false,
+                inline: true,
+                plugins: [
+                  'link',
+                  'lists',
+                  'powerpaste',
+                  'autolink',
+                  'tinymcespellchecker'
+                ],
+                toolbar: [
+                  'undo redo | bold italic underline | fontselect fontsizeselect',
+                  'forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent'
+                ],
+                valid_elements: 'p[style],strong,em,span[style],a[href],ul,ol,li',
+                valid_styles: {
+                  '*': 'font-size,font-family,color,text-decoration,text-align'
+                },
+                powerpaste_word_import: 'clean',
+                powerpaste_html_import: 'clean',
+            };
+              
+              tinymce.init(emailHeaderConfig);
+              tinymce.init(emailBodyConfig);
+            /*$(document).ready(function () {
                 var bodyConfig = {
                     selector: 'div#mymce',
                     menubar: false,
@@ -82,7 +124,7 @@
                 if ($("#mymce").length > 0) {
                     tinymce.init(bodyConfig);
                 }
-                /*
+                
                 if ($("#mymce").length > 0) {
                     tinymce.init({
                         selector: "textarea#mymce",
@@ -97,8 +139,8 @@
 
                     });
                 }
-                */
-            });
+                
+            });*/
         </script>
 
     {% endif %}
