@@ -53,7 +53,8 @@
         <script src="https://www.telecomprocess.com/main/dist/js/custom.min.js"></script>-->
         <!-- This Page JS -->
         <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/tinymce.min.js"></script>
-        <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/themes/modern/theme.min.js"></script>
+        <!--<script src="https://www.telecomprocess.com/main/assets/libs/tinymce/themes/modern/theme.min.js"></script>-->
+        <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/themes/inlite/theme.min.js"></script>
         <script>
             var emailHeaderConfig = {
                 selector: '.tinymce-heading',
@@ -96,7 +97,7 @@
                 powerpaste_html_import: 'clean',
             };
               
-              tinymce.init(emailHeaderConfig);
+              //tinymce.init(emailHeaderConfig);
               tinymce.init(emailBodyConfig);
             /*$(document).ready(function () {
                 var bodyConfig = {
@@ -135,7 +136,7 @@
                             "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
                             "save table contextmenu directionality emoticons template paste textcolor"
                         ],
-                        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
+                        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
 
                     });
                 }
