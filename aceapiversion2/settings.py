@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'counties',
     'cities',
     'registeredagents',
-    'agents'
+    'agents',
     'ckeditor',
 ]
 
