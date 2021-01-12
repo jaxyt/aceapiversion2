@@ -11,13 +11,20 @@
     <!-- semantic UI 
     <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>-->
-
+    {{ site.sitelinks|safe }}
+    {{ page.pagelinks|safe }}
+    <style>
+        {{ site.sitestyle|safe }}
+    </style>
+    <style>
+        {{ page.pagestyle|safe }}
+    </style>
   
-    <title>Instant Serve</title>
+    <title>{{ page.title|safe }}</title>
   </head>
   <body>
-      <h1>{{ page.route }}</h1>
-    <div class="ui container {% if request.user %}tinymce-body{% endif %}">
+    {{ site.siteheader|safe }}
+    <div class="{% if request.user %}tinymce-body{% endif %}">
         {{ page.content|safe }}
     </div>
     <!--<div class="ui container">
@@ -27,8 +34,9 @@
         {% endfor %}
     </div>-->
     
-    
-   
+    {{ site.sitefooter|safe }}
+    {{ site.sitescripts|safe }}
+    {{ page.pagescripts|safe }}
    
     {% if request.user %}
         <!-- ============================================================== -->
