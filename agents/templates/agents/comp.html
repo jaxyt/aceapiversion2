@@ -16,21 +16,93 @@
     <title>Instant Serve</title>
   </head>
   <body>
-    <div class="ui container">
+      
+    <div {% if request.user %} id="mymce" {% endif %} class="ui container">
         <h1>{{ page.route }}</h1>
         <div>{{ page.content|safe }}</div>
     </div>
-    <div class="ui container">
+    <!--<div class="ui container">
         <h1>{{ site.sitename }}</h1>
         {% for obj in site.pages %}
             <p>{{ obj.route }}</p>
         {% endfor %}
-    </div>
+    </div>-->
     
     
    
-   <!--Custom js ADD-->
-   <script type="text/javascript" src=""></script>
+   
+    {% if request.user %}
+        <!-- ============================================================== -->
+        <!-- All Jquery -->
+        <!-- ============================================================== -->
+        <script src="https://www.telecomprocess.com/main/assets/libs/jquery/dist/jquery.min.js"></script>
+        <!-- Bootstrap tether Core JavaScript 
+        <script src="https://www.telecomprocess.com/main/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+        <script src="https://www.telecomprocess.com/main/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>-->
+        <!-- apps 
+        <script src="https://www.telecomprocess.com/main/dist/js/app.min.js"></script>
+        <script src="https://www.telecomprocess.com/main/dist/js/app.init.mini-sidebar.js"></script>
+        <script src="https://www.telecomprocess.com/main/dist/js/app-style-switcher.js"></script>-->
+        <!-- slimscrollbar scrollbar JavaScript 
+        <script src="https://www.telecomprocess.com/main/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+        <script src="https://www.telecomprocess.com/main/assets/extra-libs/sparkline/sparkline.js"></script>-->
+        <!--Wave Effects 
+        <script src="https://www.telecomprocess.com/main/dist/js/waves.js"></script>-->
+        <!--Menu sidebar 
+        <script src="https://www.telecomprocess.com/main/dist/js/sidebarmenu.js"></script>-->
+        <!--Custom JavaScript 
+        <script src="https://www.telecomprocess.com/main/dist/js/custom.min.js"></script>-->
+        <!-- This Page JS -->
+        <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/tinymce.min.js"></script>
+        <script src="https://www.telecomprocess.com/main/assets/libs/tinymce/themes/modern/theme.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                var bodyConfig = {
+                    selector: 'div#mymce',
+                    menubar: false,
+                    inline: true,
+                    plugins: [
+                      'link',
+                      'lists',
+                      'powerpaste',
+                      'autolink',
+                      'tinymcespellchecker'
+                    ],
+                    toolbar: [
+                      'undo redo | bold italic underline | fontselect fontsizeselect',
+                      'forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent'
+                    ],
+                    valid_elements: 'p[style],strong,em,span[style],a[href],ul,ol,li',
+                    valid_styles: {
+                      '*': 'font-size,font-family,color,text-decoration,text-align'
+                    },
+                    powerpaste_word_import: 'clean',
+                    powerpaste_html_import: 'clean',
+                };
+                if ($("#mymce").length > 0) {
+                    tinymce.init(bodyConfig);
+                }
+                /*
+                if ($("#mymce").length > 0) {
+                    tinymce.init({
+                        selector: "textarea#mymce",
+                        theme: "modern",
+                        height: 300,
+                        plugins: [
+                            "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                            "save table contextmenu directionality emoticons template paste textcolor"
+                        ],
+                        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
 
+                    });
+                }
+                */
+            });
+        </script>
+
+    {% endif %}
+    <!--Custom js ADD-->
+   <script type="text/javascript" src=""></script>
   </body>
 </html>
