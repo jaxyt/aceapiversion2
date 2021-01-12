@@ -24,7 +24,8 @@ def compilerv4(request, siteid):
     profile = request.user
     context = {
         'site': s,
-        'profile': profile
+        'profile': profile,
+        'page': page
     }
 
     return render(request, 'agents/comp.html', context)

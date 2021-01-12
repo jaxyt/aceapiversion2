@@ -16,13 +16,17 @@
     <title>Instant Serve</title>
   </head>
   <body>
-    
     <div class="ui container">
-        <h1>{{ site.sitename }}<h1>
+        <h1>{{ page.route }}</h1>
+        <div>{{ page.content|safe }}</div>
+    </div>
+    <div class="ui container">
+        <h1>{{ site.sitename }}</h1>
         {% for obj in site.pages %}
             <p>{{ obj.route }}</p>
         {% endfor %}
     </div>
+    
     
    
    <!--Custom js ADD-->
