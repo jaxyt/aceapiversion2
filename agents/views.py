@@ -5,13 +5,22 @@ from .forms import AgentModelForm
 from sites.models import Site
 from django.views.generic import UpdateView, DeleteView
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 def compilerv4(request, siteid):
     s = Site.objects.get(id=siteid)
+    rt = request.GET.get('route', '/')
+    def contains(list, filter):
+        for x in list:
+            if filter(x):
+                return x
+        return False
+    page = contains(s.pages, lambda x: x.route == rt)
+    if type(page) is bool:
+        raise Http404("this page does not exist")
     profile = request.user
     context = {
         'site': s,
@@ -19,7 +28,7 @@ def compilerv4(request, siteid):
     }
 
     return render(request, 'agents/comp.html', context)
-    
+
 
 @login_required
 def agent_create_and_list_view(request):
