@@ -1,0 +1,47 @@
+{% url 'manage' as path_to_home %}
+{% url 'agents:main-agent-view' as path_to_agents %}
+
+<div class="ui inverted menu nav mb-7">
+  <div class="ui container">
+    <a href="{{path_to_home}}" class="{% if request.path == path_to_home %}active{% endif %} item">
+        <h3>Manager</h3>
+    </a>
+    {% if request.user.is_authenticated %}
+    <a href="{{path_to_agents}}" class="{% if request.path == path_to_agents %}active{% endif %} item">
+        Board
+    </a>
+    {% endif %}
+
+    <div class="right menu">
+        {% if request.user.is_authenticated %}
+        <div class="item">
+            <div class="ui floating dropdown icon button teal"> Friends
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    
+                </div>
+             </div>
+        </div>
+             <div class="item">
+              <form action="" method="GET">
+                <div class="ui action left icon input">
+                <input class="prompt" type="text" name='q' placeholder="name of a friend...">
+                <i class="search icon"></i>
+                <button type='submit' class="ui button">Search</button>
+                </div>
+            </form>
+            </div>
+        
+            
+
+            <a href="/logout/" class="ui item">
+                Logout
+            </a>
+        {% else %}
+        <a href="/login/" class="ui item">
+                Login
+            </a>
+        {% endif %}
+    </div>
+  </div>
+</div>

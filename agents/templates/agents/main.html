@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Agents{% endblock title %}
+
+{% block content %}
+<div class="ui grid">
+    <div class="eleven wide column">
+        {% for obj in qs %}
+
+        <div class="ui fluid card">
+            <div class="content">
+                <div class="right floated meta">
+                <div class="ui grid">
+                    <div class="row">
+                        {% if request.user %}
+                            <a href="{% url 'agents:agent-update' obj.id %}"><button class="ui button bwhite-lg ">Update</button></a>
+                            <a href="{% url 'agents:agent-delete' obj.id %}"><button class="ui button bwhite-lg ">Delete</button></a>
+                        {% endif %}
+                    </div>
+                </div>
+                    
+                </div>
+                <img class="ui avatar image" src={{obj.author.avatar}}>
+                {{ obj.agent }} - {{ obj.created|timesince}} ago
+            </div>
+            
+            <div class="content">
+                <p> {{ obj.address }} </p>
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>
+    <div class="five wide column">
+        <div class="ui segment">
+            {% if agent_added %}
+                <div class="ui green message">Agent added</div>
+            {% endif %}
+            <form action="" method="POST" class='ui form' enctype="multipart/form-data">
+                {% csrf_token %}
+                {{a_form}}
+                <button type='submit' name="submit_a_form" class="ui positive button w-full mt-5">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %} 
+    <script>
+        $( document ).ready(function() {
+            let display = false
+            /*
+            $(".cmt_btn").click(function () {
+                if (display===false) {
+                    $(this).next(".comment-box").show("slow");
+                    display=true
+                } else {
+                    $(this).next(".comment-box").hide("slow");
+                    display=false
+                }  
+            });
+
+            $('.like-form').submit(function(e){
+                e.preventDefault()
+                
+                const agent_id = $(this).attr('id')
+                
+                const likeText = $(`.like-btn${agent_id}`).text()
+                const trim = $.trim(likeText)
+
+                const url = $(this).attr('action')
+                
+                let res;
+                const likes = $(`.like-count${agent_id}`).text()
+                const trimCount = parseInt(likes)
+                
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                        'agent_id':agent_id,
+                    },
+                    success: function(response) {
+                        if(trim === 'Unlike') {
+                            $(`.like-btn${agent_id}`).text('Like')
+                            res = trimCount - 1
+                        } else {
+                            $(`.like-btn${agent_id}`).text('Unlike')
+                            res = trimCount + 1
+                        }
+
+                        $(`.like-count${agent_id}`).text(res)
+                    },
+                    error: function(response) {
+                        console.log('error', response)
+                    }
+                })
+
+            })
+            */
+        });
+    </script>
+{% endblock scripts %}

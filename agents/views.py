@@ -10,6 +10,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
+def compilerv4(request, siteid):
+    s = Site.objects.get(id=siteid)
+    profile = request.user
+    context = {
+        'site': s,
+        'profile': profile
+    }
+
+    return render(request, 'agents/comp.html', context)
+    
 
 @login_required
 def agent_create_and_list_view(request):
@@ -39,15 +49,6 @@ def agent_create_and_list_view(request):
 
     return render(request, 'agents/main.html', context)
 
-def compilerv4(request, siteid):
-    s = Site.objects.get(id=siteid)
-    profile = request.user
-    context = {
-        'site': s,
-        'profile': profile
-    }
-
-    return render(request, 'agents/comp.html', context)
 
 class AgentDeleteView(LoginRequiredMixin, DeleteView):
     model = Agent
