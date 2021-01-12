@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'counties',
     'cities',
     'registeredagents',
+    'agents'
     'ckeditor',
 ]
 
@@ -65,7 +66,7 @@ ROOT_URLCONF = 'aceapiversion2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'compiler')],
+        'DIRS': [os.path.join(BASE_DIR, 'temps'), os.path.join(BASE_DIR, 'compiler'), os.path.join(BASE_DIR, 'agents/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
