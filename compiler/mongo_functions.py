@@ -571,6 +571,12 @@ def compiler_v3(s, t, r, arr):
                     "</ul></div>"
                 ])
                 comp = re.sub("XXagentXX", agent_info, comp)
+                comp = re.sub("XXagentnameXX", agent['dcagent1'], comp)
+                comp = re.sub("XXcarriernameXX", agent['carriername'], comp)
+                comp = re.sub("XXbusinessnameXX", agent['businessname'], comp)
+                comp = re.sub("XXholdingcompanyXX", agent['holdingcompany'], comp)
+                comp = re.sub("XXothertradenameXX", agent['othertradename1'], comp)
+                comp = re.sub("XXagentaddressXX", agent['dcagentaddress1'], comp)
             elif len(arr) == 5:
                 from urllib.parse import unquote
                 agents_info = """
