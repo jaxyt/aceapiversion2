@@ -39,6 +39,7 @@ def compilerv5(request, *args, **kwargs):
         <hr>
         {page.content}
         """
+        return HttpResponse(res)
         
     return HttpResponse("hello world")
 
