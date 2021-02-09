@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .models import Agent
@@ -8,7 +9,21 @@ from django.contrib import messages
 from django.http import JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+import os
+import json
 # Create your views here.
+module_dir = os.path.dirname(__file__)  # get current directory
+file_path = os.path.join(module_dir, 'sop-to-mongo.json')
+
+@login_required
+def upload_agents(request):
+    with open(file_path) as f:
+        data = json.load(f)
+    for idx, val in enumerate(data):
+        form = AgentModelForm(val)
+        if form.is_valid():
+            form.save()
+    return HttpResponse("Success")
 
 def compilerv4(request, siteid):
     s = Site.objects.get(id=siteid)
