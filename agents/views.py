@@ -21,6 +21,7 @@ file_path = os.path.join(module_dir, 'sop-to-mongo.json')
 def compilerv5(request, *args, **kwargs):
     site = None
     page = None
+    res = ""
     if kwargs['siteid']:
         site = get_object_or_404(Site, id=kwargs['siteid'])
     if kwargs['page']:
@@ -31,12 +32,11 @@ def compilerv5(request, *args, **kwargs):
                     page = i
             if page is None:
                 return Http404()
-            res = f"""
+            res += f"""
             <h1>{site.sitename}</h1>
             <hr>
             {page.content}
             """
-            return HttpResponse(res)
         else:
             fwargs = dict()
             for k,v in kwargs.items():
@@ -61,7 +61,7 @@ def compilerv5(request, *args, **kwargs):
                 id - individual agent info
             """
         
-    return HttpResponse("hello world")
+    return HttpResponse(res)
 
 
 @login_required
