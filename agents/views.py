@@ -15,6 +15,12 @@ import json
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'sop-to-mongo.json')
 
+
+def compilerv5(request, *args, **kwargs):
+    print(kwargs)
+    return HttpResponse("hello world")
+
+
 @login_required
 def upload_agents(request):
     with open(file_path) as f:
