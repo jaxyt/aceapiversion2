@@ -24,22 +24,42 @@ def compilerv5(request, *args, **kwargs):
     if kwargs['siteid']:
         site = get_object_or_404(Site, id=kwargs['siteid'])
     if kwargs['page']:
-        regx = re.compile(f"^/{kwargs['page']}")
-        for i in site.pages:
-            if re.search(regx, i.route) is not None:
-                page = i
-        if page is None:
-            return Http404()
-        fwargs = dict()
-        for k,v in kwargs.items():
-            if k != 'siteid' and k != 'page':
-                fwargs[k] = v
-        res = f"""
-        <h1>{site.sitename}</h1>
-        <hr>
-        {page.content}
-        """
-        return HttpResponse(res)
+        if kwargs['page'] != 'process-server' and kwargs['page'] != 'agents-by-state' and kwargs['page'] != 'registered-agents':
+            regx = re.compile(f"^/{kwargs['page']}$")
+            for i in site.pages:
+                if re.search(regx, i.route) is not None:
+                    page = i
+            if page is None:
+                return Http404()
+            res = f"""
+            <h1>{site.sitename}</h1>
+            <hr>
+            {page.content}
+            """
+            return HttpResponse(res)
+        else:
+            fwargs = dict()
+            for k,v in kwargs.items():
+                if k != 'siteid' and k != 'page':
+                    fwargs[k] = v
+            if len(fwargs):
+                if kwargs['page'] == 'process-server':
+                    print("process server")
+                elif kwargs['page'] == 'agents-by-state':
+                    print("agents-by-state")
+                elif kwargs['page'] == 'registered-agents':
+                    print("registered-agents")
+            """
+            process-server - list all unique corporations
+                id - list all unique states
+                    state - list all unique counties and cities
+                        city - list all selected agents locations in city
+            agents-by-state - list all states
+                state - list all unique agents in state and all unique cites in state
+                    city - list all unique agents in city
+            registered-agents - total list of agents (as json)
+                id - individual agent info
+            """
         
     return HttpResponse("hello world")
 
