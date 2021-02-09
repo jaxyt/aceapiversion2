@@ -12,18 +12,34 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import os
 import json
+import re
 # Create your views here.
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'sop-to-mongo.json')
 
 
 def compilerv5(request, *args, **kwargs):
+    site = None
+    page = None
     if kwargs['siteid']:
-        get_object_or_404(Site, id=kwargs['siteid'])
-    fwargs = dict()
-    for k,v in kwargs.items():
-        if k != 'siteid' and k != 'page':
-            fwargs[k] = v
+        site = get_object_or_404(Site, id=kwargs['siteid'])
+    if kwargs['page']:
+        regx = re.compile(f"^/{kwargs['page']}")
+        for i in site.pages:
+            if re.search(regx, i.route) is not None:
+                page = i
+        if page is None:
+            return Http404()
+        fwargs = dict()
+        for k,v in kwargs.items():
+            if k != 'siteid' and k != 'page':
+                fwargs[k] = v
+        res = f"""
+        <h1>{site.sitename}</h1>
+        <hr>
+        {page.content}
+        """
+        
     return HttpResponse("hello world")
 
 
