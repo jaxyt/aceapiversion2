@@ -337,7 +337,7 @@ def compiler_v3(s, t, r, arr):
                     agents_info += f"""
             <tr>
                 <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                <td>{m['company'].title() if m['company'] else m['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{m['company'].title() if m['company'] else m['agency'].title()}</a></td>
                 <td><a href="/registered-agents/{slug}">{m['address'].title() if m['address'] else ""}</a></td>
             </tr>
                     """
@@ -379,7 +379,7 @@ def compiler_v3(s, t, r, arr):
                     agents_info += f""" 
             <tr>
                 <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                <td>{i[corp['searchkey']].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i[corp['searchkey']].title()}</a></td>
                 <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
             </tr>
                     """
@@ -420,7 +420,7 @@ def compiler_v3(s, t, r, arr):
                     agents_info += f"""
             <tr>
                 <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i['company'].title() if i['company'] else i['agency'].title()}</a></td>
                 <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
             </tr>
                     """
@@ -465,7 +465,7 @@ def compiler_v3(s, t, r, arr):
                     agents_info += f"""
             <tr>
                 <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i['company'].title() if i['company'] else i['agency'].title()}</a></td>
                 <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
             </tr>
                     """
@@ -505,7 +505,7 @@ def compiler_v3(s, t, r, arr):
                     agents_info += f"""
             <tr>
                 <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i['company'].title() if i['company'] else i['agency'].title()}</a></td>
                 <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
             </tr>
                     """
@@ -543,7 +543,7 @@ def compiler_v3(s, t, r, arr):
                     agents_info += f"""
             <tr>
                 <td><a href="/registered-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                <td>{i['company'].title() if i['company'] else i['agency'].title()}</td>
+                <td><a href="/registered-agents/{slug}">{i['company'].title() if i['company'] else i['agency'].title()}</a></td>
                 <td><a href="/registered-agents/{slug}">{i['address'].title() if i['address'] else ""}</a></td>
             </tr>
                     """
@@ -571,6 +571,12 @@ def compiler_v3(s, t, r, arr):
                     "</ul></div>"
                 ])
                 comp = re.sub("XXagentXX", agent_info, comp)
+                comp = re.sub("XXagentnameXX", agent['dcagent1'], comp)
+                comp = re.sub("XXcarriernameXX", agent['carriername'], comp)
+                comp = re.sub("XXbusinessnameXX", agent['businessname'] if agent['businessname'] else "", comp)
+                comp = re.sub("XXholdingcompanyXX", agent['holdingcompany'] if agent['holdingcompany'] else "", comp)
+                comp = re.sub("XXothertradenameXX", agent['othertradename1'] if agent['othertradename1'] else "", comp)
+                comp = re.sub("XXagentaddressXX", agent['dcagentaddress1'], comp)
             elif len(arr) == 5:
                 from urllib.parse import unquote
                 agents_info = """
@@ -596,9 +602,9 @@ def compiler_v3(s, t, r, arr):
                     agents_info += f"""
             <tr id="{m['id']}">
                 <td><a href="/telecom-agents/{slug}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                <td>{m['dcagent1']}</td>
+                <td><a href="/telecom-agents/{slug}">{m['dcagent1']}</a></td>
                 <td><a href="/telecom-agents/{slug}">{m['dcagentaddress1']}</a></td>
-                <td>{m['carriername']}</td>
+                <td><a href="/telecom-agents/{slug}">{m['carriername']}</a></td>
             </tr>
                     """
                 agents_info += """
