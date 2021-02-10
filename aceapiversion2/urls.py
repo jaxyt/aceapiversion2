@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
 from compiler import views
@@ -49,5 +50,6 @@ urlpatterns = [
     # path('auth/db/json/', views.create_telecoms, name='get_json_from_db'),
     path('admin/', admin.site.urls),
     path('auth/upload/', views.upload_file, name='file_upload'),
-    path('auth/db-sync/', views.home, name='json_to_mongo')
+    path('auth/db-sync/', views.home, name='json_to_mongo'),
+    path('__debug__/', include(debug_toolbar.urls)),
 ] + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
