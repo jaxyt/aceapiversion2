@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from .models import Agent
 from .forms import AgentModelForm
 from sites.models import Site
+from templates.models import Template
 from django.views.generic import UpdateView, DeleteView
 from django.contrib import messages
 from django.http import JsonResponse, Http404
@@ -25,18 +26,35 @@ def compilerv5(request, *args, **kwargs):
     if kwargs['siteid']:
         site = get_object_or_404(Site, id=kwargs['siteid'])
     if kwargs['page']:
+        if kwargs['page'] == 'blog':
+            return Http404()
+        agent_dynamics = ["process-server", "agents-by-state", "registered-agents"]
+        try:
+            agent_dynamics.index(kwargs['page'])
+        except ValueError as e:
+            print(e)
         if kwargs['page'] != 'process-server' and kwargs['page'] != 'agents-by-state' and kwargs['page'] != 'registered-agents':
-            regx = re.compile(f"^/{kwargs['page']}$")
-            for i in site.pages:
-                if re.search(regx, i.route) is not None:
-                    page = i
+            regx = re.compile("[\w\d-]+\.\w{2,4}")
+            mime = re.search(regx, '/'.join(list(kwargs.values())))
+            if mime is not None:
+                print(mime.group())
+                return Http404()
+            page_rts = [i.route for i in site.pages]
             if page is None:
                 return Http404()
-            res += f"""
-            <h1>{site.sitename}</h1>
-            <hr>
-            {page.content}
-            """
+            
+            res += f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{site.sitename}</title>
+</head>
+<body>
+    {page.content}
+</body>
+</html>"""
         else:
             fwargs = dict()
             for k,v in kwargs.items():
