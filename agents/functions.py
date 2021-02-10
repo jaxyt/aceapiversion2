@@ -263,8 +263,113 @@ def agents_by_location(request, site, pagename, **kwargs):
     return HttpResponse(compiled, content_type='text/html')
 
 def agents_by_corp(request, site, pagename, **kwargs):
-    compiled = "agents by corp"
-    return HttpResponse(compiled, content_type='text/plain')
+    dbg = True
+    pagedoc = None
+    route = ""
+    lwargs = dict()
+    if len(kwargs) >= 1:
+        lwargs['agent'] = kwargs['arg_one']
+        route = "/process-server/id"
+        if len(kwargs) >= 2:
+            lwargs['state'] = kwargs['arg_two']
+            route = "/process-server/id/state"
+            if len(kwargs) == 3:
+                lwargs['city'] = kwargs['arg_three']
+                route = "/process-server/id/state/city"
+
+    for i in site.pages:
+            if i.route == route:
+                pagedoc = i
+                break
+
+    agents_objs = list(coll_ra.find(lwargs, {'_id': 0}))
+
+    agent_table = """
+    <div class="table-responsive">
+        <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Details</th>
+                    <th>Registered Agent</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody>
+    """
+    for i in agents_objs:
+        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['id']}/")
+        if dbg is True:
+            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['id']}/")
+        agent_table += f"""
+                <tr>
+                    <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
+                    <td><a href="{rel_link}">{i['agent']}</a></td>
+                    <td><a href="{rel_link}">{i['city']}, {i['state']}</a></td>
+                </tr>
+        """
+    agent_table += """
+            </tbody>
+        </table>
+    </div>
+    """
+    location_table = ""
+    if len(lwargs) < 3:
+        location_table = """<div class="process-server-corp-state-links">"""
+        u_key = "agent"
+        if len(lwargs) == 1:
+            u_key = "state"
+        elif len(lwargs) == 2:
+            u_key = "city"
+        res = list(coll_ra.find(lwargs, {'_id': 0}).distinct(u_key))
+        for i in res:
+            rel_link = urllib.parse.quote(f"/process-server/{'/'.join([*lwargs.values()])}/{i}/")
+            if dbg is True:
+                rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/process-server/{'/'.join([*lwargs.values()])}/{i}/")
+            location_table += f"""<li><a href="{rel_link}">{i}</a></li>"""
+        location_table += "</div>"
+
+    rep_codes = {
+        'XXsitemetasXX': f"{site.sitemetas}",
+        'XXpagemetasXX': f"{pagedoc.pagemetas}",
+        'XXsitelinksXX': f"{site.sitelinks}",
+        'XXpagelinksXX': f"{pagedoc.pagelinks}",
+        'XXsitestyleXX': f"{site.sitestyle}",
+        'XXtitleXX': f"{pagedoc.title}",
+        'XXsiteheaderXX': f"{site.siteheader}",
+        'XXcontentXX': f"{pagedoc.content}",
+        'XXsitefooterXX': f"{site.sitefooter}",
+        'XXsitescriptsXX': f"{site.sitescripts}",
+        'XXpagescriptsXX': f"{pagedoc.pagescripts}",
+        
+    }
+    compiled = f"""<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        XXsitemetasXX
+        XXpagemetasXX
+        XXsitelinksXX
+        XXpagelinksXX
+        XXsitestyleXX
+        <title>XXtitleXX</title>
+    </head>
+    <body>
+        XXsiteheaderXX
+        XXcontentXX
+        XXsublocationsXX
+        XXsitefooterXX
+        XXsitescriptsXX
+        XXpagescriptsXX
+    </body>
+    </html>"""
+
+    for k, v in rep_codes.items():
+        compiled = re.sub(k, v, compiled)
+
+    compiled = re.sub("XXagentsXX", agent_table, compiled)
+
+    compiled = re.sub("XXsublocationsXX", location_table, compiled)
+
+    return HttpResponse(compiled, content_type='text/html')
 
 def agents_query(request, site, pagename, **kwargs):
     compiled = "agents query"
