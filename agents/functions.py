@@ -51,19 +51,19 @@ def resource_page(request, site, page, **kwargs):
     compiled = f"""{page.content}"""
     return HttpResponse(compiled, content_type="text/plain")
 
-def static_page(request, site, page, **kwargs):
+def static_page(request, site, pagedoc, **kwargs):
     rep_codes = {
         'XXsitemetasXX': f"{site.sitemetas}",
-        'XXpagemetasXX': f"{page.pagemetas}",
+        'XXpagemetasXX': f"{pagedoc.pagemetas}",
         'XXsitelinksXX': f"{site.sitelinks}",
-        'XXpagelinksXX': f"{page.pagelinks}",
+        'XXpagelinksXX': f"{pagedoc.pagelinks}",
         'XXsitestyleXX': f"{site.sitestyle}",
-        'XXtitleXX': f"{page.title}",
+        'XXtitleXX': f"{pagedoc.title}",
         'XXsiteheaderXX': f"{site.siteheader}",
-        'XXcontentXX': f"{page.content}",
+        'XXcontentXX': f"{pagedoc.content}",
         'XXsitefooterXX': f"{site.sitefooter}",
         'XXsitescriptsXX': f"{site.sitescripts}",
-        'XXpagescriptsXX': f"{page.pagescripts}",
+        'XXpagescriptsXX': f"{pagedoc.pagescripts}",
         
     }
     compiled = f"""<!DOCTYPE html>
