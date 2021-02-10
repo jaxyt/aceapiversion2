@@ -30,11 +30,15 @@ def compilerv5(request, *args, **kwargs):
         if kwargs['page']:
             if kwargs['page'] == 'blog':
                 return Http404()
+            agent_dynamics = ['process-server', 'agents-by-state', 'registered-agents']
+            try:
+                print(agent_dynamics.index(f"/{kwargs['page']}"))
+            except ValueError as e:
+                print('not in dynamics')
             if kwargs['page'] != 'process-server' and kwargs['page'] != 'agents-by-state' and kwargs['page'] != 'registered-agents':
                 regx = re.compile("[\w\d-]+\.\w{2,4}")
-                mime = re.search(regx, '/'.join(list(kwargs.values())))
-                if mime is not None:
-                    print(mime.group())
+                if re.search(regx, kwargs['page']) is not None:
+                    print(re.search(regx, kwargs['page']).group())
                     return Http404()
                 page_rts = [i.route for i in site.pages]
                 if page is None:
