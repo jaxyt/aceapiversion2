@@ -1,4 +1,4 @@
-from django.http.response import HttpResponse, HttpResponseRedirect, Http404
+from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from .models import Agent
@@ -7,14 +7,14 @@ from sites.models import Site
 from templates.models import Template
 from django.views.generic import UpdateView, DeleteView
 from django.contrib import messages
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import os
 import json
 import re
-from .functions import PrintException
+from .functions import PrintException, static_page, resource_page, individual_agent, agents_by_location, agents_by_corp, agents_query, sitemap_generator
 # Create your views here.
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'sop-to-mongo.json')
@@ -24,35 +24,31 @@ def compilerv5(request, *args, **kwargs):
     try:
         site = None
         page = None
-        res = ""
+        res = None
+        default_response = "hello world"
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
         if kwargs['page']:
             if kwargs['page'] == 'blog':
                 return HttpResponse("blog", content_type="text/plain")
-            if kwargs['page'] != 'process-server' and kwargs['page'] != 'agents-by-state' and kwargs['page'] != 'registered-agents':
-                regx = re.compile("[\w-]+\.\w{2,4}")
-                if re.search(regx, kwargs['page']) is not None:
-                    print(re.search(regx, kwargs['page']).group())
-                    return HttpResponse("other extension", content_type="text/plain")
+            agents_dynamics = ['process-server', 'registered-agents', 'agents-by-state']
+            try:
+                agents_dynamics.index(kwargs['page'])
+            except ValueError as e:
                 regx = re.compile(f"^/{kwargs['page']}$")
                 for i in site.pages:
                     if re.search(regx, i.route):
                         page = i
+                regx = re.compile("[\w-]+\.\w{2,4}")
+                mime = re.search(regx, kwargs['page'])
+                if mime is not None:
+                    print(mime.group())
+                    res = resource_page(request, site, page, **kwargs)
+                    return res
                 if page is None:
-                    return HttpResponse("page doesnt exist", content_type="text/plain")
-                res += f"""<!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>{site.sitename}</title>
-                </head>
-                <body>
-                    {page.content}
-                </body>
-                </html>"""
+                    return HttpResponseNotFound()
+                res = static_page(request, site, page, **kwargs)
+                return res
             else:
                 fwargs = dict()
                 for k,v in kwargs.items():
@@ -61,10 +57,17 @@ def compilerv5(request, *args, **kwargs):
                 if len(fwargs):
                     if kwargs['page'] == 'process-server':
                         print("process server")
+                        res = agents_by_corp(request, site, kwargs['page'], **fwargs)
                     elif kwargs['page'] == 'agents-by-state':
                         print("agents-by-state")
+                        res = agents_by_location(request, site, kwargs['page'], **fwargs)
                     elif kwargs['page'] == 'registered-agents':
                         print("registered-agents")
+                        if kwargs['arg_one'] == 'search':
+                            res = individual_agent(request, site, kwargs['page'], **fwargs)
+                        else:
+                            res = agents_query(request, site, kwargs['page'], **fwargs)
+                    return res
                 """
                 process-server - list all unique corporations
                     id - list all unique states
@@ -76,7 +79,7 @@ def compilerv5(request, *args, **kwargs):
                 registered-agents - total list of agents (as json)
                     id - individual agent info
                 """ 
-        return HttpResponse(res, content_type="text/html")
+        return HttpResponse(default_response, content_type="text/html")
     except Exception as e:
         print(e)
         PrintException()

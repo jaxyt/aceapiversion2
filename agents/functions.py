@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 import urllib.parse
 from pymongo import MongoClient
 import re
@@ -25,22 +26,86 @@ def PrintException():
     print(f"""EXCEPTION IN ({filename}, LINE {lineno} "{line.strip()}"): {exc_obj}""")
 
 
-def static_page(request, *args, **kwargs):
-    return "static page"
+def resource_page(request, site, page, **kwargs):
+    mime_types = {
+        '.css': 'text/css',
+        '.csv': 'text/csv',
+        '.html': 'text/html',
+        '.js': 'text/javascript',
+        '.json': 'application/json',
+        '.jsonld': 'application/ld+json',
+        '.php': 'application/x-httpd-php',
+        '.pdf': 'application/pdf',
+        '.jpeg': 'image/jpeg',
+        '.ico': 'image/vnd.microsoft.icon',
+        '.png': 'image/png',
+        '.svg': 'image/svg+xml',
+        '.sh': 'application/x-sh',
+        '.xml': 'application/xml',
+        '.zip': 'application/zip',
+        '.7z': 'application/x-7z-compressed',
+        '.gz': 'application/gzip',
+        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    }
 
-def individual_agent(request, *args, **kwargs):
-    return "individual agent"
+    compiled = f"""{page.content}"""
+    return HttpResponse(compiled, content_type="text/plain")
 
-def agents_by_location(request, *args, **kwargs):
-    return "agents by location"
+def static_page(request, site, page, **kwargs):
+    rep_codes = {
+        'XXsitemetasXX': f"{site.sitemetas}",
+        'XXpagemetasXX': f"{page.pagemetas}",
+        'XXsitelinksXX': f"{site.sitelinks}",
+        'XXpagelinksXX': f"{page.pagelinks}",
+        'XXsitestyleXX': f"{site.sitestyle}",
+        'XXtitleXX': f"{page.title}",
+        'XXsiteheaderXX': f"{site.siteheader}",
+        'XXcontentXX': f"{page.content}",
+        'XXsitefooterXX': f"{site.sitefooter}",
+        'XXsitescriptsXX': f"{site.sitescripts}",
+        'XXpagescriptsXX': f"{page.pagescripts}",
+        
+    }
+    compiled = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    XXsitemetasXX
+    XXpagemetasXX
+    XXsitelinksXX
+    XXpagelinksXX
+    XXsitestyleXX
+    <title>XXtitleXX</title>
+</head>
+<body>
+    XXsiteheaderXX
+    XXcontentXX
+    XXsitefooterXX
+    XXsitescriptsXX
+    XXpagescriptsXX
+</body>
+</html>"""
 
-def agents_by_corp(request, *args, **kwargs):
-    return "agents by corp"
+    for k, v in rep_codes.items():
+        compiled = re.sub(k, v, compiled)
+    return HttpResponse(compiled, content_type='text/html')
 
-def agents_query(request, *args, **kwargs):
-    return "agents query"
+def individual_agent(request, site, pagename, **kwargs):
+    compiled = "individual agent"
+    return HttpResponse(compiled, content_type='text/plain')
 
-def sitemap_generator(request, *args, **kwargs):
+def agents_by_location(request, site, pagename, **kwargs):
+    compiled = "agents by location"
+    return HttpResponse(compiled, content_type='text/plain')
+
+def agents_by_corp(request, site, pagename, **kwargs):
+    compiled = "agents by corp"
+    return HttpResponse(compiled, content_type='text/plain')
+
+def agents_query(request, site, pagename, **kwargs):
+    compiled = "agents query"
+    return HttpResponse(compiled, content_type='text/plain')
+
+def sitemap_generator(request, **kwargs):
     return "sitemap generator"
 
 
