@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'registeredagents',
     'agents',
     'ckeditor',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
