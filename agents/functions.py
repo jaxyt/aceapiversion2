@@ -154,7 +154,7 @@ def individual_agent(request, site, pagename, **kwargs):
         for k, v in agent_obj[0].items():
             regx = re.compile(f"XX{k}XX")
             compiled = re.sub(regx, f"{v}", compiled)
-        return HttpResponse(compiled, content_type='text/plain')
+        return HttpResponse(compiled, content_type='text/html')
     else:
         return HttpResponseNotFound()
 
