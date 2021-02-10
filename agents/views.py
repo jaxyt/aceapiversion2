@@ -39,6 +39,7 @@ def compilerv5(request, *args, **kwargs):
                 for i in site.pages:
                     if re.search(regx, i.route):
                         page = i
+                        break
                 regx = re.compile("[\w-]+\.\w{2,4}")
                 mime = re.search(regx, kwargs['page'])
                 if mime is not None:
