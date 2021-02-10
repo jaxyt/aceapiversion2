@@ -14,6 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import os
 import json
 import re
+from .functions import PrintException
 # Create your views here.
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'sop-to-mongo.json')
@@ -78,6 +79,7 @@ def compilerv5(request, *args, **kwargs):
         return HttpResponse(res)
     except Exception as e:
         print(e)
+        PrintException()
         return Http404()
 
 
