@@ -258,9 +258,9 @@ def agents_by_location(request, site, pagename, **kwargs):
 
     compiled = re.sub("XXagentsXX", agent_table, compiled)
 
-    compiled = re.sub("XXsublocationsXX", agent_table, compiled)
+    compiled = re.sub("XXsublocationsXX", location_table, compiled)
 
-    return HttpResponse(compiled, content_type='text/plain')
+    return HttpResponse(compiled, content_type='text/html')
 
 def agents_by_corp(request, site, pagename, **kwargs):
     compiled = "agents by corp"
