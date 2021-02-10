@@ -64,10 +64,11 @@ def compilerv5(request, *args, **kwargs):
                         res = agents_by_location(request, site, kwargs['page'], **fwargs)
                     elif kwargs['page'] == 'registered-agents':
                         print("registered-agents")
-                        if kwargs['agent']:
-                            res = individual_agent(request, site, kwargs['page'], **fwargs)
-                        else:
-                            res = agents_query(request, site, kwargs['page'], **fwargs)
+                        for k, v in kwargs.items():
+                            if k == 'agent':
+                                res = individual_agent(request, site, kwargs['page'], **fwargs)
+                                return res
+                        res = agents_query(request, site, kwargs['page'], **fwargs)
                     return res
                 """
                 process-server - list all unique corporations
