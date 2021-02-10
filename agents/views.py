@@ -20,61 +20,65 @@ file_path = os.path.join(module_dir, 'sop-to-mongo.json')
 
 
 def compilerv5(request, *args, **kwargs):
-    site = None
-    page = None
-    res = ""
-    if kwargs['siteid']:
-        site = get_object_or_404(Site, id=kwargs['siteid'])
-    if kwargs['page']:
-        if kwargs['page'] == 'blog':
-            return Http404()
-        if kwargs['page'] != 'process-server' and kwargs['page'] != 'agents-by-state' and kwargs['page'] != 'registered-agents':
-            regx = re.compile("[\w\d-]+\.\w{2,4}")
-            mime = re.search(regx, '/'.join(list(kwargs.values())))
-            if mime is not None:
-                print(mime.group())
+    try:
+        site = None
+        page = None
+        res = ""
+        if kwargs['siteid']:
+            site = get_object_or_404(Site, id=kwargs['siteid'])
+        if kwargs['page']:
+            if kwargs['page'] == 'blog':
                 return Http404()
-            page_rts = [i.route for i in site.pages]
-            if page is None:
-                return Http404()
+            if kwargs['page'] != 'process-server' and kwargs['page'] != 'agents-by-state' and kwargs['page'] != 'registered-agents':
+                regx = re.compile("[\w\d-]+\.\w{2,4}")
+                mime = re.search(regx, '/'.join(list(kwargs.values())))
+                if mime is not None:
+                    print(mime.group())
+                    return Http404()
+                page_rts = [i.route for i in site.pages]
+                if page is None:
+                    return Http404()
+                
+                res += f"""<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{site.sitename}</title>
+    </head>
+    <body>
+        {page.content}
+    </body>
+    </html>"""
+            else:
+                fwargs = dict()
+                for k,v in kwargs.items():
+                    if k != 'siteid' and k != 'page':
+                        fwargs[k] = v
+                if len(fwargs):
+                    if kwargs['page'] == 'process-server':
+                        print("process server")
+                    elif kwargs['page'] == 'agents-by-state':
+                        print("agents-by-state")
+                    elif kwargs['page'] == 'registered-agents':
+                        print("registered-agents")
+                """
+                process-server - list all unique corporations
+                    id - list all unique states
+                        state - list all unique counties and cities
+                            city - list all selected agents locations in city
+                agents-by-state - list all states
+                    state - list all unique agents in state and all unique cites in state
+                        city - list all unique agents in city
+                registered-agents - total list of agents (as json)
+                    id - individual agent info
+                """
             
-            res += f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{site.sitename}</title>
-</head>
-<body>
-    {page.content}
-</body>
-</html>"""
-        else:
-            fwargs = dict()
-            for k,v in kwargs.items():
-                if k != 'siteid' and k != 'page':
-                    fwargs[k] = v
-            if len(fwargs):
-                if kwargs['page'] == 'process-server':
-                    print("process server")
-                elif kwargs['page'] == 'agents-by-state':
-                    print("agents-by-state")
-                elif kwargs['page'] == 'registered-agents':
-                    print("registered-agents")
-            """
-            process-server - list all unique corporations
-                id - list all unique states
-                    state - list all unique counties and cities
-                        city - list all selected agents locations in city
-            agents-by-state - list all states
-                state - list all unique agents in state and all unique cites in state
-                    city - list all unique agents in city
-            registered-agents - total list of agents (as json)
-                id - individual agent info
-            """
-        
-    return HttpResponse(res)
+        return HttpResponse(res)
+    except Exception as e:
+        print(e)
+        return Http404()
 
 
 @login_required
