@@ -49,5 +49,5 @@ urlpatterns = [
     # path('auth/db/json/', views.create_telecoms, name='get_json_from_db'),
     path('admin/', admin.site.urls),
     path('auth/upload/', views.upload_file, name='file_upload'),
-    path('auth/db-sync/', views.home, name='json_to_mongo')
+    path('auth/db-sync/', views.home, name='json_to_mongo'),
 ] + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

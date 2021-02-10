@@ -27,7 +27,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['ec2-54-204-174-252.compute-1.amazonaws.com', 'serve-on-demand.com']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -141,3 +140,4 @@ STATIC_ROOT = '/home/ubuntu/ace/aceapiversion2/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 DJANGO_CPROFILE_MIDDLEWARE_REQUIRE_STAFF = False
+
