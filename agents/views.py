@@ -29,38 +29,30 @@ def compilerv5(request, *args, **kwargs):
             site = get_object_or_404(Site, id=kwargs['siteid'])
         if kwargs['page']:
             if kwargs['page'] == 'blog':
-                return Http404()
-
-            """agent_dynamics = ['process-server', 'agents-by-state', 'registered-agents']
-            try:
-                print(agent_dynamics.index(f"{kwargs['page']}"))
-            except ValueError as e:
-                print('not in dynamics')"""
-
+                return HttpResponse("blog", content_type="text/plain")
             if kwargs['page'] != 'process-server' and kwargs['page'] != 'agents-by-state' and kwargs['page'] != 'registered-agents':
-                regx = re.compile("[\w\d-]+\.\w{2,4}")
+                regx = re.compile("[\w-]+\.\w{2,4}")
                 if re.search(regx, kwargs['page']) is not None:
                     print(re.search(regx, kwargs['page']).group())
-                    return Http404()
+                    return HttpResponse("other extension", content_type="text/plain")
                 regx = re.compile(f"^/{kwargs['page']}$")
                 for i in site.pages:
                     if re.search(regx, i.route):
                         page = i
                 if page is None:
-                    return Http404()
-                
+                    return HttpResponse("page doesnt exist", content_type="text/plain")
                 res += f"""<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{site.sitename}</title>
-    </head>
-    <body>
-        {page.content}
-    </body>
-    </html>"""
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>{site.sitename}</title>
+                </head>
+                <body>
+                    {page.content}
+                </body>
+                </html>"""
             else:
                 fwargs = dict()
                 for k,v in kwargs.items():
@@ -83,13 +75,12 @@ def compilerv5(request, *args, **kwargs):
                         city - list all unique agents in city
                 registered-agents - total list of agents (as json)
                     id - individual agent info
-                """
-            
-        return HttpResponse(res)
+                """ 
+        return HttpResponse(res, content_type="text/html")
     except Exception as e:
         print(e)
         PrintException()
-        return Http404()
+        return HttpResponse("encountered exception", content_type="text/plain")
 
 
 @login_required
