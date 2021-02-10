@@ -161,7 +161,7 @@ def individual_agent(request, site, pagename, **kwargs):
 def agents_by_location(request, site, pagename, **kwargs):
     dbg = True
     pagedoc = None
-    route = ""
+    route = "/agents-by-state"
     lwargs = dict()
     if len(kwargs) >= 1:
         lwargs['state'] = kwargs['arg_one']
