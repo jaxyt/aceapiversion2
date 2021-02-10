@@ -48,8 +48,16 @@ def resource_page(request, site, pagedoc, **kwargs):
         '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     }
 
+    mime_type = "text/plain"
+    for k, v in mime_types.items():
+        regx = re.compile(f"{k}$")
+        m = re.search(regx, kwargs['page'])
+        if m is not None:
+            mime_type = v
+            break
+
     compiled = f"""{pagedoc.content}"""
-    return HttpResponse(compiled, content_type="text/plain")
+    return HttpResponse(compiled, content_type=mime_type)
 
 def static_page(request, site, pagedoc, **kwargs):
     rep_codes = {
