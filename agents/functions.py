@@ -25,6 +25,14 @@ def PrintException():
     line = linecache.getline(filename, lineno, f.f_globals)
     print(f"""EXCEPTION IN ({filename}, LINE {lineno} "{line.strip()}"): {exc_obj}""")
 
+def replace_shortcodes(site, compiled):
+    temp = list(coll_te.find({'id': site.id}, {'_id': 0}))[0]
+    for i in site.shortcodes:
+        compiled = re.sub(f"XX{i.name}XX", f"{i.value}", compiled)
+    for i in temp['shortcodes']:
+        compiled = re.sub(f"XX{i['name']}XX", f"{i['value']}", compiled)
+    return compiled
+
 
 def resource_page(request, site, pagedoc, **kwargs):
     mime_types = {
@@ -57,6 +65,7 @@ def resource_page(request, site, pagedoc, **kwargs):
             break
 
     compiled = f"""{pagedoc.content}"""
+    compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type=mime_type)
 
 def static_page(request, site, pagedoc, **kwargs):
@@ -95,6 +104,7 @@ def static_page(request, site, pagedoc, **kwargs):
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
+    compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
 def individual_agent(request, site, pagename, **kwargs):
@@ -154,6 +164,7 @@ def individual_agent(request, site, pagename, **kwargs):
         for k, v in agent_obj[0].items():
             regx = re.compile(f"XX{k}XX")
             compiled = re.sub(regx, f"{v}", compiled)
+        compiled = replace_shortcodes(site, compiled)
         return HttpResponse(compiled, content_type='text/html')
     else:
         return HttpResponseNotFound()
@@ -255,11 +266,9 @@ def agents_by_location(request, site, pagename, **kwargs):
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
-
     compiled = re.sub("XXagentsXX", agent_table, compiled)
-
     compiled = re.sub("XXsublocationsXX", location_table, compiled)
-
+    compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
 def agents_by_corp(request, site, pagename, **kwargs):
@@ -364,11 +373,9 @@ def agents_by_corp(request, site, pagename, **kwargs):
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
-
     compiled = re.sub("XXagentsXX", agent_table, compiled)
-
     compiled = re.sub("XXsublocationsXX", location_table, compiled)
-
+    compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
 def agents_query(request, site, pagename, **kwargs):
