@@ -459,7 +459,7 @@ def agents_query(request, site, pagename, **kwargs):
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
-def sitemap_generator(request, **kwargs):
+def sitemap_generator(request, site):
     return "sitemap generator"
 
 

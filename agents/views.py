@@ -31,6 +31,9 @@ def compilerv5(request, *args, **kwargs):
         if kwargs['page']:
             if kwargs['page'] == 'blog':
                 return HttpResponse("blog", content_type="text/plain")
+            if kwargs['page'] == 'sitemap.xml':
+                res = sitemap_generator(request, site)
+                return res
             agents_dynamics = ['process-server', 'registered-agents', 'agents-by-state']
             try:
                 agents_dynamics.index(kwargs['page'])
