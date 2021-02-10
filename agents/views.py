@@ -70,17 +70,6 @@ def compilerv5(request, *args, **kwargs):
                                 return res
                         res = agents_query(request, site, kwargs['page'], **fwargs)
                     return res
-                """
-                process-server - list all unique corporations
-                    id - list all unique states
-                        state - list all unique counties and cities
-                            city - list all selected agents locations in city
-                agents-by-state - list all states
-                    state - list all unique agents in state and all unique cites in state
-                        city - list all unique agents in city
-                registered-agents - total list of agents (as json)
-                    id - individual agent info
-                """ 
         return HttpResponse(default_response, content_type="text/html")
     except Exception as e:
         print(e)
