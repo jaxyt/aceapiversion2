@@ -325,7 +325,7 @@ def agents_by_corp(request, site, pagename, **kwargs):
             rel_link = urllib.parse.quote(f"/process-server/{'/'.join([*lwargs.values()])}/{i}/")
             if dbg is True:
                 rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/process-server/{'/'.join([*lwargs.values()])}/{i}/")
-            location_table += f"""<li><a href="{rel_link}">{i}</a></li>"""
+            location_table += f"""<a href="{rel_link}">{i}</a>"""
         location_table += "</div>"
 
     rep_codes = {
