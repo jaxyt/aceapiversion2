@@ -380,7 +380,14 @@ def agents_by_corp(request, site, pagename, **kwargs):
 
 def agents_query(request, site, pagename, **kwargs):
     dbg = True
+    pagedoc = None
     route = '/registered-agents/search/key/value'
+
+    for i in site.pages:
+        if i.route == route:
+            pagedoc = i
+            break
+
     agents_objs = list(coll_ra.find({"$text":{"$search":kwargs['arg_two']}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})]))
 
     agent_table = """
