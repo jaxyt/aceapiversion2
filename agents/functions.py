@@ -99,63 +99,66 @@ def static_page(request, site, pagedoc, **kwargs):
 
 def individual_agent(request, site, pagename, **kwargs):
     agent_obj = list(coll_ra.find({'id': kwargs['agentid'], 'agent': kwargs['agent']}, {'_id': 0}))
-    pagedoc = None
-    for i in site.pages:
-        if i.route == '/registered-agents/id':
-            pagedoc = i
-            break
-    
-    rep_codes = {
-        'XXsitemetasXX': f"{site.sitemetas}",
-        'XXpagemetasXX': f"{pagedoc.pagemetas}",
-        'XXsitelinksXX': f"{site.sitelinks}",
-        'XXpagelinksXX': f"{pagedoc.pagelinks}",
-        'XXsitestyleXX': f"{site.sitestyle}",
-        'XXtitleXX': f"{pagedoc.title}",
-        'XXsiteheaderXX': f"{site.siteheader}",
-        'XXcontentXX': f"{pagedoc.content}",
-        'XXsitefooterXX': f"{site.sitefooter}",
-        'XXsitescriptsXX': f"{site.sitescripts}",
-        'XXpagescriptsXX': f"{pagedoc.pagescripts}",
+    if len(agent_obj):
+        pagedoc = None
+        for i in site.pages:
+            if i.route == '/registered-agents/id':
+                pagedoc = i
+                break
         
-    }
-    compiled = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    XXsitemetasXX
-    XXpagemetasXX
-    XXsitelinksXX
-    XXpagelinksXX
-    XXsitestyleXX
-    <title>XXtitleXX</title>
-</head>
-<body>
-    <!-- XXagentXX -->
-    <!-- XXstateXX -->
-    <!-- XXstateacronymXX -->
-    <!-- XXcountyXX -->
-    <!-- XXcityXX -->
-    <!-- XXzipXX -->
-    <!-- XXaddressXX -->
-    <!-- XXupdatedXX -->
-    <!-- XXcreatedXX -->
-    XXsiteheaderXX
-    XXcontentXX
-    XXsitefooterXX
-    XXsitescriptsXX
-    XXpagescriptsXX
-</body>
-</html>"""
+        rep_codes = {
+            'XXsitemetasXX': f"{site.sitemetas}",
+            'XXpagemetasXX': f"{pagedoc.pagemetas}",
+            'XXsitelinksXX': f"{site.sitelinks}",
+            'XXpagelinksXX': f"{pagedoc.pagelinks}",
+            'XXsitestyleXX': f"{site.sitestyle}",
+            'XXtitleXX': f"{pagedoc.title}",
+            'XXsiteheaderXX': f"{site.siteheader}",
+            'XXcontentXX': f"{pagedoc.content}",
+            'XXsitefooterXX': f"{site.sitefooter}",
+            'XXsitescriptsXX': f"{site.sitescripts}",
+            'XXpagescriptsXX': f"{pagedoc.pagescripts}",
+            
+        }
+        compiled = f"""<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        XXsitemetasXX
+        XXpagemetasXX
+        XXsitelinksXX
+        XXpagelinksXX
+        XXsitestyleXX
+        <title>XXtitleXX</title>
+    </head>
+    <body>
+        <!-- XXagentXX -->
+        <!-- XXstateXX -->
+        <!-- XXstateacronymXX -->
+        <!-- XXcountyXX -->
+        <!-- XXcityXX -->
+        <!-- XXzipXX -->
+        <!-- XXaddressXX -->
+        <!-- XXupdatedXX -->
+        <!-- XXcreatedXX -->
+        XXsiteheaderXX
+        XXcontentXX
+        XXsitefooterXX
+        XXsitescriptsXX
+        XXpagescriptsXX
+    </body>
+    </html>"""
 
-    for k, v in rep_codes.items():
-        compiled = re.sub(k, v, compiled)
+        for k, v in rep_codes.items():
+            compiled = re.sub(k, v, compiled)
 
-    for k, v in agent_obj[0].items():
-        regx = re.compile(f"XX{k}XX")
-        compiled = re.sub(regx, f"{v}", compiled)
-    
-    compiled = "individual agent"
-    return HttpResponse(compiled, content_type='text/plain')
+        for k, v in agent_obj[0].items():
+            regx = re.compile(f"XX{k}XX")
+            compiled = re.sub(regx, f"{v}", compiled)
+        
+        compiled = "individual agent"
+        return HttpResponse(compiled, content_type='text/plain')
+    else:
+        return HttpResponseNotFound()
 
 def agents_by_location(request, site, pagename, **kwargs):
     compiled = "agents by location"
