@@ -26,7 +26,7 @@ def PrintException():
     print(f"""EXCEPTION IN ({filename}, LINE {lineno} "{line.strip()}"): {exc_obj}""")
 
 
-def resource_page(request, site, page, **kwargs):
+def resource_page(request, site, pagedoc, **kwargs):
     mime_types = {
         '.css': 'text/css',
         '.csv': 'text/csv',
@@ -48,7 +48,7 @@ def resource_page(request, site, page, **kwargs):
         '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     }
 
-    compiled = f"""{page.content}"""
+    compiled = f"""{pagedoc.content}"""
     return HttpResponse(compiled, content_type="text/plain")
 
 def static_page(request, site, pagedoc, **kwargs):
