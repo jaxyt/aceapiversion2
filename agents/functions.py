@@ -121,32 +121,32 @@ def individual_agent(request, site, pagename, **kwargs):
             
         }
         compiled = f"""<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        XXsitemetasXX
-        XXpagemetasXX
-        XXsitelinksXX
-        XXpagelinksXX
-        XXsitestyleXX
-        <title>XXtitleXX</title>
-    </head>
-    <body>
-        <!-- XXagentXX -->
-        <!-- XXstateXX -->
-        <!-- XXstateacronymXX -->
-        <!-- XXcountyXX -->
-        <!-- XXcityXX -->
-        <!-- XXzipXX -->
-        <!-- XXaddressXX -->
-        <!-- XXupdatedXX -->
-        <!-- XXcreatedXX -->
-        XXsiteheaderXX
-        XXcontentXX
-        XXsitefooterXX
-        XXsitescriptsXX
-        XXpagescriptsXX
-    </body>
-    </html>"""
+<html lang="en">
+<head>
+    XXsitemetasXX
+    XXpagemetasXX
+    XXsitelinksXX
+    XXpagelinksXX
+    XXsitestyleXX
+    <title>XXtitleXX</title>
+</head>
+<body>
+    <!-- XXagentXX -->
+    <!-- XXstateXX -->
+    <!-- XXstateacronymXX -->
+    <!-- XXcountyXX -->
+    <!-- XXcityXX -->
+    <!-- XXzipXX -->
+    <!-- XXaddressXX -->
+    <!-- XXupdatedXX -->
+    <!-- XXcreatedXX -->
+    XXsiteheaderXX
+    XXcontentXX
+    XXsitefooterXX
+    XXsitescriptsXX
+    XXpagescriptsXX
+</body>
+</html>"""
 
         for k, v in rep_codes.items():
             compiled = re.sub(k, v, compiled)
@@ -154,8 +154,6 @@ def individual_agent(request, site, pagename, **kwargs):
         for k, v in agent_obj[0].items():
             regx = re.compile(f"XX{k}XX")
             compiled = re.sub(regx, f"{v}", compiled)
-        
-        compiled = "individual agent"
         return HttpResponse(compiled, content_type='text/plain')
     else:
         return HttpResponseNotFound()
