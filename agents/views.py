@@ -28,11 +28,6 @@ def compilerv5(request, *args, **kwargs):
     if kwargs['page']:
         if kwargs['page'] == 'blog':
             return Http404()
-        agent_dynamics = ["process-server", "agents-by-state", "registered-agents"]
-        try:
-            agent_dynamics.index(kwargs['page'])
-        except ValueError as e:
-            print(e)
         if kwargs['page'] != 'process-server' and kwargs['page'] != 'agents-by-state' and kwargs['page'] != 'registered-agents':
             regx = re.compile("[\w\d-]+\.\w{2,4}")
             mime = re.search(regx, '/'.join(list(kwargs.values())))
