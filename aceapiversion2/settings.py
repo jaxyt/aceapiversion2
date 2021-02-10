@@ -23,9 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '4x#x=k0ld72tsc851$a7p0-k-9-#-%dn7+y^vf913$-s=^uzn5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['ec2-54-204-174-252.compute-1.amazonaws.com', 'serve-on-demand.com']
+
+INTERNAL_IPS = [
+    'ec2-54-204-174-252.compute-1.amazonaws.com',
+    '127.0.0.1',
+    'serve-on-demand.com'
+]
 
 
 # Application definition
@@ -143,3 +149,5 @@ STATIC_ROOT = '/home/ubuntu/ace/aceapiversion2/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 DJANGO_CPROFILE_MIDDLEWARE_REQUIRE_STAFF = False
+
+SHOW_TOOLBAR_CALLBACK = 'debug_toolbar.middleware.show_toolbar'
