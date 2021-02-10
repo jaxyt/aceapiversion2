@@ -35,6 +35,7 @@ def compilerv5(request, *args, **kwargs):
                 print(agent_dynamics.index(f"/{kwargs['page']}"))
             except ValueError as e:
                 print('not in dynamics')
+                return HttpResponse("hello world")
             if kwargs['page'] != 'process-server' and kwargs['page'] != 'agents-by-state' and kwargs['page'] != 'registered-agents':
                 regx = re.compile("[\w\d-]+\.\w{2,4}")
                 if re.search(regx, kwargs['page']) is not None:
