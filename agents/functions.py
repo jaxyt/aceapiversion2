@@ -542,6 +542,6 @@ def sitemap_generator(request, site):
     #xml_doc += '\n'.join(agents_by_state_urls) + '\n'
     #xml_doc += """<urlset>"""
     xml_doc = f"""<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com""" + xml_urls + """</loc>\n\t</url>\n<urlset>"""
-    return HttpResponse(xml_doc, content_type="text/plain")
+    return HttpResponse(xml_doc, content_type="application/xml")
 
 
