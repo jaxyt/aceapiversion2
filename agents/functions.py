@@ -493,7 +493,9 @@ def sitemap_generator(request, site):
     agents_by_state_urls.sort(key=len, reverse=True)
 
     for i in list(coll_ra.find({}, {'_id': 0})):
-        xml_urls.append(f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/""")
+        xml_urls.append(f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/\n""")
+    xml_urls.sort()
+    xml_urls.sort(key=len, reverse=True)
 
     #for i in pages:
     #    page_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com{i}</loc>\n\t</url>""") 
