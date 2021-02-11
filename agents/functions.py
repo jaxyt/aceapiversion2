@@ -43,6 +43,7 @@ def resource_page(request, site, pagedoc, **kwargs):
         '.json': 'application/json',
         '.jsonld': 'application/ld+json',
         '.php': 'application/x-httpd-php',
+        '.ppp': 'application/x-httpd-php',
         '.pdf': 'application/pdf',
         '.jpeg': 'image/jpeg',
         '.ico': 'image/vnd.microsoft.icon',
