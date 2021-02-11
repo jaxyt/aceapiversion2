@@ -447,7 +447,6 @@ def agents_query(request, site, pagename, **kwargs):
     <body>
         XXsiteheaderXX
         XXcontentXX
-        XXsublocationsXX
         XXsitefooterXX
         XXsitescriptsXX
         XXpagescriptsXX
@@ -457,6 +456,7 @@ def agents_query(request, site, pagename, **kwargs):
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
     compiled = re.sub("XXagentsXX", agent_table, compiled)
+    compiled = re.sub("XXqueryXX", kwargs['arg_two'], compiled)
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
