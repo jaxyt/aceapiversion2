@@ -37,10 +37,10 @@ def get_home(request, *args, **kwargs):
         dbg = False
         if request.GET.get('dbg', '') == 'y':
             dbg = True
-        for k, v in request.META.items():
-            print(k)
-            print(v)
-            print("################")
+        #for k, v in request.META.items():
+        #    print(k)
+        #    print(v)
+        #    print("################")
         default_response = "hello world"
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
