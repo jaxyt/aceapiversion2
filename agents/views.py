@@ -47,10 +47,14 @@ def compilerv5(request, *args, **kwargs):
         site = None
         page = None
         res = None
+        pagename = ""
         default_response = "hello world"
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
         if kwargs['page']:
+            regx = re.compile(f"(?<=compile/{kwargs['siteid']})/.*")
+            pagename = re.search(regx, request.path)
+            print(pagename)
             if kwargs['page'] == 'blog':
                 return HttpResponse("blog", content_type="text/plain")
             if kwargs['page'] == 'sitemap.xml':
