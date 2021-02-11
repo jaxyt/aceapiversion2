@@ -1,12 +1,12 @@
 from django.urls import path
-from .views import agent_create_and_list_view, compilerv4, compilerv5, upload_agents, AgentDeleteView, AgentUpdateView
+from .views import agent_create_and_list_view, compilerv4, compilerv5, get_home, upload_agents, AgentDeleteView, AgentUpdateView
 
 app_name = 'agents'
 
 urlpatterns = [
     path('', agent_create_and_list_view, name='main-agent-view'),
     #path('upload/', upload_agents, name='upload-agent-view'),
-    path('compile/<int:siteid>/', compilerv5, name='agent-home-view'),
+    path('compile/<int:siteid>/', get_home, name='agent-home-view'),
     path('compile/<int:siteid>/<str:page>/', compilerv5, name='agent-page-view'),
     path('compile/<int:siteid>/<str:page>/<str:agent>/<str:state>/<str:county>/<str:city>/<int:agentid>/', compilerv5, name='single-agent'),
     path('compile/<int:siteid>/<str:page>/<str:arg_one>/<str:arg_two>/<str:arg_three>/<str:arg_four>/', compilerv5, name='agent-city'),

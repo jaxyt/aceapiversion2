@@ -19,6 +19,28 @@ from .functions import PrintException, static_page, resource_page, individual_ag
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'sop-to-mongo.json')
 
+def get_home(request, *args, **kwargs):
+    try:
+        site = None
+        page = None
+        res = None
+        default_response = "hello world"
+        if kwargs['siteid']:
+            site = get_object_or_404(Site, id=kwargs['siteid'])
+            regx = re.compile("^/$")
+            for i in site.pages:
+                if re.search(regx, i.route):
+                    page = i
+                    break
+            if page is None:
+                return HttpResponseNotFound()
+            res = static_page(request, site, page, **kwargs)
+            return res
+        return HttpResponse(default_response, content_type="text/html")
+    except Exception as e:
+        print(e)
+        PrintException()
+        return HttpResponse("encountered exception", content_type="text/plain")
 
 def compilerv5(request, *args, **kwargs):
     try:
