@@ -15,6 +15,44 @@ coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
 
+basic_doc = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    XXsitemetasXX
+    XXpagemetasXX
+    XXsitelinksXX
+    XXpagelinksXX
+    XXsitestyleXX
+    <title>XXtitleXX</title>
+</head>
+<body>
+    XXsiteheaderXX
+    XXcontentXX
+    XXsitefooterXX
+    XXsitescriptsXX
+    XXpagescriptsXX
+</body>
+</html>"""
+
+admin_doc = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    XXsitemetasXX
+    XXpagemetasXX
+    XXsitelinksXX
+    XXpagelinksXX
+    XXsitestyleXX
+    <title>XXtitleXX</title>
+</head>
+<body>
+    XXsiteheaderXX
+    XXcontentXX
+    XXsitefooterXX
+    XXsitescriptsXX
+    XXpagescriptsXX
+</body>
+</html>"""
+
 
 def PrintException():
     exc_type, exc_obj, tb = sys.exc_info()
@@ -88,24 +126,7 @@ def static_page(request, site, pagedoc, dbg, admin, **kwargs):
         'XXpagescriptsXX': f"{pagedoc.pagescripts}",
         
     }
-    compiled = f"""<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        XXsitemetasXX
-        XXpagemetasXX
-        XXsitelinksXX
-        XXpagelinksXX
-        XXsitestyleXX
-        <title>XXtitleXX</title>
-    </head>
-    <body>
-        XXsiteheaderXX
-        XXcontentXX
-        XXsitefooterXX
-        XXsitescriptsXX
-        XXpagescriptsXX
-    </body>
-    </html>"""
+    compiled = f"{basic_doc}"
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
@@ -135,24 +156,7 @@ def individual_agent(request, site, pagename, dbg, admin, **kwargs):
             'XXpagescriptsXX': f"{pagedoc.pagescripts}",
             
         }
-        compiled = f"""<!DOCTYPE html>
-        <html lang="en">
-        <head>
-            XXsitemetasXX
-            XXpagemetasXX
-            XXsitelinksXX
-            XXpagelinksXX
-            XXsitestyleXX
-            <title>XXtitleXX</title>
-        </head>
-        <body>
-            XXsiteheaderXX
-            XXcontentXX
-            XXsitefooterXX
-            XXsitescriptsXX
-            XXpagescriptsXX
-        </body>
-        </html>"""
+        compiled = f"{basic_doc}"
 
         for k, v in rep_codes.items():
             compiled = re.sub(k, v, compiled)
@@ -240,24 +244,7 @@ def agents_by_location(request, site, pagename, dbg, admin, **kwargs):
         'XXpagescriptsXX': f"{pagedoc.pagescripts}",
         
     }
-    compiled = f"""<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        XXsitemetasXX
-        XXpagemetasXX
-        XXsitelinksXX
-        XXpagelinksXX
-        XXsitestyleXX
-        <title>XXtitleXX</title>
-    </head>
-    <body>
-        XXsiteheaderXX
-        XXcontentXX
-        XXsitefooterXX
-        XXsitescriptsXX
-        XXpagescriptsXX
-    </body>
-    </html>"""
+    compiled = f"{basic_doc}"
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
@@ -348,24 +335,7 @@ def agents_by_corp(request, site, pagename, dbg, admin, **kwargs):
         'XXpagescriptsXX': f"{pagedoc.pagescripts}",
         
     }
-    compiled = f"""<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        XXsitemetasXX
-        XXpagemetasXX
-        XXsitelinksXX
-        XXpagelinksXX
-        XXsitestyleXX
-        <title>XXtitleXX</title>
-    </head>
-    <body>
-        XXsiteheaderXX
-        XXcontentXX
-        XXsitefooterXX
-        XXsitescriptsXX
-        XXpagescriptsXX
-    </body>
-    </html>"""
+    compiled = f"{basic_doc}"
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
@@ -431,24 +401,7 @@ def agents_query(request, site, pagename, dbg, admin, **kwargs):
         'XXpagescriptsXX': f"{pagedoc.pagescripts}",
         
     }
-    compiled = f"""<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        XXsitemetasXX
-        XXpagemetasXX
-        XXsitelinksXX
-        XXpagelinksXX
-        XXsitestyleXX
-        <title>XXtitleXX</title>
-    </head>
-    <body>
-        XXsiteheaderXX
-        XXcontentXX
-        XXsitefooterXX
-        XXsitescriptsXX
-        XXpagescriptsXX
-    </body>
-    </html>"""
+    compiled = f"{basic_doc}"
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
