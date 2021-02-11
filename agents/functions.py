@@ -89,7 +89,7 @@ def replace_shortcodes(site, compiled):
             compiled = re.sub(f"XX{k}XX", f"{v}", compiled)
     html_sitemap = """<div><ul class="sitemap-links">"""
     for i in s['pages']:
-        if re.search(r'(^/locations)|(^/registered-agents)|(^/telecom-agents)|(^/process-server)|(/blog/posts/id)|(/blog/posts)|(/html-sitemap)|(^/agents-by-state)|(\.)', i['route']) is None:
+        if re.search(r'(^/locations)|(^/registered-agents)|(^/telecom-agents)|(^/process-server)|(/blog/posts/id)|(/blog/posts)|(/html-sitemap)|(^/agents-by-state/)|(\.)', i['route']) is None:
                 if i['route'] == "/":
                     html_sitemap += """<li><a href="/">Home</a></li>"""
                 else:
