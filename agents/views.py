@@ -52,7 +52,7 @@ def compilerv5(request, *args, **kwargs):
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
         if kwargs['page']:
-            regx = re.compile(f"(?<=compile/{kwargs['siteid']})/.*")
+            regx = re.compile(f"(?<=compile/{kwargs['siteid']}/).*")
             pagename = re.search(regx, request.path).group()
             if kwargs['page'] == 'blog':
                 return HttpResponse("blog", content_type="text/plain")
