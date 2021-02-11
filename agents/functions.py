@@ -500,7 +500,12 @@ def sitemap_generator(request, site):
     print(len(process_server_urls))
     print(len(agents_by_state_urls))
     print(len(page_urls) + len(registered_agent_urls) + len(process_server_urls) + len(agents_by_state_urls))
-    xml_doc = f"""<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{'\n'.join(page_urls)}\n{'\n'.join(registered_agent_urls)}\n{'\n'.join(process_server_urls)}\n{'\n'.join(agents_by_state_urls)}\n<urlset>"""
+    xml_doc = """<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n"""
+    xml_doc += '\n'.join(page_urls) + '\n'
+    xml_doc += '\n'.join(registered_agent_urls) + '\n'
+    xml_doc += '\n'.join(process_server_urls) + '\n'
+    xml_doc += '\n'.join(agents_by_state_urls) + '\n'
+    xml_doc += """<urlset>"""
     return HttpResponse(xml_doc, content_type="application/xml")
 
 
