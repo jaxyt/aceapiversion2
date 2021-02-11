@@ -467,26 +467,31 @@ def sitemap_generator(request, site):
     registered_agent_urls = []
     agents_by_state_urls = []
     page_urls = []
-    for i in pages:
-        page_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com{i}</loc>\n\t</url>""") 
-    
-    for i in agents:
-        process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/</loc>\n\t</url>""")
-        a_states = list(coll_ra.find({"agent": i}).distinct("state"))
-        for n in a_states:
-            process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/</loc>\n\t</url>""")
-            a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
-            for k in a_cities:
-                process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/{k}/</loc>\n\t</url>""")
-    
-    for n in states:
-        agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/</loc>\n\t</url>""")
-        s_cities = list(coll_ra.find({'state': n}).distinct("city"))
-        for k in s_cities:
-            agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/{k}/</loc>\n\t</url>""")
+    xml_urls = []
+    xml_doc = "sitemap"
+    print(agents)
 
-    for i in list(coll_ra.find({}, {'_id': 0})):
-        registered_agent_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/</loc>\n\t</url>""")
+
+    #for i in pages:
+    #    page_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com{i}</loc>\n\t</url>""") 
+    #
+    #for i in agents:
+    #    process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/</loc>\n\t</url>""")
+    #    a_states = list(coll_ra.find({"agent": i}).distinct("state"))
+    #    for n in a_states:
+    #        process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/</loc>\n\t</url>""")
+    #        a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
+    #        for k in a_cities:
+    #            process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/{k}/</loc>\n\t</url>""")
+    #
+    #for n in states:
+    #    agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/</loc>\n\t</url>""")
+    #    s_cities = list(coll_ra.find({'state': n}).distinct("city"))
+    #    for k in s_cities:
+    #        agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/{k}/</loc>\n\t</url>""")
+    #
+    #for i in list(coll_ra.find({}, {'_id': 0})):
+    #    registered_agent_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/</loc>\n\t</url>""")
     
 
     #process_server_urls = process_server_urls.sort() # sorts normally by alphabetical order
@@ -500,12 +505,12 @@ def sitemap_generator(request, site):
     #print(len(process_server_urls))
     #print(len(agents_by_state_urls))
     #print(len(page_urls) + len(registered_agent_urls) + len(process_server_urls) + len(agents_by_state_urls))
-    xml_doc = """<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n"""
-    xml_doc += '\n'.join(page_urls) + '\n'
-    xml_doc += '\n'.join(registered_agent_urls) + '\n'
-    xml_doc += '\n'.join(process_server_urls) + '\n'
-    xml_doc += '\n'.join(agents_by_state_urls) + '\n'
-    xml_doc += """<urlset>"""
-    return HttpResponse(xml_doc, content_type="application/xml")
+    #xml_doc = """<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n"""
+    #xml_doc += '\n'.join(page_urls) + '\n'
+    #xml_doc += '\n'.join(registered_agent_urls) + '\n'
+    #xml_doc += '\n'.join(process_server_urls) + '\n'
+    #xml_doc += '\n'.join(agents_by_state_urls) + '\n'
+    #xml_doc += """<urlset>"""
+    return HttpResponse(xml_doc, content_type="text/plain")
 
 
