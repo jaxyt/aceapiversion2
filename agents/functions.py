@@ -468,16 +468,16 @@ def sitemap_generator(request, site):
     agents_by_state_urls = []
     page_urls = []
     xml_urls = []
-    xml_doc = "sitemap"
     #print(agents)
 
     for i in agents:
-        xml_urls.append(f"""https://www.{site.sitename}.com/process-server/{i}/\n""")
+        xml_urls.append(f"""/process-server/{i}/\n""")
         a_states = list(coll_ra.find({"agent": i}).distinct("state"))
-        print(a_states)
-    #    for n in a_states:
-    #        process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/</loc>\n\t</url>""")
-    #        a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
+        #print(a_states)
+        for n in a_states:
+            xml_urls.append(f"""/process-server/{i}/{n}/\n""")
+            a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
+            print(a_cities)
     #        for k in a_cities:
     #            process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/{k}/</loc>\n\t</url>""")
 
@@ -520,7 +520,7 @@ def sitemap_generator(request, site):
     #xml_doc += '\n'.join(process_server_urls) + '\n'
     #xml_doc += '\n'.join(agents_by_state_urls) + '\n'
     #xml_doc += """<urlset>"""
-    print(xml_urls)
+    xml_doc = ''.join(xml_urls)
     return HttpResponse(xml_doc, content_type="text/plain")
 
 
