@@ -502,7 +502,7 @@ def sitemap_generator(request, site):
 
     xml_urls = ''.join(page_urls) + ''.join(registered_agent_urls) + ''.join(process_server_urls) + ''.join(agents_by_state_urls)
     
-    xml_doc = """<?xml version="1.0" encoding="utf-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""" + xml_urls + """\n<urlset>"""
+    xml_doc = """<?xml version="1.0" encoding="utf-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""" + xml_urls + """\n</urlset>"""
     return HttpResponse(xml_doc, content_type="text/plain")
 
 
