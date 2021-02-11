@@ -482,7 +482,7 @@ def sitemap_generator(request, site):
                 process_server_urls.append(f"""/process-server/{i}/{n}/{k}/\n""")
 
     for n in states:
-        agents_by_state_urls.append(f"""/agents-by-state/{n}/\n""")
+        xml_urls.append(f"""/agents-by-state/{n}/\n""")
         s_cities = list(coll_ra.find({'state': n}).distinct("city"))
         print(s_cities)
     #    for k in s_cities:
