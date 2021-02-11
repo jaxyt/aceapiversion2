@@ -520,6 +520,7 @@ def sitemap_generator(request, site):
     #xml_doc += '\n'.join(process_server_urls) + '\n'
     #xml_doc += '\n'.join(agents_by_state_urls) + '\n'
     #xml_doc += """<urlset>"""
+    print(xml_urls)
     return HttpResponse(xml_doc, content_type="text/plain")
 
 
