@@ -27,10 +27,14 @@ def PrintException():
 
 def replace_shortcodes(site, compiled):
     temp = list(coll_te.find({'id': site.id}, {'_id': 0}))[0]
+    s = list(coll_si.find({'id': site.id}, {'_id': 0}))[0]
     for i in site.shortcodes:
         compiled = re.sub(f"XX{i.name}XX", f"{i.value}", compiled)
     for i in temp['shortcodes']:
         compiled = re.sub(f"XX{i['name']}XX", f"{i['value']}", compiled)
+    for k, v in s.items():
+        if type(v) is str:
+            compiled = re.sub(f"XX{k}XX", f"{v}", compiled)
     return compiled
 
 
@@ -267,6 +271,8 @@ def agents_by_location(request, site, pagename, **kwargs):
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
+    for k, v in lwargs.items():
+        compiled = re.sub(f"XX{k}XX", v, compiled)
     compiled = re.sub("XXagentsXX", agent_table, compiled)
     compiled = re.sub("XXsublocationsXX", location_table, compiled)
     compiled = replace_shortcodes(site, compiled)
@@ -374,6 +380,8 @@ def agents_by_corp(request, site, pagename, **kwargs):
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
+    for k, v in lwargs.items():
+        compiled = re.sub(f"XX{k}XX", v, compiled)
     compiled = re.sub("XXagentsXX", agent_table, compiled)
     compiled = re.sub("XXsublocationsXX", location_table, compiled)
     compiled = replace_shortcodes(site, compiled)
