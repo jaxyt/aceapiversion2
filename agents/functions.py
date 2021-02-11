@@ -500,6 +500,11 @@ def sitemap_generator(request, site):
     for i in pages:
         page_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""{i}""")+"</loc>\n\t</url>")
 
+    print(len(page_urls))
+    print(len(registered_agent_urls))
+    print(len(process_server_urls))
+    print(len(agents_by_state_urls))
+    print(len(page_urls)+len(registered_agent_urls)+len(process_server_urls)+len(agents_by_state_urls))
     xml_urls = ''.join(page_urls) + ''.join(registered_agent_urls) + ''.join(process_server_urls) + ''.join(agents_by_state_urls)
     
     xml_doc = """<?xml version="1.0" encoding="utf-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""" + xml_urls + """\n</urlset>"""
