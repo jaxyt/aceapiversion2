@@ -469,8 +469,17 @@ def sitemap_generator(request, site):
     page_urls = []
     xml_urls = []
     xml_doc = "sitemap"
-    print(agents)
+    #print(agents)
 
+    for i in agents:
+        xml_urls.append(f"""https://www.{site.sitename}.com/process-server/{i}/\n""")
+        a_states = list(coll_ra.find({"agent": i}).distinct("state"))
+        print(a_states)
+    #    for n in a_states:
+    #        process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/</loc>\n\t</url>""")
+    #        a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
+    #        for k in a_cities:
+    #            process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/{k}/</loc>\n\t</url>""")
 
     #for i in pages:
     #    page_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com{i}</loc>\n\t</url>""") 
