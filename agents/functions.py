@@ -541,7 +541,7 @@ def sitemap_generator(request, site):
     #xml_doc += '\n'.join(process_server_urls) + '\n'
     #xml_doc += '\n'.join(agents_by_state_urls) + '\n'
     #xml_doc += """<urlset>"""
-    xml_doc = f"""<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://www.{site.sitename}.com""" + xml_urls + """</loc></url><urlset>"""
+    xml_doc = f"""<?xml version="1.0" encoding="utf-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://www.{site.sitename}.com""" + xml_urls + """</loc></url><urlset>"""
     return HttpResponse(xml_doc, content_type="application/xml")
 
 
