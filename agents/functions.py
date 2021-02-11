@@ -471,77 +471,38 @@ def sitemap_generator(request, site):
     #print(agents)
 
     for i in agents:
-        process_server_urls.append(urllib.parse.quote(f"""/process-server/{i}"""))
+        process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/process-server/{i}""")+"</loc>\n\t</url>")
         a_states = list(coll_ra.find({"agent": i}).distinct("state"))
         #print(a_states)
         for n in a_states:
-            process_server_urls.append(urllib.parse.quote(f"""/process-server/{i}/{n}"""))
+            process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/process-server/{i}/{n}""")+"</loc>\n\t</url>")
             a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
             #print(a_cities)
             for k in a_cities:
-                process_server_urls.append(urllib.parse.quote(f"""/process-server/{i}/{n}/{k}"""))
+                process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/process-server/{i}/{n}/{k}""")+"</loc>\n\t</url>")
     process_server_urls.sort()
     process_server_urls.sort(key=len, reverse=True)
 
     for n in states:
-        agents_by_state_urls.append(urllib.parse.quote(f"""/agents-by-state/{n}"""))
+        agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/agents-by-state/{n}""")+"</loc>\n\t</url>")
         s_cities = list(coll_ra.find({'state': n}).distinct("city"))
         #print(s_cities)
         for k in s_cities:
-            agents_by_state_urls.append(urllib.parse.quote(f"""/agents-by-state/{n}/{k}"""))
+            agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/agents-by-state/{n}/{k}""")+"</loc>\n\t</url>")
     agents_by_state_urls.sort()
     agents_by_state_urls.sort(key=len, reverse=True)
 
     for i in list(coll_ra.find({}, {'_id': 0})):
-        registered_agent_urls.append(urllib.parse.quote(f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}"""))
+        registered_agent_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}""")+"</loc>\n\t</url>")
     registered_agent_urls.sort()
     registered_agent_urls.sort(key=len, reverse=True)
 
     for i in pages:
-        page_urls.append(urllib.parse.quote(f"""{i}""")) 
+        page_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""{i}""")+"</loc>\n\t</url>")
 
-    xml_urls = f'</loc></url><url><loc>https://www.{site.sitename}.com'.join([*page_urls, *registered_agent_urls, *process_server_urls, *agents_by_state_urls])
-
-    #for i in pages:
-    #    page_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com{i}</loc>\n\t</url>""") 
-    #
-    #for i in agents:
-    #    process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/</loc>\n\t</url>""")
-    #    a_states = list(coll_ra.find({"agent": i}).distinct("state"))
-    #    for n in a_states:
-    #        process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/</loc>\n\t</url>""")
-    #        a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
-    #        for k in a_cities:
-    #            process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/{k}/</loc>\n\t</url>""")
-    #
-    #for n in states:
-    #    agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/</loc>\n\t</url>""")
-    #    s_cities = list(coll_ra.find({'state': n}).distinct("city"))
-    #    for k in s_cities:
-    #        agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/{k}/</loc>\n\t</url>""")
-    #
-    #for i in list(coll_ra.find({}, {'_id': 0})):
-    #    registered_agent_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/</loc>\n\t</url>""")
+    xml_urls = ''.join(page_urls) + ''.join(registered_agent_urls) + ''.join(process_server_urls) + ''.join(agents_by_state_urls)
     
-
-    #process_server_urls = process_server_urls.sort() # sorts normally by alphabetical order
-    #process_server_urls = process_server_urls.sort(key=len, reverse=True) # sorts by descending length
-    #agents_by_state_urls = agents_by_state_urls.sort()
-    #agents_by_state_urls = agents_by_state_urls.sort(key=len, reverse=True)
-    #registered_agent_urls = registered_agent_urls.sort()
-    #registered_agent_urls = registered_agent_urls.sort(key=len, reverse=True)
-    #print(len(page_urls))
-    #print(len(registered_agent_urls))
-    #print(len(process_server_urls))
-    #print(len(agents_by_state_urls))
-    #print(len(page_urls) + len(registered_agent_urls) + len(process_server_urls) + len(agents_by_state_urls))
-    #xml_doc = """<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n"""
-    #xml_doc += '\n'.join(page_urls) + '\n'
-    #xml_doc += '\n'.join(registered_agent_urls) + '\n'
-    #xml_doc += '\n'.join(process_server_urls) + '\n'
-    #xml_doc += '\n'.join(agents_by_state_urls) + '\n'
-    #xml_doc += """<urlset>"""
-    xml_doc = f"""<?xml version="1.0" encoding="utf-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://www.{site.sitename}.com""" + xml_urls + """</loc></url><urlset>"""
+    xml_doc = """<?xml version="1.0" encoding="utf-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""" + xml_urls + """\n<urlset>"""
     return HttpResponse(xml_doc, content_type="text/plain")
 
 
