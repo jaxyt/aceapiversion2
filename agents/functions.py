@@ -73,7 +73,7 @@ def resource_page(request, site, pagedoc, **kwargs):
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type=mime_type)
 
-def static_page(request, site, pagedoc, **kwargs):
+def static_page(request, site, pagedoc, dbg, **kwargs):
     rep_codes = {
         'XXsitemetasXX': f"{site.sitemetas}",
         'XXpagemetasXX': f"{pagedoc.pagemetas}",
@@ -112,7 +112,7 @@ def static_page(request, site, pagedoc, **kwargs):
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
-def individual_agent(request, site, pagename, **kwargs):
+def individual_agent(request, site, pagename, dbg, **kwargs):
     agent_obj = list(coll_ra.find({'id': kwargs['agentid'], 'agent': kwargs['agent']}, {'_id': 0}))
     if len(agent_obj):
         pagedoc = None
@@ -166,8 +166,7 @@ def individual_agent(request, site, pagename, **kwargs):
     else:
         return HttpResponseNotFound()
 
-def agents_by_location(request, site, pagename, **kwargs):
-    dbg = False
+def agents_by_location(request, site, pagename, dbg, **kwargs):
     pagedoc = None
     route = "/agents-by-state"
     lwargs = dict()
@@ -270,8 +269,7 @@ def agents_by_location(request, site, pagename, **kwargs):
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
-def agents_by_corp(request, site, pagename, **kwargs):
-    dbg = False
+def agents_by_corp(request, site, pagename, dbg, **kwargs):
     pagedoc = None
     route = ""
     lwargs = dict()
@@ -379,8 +377,7 @@ def agents_by_corp(request, site, pagename, **kwargs):
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
-def agents_query(request, site, pagename, **kwargs):
-    dbg = False
+def agents_query(request, site, pagename, dbg, **kwargs):
     pagedoc = None
     route = '/registered-agents/search/key/value'
 
