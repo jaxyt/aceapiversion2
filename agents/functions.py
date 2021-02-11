@@ -480,15 +480,20 @@ def sitemap_generator(request, site):
             #print(a_cities)
             for k in a_cities:
                 process_server_urls.append(f"""/process-server/{i}/{n}/{k}/\n""")
+    process_server_urls.sort()
+    process_server_urls.sort(key=len, reverse=True)
 
     for n in states:
-        xml_urls.append(f"""/agents-by-state/{n}/\n""")
+        agents_by_state_urls.append(f"""/agents-by-state/{n}/\n""")
         s_cities = list(coll_ra.find({'state': n}).distinct("city"))
         #print(s_cities)
         for k in s_cities:
-            xml_urls.append(f"""/agents-by-state/{n}/{k}/\n""")
-    xml_urls.sort()
-    xml_urls.sort(key=len, reverse=True)
+            agents_by_state_urls.append(f"""/agents-by-state/{n}/{k}/\n""")
+    agents_by_state_urls.sort()
+    agents_by_state_urls.sort(key=len, reverse=True)
+
+    for i in list(coll_ra.find({}, {'_id': 0})):
+        xml_urls.append(f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/""")
 
     #for i in pages:
     #    page_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com{i}</loc>\n\t</url>""") 
