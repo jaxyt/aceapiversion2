@@ -35,11 +35,11 @@ def get_home(request, *args, **kwargs):
         page = None
         res = None
         dbg = False
+        admin = False
         if request.GET.get('ip', '') == "66.229.0.114":
-            print("ADMIN_IP")
+            admin = True
         if request.GET.get('dbg', '') == 'y':
             dbg = True
-            print('DEBUG_ON')
         default_response = "hello world"
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
@@ -50,7 +50,7 @@ def get_home(request, *args, **kwargs):
                     break
             if page is None:
                 return HttpResponseNotFound()
-            res = static_page(request, site, page, dbg, **kwargs)
+            res = static_page(request, site, page, dbg, admin, **kwargs)
             return res
         return HttpResponse(default_response, content_type="text/html")
     except Exception as e:
@@ -65,11 +65,11 @@ def compilerv5(request, *args, **kwargs):
         res = None
         pagename = ""
         dbg = False
+        admin = False
         if request.GET.get('ip', '') == "66.229.0.114":
-            print("ADMIN_IP")
+            admin = True
         if request.GET.get('dbg', '') == 'y':
             dbg = True
-            print('DEBUG_ON')
         default_response = "hello world"
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
@@ -98,7 +98,7 @@ def compilerv5(request, *args, **kwargs):
                     return res
                 if page is None:
                     return HttpResponseNotFound()
-                res = static_page(request, site, page, dbg, **kwargs)
+                res = static_page(request, site, page, dbg, admin, **kwargs)
                 return res
             else:
                 fwargs = dict()
@@ -107,15 +107,15 @@ def compilerv5(request, *args, **kwargs):
                         fwargs[k] = v
                 if len(fwargs):
                     if kwargs['page'] == 'process-server':
-                        res = agents_by_corp(request, site, pagename, dbg, **fwargs)
+                        res = agents_by_corp(request, site, pagename, dbg, admin, **fwargs)
                     elif kwargs['page'] == 'agents-by-state':
-                        res = agents_by_location(request, site, pagename, dbg, **fwargs)
+                        res = agents_by_location(request, site, pagename, dbg, admin, **fwargs)
                     elif kwargs['page'] == 'registered-agents':
                         for k, v in kwargs.items():
                             if k == 'agent':
-                                res = individual_agent(request, site, pagename, dbg, **fwargs)
+                                res = individual_agent(request, site, pagename, dbg, admin, **fwargs)
                                 return res
-                        res = agents_query(request, site, pagename, dbg, **fwargs)
+                        res = agents_query(request, site, pagename, dbg, admin, **fwargs)
                     return res
         return HttpResponse(default_response, content_type="text/html")
     except Exception as e:
