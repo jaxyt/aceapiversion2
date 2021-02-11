@@ -19,6 +19,16 @@ from .functions import PrintException, static_page, resource_page, individual_ag
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'sop-to-mongo.json')
 
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 def get_home(request, *args, **kwargs):
     try:
         site = None
@@ -27,9 +37,7 @@ def get_home(request, *args, **kwargs):
         dbg = False
         if request.GET.get('dbg', '') == 'y':
             dbg = True
-            
-        if request.user:
-            print(request.user)
+        print(get_client_ip(request))
         default_response = "hello world"
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
@@ -57,9 +65,6 @@ def compilerv5(request, *args, **kwargs):
         dbg = False
         if request.GET.get('dbg', '') == 'y':
             dbg = True
-
-        if request.user:
-            print(request.user)
         default_response = "hello world"
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
