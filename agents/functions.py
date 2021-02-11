@@ -471,15 +471,22 @@ def sitemap_generator(request, site):
     #print(agents)
 
     for i in agents:
-        xml_urls.append(f"""/process-server/{i}/\n""")
+        process_server_urls.append(f"""/process-server/{i}/\n""")
         a_states = list(coll_ra.find({"agent": i}).distinct("state"))
         #print(a_states)
         for n in a_states:
-            xml_urls.append(f"""/process-server/{i}/{n}/\n""")
+            process_server_urls.append(f"""/process-server/{i}/{n}/\n""")
             a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
             #print(a_cities)
             for k in a_cities:
-                xml_urls.append(f"""/process-server/{i}/{n}/{k}/\n""")
+                process_server_urls.append(f"""/process-server/{i}/{n}/{k}/\n""")
+
+    for n in states:
+        agents_by_state_urls.append(f"""/agents-by-state/{n}/\n""")
+        s_cities = list(coll_ra.find({'state': n}).distinct("city"))
+        print(s_cities)
+    #    for k in s_cities:
+    #        agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/{k}/</loc>\n\t</url>""")
     xml_urls.sort()
     xml_urls.sort(key=len, reverse=True)
 
