@@ -170,7 +170,7 @@ def individual_agent(request, site, pagename, **kwargs):
         return HttpResponseNotFound()
 
 def agents_by_location(request, site, pagename, **kwargs):
-    dbg = True
+    dbg = False
     pagedoc = None
     route = "/agents-by-state"
     lwargs = dict()
@@ -272,7 +272,7 @@ def agents_by_location(request, site, pagename, **kwargs):
     return HttpResponse(compiled, content_type='text/html')
 
 def agents_by_corp(request, site, pagename, **kwargs):
-    dbg = True
+    dbg = False
     pagedoc = None
     route = ""
     lwargs = dict()
@@ -379,7 +379,7 @@ def agents_by_corp(request, site, pagename, **kwargs):
     return HttpResponse(compiled, content_type='text/html')
 
 def agents_query(request, site, pagename, **kwargs):
-    dbg = True
+    dbg = False
     pagedoc = None
     route = '/registered-agents/search/key/value'
 
