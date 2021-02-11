@@ -489,17 +489,17 @@ def sitemap_generator(request, site):
         registered_agent_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/</loc>\n\t</url>""")
     
 
-    process_server_urls = process_server_urls.sort() # sorts normally by alphabetical order
-    process_server_urls = process_server_urls.sort(key=len, reverse=True) # sorts by descending length
-    agents_by_state_urls = agents_by_state_urls.sort()
-    agents_by_state_urls = agents_by_state_urls.sort(key=len, reverse=True)
-    registered_agent_urls = registered_agent_urls.sort()
-    registered_agent_urls = registered_agent_urls.sort(key=len, reverse=True)
-    print(len(page_urls))
-    print(len(registered_agent_urls))
-    print(len(process_server_urls))
-    print(len(agents_by_state_urls))
-    print(len(page_urls) + len(registered_agent_urls) + len(process_server_urls) + len(agents_by_state_urls))
+    #process_server_urls = process_server_urls.sort() # sorts normally by alphabetical order
+    #process_server_urls = process_server_urls.sort(key=len, reverse=True) # sorts by descending length
+    #agents_by_state_urls = agents_by_state_urls.sort()
+    #agents_by_state_urls = agents_by_state_urls.sort(key=len, reverse=True)
+    #registered_agent_urls = registered_agent_urls.sort()
+    #registered_agent_urls = registered_agent_urls.sort(key=len, reverse=True)
+    #print(len(page_urls))
+    #print(len(registered_agent_urls))
+    #print(len(process_server_urls))
+    #print(len(agents_by_state_urls))
+    #print(len(page_urls) + len(registered_agent_urls) + len(process_server_urls) + len(agents_by_state_urls))
     xml_doc = """<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n"""
     xml_doc += '\n'.join(page_urls) + '\n'
     xml_doc += '\n'.join(registered_agent_urls) + '\n'
