@@ -484,9 +484,9 @@ def sitemap_generator(request, site):
     for n in states:
         xml_urls.append(f"""/agents-by-state/{n}/\n""")
         s_cities = list(coll_ra.find({'state': n}).distinct("city"))
-        print(s_cities)
-    #    for k in s_cities:
-    #        agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/{k}/</loc>\n\t</url>""")
+        #print(s_cities)
+        for k in s_cities:
+            xml_urls.append(f"""/agents-by-state/{n}/{k}/\n""")
     xml_urls.sort()
     xml_urls.sort(key=len, reverse=True)
 
