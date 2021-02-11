@@ -16,42 +16,56 @@ coll_te = db.templates_template
 coll_bl = db.blogs_blog
 
 basic_doc = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    XXsitemetasXX
-    XXpagemetasXX
-    XXsitelinksXX
-    XXpagelinksXX
-    XXsitestyleXX
-    <title>XXtitleXX</title>
-</head>
-<body>
-    XXsiteheaderXX
-    XXcontentXX
-    XXsitefooterXX
-    XXsitescriptsXX
-    XXpagescriptsXX
-</body>
-</html>"""
+    <html lang="en">
+    <head>
+        XXsitemetasXX
+        XXpagemetasXX
+        XXsitelinksXX
+        XXpagelinksXX
+        XXsitestyleXX
+        <title>XXtitleXX</title>
+    </head>
+    <body>
+        XXsiteheaderXX
+        XXcontentXX
+        XXsitefooterXX
+        XXsitescriptsXX
+        XXpagescriptsXX
+    </body>
+    </html>"""
 
 admin_doc = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    XXsitemetasXX
-    XXpagemetasXX
-    XXsitelinksXX
-    XXpagelinksXX
-    XXsitestyleXX
-    <title>XXtitleXX</title>
-</head>
-<body>
-    XXsiteheaderXX
-    XXcontentXX
-    XXsitefooterXX
-    XXsitescriptsXX
-    XXpagescriptsXX
-</body>
-</html>"""
+    <html lang="en">
+    <head>
+        XXsitemetasXX
+        XXpagemetasXX
+        XXsitelinksXX
+        XXpagelinksXX
+        XXsitestyleXX
+        <title>XXtitleXX</title>
+    </head>
+    <body>
+        <!--##START siteheader START##-->
+        XXsiteheaderXX
+        <!--##END siteheader END##-->
+        <!--##START content START##-->
+        XXcontentXX
+        <!--##END content END##-->
+        <!--##START sitefooter START##-->
+        XXsitefooterXX
+        <!--##END sitefooter END##-->
+        XXsitescriptsXX
+        XXpagescriptsXX
+        <div id="metas-and-style" style="display: none;">
+            <textarea name="" id="pagemetas-form">XXpagemetasXX</textarea>
+            <textarea name="" id="sitestyle-form">XXsitestyleXX</textarea>
+        </div>
+        <div id="hidden-form-attrs" style="display: none;">
+            <textarea name="" id="siteid-form">XXsiteidXX</textarea>
+            <textarea name="" id="pageroute-form">XXpagerouteXX</textarea>
+        </div>
+    </body>
+    </html>"""
 
 
 def PrintException():
@@ -137,10 +151,12 @@ def static_page(request, site, pagedoc, dbg, admin, **kwargs):
         
     }
     compiled = f"{basic_doc}"
-
+    if admin is True and dbg is True:
+        compiled = f"{admin_doc}"
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
-    compiled = replace_shortcodes(site, compiled)
+    if dbg is False:
+        compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
 def individual_agent(request, site, pagename, dbg, admin, **kwargs):
