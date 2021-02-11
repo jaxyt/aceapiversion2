@@ -201,9 +201,9 @@ def agents_by_location(request, site, pagename, **kwargs):
             <tbody>
     """
     for i in agents_objs:
-        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['id']}/")
+        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         if dbg is True:
-            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['id']}/")
+            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         agent_table += f"""
                 <tr>
                     <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
@@ -306,9 +306,9 @@ def agents_by_corp(request, site, pagename, **kwargs):
             <tbody>
     """
     for i in agents_objs:
-        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['id']}/")
+        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         if dbg is True:
-            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['id']}/")
+            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         agent_table += f"""
                 <tr>
                     <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
@@ -403,9 +403,9 @@ def agents_query(request, site, pagename, **kwargs):
             <tbody>
     """
     for i in agents_objs:
-        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['id']}/")
+        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         if dbg is True:
-            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['id']}/")
+            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         agent_table += f"""
                 <tr>
                     <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
@@ -460,6 +460,47 @@ def agents_query(request, site, pagename, **kwargs):
     return HttpResponse(compiled, content_type='text/html')
 
 def sitemap_generator(request, site):
-    return "sitemap generator"
+    states = list(coll_ra.find().distinct('state'))
+    agents = list(coll_ra.find().distinct('agent'))
+    pages = [i.route for i in site.pages if re.search(re.compile("^/((registered-agents)|(process-server)|(agents-by-state)|([\w-]+\.\w{2,4}))"), f"{i.route}") is None]
+    process_server_urls = []
+    registered_agent_urls = []
+    agents_by_state_urls = []
+    page_urls = []
+    for i in pages:
+        page_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com{i}</loc>\n\t</url>""") 
+    
+    for i in agents:
+        process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/</loc>\n\t</url>""")
+        a_states = list(coll_ra.find({"agent": i}).distinct("state"))
+        for n in a_states:
+            process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/</loc>\n\t</url>""")
+            a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
+            for k in a_cities:
+                process_server_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/process-server/{i}/{n}/{k}/</loc>\n\t</url>""")
+    
+    for n in states:
+        agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/</loc>\n\t</url>""")
+        s_cities = list(coll_ra.find({'state': n}).distinct("city"))
+        for k in s_cities:
+            agents_by_state_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/agents-by-state/{n}/{k}/</loc>\n\t</url>""")
+
+    for i in list(coll_ra.find({}, {'_id': 0})):
+        registered_agent_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/</loc>\n\t</url>""")
+    
+
+    process_server_urls = process_server_urls.sort() # sorts normally by alphabetical order
+    process_server_urls = process_server_urls.sort(key=len, reverse=True) # sorts by descending length
+    agents_by_state_urls = agents_by_state_urls.sort()
+    agents_by_state_urls = agents_by_state_urls.sort(key=len, reverse=True)
+    registered_agent_urls = registered_agent_urls.sort()
+    registered_agent_urls = registered_agent_urls.sort(key=len, reverse=True)
+    print(len(page_urls))
+    print(len(registered_agent_urls))
+    print(len(process_server_urls))
+    print(len(agents_by_state_urls))
+    print(len(page_urls) + len(registered_agent_urls) + len(process_server_urls) + len(agents_by_state_urls))
+    xml_doc = f"""<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{'\n'.join(page_urls)}\n{'\n'.join(registered_agent_urls)}\n{'\n'.join(process_server_urls)}\n{'\n'.join(agents_by_state_urls)}\n<urlset>"""
+    return HttpResponse(xml_doc, content_type="application/xml")
 
 
