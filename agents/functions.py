@@ -500,7 +500,7 @@ def sitemap_generator(request, site):
     for i in pages:
         page_urls.append(f"""{i}""") 
 
-    xml_urls = f'</loc>\n\t</url>\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'.join([*page_urls, *registered_agent_urls, *process_server_urls, *agents_by_state_urls])
+    xml_urls = f'</loc></url><url><loc>https://www.{site.sitename}.com'.join([*page_urls, *registered_agent_urls, *process_server_urls, *agents_by_state_urls])
 
     #for i in pages:
     #    page_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com{i}</loc>\n\t</url>""") 
@@ -541,7 +541,7 @@ def sitemap_generator(request, site):
     #xml_doc += '\n'.join(process_server_urls) + '\n'
     #xml_doc += '\n'.join(agents_by_state_urls) + '\n'
     #xml_doc += """<urlset>"""
-    xml_doc = f"""<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com""" + xml_urls + """</loc>\n\t</url>\n<urlset>"""
+    xml_doc = f"""<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://www.{site.sitename}.com""" + xml_urls + """</loc></url><urlset>"""
     return HttpResponse(xml_doc, content_type="application/xml")
 
 
