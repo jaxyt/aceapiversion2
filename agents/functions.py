@@ -471,31 +471,36 @@ def sitemap_generator(request, site):
     #print(agents)
 
     for i in agents:
-        process_server_urls.append(f"""/process-server/{i}/\n""")
+        process_server_urls.append(f"""/process-server/{i}/""")
         a_states = list(coll_ra.find({"agent": i}).distinct("state"))
         #print(a_states)
         for n in a_states:
-            process_server_urls.append(f"""/process-server/{i}/{n}/\n""")
+            process_server_urls.append(f"""/process-server/{i}/{n}/""")
             a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
             #print(a_cities)
             for k in a_cities:
-                process_server_urls.append(f"""/process-server/{i}/{n}/{k}/\n""")
+                process_server_urls.append(f"""/process-server/{i}/{n}/{k}/""")
     process_server_urls.sort()
     process_server_urls.sort(key=len, reverse=True)
 
     for n in states:
-        agents_by_state_urls.append(f"""/agents-by-state/{n}/\n""")
+        agents_by_state_urls.append(f"""/agents-by-state/{n}/""")
         s_cities = list(coll_ra.find({'state': n}).distinct("city"))
         #print(s_cities)
         for k in s_cities:
-            agents_by_state_urls.append(f"""/agents-by-state/{n}/{k}/\n""")
+            agents_by_state_urls.append(f"""/agents-by-state/{n}/{k}/""")
     agents_by_state_urls.sort()
     agents_by_state_urls.sort(key=len, reverse=True)
 
     for i in list(coll_ra.find({}, {'_id': 0})):
-        xml_urls.append(f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/\n""")
-    xml_urls.sort()
-    xml_urls.sort(key=len, reverse=True)
+        registered_agent_urls.append(f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/""")
+    registered_agent_urls.sort()
+    registered_agent_urls.sort(key=len, reverse=True)
+
+    for i in pages:
+        page_urls.append(f"""{i}""") 
+
+    xml_urls = f'</loc>\n\t</url>\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'.join([*page_urls, *registered_agent_urls, *process_server_urls, *agents_by_state_urls])
 
     #for i in pages:
     #    page_urls.append(f"""\t<url>\n\t\t<loc>https://www.{site.sitename}.com{i}</loc>\n\t</url>""") 
@@ -536,7 +541,7 @@ def sitemap_generator(request, site):
     #xml_doc += '\n'.join(process_server_urls) + '\n'
     #xml_doc += '\n'.join(agents_by_state_urls) + '\n'
     #xml_doc += """<urlset>"""
-    xml_doc = ''.join(xml_urls)
+    xml_doc = f"""<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com""" + xml_urls + """</loc>\n\t</url>\n<urlset>"""
     return HttpResponse(xml_doc, content_type="text/plain")
 
 
