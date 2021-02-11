@@ -37,12 +37,8 @@ def get_home(request, *args, **kwargs):
         dbg = False
         if request.GET.get('dbg', '') == 'y':
             dbg = True
-        if request.GET.get('ip', '') != '':
-            print(request.GET.get('ip', ''))
-        #for k, v in request.META.items():
-        #    print(k)
-        #    print(v)
-        #    print("################")
+        if request.GET.get('ip', '') == "66.229.0.114":
+            print("True")
         default_response = "hello world"
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
@@ -70,6 +66,8 @@ def compilerv5(request, *args, **kwargs):
         dbg = False
         if request.GET.get('dbg', '') == 'y':
             dbg = True
+        if request.GET.get('ip', '') == "66.229.0.114":
+            print("True")
         default_response = "hello world"
         if kwargs['siteid']:
             site = get_object_or_404(Site, id=kwargs['siteid'])
