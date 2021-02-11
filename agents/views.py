@@ -53,8 +53,7 @@ def compilerv5(request, *args, **kwargs):
             site = get_object_or_404(Site, id=kwargs['siteid'])
         if kwargs['page']:
             regx = re.compile(f"(?<=compile/{kwargs['siteid']})/.*")
-            pagename = re.search(regx, request.path)
-            print(pagename)
+            pagename = re.search(regx, request.path).group()
             if kwargs['page'] == 'blog':
                 return HttpResponse("blog", content_type="text/plain")
             if kwargs['page'] == 'sitemap.xml':
@@ -86,18 +85,15 @@ def compilerv5(request, *args, **kwargs):
                         fwargs[k] = v
                 if len(fwargs):
                     if kwargs['page'] == 'process-server':
-                        print("process server")
-                        res = agents_by_corp(request, site, kwargs['page'], **fwargs)
+                        res = agents_by_corp(request, site, pagename, **fwargs)
                     elif kwargs['page'] == 'agents-by-state':
-                        print("agents-by-state")
-                        res = agents_by_location(request, site, kwargs['page'], **fwargs)
+                        res = agents_by_location(request, site, pagename, **fwargs)
                     elif kwargs['page'] == 'registered-agents':
-                        print("registered-agents")
                         for k, v in kwargs.items():
                             if k == 'agent':
-                                res = individual_agent(request, site, kwargs['page'], **fwargs)
+                                res = individual_agent(request, site, pagename, **fwargs)
                                 return res
-                        res = agents_query(request, site, kwargs['page'], **fwargs)
+                        res = agents_query(request, site, pagename, **fwargs)
                     return res
         return HttpResponse(default_response, content_type="text/html")
     except Exception as e:

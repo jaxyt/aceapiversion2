@@ -146,15 +146,6 @@ def individual_agent(request, site, pagename, **kwargs):
             <title>XXtitleXX</title>
         </head>
         <body>
-            <!-- XXagentXX -->
-            <!-- XXstateXX -->
-            <!-- XXstateacronymXX -->
-            <!-- XXcountyXX -->
-            <!-- XXcityXX -->
-            <!-- XXzipXX -->
-            <!-- XXaddressXX -->
-            <!-- XXupdatedXX -->
-            <!-- XXcreatedXX -->
             XXsiteheaderXX
             XXcontentXX
             XXsitefooterXX
@@ -169,6 +160,7 @@ def individual_agent(request, site, pagename, **kwargs):
         for k, v in agent_obj[0].items():
             regx = re.compile(f"XX{k}XX")
             compiled = re.sub(regx, f"{v}", compiled)
+        compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
         compiled = replace_shortcodes(site, compiled)
         return HttpResponse(compiled, content_type='text/html')
     else:
@@ -262,7 +254,6 @@ def agents_by_location(request, site, pagename, **kwargs):
     <body>
         XXsiteheaderXX
         XXcontentXX
-        XXsublocationsXX
         XXsitefooterXX
         XXsitescriptsXX
         XXpagescriptsXX
@@ -275,6 +266,7 @@ def agents_by_location(request, site, pagename, **kwargs):
         compiled = re.sub(f"XX{k}XX", v, compiled)
     compiled = re.sub("XXagentsXX", agent_table, compiled)
     compiled = re.sub("XXsublocationsXX", location_table, compiled)
+    compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
@@ -371,7 +363,6 @@ def agents_by_corp(request, site, pagename, **kwargs):
     <body>
         XXsiteheaderXX
         XXcontentXX
-        XXsublocationsXX
         XXsitefooterXX
         XXsitescriptsXX
         XXpagescriptsXX
@@ -384,6 +375,7 @@ def agents_by_corp(request, site, pagename, **kwargs):
         compiled = re.sub(f"XX{k}XX", v, compiled)
     compiled = re.sub("XXagentsXX", agent_table, compiled)
     compiled = re.sub("XXsublocationsXX", location_table, compiled)
+    compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
@@ -465,6 +457,7 @@ def agents_query(request, site, pagename, **kwargs):
         compiled = re.sub(k, v, compiled)
     compiled = re.sub("XXagentsXX", agent_table, compiled)
     compiled = re.sub("XXqueryXX", kwargs['arg_two'], compiled)
+    compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
