@@ -540,6 +540,8 @@ def telecom_query(request, site, pagename, dbg, admin, **kwargs):
     compiled = re.sub("XXqueryXX", kwargs['query'], compiled)
     compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
     #compiled = replace_shortcodes(site, compiled)
+    for i in site.shortcodes:
+        compiled = re.sub(f"XX{i.name}XX", f"{i.value}", compiled)
     return HttpResponse(compiled, content_type='text/html')
 
 
