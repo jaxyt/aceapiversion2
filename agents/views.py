@@ -105,19 +105,18 @@ def compilerv5(request, *args, **kwargs):
                 for k,v in kwargs.items():
                     if k != 'siteid' and k != 'page':
                         fwargs[k] = v
+                if kwargs['page'] == 'agents-by-state' and len(kwargs) == 2:
+                    regx = re.compile("^/agents-by-state$")
+                    for i in site.pages:
+                        if re.search(regx, i.route):
+                            page = i
+                            break
+                    res = static_page(request, site, page, dbg, admin, **kwargs)
+                    return res
                 if len(fwargs):
                     if kwargs['page'] == 'process-server':
                         res = agents_by_corp(request, site, pagename, dbg, admin, **fwargs)
                     elif kwargs['page'] == 'agents-by-state':
-                        print(kwargs)
-                        #if len(kwargs) == 2:
-                            #regx = re.compile("^/agents-by-state$")
-                            #for i in site.pages:
-                            #    if re.search(regx, i.route):
-                            #        page = i
-                            #        break
-                            #res = static_page(request, site, page, dbg, admin, **kwargs)
-                            #return res
                         res = agents_by_location(request, site, pagename, dbg, admin, **fwargs)
                     elif kwargs['page'] == 'registered-agents':
                         for k, v in kwargs.items():
