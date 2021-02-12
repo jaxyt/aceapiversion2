@@ -505,8 +505,8 @@ def telecom_query(request, site, pagename, dbg, admin, **kwargs):
             <tbody>
     """
     for i in agents_objs:
-        agent = re.search(r'(?<=\|)[\w\s\d-]+', i['agent'])
-        carrier = re.search(r'(?<=\|)[\w\s\d-]+', i['agent'])
+        agent = re.search(r'(?<=\|).+?(?=\|)', i['agent'])
+        carrier = re.search(r'(?<=\|).+?(?=\|)', i['carrier'])
         if agent is not None:
             print(agent)
         if carrier is not None:
