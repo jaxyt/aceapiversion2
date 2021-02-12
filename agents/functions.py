@@ -8,6 +8,7 @@ from django.template.defaultfilters import slugify
 import linecache
 import sys
 from datetime import date
+from django.utils.text import slugify
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
@@ -81,6 +82,7 @@ def PrintException():
 def replace_shortcodes(site, compiled):
     temp = list(coll_te.find({'id': site.id}, {'_id': 0}))[0]
     s = list(coll_si.find({'id': site.id}, {'_id': 0}))[0]
+    blogs = list(coll_bl.find({'blogcategory': site.blogcategory}, {'_id': 0}))
     for i in site.shortcodes:
         compiled = re.sub(f"XX{i.name}XX", f"{i.value}", compiled)
     for i in temp['shortcodes']:
@@ -97,6 +99,11 @@ def replace_shortcodes(site, compiled):
                     html_sitemap += f"""<li><a href="{i['route']}">{i['title'] if i['title'] else " ".join(i['route'].split("/")).title()}</a></li>"""
     html_sitemap += """</ul></div>"""
     compiled = re.sub('XXsitemapXX', html_sitemap, compiled)
+    blog_snippets = """<div class="snippets">"""
+    for i in blogs:
+        blog_snippets += f"""<div class="snippet"><h3><a href="/blog/posts/{slugify(i['blogtitle'])}-{i['id']}">{i['blogtitle']}</a></h3><p>{i['blogpostnational'][0:10]}...</p></div>"""
+    blog_snippets += """</div>"""
+    compiled = re.sub('XXblogsnippetsXX', blog_snippets, compiled)
     copyright_content = f"""Copyright © 1997 - {date.today().year}. Inspired by <a href="https://www.goshgo.com">GoshGo, Motivated by Perfection.</a>"""
     compiled = re.sub('XXcopyrightXX', copyright_content, compiled)
     compiled = re.sub(r'XX\w+XX', '', compiled)
