@@ -16,6 +16,7 @@ coll_ra = db.agents_agent
 coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
+coll_te = db.registeredagents_telecomcorps
 
 basic_doc = """<!DOCTYPE html>
     <html lang="en">
@@ -338,7 +339,7 @@ def agents_by_corp(request, site, pagename, dbg, admin, **kwargs):
             rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         agent_table += f"""
                 <tr>
-                    <td><a href="{rel_link}"><div>{i['agent']}</div><div>{i['city']}, {i['state']}</div></a></td>
+                    <td><a href="{rel_link}"><span>{i['agent']}</span><br><span>{i['city']}, {i['state']}</span></a></td>
                 </tr>
         """
     agent_table += """
@@ -415,7 +416,7 @@ def agents_query(request, site, pagename, dbg, admin, **kwargs):
             rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         agent_table += f"""
                 <tr>
-                    <td><a href="{rel_link}"><div>{i['agent']}</div><div>{i['city']}, {i['state']}</div></a></td>
+                    <td><a href="{rel_link}"><span>{i['agent']}</span><br><span>{i['city']}, {i['state']}</span></a></td>
                 </tr>
         """
     agent_table += """
@@ -447,6 +448,76 @@ def agents_query(request, site, pagename, dbg, admin, **kwargs):
     compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
+
+
+def telecom_query(request, site, pagename, dbg, admin, **kwargs):
+    pagedoc = None
+    route = '/telecom-agents/search/key/value'
+
+    for i in site.pages:
+        if i.route == route:
+            pagedoc = i
+            break
+
+    agents_objs = list(coll_te.aggregate([
+        {
+            '$match': {
+                '$text': {
+                    '$search': f"{kwargs['query']}"
+                }
+            }
+        }, {
+            '$sort': {
+                'score': {
+                    '$meta': 'textScore'
+                }
+            }
+        }, {
+            '$skip': kwargs['pageid']*kwargs['maxresults']
+        }, {
+            '$limit': kwargs['maxresults']
+        }, {
+            '$project': {
+                '_id': 0, 
+                'id': 1, 
+                'carrier': {
+                    '$concat': [
+                        '|', '$carriername', '|', '$businessname', '|', '$holdingcompany', '|', '$othertradename1', '|', '$othertradename2', '|', '$othertradename3', '|', '$othertradename4', '|'
+                    ]
+                }, 
+                'agent': {
+                    '$concat': [
+                        '|', '$dcagent1', '|', '$dcagent2', '|', '$alternateagent1', '|', '$alternateagent2', '|'
+                    ]
+                }
+            }
+        }
+    ]))
+
+    agent_table = """
+    <div class="table-responsive">
+        <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Telecom Agent</th>
+                </tr>
+            </thead>
+            <tbody>
+    """
+    for i in agents_objs:
+        rel_link = urllib.parse.quote(f"/telecom-agents/{i['agent']}/{i['carrier']}/{i['id']}/")
+        if dbg is True:
+            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/telecom-agents/{i['agent']}/{i['carrier']}/{i['id']}/")
+        agent_table += f"""
+                <tr>
+                    <td><a href="{rel_link}"><span>{i['agent']}</span><br><span>{i['carrier']}</span></a></td>
+                </tr>
+        """
+    agent_table += """
+            </tbody>
+        </table>
+    </div>
+    """
 
 
 def blog_handler(request, site, pagename, dbg, admin, **kwargs):

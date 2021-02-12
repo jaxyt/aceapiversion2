@@ -7,6 +7,7 @@ urlpatterns = [
     path('', agent_create_and_list_view, name='main-agent-view'),
     #path('upload/', upload_agents, name='upload-agent-view'),
     path('compile/<int:siteid>/', get_home, name='agent-home-view'),
+    path('compile/<int:siteid>/<str:page>/search/<str:query>/<int:pageid>/<int:maxresults>/', compilerv5, name='telecom-search'),
     path('compile/<int:siteid>/<str:page>/', compilerv5, name='agent-page-view'),
     path('compile/<int:siteid>/<str:page>/posts/<slug:blog_title>-<int:blog_id>/', compilerv5, name='blog-search'),
     path('compile/<int:siteid>/<str:page>/<str:agent>/<str:state>/<str:county>/<str:city>/<int:agentid>/', compilerv5, name='single-agent'),

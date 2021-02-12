@@ -14,7 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import os
 import json
 import re
-from .functions import PrintException, static_page, resource_page, individual_agent, agents_by_location, agents_by_corp, agents_query, blog_handler, sitemap_generator
+from .functions import PrintException, static_page, resource_page, individual_agent, agents_by_location, agents_by_corp, agents_query, telecom_query, blog_handler, sitemap_generator
 # Create your views here.
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'sop-to-mongo.json')
@@ -351,7 +351,7 @@ def compilerv5(request, *args, **kwargs):
             if kwargs['page'] == 'sitemap.xml':
                 res = sitemap_generator(request, site)
                 return res
-            agents_dynamics = ['process-server', 'registered-agents', 'agents-by-state']
+            agents_dynamics = ['process-server', 'registered-agents', 'agents-by-state', 'telecom-agents']
             try:
                 agents_dynamics.index(kwargs['page'])
             except ValueError as e:
@@ -394,6 +394,9 @@ def compilerv5(request, *args, **kwargs):
                                 res = individual_agent(request, site, pagename, dbg, admin, **fwargs)
                                 return res
                         res = agents_query(request, site, pagename, dbg, admin, **fwargs)
+                    elif kwargs['page'] == 'telecom-agents':
+                        if len(fwargs) > 1:
+                            res = telecom_query(request, site, pagename, dbg, admin, **fwargs)
                     return res
         return HttpResponse(four_oh_four, content_type="text/html")
     except Exception as e:
