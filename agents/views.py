@@ -301,7 +301,7 @@ def get_home(request, *args, **kwargs):
                     page = i
                     break
             if page is None:
-                return HttpResponseNotFound()
+                return HttpResponse(four_oh_four, content_type="text/html")
             res = static_page(request, site, page, dbg, admin, **kwargs)
             return res
         return HttpResponse(default_response, content_type="text/html")
@@ -365,7 +365,7 @@ def compilerv5(request, *args, **kwargs):
                     res = resource_page(request, site, page, **kwargs)
                     return res
                 if page is None:
-                    return HttpResponseNotFound()
+                    return HttpResponse(four_oh_four, content_type="text/html")
                 res = static_page(request, site, page, dbg, admin, **kwargs)
                 return res
             else:
@@ -393,7 +393,7 @@ def compilerv5(request, *args, **kwargs):
                                 return res
                         res = agents_query(request, site, pagename, dbg, admin, **fwargs)
                     return res
-        return HttpResponse(default_response, content_type="text/html")
+        return HttpResponse(four_oh_four, content_type="text/html")
     except Exception as e:
         print(e)
         PrintException()
