@@ -239,22 +239,19 @@ def agents_by_location(request, site, pagename, dbg, admin, **kwargs):
         <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
             <thead>
                 <tr>
-                    <th>Details</th>
                     <th>Registered Agent</th>
-                    <th>Location</th>
                 </tr>
             </thead>
             <tbody>
     """
+    # <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
     for i in agents_objs:
         rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         if dbg is True:
             rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         agent_table += f"""
                 <tr>
-                    <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                    <td><a href="{rel_link}">{i['agent']}</a></td>
-                    <td><a href="{rel_link}">{i['city']}, {i['state']}</a></td>
+                    <td><a href="{rel_link}"><div>{i['agent']}<div><div>{i['city']}, {i['state']}<div></a></td>
                 </tr>
         """
     agent_table += """
