@@ -96,11 +96,6 @@ def replace_shortcodes(site, compiled):
                     html_sitemap += f"""<li><a href="{i['route']}">{i['title'] if i['title'] else " ".join(i['route'].split("/")).title()}</a></li>"""
     html_sitemap += """</ul></div>"""
     compiled = re.sub('XXsitemapXX', html_sitemap, compiled)
-    agents_by_state = """<div><div class="state-corps-links">"""
-    for i in list(coll_ra.find({}, {'_id': 0}).distinct("state")):
-        agents_by_state += f"""<a href="/agents-by-state/{i}/">{i}</a>"""
-    agents_by_state = """</div></div>"""
-    compiled = re.sub("XXagentsbystateXX", agents_by_state, compiled)
     compiled = re.sub(r'XX\w+XX', '', compiled)
     return compiled
 
@@ -161,6 +156,13 @@ def static_page(request, site, pagedoc, dbg, admin, **kwargs):
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
     if dbg is False:
+        if pagedoc.route == "/agents-by-state":
+            agents_by_state = """<div><div class="state-corps-links">"""
+            for i in list(coll_ra.find({}, {'_id': 0}).distinct("state")):
+                print(i)
+                agents_by_state += f"""<a href="/agents-by-state/{i}/">{i}</a>"""
+            agents_by_state = """</div></div>"""
+            compiled = re.sub("XXagentsbystateXX", agents_by_state, compiled)
         compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
