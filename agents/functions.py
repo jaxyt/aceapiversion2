@@ -112,6 +112,7 @@ def replace_shortcodes(site, compiled):
 
 def resource_page(request, site, pagedoc, **kwargs):
     mime_types = {
+        '.txt': 'text/plain',
         '.css': 'text/css',
         '.csv': 'text/csv',
         '.html': 'text/html',
@@ -140,8 +141,11 @@ def resource_page(request, site, pagedoc, **kwargs):
         if m is not None:
             mime_type = v
             break
-
-    compiled = f"""{pagedoc.content}"""
+    compiled = ""
+    if kwargs['page'] == 'robots.txt':
+        compiled = f"""User-agent: *\nDisallow: \nSitemap: https://www.{site.sitename}.com/sitemap.xml/"""
+    else:
+        compiled = f"""{pagedoc.content}"""
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type=mime_type)
 
