@@ -97,7 +97,7 @@ def replace_shortcodes(site, compiled):
                     html_sitemap += f"""<li><a href="{i['route']}">{i['title'] if i['title'] else " ".join(i['route'].split("/")).title()}</a></li>"""
     html_sitemap += """</ul></div>"""
     compiled = re.sub('XXsitemapXX', html_sitemap, compiled)
-    copyright_content = f"""Copyright © 1997 - {date.today().year}. Inspired by GoshGo, Motivated by Perfection."""
+    copyright_content = f"""Copyright © 1997 - {date.today().year}. Inspired by <a href="https://www.goshgo.com">GoshGo, Motivated by Perfection.</a>"""
     compiled = re.sub('XXcopyrightXX', html_sitemap, compiled)
     compiled = re.sub(r'XX\w+XX', '', compiled)
     return compiled
