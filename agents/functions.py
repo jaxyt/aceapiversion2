@@ -76,7 +76,7 @@ def PrintException():
     filename = f.f_code.co_filename
     linecache.checkcache(filename)
     line = linecache.getline(filename, lineno, f.f_globals)
-    print(f"""EXCEPTION IN ({filename}, LINE {lineno} "{line.strip()}"): {exc_obj}""")
+    print(f"""{exc_type} EXCEPTION IN ({filename}, LINE {lineno} "{line.strip()}"): {exc_obj}""")
 
 def replace_shortcodes(site, compiled):
     temp = list(coll_te.find({'id': site.id}, {'_id': 0}))[0]
