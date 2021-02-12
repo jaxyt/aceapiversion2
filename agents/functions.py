@@ -96,6 +96,11 @@ def replace_shortcodes(site, compiled):
                     html_sitemap += f"""<li><a href="{i['route']}">{i['title'] if i['title'] else " ".join(i['route'].split("/")).title()}</a></li>"""
     html_sitemap += """</ul></div>"""
     compiled = re.sub('XXsitemapXX', html_sitemap, compiled)
+    agents_by_state = """<div><div class="state-corps-links">"""
+    for i in list(coll_ra.find().distinct("state")).sort():
+        agents_by_state += f"""<a href="/agents-by-state/{i}/">{i}</a>"""
+    agents_by_state = """</div></div>"""
+    compiled = re.sub("XXagentsbystateXX", agents_by_state, compiled)
     compiled = re.sub(r'XX\w+XX', '', compiled)
     return compiled
 
