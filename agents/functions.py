@@ -542,6 +542,13 @@ def telecom_query(request, site, pagename, dbg, admin, **kwargs):
     #compiled = replace_shortcodes(site, compiled)
     for i in site.shortcodes:
         compiled = re.sub(f"XX{i.name}XX", f"{i.value}", compiled)
+    s = list(coll_si.find({'id': site.id}, {'_id': 0}))[0]
+    for k, v in s.items():
+        if type(v) is str:
+            compiled = re.sub(f"XX{k}XX", f"{v}", compiled)
+    copyright_content = f"""Copyright © 1997 - {date.today().year}. Inspired by <a href="https://www.goshgo.com">GoshGo, Motivated by Perfection.</a>"""
+    compiled = re.sub('XXcopyrightXX', copyright_content, compiled)
+    compiled = re.sub(r'XX\w+XX', '', compiled)
     return HttpResponse(compiled, content_type='text/html')
 
 
