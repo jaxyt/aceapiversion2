@@ -90,20 +90,22 @@ def replace_shortcodes(site, compiled):
     for k, v in s.items():
         if type(v) is str:
             compiled = re.sub(f"XX{k}XX", f"{v}", compiled)
-    html_sitemap = """<div><ul class="sitemap-links">"""
-    for i in s['pages']:
-        if re.search(r'(^/locations)|(^/registered-agents)|(^/telecom-agents)|(^/process-server)|(/blog/posts/id)|(/blog/posts)|(/html-sitemap)|(^/agents-by-state/)|(\.)', i['route']) is None:
-                if i['route'] == "/":
-                    html_sitemap += """<li><a href="/">Home</a></li>"""
-                else:
-                    html_sitemap += f"""<li><a href="{i['route']}">{i['title'] if i['title'] else " ".join(i['route'].split("/")).title()}</a></li>"""
-    html_sitemap += """</ul></div>"""
-    compiled = re.sub('XXsitemapXX', html_sitemap, compiled)
-    blog_snippets = """<div class="snippets">"""
-    for i in blogs:
-        blog_snippets += f"""<div class="snippet"><h3><a href="/blog/posts/{slugify(i['blogtitle'])}-{i['id']}">{i['blogtitle']}</a></h3><p>{i['blogpostnational'][0:10]}...</p></div>"""
-    blog_snippets += """</div>"""
-    compiled = re.sub('XXblogsnippetsXX', blog_snippets, compiled)
+    if re.search('XXsitemapXX', compiled) is not None:
+        html_sitemap = """<div><ul class="sitemap-links">"""
+        for i in s['pages']:
+            if re.search(r'(^/locations)|(^/registered-agents)|(^/telecom-agents)|(^/process-server)|(/blog/posts/id)|(/blog/posts)|(/html-sitemap)|(^/agents-by-state/)|(\.)', i['route']) is None:
+                    if i['route'] == "/":
+                        html_sitemap += """<li><a href="/">Home</a></li>"""
+                    else:
+                        html_sitemap += f"""<li><a href="{i['route']}">{i['title'] if i['title'] else " ".join(i['route'].split("/")).title()}</a></li>"""
+        html_sitemap += """</ul></div>"""
+        compiled = re.sub('XXsitemapXX', html_sitemap, compiled)
+    if re.search('XXblogsnippetsXX', compiled) is not None:
+        blog_snippets = """<div class="snippets">"""
+        for i in blogs:
+            blog_snippets += f"""<div class="snippet"><h3><a href="/blog/posts/{slugify(i['blogtitle'])}-{i['id']}">{i['blogtitle']}</a></h3><p>{i['blogpostnational'][0:10]}...</p></div>"""
+        blog_snippets += """</div>"""
+        compiled = re.sub('XXblogsnippetsXX', blog_snippets, compiled)
     copyright_content = f"""Copyright © 1997 - {date.today().year}. Inspired by <a href="https://www.goshgo.com">GoshGo, Motivated by Perfection.</a>"""
     compiled = re.sub('XXcopyrightXX', copyright_content, compiled)
     compiled = re.sub(r'XX\w+XX', '', compiled)
@@ -325,9 +327,7 @@ def agents_by_corp(request, site, pagename, dbg, admin, **kwargs):
         <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
             <thead>
                 <tr>
-                    <th>Details</th>
                     <th>Registered Agent</th>
-                    <th>Location</th>
                 </tr>
             </thead>
             <tbody>
@@ -338,9 +338,7 @@ def agents_by_corp(request, site, pagename, dbg, admin, **kwargs):
             rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         agent_table += f"""
                 <tr>
-                    <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                    <td><a href="{rel_link}">{i['agent']}</a></td>
-                    <td><a href="{rel_link}">{i['city']}, {i['state']}</a></td>
+                    <td><a href="{rel_link}"><div>{i['agent']}</div><div>{i['city']}, {i['state']}</div></a></td>
                 </tr>
         """
     agent_table += """
@@ -406,9 +404,7 @@ def agents_query(request, site, pagename, dbg, admin, **kwargs):
         <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
             <thead>
                 <tr>
-                    <th>Details</th>
                     <th>Registered Agent</th>
-                    <th>Location</th>
                 </tr>
             </thead>
             <tbody>
@@ -419,9 +415,7 @@ def agents_query(request, site, pagename, dbg, admin, **kwargs):
             rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
         agent_table += f"""
                 <tr>
-                    <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                    <td><a href="{rel_link}">{i['agent']}</a></td>
-                    <td><a href="{rel_link}">{i['city']}, {i['state']}</a></td>
+                    <td><a href="{rel_link}"><div>{i['agent']}</div><div>{i['city']}, {i['state']}</div></a></td>
                 </tr>
         """
     agent_table += """
