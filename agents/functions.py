@@ -478,7 +478,7 @@ def blog_handler(request, site, pagename, dbg, admin, **kwargs):
         for k, v in blog_obj[0].items():
             regx = re.compile(f"XX{k}XX")
             compiled = re.sub(regx, f"{v}", compiled)
-        compiled = re.sub("XXrouteXX", f"/blog/posts/{kwargs['blog_title']}-{kwargs['blog_title']}/", compiled)
+        compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
         compiled = replace_shortcodes(site, compiled)
         return HttpResponse(compiled, content_type='text/html')
     else:
