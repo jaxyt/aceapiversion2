@@ -143,7 +143,9 @@ def resource_page(request, site, pagedoc, **kwargs):
             break
     compiled = ""
     if kwargs['page'] == 'robots.txt':
-        compiled = f"""User-agent: *\nDisallow: \nSitemap: https://www.{site.sitename}.com/sitemap.xml/"""
+        compiled = f"""User-agent: *
+        Disallow: 
+        Sitemap: https://www.{site.sitename}.com/sitemap.xml/"""
     else:
         compiled = f"""{pagedoc.content}"""
     compiled = replace_shortcodes(site, compiled)
