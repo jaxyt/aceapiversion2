@@ -1,5 +1,4 @@
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
-from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from .models import Agent
@@ -114,8 +113,7 @@ def compilerv5(request, *args, **kwargs):
                     res = resource_page(request, site, page, **kwargs)
                     return res
                 if page is None:
-                    #return HttpResponseNotFound()
-                    raise Http404("Page not found")
+                    return HttpResponseNotFound()
                 res = static_page(request, site, page, dbg, admin, **kwargs)
                 return res
             else:
@@ -147,8 +145,7 @@ def compilerv5(request, *args, **kwargs):
     except Exception as e:
         print(e)
         PrintException()
-        #return HttpResponse("encountered exception", content_type="text/plain")
-        raise Http404("Page not found")
+        return HttpResponse("encountered exception", content_type="text/plain")
 
 
 @login_required
