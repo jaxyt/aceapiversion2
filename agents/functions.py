@@ -505,12 +505,21 @@ def telecom_query(request, site, pagename, dbg, admin, **kwargs):
             <tbody>
     """
     for i in agents_objs:
-        agent = re.search(r'(?<=\|).+?(?=\|)', i['agent'])
-        carrier = re.search(r'(?<=\|).+?(?=\|)', i['carrier'])
-        if agent is not None:
-            print(agent)
-        if carrier is not None:
-            print(carrier)
+        agent_arr = i['agent'].split('|')
+        carrier_arr = i['carrier'].split('|')
+        agent = ""
+        carrier = ""
+        for i in agent_arr:
+            if i != "":
+                agent = i
+                break
+        for i in carrier_arr:
+            if i != "":
+                carrier = i
+                break
+        
+        print(agent)
+        print(carrier)
         rel_link = urllib.parse.quote(f"/telecom-agents/{i['agent']}/{i['carrier']}/{i['id']}/")
         if dbg is True:
             rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/telecom-agents/{i['agent']}/{i['carrier']}/{i['id']}/")
