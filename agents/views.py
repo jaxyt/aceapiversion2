@@ -14,7 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import os
 import json
 import re
-from .functions import PrintException, static_page, resource_page, individual_agent, agents_by_location, agents_by_corp, agents_query, sitemap_generator
+from .functions import PrintException, static_page, resource_page, individual_agent, agents_by_location, agents_by_corp, agents_query, blog_handler, sitemap_generator
 # Create your views here.
 module_dir = os.path.dirname(__file__)  # get current directory
 file_path = os.path.join(module_dir, 'sop-to-mongo.json')
@@ -77,9 +77,23 @@ def compilerv5(request, *args, **kwargs):
             regx = re.compile(f"(?<=compile/{kwargs['siteid']}/).*")
             pagename = re.search(regx, request.path).group()
             if kwargs['page'] == 'blog':
-                print(kwargs)
-                kwargs['arg_two']
-                return HttpResponse("blog", content_type="text/plain")
+                try:
+                    kwargs['blog_id']
+                except KeyError as e:
+                    regx = re.compile("^/blog/posts$")
+                    for i in site.pages:
+                        if re.search(regx, i.route):
+                            page = i
+                            break
+                    res = static_page(request, site, page, dbg, admin, **kwargs)
+                    return res
+                else:
+                    fwargs = dict()
+                    for k,v in kwargs.items():
+                        if k != 'siteid' and k != 'page':
+                            fwargs[k] = v
+                    res = blog_handler(request, site, pagename, dbg, admin, **fwargs)
+                    return res
             if kwargs['page'] == 'sitemap.xml':
                 res = sitemap_generator(request, site)
                 return res

@@ -446,6 +446,45 @@ def agents_query(request, site, pagename, dbg, admin, **kwargs):
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
 
+
+def blog_handler(request, site, pagename, dbg, admin, **kwargs):
+    blog_obj = list(coll_bl.find({'id': kwargs['blog_id']}, {'_id': 0}))
+    if len(blog_obj):
+        pagedoc = None
+        for i in site.pages:
+            if i.route == '/blog/posts/id':
+                pagedoc = i
+                break
+        
+        rep_codes = {
+            'XXsitemetasXX': f"{site.sitemetas}",
+            'XXpagemetasXX': f"{pagedoc.pagemetas}",
+            'XXsitelinksXX': f"{site.sitelinks}",
+            'XXpagelinksXX': f"{pagedoc.pagelinks}",
+            'XXsitestyleXX': f"{site.sitestyle}",
+            'XXtitleXX': f"{pagedoc.title}",
+            'XXsiteheaderXX': f"{site.siteheader}",
+            'XXcontentXX': f"{pagedoc.content}",
+            'XXsitefooterXX': f"{site.sitefooter}",
+            'XXsitescriptsXX': f"{site.sitescripts}",
+            'XXpagescriptsXX': f"{pagedoc.pagescripts}",
+            
+        }
+        compiled = f"{basic_doc}"
+
+        for k, v in rep_codes.items():
+            compiled = re.sub(k, v, compiled)
+
+        for k, v in blog_obj[0].items():
+            regx = re.compile(f"XX{k}XX")
+            compiled = re.sub(regx, f"{v}", compiled)
+        compiled = re.sub("XXrouteXX", f"/blog/posts/{kwargs['blog_title']}-{kwargs['blog_title']}/", compiled)
+        compiled = replace_shortcodes(site, compiled)
+        return HttpResponse(compiled, content_type='text/html')
+    else:
+        return HttpResponseNotFound()
+
+
 def sitemap_generator(request, site):
     states = list(coll_ra.find().distinct('state'))
     agents = list(coll_ra.find().distinct('agent'))
