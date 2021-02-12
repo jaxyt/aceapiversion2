@@ -87,7 +87,8 @@ four_oh_four = """<!DOCTYPE html>
                 z-index: 5;
                 font-size: 25px;
                 margin:0 auto;
-                color:#33cc99;
+                /*color:#33cc99;*/
+                color:#233242;
                 text-decoration: none;
                 margin-right: 10px
             }
@@ -115,7 +116,8 @@ four_oh_four = """<!DOCTYPE html>
                 top: -0.75em;
                 font-size: 2em;
                 padding: 0 0.2em;
-                background: #33cc99;
+                /*background: #33cc99;*/
+                background: #233242;
             }
             
             .cloud {
