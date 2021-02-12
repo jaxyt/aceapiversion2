@@ -518,6 +518,29 @@ def telecom_query(request, site, pagename, dbg, admin, **kwargs):
         </table>
     </div>
     """
+    rep_codes = {
+        'XXsitemetasXX': f"{site.sitemetas}",
+        'XXpagemetasXX': f"{pagedoc.pagemetas}",
+        'XXsitelinksXX': f"{site.sitelinks}",
+        'XXpagelinksXX': f"{pagedoc.pagelinks}",
+        'XXsitestyleXX': f"{site.sitestyle}",
+        'XXtitleXX': f"{pagedoc.title}",
+        'XXsiteheaderXX': f"{site.siteheader}",
+        'XXcontentXX': f"{pagedoc.content}",
+        'XXsitefooterXX': f"{site.sitefooter}",
+        'XXsitescriptsXX': f"{site.sitescripts}",
+        'XXpagescriptsXX': f"{pagedoc.pagescripts}",
+        
+    }
+    compiled = f"{basic_doc}"
+
+    for k, v in rep_codes.items():
+        compiled = re.sub(k, v, compiled)
+    compiled = re.sub("XXagentsXX", agent_table, compiled)
+    compiled = re.sub("XXqueryXX", kwargs['query'], compiled)
+    compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
+    compiled = replace_shortcodes(site, compiled)
+    return HttpResponse(compiled, content_type='text/html')
 
 
 def blog_handler(request, site, pagename, dbg, admin, **kwargs):
