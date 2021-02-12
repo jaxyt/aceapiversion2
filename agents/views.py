@@ -77,6 +77,7 @@ def compilerv5(request, *args, **kwargs):
             regx = re.compile(f"(?<=compile/{kwargs['siteid']}/).*")
             pagename = re.search(regx, request.path).group()
             if kwargs['page'] == 'blog':
+                print(kwargs)
                 return HttpResponse("blog", content_type="text/plain")
             if kwargs['page'] == 'sitemap.xml':
                 res = sitemap_generator(request, site)
