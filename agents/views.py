@@ -29,7 +29,8 @@ four_oh_four = """<!DOCTYPE html>
     <style>
         @import url(https://fonts.googleapis.com/css?family=opensans:500);
             body{
-                background: #33cc99;
+                /*background: #33cc99;*/
+                background: #233242;
                 color:#fff;
                 font-family: 'Open Sans', sans-serif;
                 max-height:700px;
