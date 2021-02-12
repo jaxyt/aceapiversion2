@@ -159,9 +159,8 @@ def static_page(request, site, pagedoc, dbg, admin, **kwargs):
         if pagedoc.route == "/agents-by-state":
             agents_by_state = """<div class="state-corps-links">"""
             for i in list(coll_ra.find({}, {'_id': 0}).distinct("state")):
-                print(i)
                 agents_by_state += f"""<a href="/agents-by-state/{i}/">{i}</a>"""
-            agents_by_state = """</div>"""
+            agents_by_state += """</div>"""
             compiled = re.sub("XXagentsbystateXX", agents_by_state, compiled)
         compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type='text/html')
