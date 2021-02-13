@@ -147,8 +147,8 @@ def compilerv5(request, *args, **kwargs):
     except Exception as e:
         print(e)
         PrintException()
-        #return HttpResponse("encountered exception", content_type="text/plain")
-        raise Http404("Page not found")
+        return get_home(request, *args, **kwargs)
+
 
 
 @login_required
