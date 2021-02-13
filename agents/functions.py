@@ -440,7 +440,6 @@ def agents_query(request, site, pagename, dbg, admin, **kwargs):
 
     for k, v in rep_codes.items():
         compiled = re.sub(k, v, compiled)
-    print(agent_table)
     compiled = re.sub("XXagentsXX", agent_table, compiled)
     compiled = re.sub("XXqueryXX", kwargs['arg_two'], compiled)
     compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
