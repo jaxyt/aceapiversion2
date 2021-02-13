@@ -114,8 +114,7 @@ def compilerv5(request, *args, **kwargs):
                     res = resource_page(request, site, page, **kwargs)
                     return res
                 if page is None:
-                    #return HttpResponseNotFound()
-                    raise Http404("Page not found")
+                    return get_home(request, *args, **kwargs)
                 res = static_page(request, site, page, dbg, admin, **kwargs)
                 return res
             else:
