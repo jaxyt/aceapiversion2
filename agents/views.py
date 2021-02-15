@@ -224,13 +224,13 @@ def abs_main(request, *args, **kwargs):
                     rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
                     url_args[k] = re.sub('_', ' ', v)
             u_key = "state"
-            location_table = []
+            location_table = """<div class="process-server-corp-state-links">{''.join(location_table)}</div>"""
             loc_objs = list(coll_ra.find({}, {'_id': 0}).distinct(u_key))
             for i in loc_objs:
                 u_val = re.sub(' ', '_', i)
                 rel_link = urllib.parse.quote(f"/agents-by-state/{u_val}/")
-                location_table.append(f"""<a href="{rel_link}">{i}</a>""")
-            location_table = f"""<div class="process-server-corp-state-links">{''.join(location_table)}</div>"""    
+                location_table += f"""<a href="{rel_link}">{i}</a>"""
+            location_table += """</div>"""    
             res = f"{basic_doc}"
             rep_codes = {
                 'XXpagemetasXX': f"{page.pagemetas}",
@@ -271,15 +271,7 @@ def abs_state(request, *args, **kwargs):
                     rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
                     url_args[k] = re.sub('_', ' ', v)
             agents_objs = list(coll_ra.find(url_args, {'_id': 0}))
-            agent_table = []
-            for i in agents_objs:
-                agent = re.sub(' ', '_', i['agent'])
-                state = re.sub(' ', '_', i['state'])
-                county = re.sub(' ', '_', i['county'])
-                city = re.sub(' ', '_', i['city'])
-                rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
-                agent_table.append(f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>""")
-            agent_table = f"""
+            agent_table = """
             <div class="table-responsive">
                 <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
                     <thead>
@@ -288,7 +280,15 @@ def abs_state(request, *args, **kwargs):
                         </tr>
                     </thead>
                     <tbody>
-                    {''.join(agent_table)}
+            """
+            for i in agents_objs:
+                agent = re.sub(' ', '_', i['agent'])
+                state = re.sub(' ', '_', i['state'])
+                county = re.sub(' ', '_', i['county'])
+                city = re.sub(' ', '_', i['city'])
+                rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
+                agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
+            agent_table += """
                     </tbody>
                 </table>
             </div>
