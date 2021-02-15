@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import agent_create_and_list_view, compilerv4, compilerv5, get_home, upload_agents, AgentDeleteView, AgentUpdateView, home_view, get_static_page, abs_main, abs_state, abs_city, ps_agent, ps_state, ps_city, ra_search, ra_agent
+from .views import agent_create_and_list_view, compilerv4, upload_agents, AgentDeleteView, AgentUpdateView, home_view, get_static_page, abs_main, abs_state, abs_city, ps_agent, ps_state, ps_city, ra_search, ra_agent
 
 app_name = 'agents'
 
