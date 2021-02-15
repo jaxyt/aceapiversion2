@@ -224,7 +224,7 @@ def abs_main(request, *args, **kwargs):
                     rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
                     url_args[k] = re.sub('_', ' ', v)
             u_key = "state"
-            location_table = """<div class="process-server-corp-state-links">{''.join(location_table)}</div>"""
+            location_table = """<div class="process-server-corp-state-links">"""
             loc_objs = list(coll_ra.find({}, {'_id': 0}).distinct(u_key))
             for i in loc_objs:
                 u_val = re.sub(' ', '_', i)
@@ -295,13 +295,13 @@ def abs_state(request, *args, **kwargs):
             """
 
             u_key = "city"
-            location_table = []
+            location_table = """<div class="process-server-corp-state-links">"""
             loc_objs = list(coll_ra.find(url_args, {'_id': 0}).distinct(u_key))
             for i in loc_objs:
                 u_val = re.sub(' ', '_', i)
                 rel_link = urllib.parse.quote(f"/agents-by-state/{kwargs['state']}/{u_val}/")
-                location_table.append([rel_link, i])
-            location_table = f"""<div class="process-server-corp-state-links">{''.join(location_table)}</div>"""
+                location_table += f"""<a href="{rel_link}">{i}</a>"""
+            location_table += """</div>""" 
             res = f"{basic_doc}"
             rep_codes = {
                 'XXpagemetasXX': f"{page.pagemetas}",
