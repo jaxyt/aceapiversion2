@@ -236,12 +236,12 @@ def get_static_page(request, *args, **kwargs):
         site = get_object_or_404(Site, id=kwargs['siteid'])
         page = None
         pagename = f"/{kwargs['page']}"
-        if re.search(r'^/sitemap(\d+)?\.xml$', pagename):
+        if re.search(r'^/sitemap\.xml$', pagename):
             return HttpResponse("xml sitemap", content_type='text/plain')
         elif re.search(r'^/robots\.txt$', pagename):
-            return HttpResponse("robots", content_type='text/plain')
+            return HttpResponse(f"""User-agent: *\nDisallow: \nSitemap: https://www.{site.sitename}.com/sitemap.xml/""", content_type='text/plain')
         elif re.search(r'^/\w+\.\w{2,4}$', pagename):
-            return HttpResponse("resource page", content_type='text/plain')
+            return get_resource_page(request, site, pagename, *args, **kwargs)
         else:
             for i in site.pages:
                 if i.route == pagename:
@@ -275,6 +275,53 @@ def get_static_page(request, *args, **kwargs):
         print(e)
         PrintException()
         return home_view(request, *args, **kwargs)
+
+
+def get_resource_page(request, site, pagename, *args, **kwargs):
+    try:
+        mime_type = 'text/plain'
+        res = ""
+        page = None
+        for i in site.pages:
+            if i.route == pagename:
+                page = i
+                break
+        if page is None:
+            return HttpResponse(res, content_type=mime_type)
+        mime_types = {
+            '.css': 'text/css',
+            '.csv': 'text/csv',
+            '.html': 'text/html',
+            '.js': 'text/javascript',
+            '.json': 'application/json',
+            '.jsonld': 'application/ld+json',
+            '.php': 'application/x-httpd-php',
+            '.ppp': 'application/x-httpd-php',
+            '.pdf': 'application/pdf',
+            '.jpeg': 'image/jpeg',
+            '.ico': 'image/vnd.microsoft.icon',
+            '.png': 'image/png',
+            '.svg': 'image/svg+xml',
+            '.sh': 'application/x-sh',
+            '.xml': 'application/xml',
+            '.zip': 'application/zip',
+            '.7z': 'application/x-7z-compressed',
+            '.gz': 'application/gzip',
+            '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        }
+        for k, v in mime_types.items():
+            regx = re.compile(f"{k}$")
+            m = re.search(regx, pagename)
+            if m is not None:
+                mime_type = v
+                break
+        res = f"{page.content}"
+        return HttpResponse(res, content_type=mime_type)
+    except Exception as e:
+        print(e)
+        PrintException()
+        return HttpResponse("", content_type='text/plain')
+
 
 def abs_main(request, *args, **kwargs):
     try:
