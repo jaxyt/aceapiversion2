@@ -229,7 +229,8 @@ def abs_main(request, *args, **kwargs):
             for i in loc_objs:
                 u_val = re.sub(' ', '_', i)
                 rel_link = urllib.parse.quote(f"/agents-by-state/{u_val}/")
-                location_table.append([rel_link, i])
+                location_table.append(f"""<a href="{rel_link}">{i}</a>""")
+            location_table = f"""<div class="process-server-corp-state-links">{''.join(location_table)}</div>"""    
             res = f"{basic_doc}"
             rep_codes = {
                 'XXpagemetasXX': f"{page.pagemetas}",
@@ -277,7 +278,21 @@ def abs_state(request, *args, **kwargs):
                 county = re.sub(' ', '_', i['county'])
                 city = re.sub(' ', '_', i['city'])
                 rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
-                agent_table.append([rel_link, agent, f"{i['city']}, {i['state']}"])
+                agent_table.append(f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>""")
+            agent_table = f"""
+            <div class="table-responsive">
+                <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Registered Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {''.join(agent_table)}
+                    </tbody>
+                </table>
+            </div>
+            """
 
             u_key = "city"
             location_table = []
@@ -286,6 +301,7 @@ def abs_state(request, *args, **kwargs):
                 u_val = re.sub(' ', '_', i)
                 rel_link = urllib.parse.quote(f"/agents-by-state/{kwargs['state']}/{u_val}/")
                 location_table.append([rel_link, i])
+            location_table = f"""<div class="process-server-corp-state-links">{''.join(location_table)}</div>"""
             res = f"{basic_doc}"
             rep_codes = {
                 'XXpagemetasXX': f"{page.pagemetas}",
