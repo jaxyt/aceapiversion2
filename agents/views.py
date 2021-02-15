@@ -238,10 +238,10 @@ def abs_main(request, *args, **kwargs):
                 'XXcontentXX': f"{page.content}",
                 'XXpagescriptsXX': f"{page.pagescripts}",
             }
-            for k, v in rep_codes:
+            for k, v in rep_codes.items():
                 res = re.sub(k, v, res)
             res = re.sub('XXsublocationsXX', location_table, res)
-            for k, v in rep_args:
+            for k, v in rep_args.items():
                 res = re.sub(k, v, res)
             res = replace_shortcodes(site, res)
             res = re.sub(r'XX\w+XX', '', res)
@@ -294,11 +294,11 @@ def abs_state(request, *args, **kwargs):
                 'XXcontentXX': f"{page.content}",
                 'XXpagescriptsXX': f"{page.pagescripts}",
             }
-            for k, v in rep_codes:
+            for k, v in rep_codes.items():
                 res = re.sub(k, v, res)
             res = re.sub('XXagentsXX', agent_table)
             res = re.sub('XXsublocationsXX', location_table, res)
-            for k, v in rep_args:
+            for k, v in rep_args.items():
                 res = re.sub(k, v, res)
             res = replace_shortcodes(site, res)
             res = re.sub(r'XX\w+XX', '', res)
