@@ -605,28 +605,45 @@ def ra_search(request, *args, **kwargs):
                 rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
                 url_args[k] = re.sub('_', ' ', v)
         agents_objs = list(coll_ra.find({"$text":{"$search":url_args['query']}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})]))
-        agent_table = []
+        agent_table = """
+            <div class="table-responsive">
+                <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Registered Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            """
         for i in agents_objs:
             agent = re.sub(' ', '_', i['agent'])
             state = re.sub(' ', '_', i['state'])
             county = re.sub(' ', '_', i['county'])
             city = re.sub(' ', '_', i['city'])
             rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
-            agent_table.append([rel_link, agent, f"{i['city']}, {i['state']}"])
+            agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
 
-        compiled += f"""
-        <p>{site.sitename}</p>
-        <p>{page.route}</p>
-        <p>{kwargs}</p>
-        <p>{rep_args}</p>
-        <p>{url_args}</p>
-        <p>{agent_table}</p>
-        """
-        compiled += "</div>"
+        agent_table += """
+                    </tbody>
+                </table>
+            </div>
+            """
 
-        res = f"{test_doc}"
-        res = re.sub('XXtestcontentXX', compiled, res)
-        res = re.sub('XXroutetitleXX', pagename, res)
+        res = f"{basic_doc}"
+        rep_codes = {
+            'XXpagemetasXX': f"{page.pagemetas}",
+            'XXpagelinksXX': f"{page.pagelinks}",
+            'XXtitleXX': f"{page.title}",
+            'XXcontentXX': f"{page.content}",
+            'XXpagescriptsXX': f"{page.pagescripts}",
+        }
+        for k, v in rep_codes.items():
+            res = re.sub(k, v, res)
+        res = re.sub('XXagentsXX', agent_table, res)
+        for k, v in rep_args.items():
+            res = re.sub(k, v, res)
+        res = replace_shortcodes(site, res)
+        res = re.sub(r'XX\w+XX', '', res)
         return HttpResponse(res, content_type='text/html')
 
 
@@ -648,19 +665,24 @@ def ra_agent(request, *args, **kwargs):
             if type(v) == str:
                 rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
                 url_args[k] = re.sub('_', ' ', v)
+        a_check = get_object_or_404(Agent, id=kwargs['agentid'])
         agents_objs = list(coll_ra.find({'id': kwargs['agentid']}, {'_id': 0}))
 
-        compiled += f"""
-        <p>{site.sitename}</p>
-        <p>{page.route}</p>
-        <p>{kwargs}</p>
-        <p>{rep_args}</p>
-        <p>{url_args}</p>
-        <p>{agents_objs}</p>
-        """
-        compiled += "</div>"
-
-        return HttpResponse(compiled, content_type='text/html')
+        res = f"{basic_doc}"
+        rep_codes = {
+            'XXpagemetasXX': f"{page.pagemetas}",
+            'XXpagelinksXX': f"{page.pagelinks}",
+            'XXtitleXX': f"{page.title}",
+            'XXcontentXX': f"{page.content}",
+            'XXpagescriptsXX': f"{page.pagescripts}",
+        }
+        for k, v in rep_codes.items():
+            res = re.sub(k, v, res)
+        for k, v in rep_args.items():
+            res = re.sub(k, v, res)
+        res = replace_shortcodes(site, res)
+        res = re.sub(r'XX\w+XX', '', res)
+        return HttpResponse(res, content_type='text/html')
 
 
 
