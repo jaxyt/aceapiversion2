@@ -210,7 +210,7 @@ def abs_main(request, *args, **kwargs):
 
 def abs_state(request, *args, **kwargs):
     try:
-        print(request)
+        print(request.META)
         site = get_object_or_404(Site, id=kwargs['siteid'])
         page = None
         compiled = "<div>"
