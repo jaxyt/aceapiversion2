@@ -316,6 +316,7 @@ def get_resource_page(request, site, pagename, *args, **kwargs):
                 mime_type = v
                 break
         res = f"{page.content}"
+        res = replace_shortcodes(site, res)
         return HttpResponse(res, content_type=mime_type)
     except Exception as e:
         print(e)
