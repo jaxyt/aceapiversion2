@@ -648,44 +648,48 @@ def ra_search(request, *args, **kwargs):
 
 
 def ra_agent(request, *args, **kwargs):
-    site = get_object_or_404(Site, id=kwargs['siteid'])
-    page = None
-    compiled = "<div>"
-    pagename = "/registered-agents/id"
-    for i in site.pages:
-        if i.route == pagename:
-            page = i
-            break
-    if page == None:
-        return HttpResponse("", content_type='text/plain')
-    else:
-        rep_args = dict()
-        url_args = dict()
-        for k, v in kwargs.items():
-            if type(v) == str:
-                rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
-                url_args[k] = re.sub('_', ' ', v)
-        a_check = get_object_or_404(Agent, id=kwargs['agentid'])
-        agents_objs = list(coll_ra.find({'id': kwargs['agentid']}, {'_id': 0}))
+    try:
+        site = get_object_or_404(Site, id=kwargs['siteid'])
+        page = None
+        compiled = "<div>"
+        pagename = "/registered-agents/id"
+        for i in site.pages:
+            if i.route == pagename:
+                page = i
+                break
+        if page == None:
+            return HttpResponse("", content_type='text/plain')
+        else:
+            rep_args = dict()
+            url_args = dict()
+            for k, v in kwargs.items():
+                if type(v) == str:
+                    rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
+                    url_args[k] = re.sub('_', ' ', v)
+            a_check = get_object_or_404(Agent, id=kwargs['agentid'])
+            agents_objs = list(coll_ra.find({'id': kwargs['agentid']}, {'_id': 0}))
 
-        res = f"{basic_doc}"
-        rep_codes = {
-            'XXpagemetasXX': f"{page.pagemetas}",
-            'XXpagelinksXX': f"{page.pagelinks}",
-            'XXtitleXX': f"{page.title}",
-            'XXcontentXX': f"{page.content}",
-            'XXpagescriptsXX': f"{page.pagescripts}",
-        }
-        for k, v in rep_codes.items():
-            res = re.sub(k, v, res)
-        for i in agents_objs:
-            for k, v in i:
+            res = f"{basic_doc}"
+            rep_codes = {
+                'XXpagemetasXX': f"{page.pagemetas}",
+                'XXpagelinksXX': f"{page.pagelinks}",
+                'XXtitleXX': f"{page.title}",
+                'XXcontentXX': f"{page.content}",
+                'XXpagescriptsXX': f"{page.pagescripts}",
+            }
+            for k, v in rep_codes.items():
                 res = re.sub(k, v, res)
-        #for k, v in rep_args.items():
-        #    res = re.sub(k, v, res)
-        res = replace_shortcodes(site, res)
-        res = re.sub(r'XX\w+XX', '', res)
-        return HttpResponse(res, content_type='text/html')
+            for i in agents_objs:
+                for k, v in i:
+                    res = re.sub(k, v, res)
+            #for k, v in rep_args.items():
+            #    res = re.sub(k, v, res)
+            res = replace_shortcodes(site, res)
+            res = re.sub(r'XX\w+XX', '', res)
+            return HttpResponse(res, content_type='text/html')
+    except Exception as e:
+        print(e)
+        PrintException()
 
 
 
