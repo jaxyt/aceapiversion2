@@ -231,6 +231,51 @@ def home_view(request, *args, **kwargs):
         print(e)
         PrintException()
 
+def get_static_page(request, *args, **kwargs):
+    try:
+        site = get_object_or_404(Site, id=kwargs['siteid'])
+        page = None
+        pagename = f"/{kwargs['page']}"
+        if re.search(r'^/sitemap(\d+)?\.xml$', pagename):
+            return HttpResponse("xml sitemap", content_type='text/plain')
+        elif re.search(r'^/robots\.txt$', pagename):
+            return HttpResponse("robots", content_type='text/plain')
+        elif re.search(r'^/\w+\.\w{2,4}$', pagename):
+            return HttpResponse("resource page", content_type='text/plain')
+        else:
+            for i in site.pages:
+                if i.route == pagename:
+                    page = i
+                    break
+            if page == None:
+                return home_view(request, *args, **kwargs)
+            else:
+                rep_args = dict()
+                url_args = dict()
+                for k, v in kwargs.items():
+                    if type(v) == str:
+                        rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
+                        url_args[k] = re.sub('_', ' ', v)
+                res = f"{basic_doc}"
+                rep_codes = {
+                    'XXpagemetasXX': f"{page.pagemetas}",
+                    'XXpagelinksXX': f"{page.pagelinks}",
+                    'XXtitleXX': f"{page.title}",
+                    'XXcontentXX': f"{page.content}",
+                    'XXpagescriptsXX': f"{page.pagescripts}",
+                }
+                for k, v in rep_codes.items():
+                    res = re.sub(k, v, res)
+                for k, v in rep_args.items():
+                    res = re.sub(k, v, res)
+                res = replace_shortcodes(site, res)
+                res = re.sub(r'XX\w+XX', '', res)
+                return HttpResponse(res, content_type='text/html')
+    except Exception as e:
+        print(e)
+        PrintException()
+        return home_view(request, *args, **kwargs)
+
 def abs_main(request, *args, **kwargs):
     try:
         site = get_object_or_404(Site, id=kwargs['siteid'])
