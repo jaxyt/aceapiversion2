@@ -19,7 +19,7 @@ import re
 import linecache
 import sys
 from datetime import date
-from .functions import PrintException, static_page, resource_page, individual_agent, agents_by_location, agents_by_corp, agents_query, blog_handler, sitemap_generator
+from .functions import PrintException, sitemap_generator
 from pymongo import MongoClient
 # Create your views here.
 module_dir = os.path.dirname(__file__)  # get current directory
@@ -76,124 +76,6 @@ def get_client_ip(request):
     return ip
 
 
-def get_home(request, *args, **kwargs):
-    try:
-        site = None
-        page = None
-        res = None
-        dbg = False
-        admin = False
-        if request.GET.get('ip', '') == "66.229.0.114":
-            admin = True
-        if request.GET.get('dbg', '') == 'y':
-            dbg = True
-        default_response = "hello world"
-        if kwargs['siteid']:
-            site = get_object_or_404(Site, id=kwargs['siteid'])
-            regx = re.compile("^/$")
-            for i in site.pages:
-                if re.search(regx, i.route):
-                    page = i
-                    break
-            if page is None:
-                return HttpResponseNotFound()
-            res = static_page(request, site, page, dbg, admin, **kwargs)
-            return res
-        return HttpResponse(default_response, content_type="text/html")
-    except Exception as e:
-        print(e)
-        PrintException()
-        return HttpResponse("encountered exception", content_type="text/plain")
-
-def compilerv5(request, *args, **kwargs):
-    try:
-        site = None
-        page = None
-        res = None
-        pagename = ""
-        dbg = False
-        admin = False
-        if request.GET.get('ip', '') == "66.229.0.114":
-            admin = True
-        if request.GET.get('dbg', '') == 'y':
-            dbg = True
-        default_response = "hello world"
-        if kwargs['siteid']:
-            site = get_object_or_404(Site, id=kwargs['siteid'])
-        if kwargs['page']:
-            regx = re.compile(f"(?<=compile/{kwargs['siteid']}/).*")
-            pagename = re.search(regx, request.path).group()
-            if kwargs['page'] == 'blog':
-                try:
-                    kwargs['blog_id']
-                except KeyError as e:
-                    regx = re.compile("^/blog/posts$")
-                    for i in site.pages:
-                        if re.search(regx, i.route):
-                            page = i
-                            break
-                    res = static_page(request, site, page, dbg, admin, **kwargs)
-                    return res
-                else:
-                    fwargs = dict()
-                    for k,v in kwargs.items():
-                        if k != 'siteid' and k != 'page':
-                            fwargs[k] = v
-                    res = blog_handler(request, site, pagename, dbg, admin, **fwargs)
-                    return res
-            if kwargs['page'] == 'sitemap.xml':
-                res = sitemap_generator(request, site)
-                return res
-            agents_dynamics = ['process-server', 'registered-agents', 'agents-by-state']
-            try:
-                agents_dynamics.index(kwargs['page'])
-            except ValueError as e:
-                regx = re.compile(f"^/{kwargs['page']}$")
-                for i in site.pages:
-                    if re.search(regx, i.route):
-                        page = i
-                        break
-                regx = re.compile("[\w-]+\.\w{2,4}")
-                mime = re.search(regx, kwargs['page'])
-                if mime is not None:
-                    print(mime.group())
-                    res = resource_page(request, site, page, **kwargs)
-                    return res
-                if page is None:
-                    return get_home(request, *args, **kwargs)
-                res = static_page(request, site, page, dbg, admin, **kwargs)
-                return res
-            else:
-                fwargs = dict()
-                for k,v in kwargs.items():
-                    if k != 'siteid' and k != 'page':
-                        fwargs[k] = v
-                if kwargs['page'] == 'agents-by-state' and len(kwargs) == 2:
-                    regx = re.compile("^/agents-by-state$")
-                    for i in site.pages:
-                        if re.search(regx, i.route):
-                            page = i
-                            break
-                    res = static_page(request, site, page, dbg, admin, **kwargs)
-                    return res
-                if len(fwargs):
-                    if kwargs['page'] == 'process-server':
-                        res = agents_by_corp(request, site, pagename, dbg, admin, **fwargs)
-                    elif kwargs['page'] == 'agents-by-state':
-                        res = agents_by_location(request, site, pagename, dbg, admin, **fwargs)
-                    elif kwargs['page'] == 'registered-agents':
-                        for k, v in kwargs.items():
-                            if k == 'agent':
-                                res = individual_agent(request, site, pagename, dbg, admin, **fwargs)
-                                return res
-                        res = agents_query(request, site, pagename, dbg, admin, **fwargs)
-                    return res
-        return HttpResponse(default_response, content_type="text/html")
-    except Exception as e:
-        print(e)
-        PrintException()
-        return get_home(request, *args, **kwargs)
-
 def home_view(request, *args, **kwargs):
     try:
         site = get_object_or_404(Site, id=kwargs['siteid'])
@@ -237,7 +119,7 @@ def get_static_page(request, *args, **kwargs):
         page = None
         pagename = f"/{kwargs['page']}"
         if re.search(r'^/sitemap\.xml$', pagename):
-            return HttpResponse("xml sitemap", content_type='text/plain')
+            return sitemap_generator(request, site)
         elif re.search(r'^/robots\.txt$', pagename):
             return HttpResponse(f"""User-agent: *\nDisallow: \nSitemap: https://www.{site.sitename}.com/sitemap.xml/""", content_type='text/plain')
         elif re.search(r'^/\w+\.\w{2,4}$', pagename):
