@@ -667,7 +667,7 @@ def ra_agent(request, *args, **kwargs):
                     rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
                     url_args[k] = re.sub('_', ' ', v)
             a_check = get_object_or_404(Agent, id=kwargs['agentid'])
-            agents_objs = list(coll_ra.find({'id': kwargs['agentid']}, {'_id': 0}))
+            agents_objs = list(coll_ra.find({'id': kwargs['agentid']}, {'_id': 0}))[0]
 
             res = f"{basic_doc}"
             rep_codes = {
@@ -679,9 +679,7 @@ def ra_agent(request, *args, **kwargs):
             }
             for k, v in rep_codes.items():
                 res = re.sub(k, v, res)
-            for i in agents_objs:
-                for k, v in i:
-                    res = re.sub(k, v, res)
+            print(f"{agents_objs}")
             #for k, v in rep_args.items():
             #    res = re.sub(k, v, res)
             res = replace_shortcodes(site, res)
