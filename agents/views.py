@@ -286,7 +286,7 @@ def abs_state(request, *args, **kwargs):
                 state = re.sub(' ', '_', i['state'])
                 county = re.sub(' ', '_', i['county'])
                 city = re.sub(' ', '_', i['city'])
-                rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
+                rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
                 agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
             agent_table += """
                     </tbody>
@@ -358,7 +358,7 @@ def abs_city(request, *args, **kwargs):
             state = re.sub(' ', '_', i['state'])
             county = re.sub(' ', '_', i['county'])
             city = re.sub(' ', '_', i['city'])
-            rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
+            rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
             agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
         agent_table += """
                     </tbody>
@@ -417,7 +417,7 @@ def ps_agent(request, *args, **kwargs):
             state = re.sub(' ', '_', i['state'])
             county = re.sub(' ', '_', i['county'])
             city = re.sub(' ', '_', i['city'])
-            rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
+            rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
             agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
         agent_table += """
                     </tbody>
@@ -486,7 +486,7 @@ def ps_state(request, *args, **kwargs):
             state = re.sub(' ', '_', i['state'])
             county = re.sub(' ', '_', i['county'])
             city = re.sub(' ', '_', i['city'])
-            rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
+            rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
             agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
         agent_table += """
                     </tbody>
@@ -556,7 +556,7 @@ def ps_city(request, *args, **kwargs):
                 state = re.sub(' ', '_', i['state'])
                 county = re.sub(' ', '_', i['county'])
                 city = re.sub(' ', '_', i['city'])
-                rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
+                rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
                 agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
             agent_table += """
                     </tbody>
@@ -620,7 +620,7 @@ def ra_search(request, *args, **kwargs):
             state = re.sub(' ', '_', i['state'])
             county = re.sub(' ', '_', i['county'])
             city = re.sub(' ', '_', i['city'])
-            rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
+            rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
             agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
 
         agent_table += """

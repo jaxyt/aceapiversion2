@@ -14,7 +14,7 @@ urlpatterns = [
     path('test/<int:siteid>/process-server/<str:agent>/<str:state>/', ps_state),
     path('test/<int:siteid>/process-server/<str:agent>/<str:state>/<str:city>/', ps_city),
     path('test/<int:siteid>/registered-agents/search/<str:query>/', ra_search),
-    path('test/<int:siteid>/registered-agents/<str:agent>-<str:state>-<str:county>-<str:city>/<int:agentid>/', ra_agent),
+    path('test/<int:siteid>/registered-agents/<str:agent>--<str:state>--<str:county>--<str:city>/<int:agentid>/', ra_agent),
 
     path('compile/<int:siteid>/', get_home, name='agent-home-view'),
     path('compile/<int:siteid>/<str:page>/', compilerv5, name='agent-page-view'),
