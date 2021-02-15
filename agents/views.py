@@ -208,55 +208,59 @@ def abs_main(request, *args, **kwargs):
 
 
 def abs_state(request, *args, **kwargs):
-    site = get_object_or_404(Site, id=kwargs['siteid'])
-    page = None
-    compiled = "<div>"
-    pagename = "/agents-by-state/state"
-    for i in site.pages:
-        if i.route == pagename:
-            page = i
-            break
-    if page == None:
-        return HttpResponse("", content_type='text/plain')
-    else:
-        rep_args = dict()
-        url_args = dict()
-        for k, v in kwargs.items():
-            if type(v) == str:
-                rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
-                url_args[k] = re.sub('_', ' ', v)
-        agents_objs = list(coll_ra.find(url_args, {'_id': 0}))
-        agent_table = []
-        for i in agents_objs:
-            agent = re.sub(' ', '_', i['agent'])
-            state = re.sub(' ', '_', i['state'])
-            county = re.sub(' ', '_', i['county'])
-            city = re.sub(' ', '_', i['city'])
-            rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
-            agent_table.append([rel_link, agent, f"{i['city']}, {i['state']}"])
+    try:
+        site = get_object_or_404(Site, id=kwargs['siteid'])
+        page = None
+        compiled = "<div>"
+        pagename = "/agents-by-state/state"
+        for i in site.pages:
+            if i.route == pagename:
+                page = i
+                break
+        if page == None:
+            return HttpResponse("", content_type='text/plain')
+        else:
+            rep_args = dict()
+            url_args = dict()
+            for k, v in kwargs.items():
+                if type(v) == str:
+                    rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
+                    url_args[k] = re.sub('_', ' ', v)
+            agents_objs = list(coll_ra.find(url_args, {'_id': 0}))
+            agent_table = []
+            for i in agents_objs:
+                agent = re.sub(' ', '_', i['agent'])
+                state = re.sub(' ', '_', i['state'])
+                county = re.sub(' ', '_', i['county'])
+                city = re.sub(' ', '_', i['city'])
+                rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
+                agent_table.append([rel_link, agent, f"{i['city']}, {i['state']}"])
 
-        u_key = "city"
-        location_table = []
-        loc_objs = list(coll_ra.find(url_args, {'_id': 0}).distinct(u_key))
-        for i in loc_objs:
-            u_val = re.sub(' ', '_', i)
-            rel_link = urllib.parse.quote(f"/agents-by-state/{kwargs['state']}/{u_val}/")
-            location_table.append([rel_link, i])
-        compiled += f"""
-        <p>{site.sitename}</p>
-        <p>{page.route}</p>
-        <p>{kwargs}</p>
-        <p>{rep_args}</p>
-        <p>{url_args}</p>
-        <p>{agent_table}</p>
-        <p>{location_table}</p>
-        """
-        compiled += "</div>"
+            u_key = "city"
+            location_table = []
+            loc_objs = list(coll_ra.find(url_args, {'_id': 0}).distinct(u_key))
+            for i in loc_objs:
+                u_val = re.sub(' ', '_', i)
+                rel_link = urllib.parse.quote(f"/agents-by-state/{kwargs['state']}/{u_val}/")
+                location_table.append([rel_link, i])
+            compiled += f"""
+            <p>{site.sitename}</p>
+            <p>{page.route}</p>
+            <p>{kwargs}</p>
+            <p>{rep_args}</p>
+            <p>{url_args}</p>
+            <p>{agent_table}</p>
+            <p>{location_table}</p>
+            """
+            compiled += "</div>"
 
-        res = f"{test_doc}"
-        res = re.sub('XXtestcontentXX', compiled, res)
-        res = re.sub('XXroutetitleXX', pagename, res)
-        return HttpResponse(res, content_type='text/html')
+            res = f"{test_doc}"
+            res = re.sub('XXtestcontentXX', compiled, res)
+            res = re.sub('XXroutetitleXX', pagename, res)
+            return HttpResponse(res, content_type='text/html')
+    except Exception as e:
+        print(e)
+        PrintException()
 
 
 def abs_city(request, *args, **kwargs):
