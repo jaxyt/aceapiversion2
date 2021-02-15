@@ -16,6 +16,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import os
 import json
 import re
+import linecache
+import sys
+from datetime import date
 from .functions import PrintException, static_page, resource_page, individual_agent, agents_by_location, agents_by_corp, agents_query, blog_handler, sitemap_generator
 from pymongo import MongoClient
 # Create your views here.
@@ -29,6 +32,25 @@ coll_si = db.sites_site
 coll_te = db.templates_template
 coll_bl = db.blogs_blog
 
+basic_doc = """<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        XXsitemetasXX
+        XXpagemetasXX
+        XXsitelinksXX
+        XXpagelinksXX
+        XXsitestyleXX
+        <title>XXtitleXX</title>
+    </head>
+    <body>
+        XXsiteheaderXX
+        XXcontentXX
+        XXsitefooterXX
+        XXsitescriptsXX
+        XXpagescriptsXX
+    </body>
+    </html>"""
+
 test_doc = """<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -38,6 +60,21 @@ test_doc = """<!DOCTYPE html>
         XXtestcontentXX
     </body>
     </html>"""
+
+
+def replace_shortcodes(site, compiled):
+    temp = list(coll_te.find({'id': site.id}, {'_id': 0}))[0]
+    s = list(coll_si.find({'id': site.id}, {'_id': 0}))[0]
+    for k, v in s.items():
+        if type(v) is str:
+            compiled = re.sub(f"XX{k}XX", f"{v}", compiled)
+    for i in site.shortcodes:
+        compiled = re.sub(f"XX{i.name}XX", f"{i.value}", compiled)
+    for i in temp['shortcodes']:
+        compiled = re.sub(f"XX{i['name']}XX", f"{i['value']}", compiled)
+    copyright_content = f"""Copyright &copy; 1997 - {date.today().year}. Inspired by <a href="https://www.goshgo.com">GoshGo, Motivated by Perfection.</a>"""
+    compiled = re.sub('XXcopyrightXX', copyright_content, compiled)    
+    return compiled
 
 
 def get_client_ip(request):
@@ -169,51 +206,55 @@ def compilerv5(request, *args, **kwargs):
 
 
 def abs_main(request, *args, **kwargs):
-    site = get_object_or_404(Site, id=kwargs['siteid'])
-    page = None
-    compiled = "<div>"
-    pagename = "/agents-by-state"
-    for i in site.pages:
-        if i.route == pagename:
-            page = i
-            break
-    if page == None:
-        return HttpResponse("", content_type='text/plain')
-    else:
-        rep_args = dict()
-        url_args = dict()
-        for k, v in kwargs.items():
-            if type(v) == str:
-                rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
-                url_args[k] = re.sub('_', ' ', v)
-        u_key = "state"
-        location_table = []
-        loc_objs = list(coll_ra.find({}, {'_id': 0}).distinct(u_key))
-        for i in loc_objs:
-            u_val = re.sub(' ', '_', i)
-            rel_link = urllib.parse.quote(f"/agents-by-state/{u_val}/")
-            location_table.append([rel_link, i])
-        compiled += f"""
-        <p>{site.sitename}</p>
-        <p>{page.route}</p>
-        <p>{kwargs}</p>
-        <p>{rep_args}</p>
-        <p>{url_args}</p>
-        <p>{location_table}</p>
-        """
-        compiled += "</div>"
-        res = f"{test_doc}"
-        res = re.sub('XXtestcontentXX', compiled, res)
-        res = re.sub('XXroutetitleXX', pagename, res)
-        return HttpResponse(res, content_type='text/html')
+    try:
+        site = get_object_or_404(Site, id=kwargs['siteid'])
+        page = None
+        pagename = "/agents-by-state"
+        for i in site.pages:
+            if i.route == pagename:
+                page = i
+                break
+        if page == None:
+            return HttpResponse("", content_type='text/plain')
+        else:
+            rep_args = dict()
+            url_args = dict()
+            for k, v in kwargs.items():
+                if type(v) == str:
+                    rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
+                    url_args[k] = re.sub('_', ' ', v)
+            u_key = "state"
+            location_table = []
+            loc_objs = list(coll_ra.find({}, {'_id': 0}).distinct(u_key))
+            for i in loc_objs:
+                u_val = re.sub(' ', '_', i)
+                rel_link = urllib.parse.quote(f"/agents-by-state/{u_val}/")
+                location_table.append([rel_link, i])
+            res = f"{basic_doc}"
+            rep_codes = {
+                'XXpagemetasXX': f"{page.pagemetas}",
+                'XXpagelinksXX': f"{page.pagelinks}",
+                'XXtitleXX': f"{page.title}",
+                'XXcontentXX': f"{page.content}",
+                'XXpagescriptsXX': f"{page.pagescripts}",
+            }
+            for k, v in rep_codes:
+                res = re.sub(k, v, res)
+            res = re.sub('XXsublocationsXX', location_table, res)
+            for k, v in rep_args:
+                res = re.sub(k, v, res)
+            res = replace_shortcodes(site, res)
+            res = re.sub(r'XX\w+XX', '', res)
+            return HttpResponse(res, content_type='text/html')
+    except Exception as e:
+        print(e)
+        PrintException()
 
 
 def abs_state(request, *args, **kwargs):
     try:
-        print(request.META)
         site = get_object_or_404(Site, id=kwargs['siteid'])
         page = None
-        compiled = "<div>"
         pagename = "/agents-by-state/state"
         for i in site.pages:
             if i.route == pagename:
@@ -245,20 +286,22 @@ def abs_state(request, *args, **kwargs):
                 u_val = re.sub(' ', '_', i)
                 rel_link = urllib.parse.quote(f"/agents-by-state/{kwargs['state']}/{u_val}/")
                 location_table.append([rel_link, i])
-            compiled += f"""
-            <p>{site.sitename}</p>
-            <p>{page.route}</p>
-            <p>{kwargs}</p>
-            <p>{rep_args}</p>
-            <p>{url_args}</p>
-            <p>{agent_table}</p>
-            <p>{location_table}</p>
-            """
-            compiled += "</div>"
-
-            res = f"{test_doc}"
-            res = re.sub('XXtestcontentXX', compiled, res)
-            res = re.sub('XXroutetitleXX', pagename, res)
+            res = f"{basic_doc}"
+            rep_codes = {
+                'XXpagemetasXX': f"{page.pagemetas}",
+                'XXpagelinksXX': f"{page.pagelinks}",
+                'XXtitleXX': f"{page.title}",
+                'XXcontentXX': f"{page.content}",
+                'XXpagescriptsXX': f"{page.pagescripts}",
+            }
+            for k, v in rep_codes:
+                res = re.sub(k, v, res)
+            res = re.sub('XXagentsXX', agent_table)
+            res = re.sub('XXsublocationsXX', location_table, res)
+            for k, v in rep_args:
+                res = re.sub(k, v, res)
+            res = replace_shortcodes(site, res)
+            res = re.sub(r'XX\w+XX', '', res)
             return HttpResponse(res, content_type='text/html')
     except Exception as e:
         print(e)
