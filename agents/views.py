@@ -241,7 +241,7 @@ def abs_main(request, *args, **kwargs):
             }
             for k, v in rep_codes.items():
                 res = re.sub(k, v, res)
-            res = re.sub('XXsublocationsXX', location_table, res)
+            res = re.sub('XXagentsbystateXX', location_table, res)
             for k, v in rep_args.items():
                 res = re.sub(k, v, res)
             res = replace_shortcodes(site, res)
