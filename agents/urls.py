@@ -7,7 +7,6 @@ urlpatterns = [
     path('', agent_create_and_list_view, name='main-agent-view'),
     #path('upload/', upload_agents, name='upload-agent-view'),
     path('test/<int:siteid>/', home_view),
-    path('test/<int:siteid>/<str:page>/', get_static_page),
     path('test/<int:siteid>/agents-by-state/', abs_main),
     path('test/<int:siteid>/agents-by-state/<str:state>/', abs_state),
     path('test/<int:siteid>/agents-by-state/<str:state>/<str:city>/', abs_city),
@@ -16,6 +15,7 @@ urlpatterns = [
     path('test/<int:siteid>/process-server/<str:agent>/<str:state>/<str:city>/', ps_city),
     path('test/<int:siteid>/registered-agents/search/<str:query>/', ra_search),
     path('test/<int:siteid>/registered-agents/<str:agent>--<str:state>--<str:county>--<str:city>/<int:agentid>/', ra_agent),
+    path('test/<int:siteid>/<str:page>/', get_static_page),
 
     path('compile/<int:siteid>/', get_home, name='agent-home-view'),
     path('compile/<int:siteid>/<str:page>/', compilerv5, name='agent-page-view'),
