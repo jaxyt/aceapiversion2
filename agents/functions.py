@@ -497,29 +497,29 @@ def sitemap_generator(request, site):
     #print(agents)
 
     for i in agents:
-        process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/process-server/{i}"""))+"</loc>\n\t</url>")
+        process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/process-server/{i}""")+"</loc>\n\t</url>")
         a_states = list(coll_ra.find({"agent": i}).distinct("state"))
         #print(a_states)
         for n in a_states:
-            process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/process-server/{i}/{n}"""))+"</loc>\n\t</url>")
+            process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/process-server/{i}/{n}""")+"</loc>\n\t</url>")
             a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
             #print(a_cities)
             for k in a_cities:
-                process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/process-server/{i}/{n}/{k}"""))+"</loc>\n\t</url>")
+                process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/process-server/{i}/{n}/{k}""")+"</loc>\n\t</url>")
     process_server_urls.sort()
     process_server_urls.sort(key=len, reverse=True)
 
     for n in states:
-        agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/agents-by-state/{n}"""))+"</loc>\n\t</url>")
+        agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/agents-by-state/{n}""")+"</loc>\n\t</url>")
         s_cities = list(coll_ra.find({'state': n}).distinct("city"))
         #print(s_cities)
         for k in s_cities:
-            agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/agents-by-state/{n}/{k}"""))+"</loc>\n\t</url>")
+            agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/agents-by-state/{n}/{k}""")+"</loc>\n\t</url>")
     agents_by_state_urls.sort()
     agents_by_state_urls.sort(key=len, reverse=True)
 
     for i in list(coll_ra.find({}, {'_id': 0})):
-        registered_agent_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}"""))+"</loc>\n\t</url>")
+        registered_agent_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}""")+"</loc>\n\t</url>")
     registered_agent_urls.sort()
     registered_agent_urls.sort(key=len, reverse=True)
 
