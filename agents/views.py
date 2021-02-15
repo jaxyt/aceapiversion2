@@ -522,64 +522,68 @@ def ps_state(request, *args, **kwargs):
 
 
 def ps_city(request, *args, **kwargs):
-    site = get_object_or_404(Site, id=kwargs['siteid'])
-    page = None
-    compiled = "<div>"
-    pagename = "/process-server/id/state/city"
-    for i in site.pages:
-        if i.route == pagename:
-            page = i
-            break
-    if page == None:
-        return HttpResponse("", content_type='text/plain')
-    else:
-        rep_args = dict()
-        url_args = dict()
-        for k, v in kwargs.items():
-            if type(v) == str:
-                rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
-                url_args[k] = re.sub('_', ' ', v)
-        agents_objs = list(coll_ra.find(url_args, {'_id': 0}))
-        agent_table = """
-            <div class="table-responsive">
-                <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Registered Agent</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+    try:
+        site = get_object_or_404(Site, id=kwargs['siteid'])
+        page = None
+        compiled = "<div>"
+        pagename = "/process-server/id/state/city"
+        for i in site.pages:
+            if i.route == pagename:
+                page = i
+                break
+        if page == None:
+            return HttpResponse("", content_type='text/plain')
+        else:
+            rep_args = dict()
+            url_args = dict()
+            for k, v in kwargs.items():
+                if type(v) == str:
+                    rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
+                    url_args[k] = re.sub('_', ' ', v)
+            agents_objs = list(coll_ra.find(url_args, {'_id': 0}))
+            agent_table = """
+                <div class="table-responsive">
+                    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Registered Agent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                """
+            for i in agents_objs:
+                agent = re.sub(' ', '_', i['agent'])
+                state = re.sub(' ', '_', i['state'])
+                county = re.sub(' ', '_', i['county'])
+                city = re.sub(' ', '_', i['city'])
+                rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
+                agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
+            agent_table += """
+                    </tbody>
+                </table>
+            </div>
             """
-        for i in agents_objs:
-            agent = re.sub(' ', '_', i['agent'])
-            state = re.sub(' ', '_', i['state'])
-            county = re.sub(' ', '_', i['county'])
-            city = re.sub(' ', '_', i['city'])
-            rel_link = urllib.parse.quote(f"/registered-agents/{agent}-{state}-{county}-{city}/{i['id']}/")
-            agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
-        agent_table += """
-                </tbody>
-            </table>
-        </div>
-        """
 
-        res = f"{basic_doc}"
-        rep_codes = {
-            'XXpagemetasXX': f"{page.pagemetas}",
-            'XXpagelinksXX': f"{page.pagelinks}",
-            'XXtitleXX': f"{page.title}",
-            'XXcontentXX': f"{page.content}",
-            'XXpagescriptsXX': f"{page.pagescripts}",
-        }
-        for k, v in rep_codes.items():
-            res = re.sub(k, v, res)
-        res = re.sub('XXagentsXX', agent_table, res)
-        res = re.sub('XXsublocationsXX', location_table, res)
-        for k, v in rep_args.items():
-            res = re.sub(k, v, res)
-        res = replace_shortcodes(site, res)
-        res = re.sub(r'XX\w+XX', '', res)
-        return HttpResponse(res, content_type='text/html')
+            res = f"{basic_doc}"
+            rep_codes = {
+                'XXpagemetasXX': f"{page.pagemetas}",
+                'XXpagelinksXX': f"{page.pagelinks}",
+                'XXtitleXX': f"{page.title}",
+                'XXcontentXX': f"{page.content}",
+                'XXpagescriptsXX': f"{page.pagescripts}",
+            }
+            for k, v in rep_codes.items():
+                res = re.sub(k, v, res)
+            res = re.sub('XXagentsXX', agent_table, res)
+            res = re.sub('XXsublocationsXX', location_table, res)
+            for k, v in rep_args.items():
+                res = re.sub(k, v, res)
+            res = replace_shortcodes(site, res)
+            res = re.sub(r'XX\w+XX', '', res)
+            return HttpResponse(res, content_type='text/html')
+    except Exception as e:
+        print(e)
+        PrintException()
 
 
 
