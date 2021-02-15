@@ -678,8 +678,11 @@ def ra_agent(request, *args, **kwargs):
         }
         for k, v in rep_codes.items():
             res = re.sub(k, v, res)
-        for k, v in rep_args.items():
-            res = re.sub(k, v, res)
+        for i in agents_objs:
+            for k, v in i:
+                res = re.sub(k, v, res)
+        #for k, v in rep_args.items():
+        #    res = re.sub(k, v, res)
         res = replace_shortcodes(site, res)
         res = re.sub(r'XX\w+XX', '', res)
         return HttpResponse(res, content_type='text/html')
