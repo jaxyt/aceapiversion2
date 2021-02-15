@@ -7,7 +7,7 @@ urlpatterns = [
     path('', agent_create_and_list_view, name='main-agent-view'),
     #path('upload/', upload_agents, name='upload-agent-view'),
     path('test/<int:siteid>/', home_view),
-    path('test/<int:siteid>/<str:page>', get_static_page),
+    path('test/<int:siteid>/<str:page>/', get_static_page),
     path('test/<int:siteid>/agents-by-state/', abs_main),
     path('test/<int:siteid>/agents-by-state/<str:state>/', abs_state),
     path('test/<int:siteid>/agents-by-state/<str:state>/<str:city>/', abs_city),
