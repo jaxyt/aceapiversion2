@@ -131,7 +131,7 @@ def get_static_page(request, *args, **kwargs):
         if re.search(r'^/sitemap\.xml$', pagename):
             return sitemap_generator(request, site)
         elif re.search(r'^/robots\.txt$', pagename):
-            return HttpResponse(f"""User-agent: *\nDisallow: \nSitemap: https://www.{site.sitename}.com/sitemap.xml/""", content_type='text/plain')
+            return HttpResponse(f"""User-agent: *\nDisallow: \nSitemap: https://www.{site.sitename}.com/sitemap.xml""", content_type='text/plain')
         elif re.search(r'^/\w+\.\w{2,4}$', pagename):
             return get_resource_page(request, site, pagename, *args, **kwargs)
         else:
