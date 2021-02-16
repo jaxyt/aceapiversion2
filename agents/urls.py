@@ -19,8 +19,9 @@ urlpatterns = [
     path('compile/<int:siteid>/blog/posts/', blog_main),
     path('compile/<int:siteid>/blog/posts/<str:blogtitle>-<int:blogid>/', blog_post),
     path('compile/<int:siteid>/<str:page>/', get_static_page),
+    re_path(r"^compile/(?P<siteid>[\d]+)/(?P<page>.+)/?$", get_static_page),
     re_path(r"^compile/(?P<siteid>[\d]+)/.+$", home_view),
-
+    
     #path('compile/<int:siteid>/', get_home, name='agent-home-view'),
     #path('compile/<int:siteid>/<str:page>/', compilerv5, name='agent-page-view'),
     #path('compile/<int:siteid>/<str:page>/posts/<slug:blog_title>-<int:blog_id>/', compilerv5, name='blog-search'),

@@ -125,7 +125,7 @@ def get_sitemap(request, *args, **kwargs):
 
 def get_static_page(request, *args, **kwargs):
     try:
-        site = get_object_or_404(Site, id=kwargs['siteid'])
+        site = get_object_or_404(Site, id=int(kwargs['siteid']))
         page = None
         pagename = f"/{kwargs['page']}"
         if re.search(r'^/sitemap\.xml$', pagename):
