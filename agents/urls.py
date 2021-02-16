@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from .views import agent_create_and_list_view, compilerv4, upload_agents, AgentDeleteView, AgentUpdateView, home_view, get_static_page, blog_main, blog_post, abs_main, abs_state, abs_city, ps_agent, ps_state, ps_city, ra_search, ra_agent
 
 app_name = 'agents'
@@ -18,6 +18,7 @@ urlpatterns = [
     path('compile/<int:siteid>/blog/posts/', blog_main),
     path('compile/<int:siteid>/blog/posts/<str:blogtitle>-<int:blogid>/', blog_post),
     path('compile/<int:siteid>/<str:page>/', get_static_page),
+    re_path(r"^compile/(?P<siteid>[\d]+)/.+$", home_view),
 
     #path('compile/<int:siteid>/', get_home, name='agent-home-view'),
     #path('compile/<int:siteid>/<str:page>/', compilerv5, name='agent-page-view'),
