@@ -519,7 +519,7 @@ def sitemap_generator(request, site):
     agents_by_state_urls.sort(key=len, reverse=True)
 
     for i in list(coll_ra.find({}, {'_id': 0})):
-        registered_agent_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}"""))+"</loc>\n\t</url>")
+        registered_agent_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/registered-agents/{i['agent']}-{i['state']}-{i['county']}-{i['city']}/{i['id']}"""))+"</loc>\n\t</url>")
     registered_agent_urls.sort()
     registered_agent_urls.sort(key=len, reverse=True)
 
