@@ -79,7 +79,7 @@ def get_client_ip(request):
 
 def home_view(request, *args, **kwargs):
     try:
-        site = get_object_or_404(Site, id=kwargs['siteid'])
+        site = get_object_or_404(Site, id=int(kwargs['siteid']))
         page = None
         pagename = "/"
         for i in site.pages:

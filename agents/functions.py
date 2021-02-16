@@ -138,352 +138,6 @@ def resource_page(request, site, pagedoc, **kwargs):
     compiled = replace_shortcodes(site, compiled)
     return HttpResponse(compiled, content_type=mime_type)
 
-def static_page(request, site, pagedoc, dbg, admin, **kwargs):
-    rep_codes = {
-        'XXsitemetasXX': f"{site.sitemetas}",
-        'XXpagemetasXX': f"{pagedoc.pagemetas}",
-        'XXsitelinksXX': f"{site.sitelinks}",
-        'XXpagelinksXX': f"{pagedoc.pagelinks}",
-        'XXsitestyleXX': f"{site.sitestyle}",
-        'XXtitleXX': f"{pagedoc.title}",
-        'XXsiteheaderXX': f"{site.siteheader}",
-        'XXcontentXX': f"{pagedoc.content}",
-        'XXsitefooterXX': f"{site.sitefooter}",
-        'XXsitescriptsXX': f"{site.sitescripts}",
-        'XXpagescriptsXX': f"{pagedoc.pagescripts}",
-        
-    }
-    compiled = f"{basic_doc}"
-    if admin is True and dbg is True:
-        compiled = f"{admin_doc}"
-    for k, v in rep_codes.items():
-        compiled = re.sub(k, v, compiled)
-    if dbg is False:
-        if pagedoc.route == "/agents-by-state":
-            agents_by_state = """<div class="state-corps-links">"""
-            for i in list(coll_ra.find({}, {'_id': 0}).distinct("state")):
-                agents_by_state += f"""<a href="/agents-by-state/{i}/">{i}</a>"""
-            agents_by_state += """</div>"""
-            compiled = re.sub("XXagentsbystateXX", agents_by_state, compiled)
-        compiled = replace_shortcodes(site, compiled)
-    return HttpResponse(compiled, content_type='text/html')
-
-def individual_agent(request, site, pagename, dbg, admin, **kwargs):
-    agent_obj = list(coll_ra.find({'id': kwargs['agentid'], 'agent': kwargs['agent']}, {'_id': 0}))
-    if len(agent_obj):
-        pagedoc = None
-        for i in site.pages:
-            if i.route == '/registered-agents/id':
-                pagedoc = i
-                break
-        
-        rep_codes = {
-            'XXsitemetasXX': f"{site.sitemetas}",
-            'XXpagemetasXX': f"{pagedoc.pagemetas}",
-            'XXsitelinksXX': f"{site.sitelinks}",
-            'XXpagelinksXX': f"{pagedoc.pagelinks}",
-            'XXsitestyleXX': f"{site.sitestyle}",
-            'XXtitleXX': f"{pagedoc.title}",
-            'XXsiteheaderXX': f"{site.siteheader}",
-            'XXcontentXX': f"{pagedoc.content}",
-            'XXsitefooterXX': f"{site.sitefooter}",
-            'XXsitescriptsXX': f"{site.sitescripts}",
-            'XXpagescriptsXX': f"{pagedoc.pagescripts}",
-            
-        }
-        compiled = f"{basic_doc}"
-
-        for k, v in rep_codes.items():
-            compiled = re.sub(k, v, compiled)
-
-        for k, v in agent_obj[0].items():
-            regx = re.compile(f"XX{k}XX")
-            compiled = re.sub(regx, f"{v}", compiled)
-        compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
-        compiled = replace_shortcodes(site, compiled)
-        return HttpResponse(compiled, content_type='text/html')
-    else:
-        return HttpResponseNotFound()
-
-def agents_by_location(request, site, pagename, dbg, admin, **kwargs):
-    pagedoc = None
-    route = "/agents-by-state"
-    lwargs = dict()
-    if len(kwargs) >= 1:
-        lwargs['state'] = kwargs['arg_one']
-        route = "/agents-by-state/state"
-        if len(kwargs) == 2:
-            lwargs['city'] = kwargs['arg_two']
-            route = "/agents-by-state/state/city"
-
-    for i in site.pages:
-            if i.route == route:
-                pagedoc = i
-                break
-
-    agents_objs = list(coll_ra.find(lwargs, {'_id': 0}))
-
-    agent_table = """
-    <div class="table-responsive">
-        <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Details</th>
-                    <th>Registered Agent</th>
-                    <th>Location</th>
-                </tr>
-            </thead>
-            <tbody>
-    """
-    for i in agents_objs:
-        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
-        if dbg is True:
-            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
-        agent_table += f"""
-                <tr>
-                    <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                    <td><a href="{rel_link}">{i['agent']}</a></td>
-                    <td><a href="{rel_link}">{i['city']}, {i['state']}</a></td>
-                </tr>
-        """
-    agent_table += """
-            </tbody>
-        </table>
-    </div>
-    """
-    location_table = ""
-    if len(lwargs) < 2:
-        location_table = """<div class="process-server-corp-state-links">"""
-        u_key = "state"
-        if len(lwargs) == 1:
-            u_key = "city"
-        loc_objs = list(coll_ra.find(lwargs, {'_id': 0}).distinct(u_key))
-        for i in loc_objs:
-            rel_link = urllib.parse.quote(f"/agents-by-state/{'/'.join([*lwargs.values()])}/{i}/")
-            if dbg is True:
-                rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/agents-by-state/{'/'.join([*lwargs.values()])}/{i}/")
-            location_table += f"""<a href="{rel_link}">{i}</a>"""
-        location_table += "</div>"
-    
-    rep_codes = {
-        'XXsitemetasXX': f"{site.sitemetas}",
-        'XXpagemetasXX': f"{pagedoc.pagemetas}",
-        'XXsitelinksXX': f"{site.sitelinks}",
-        'XXpagelinksXX': f"{pagedoc.pagelinks}",
-        'XXsitestyleXX': f"{site.sitestyle}",
-        'XXtitleXX': f"{pagedoc.title}",
-        'XXsiteheaderXX': f"{site.siteheader}",
-        'XXcontentXX': f"{pagedoc.content}",
-        'XXsitefooterXX': f"{site.sitefooter}",
-        'XXsitescriptsXX': f"{site.sitescripts}",
-        'XXpagescriptsXX': f"{pagedoc.pagescripts}",
-        
-    }
-    compiled = f"{basic_doc}"
-
-    for k, v in rep_codes.items():
-        compiled = re.sub(k, v, compiled)
-    for k, v in lwargs.items():
-        compiled = re.sub(f"XX{k}XX", v, compiled)
-    compiled = re.sub("XXagentsXX", agent_table, compiled)
-    compiled = re.sub("XXsublocationsXX", location_table, compiled)
-    compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
-    compiled = replace_shortcodes(site, compiled)
-    return HttpResponse(compiled, content_type='text/html')
-
-def agents_by_corp(request, site, pagename, dbg, admin, **kwargs):
-    pagedoc = None
-    route = ""
-    lwargs = dict()
-    if len(kwargs) >= 1:
-        lwargs['agent'] = kwargs['arg_one']
-        route = "/process-server/id"
-        if len(kwargs) >= 2:
-            lwargs['state'] = kwargs['arg_two']
-            route = "/process-server/id/state"
-            if len(kwargs) == 3:
-                lwargs['city'] = kwargs['arg_three']
-                route = "/process-server/id/state/city"
-
-    for i in site.pages:
-            if i.route == route:
-                pagedoc = i
-                break
-
-    agents_objs = list(coll_ra.find(lwargs, {'_id': 0}))
-
-    agent_table = """
-    <div class="table-responsive">
-        <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Details</th>
-                    <th>Registered Agent</th>
-                    <th>Location</th>
-                </tr>
-            </thead>
-            <tbody>
-    """
-    for i in agents_objs:
-        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
-        if dbg is True:
-            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
-        agent_table += f"""
-                <tr>
-                    <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                    <td><a href="{rel_link}">{i['agent']}</a></td>
-                    <td><a href="{rel_link}">{i['city']}, {i['state']}</a></td>
-                </tr>
-        """
-    agent_table += """
-            </tbody>
-        </table>
-    </div>
-    """
-    location_table = ""
-    if len(lwargs) < 3:
-        location_table = """<div class="process-server-corp-state-links">"""
-        u_key = "agent"
-        if len(lwargs) == 1:
-            u_key = "state"
-        elif len(lwargs) == 2:
-            u_key = "city"
-        res = list(coll_ra.find(lwargs, {'_id': 0}).distinct(u_key))
-        for i in res:
-            rel_link = urllib.parse.quote(f"/process-server/{'/'.join([*lwargs.values()])}/{i}/")
-            if dbg is True:
-                rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/process-server/{'/'.join([*lwargs.values()])}/{i}/")
-            location_table += f"""<a href="{rel_link}">{i}</a>"""
-        location_table += "</div>"
-
-    rep_codes = {
-        'XXsitemetasXX': f"{site.sitemetas}",
-        'XXpagemetasXX': f"{pagedoc.pagemetas}",
-        'XXsitelinksXX': f"{site.sitelinks}",
-        'XXpagelinksXX': f"{pagedoc.pagelinks}",
-        'XXsitestyleXX': f"{site.sitestyle}",
-        'XXtitleXX': f"{pagedoc.title}",
-        'XXsiteheaderXX': f"{site.siteheader}",
-        'XXcontentXX': f"{pagedoc.content}",
-        'XXsitefooterXX': f"{site.sitefooter}",
-        'XXsitescriptsXX': f"{site.sitescripts}",
-        'XXpagescriptsXX': f"{pagedoc.pagescripts}",
-        
-    }
-    compiled = f"{basic_doc}"
-
-    for k, v in rep_codes.items():
-        compiled = re.sub(k, v, compiled)
-    for k, v in lwargs.items():
-        compiled = re.sub(f"XX{k}XX", v, compiled)
-    compiled = re.sub("XXagentsXX", agent_table, compiled)
-    compiled = re.sub("XXsublocationsXX", location_table, compiled)
-    compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
-    compiled = replace_shortcodes(site, compiled)
-    return HttpResponse(compiled, content_type='text/html')
-
-def agents_query(request, site, pagename, dbg, admin, **kwargs):
-    pagedoc = None
-    route = '/registered-agents/search/key/value'
-
-    for i in site.pages:
-        if i.route == route:
-            pagedoc = i
-            break
-
-    agents_objs = list(coll_ra.find({"$text":{"$search":kwargs['arg_two']}},{"score":{"$meta":"textScore"}}).sort([("score",{"$meta":"textScore"})]))
-
-    agent_table = """
-    <div class="table-responsive">
-        <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Details</th>
-                    <th>Registered Agent</th>
-                    <th>Location</th>
-                </tr>
-            </thead>
-            <tbody>
-    """
-    for i in agents_objs:
-        rel_link = urllib.parse.quote(f"/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
-        if dbg is True:
-            rel_link = urllib.parse.quote(f"/agents/compile/{site.id}/registered-agents/{i['agent']}/{i['state']}/{i['county']}/{i['city']}/{i['id']}/")
-        agent_table += f"""
-                <tr>
-                    <td><a href="{rel_link}"><button type="button" class="btn waves-effect waves-light btn-info">Info</button></a></td>
-                    <td><a href="{rel_link}">{i['agent']}</a></td>
-                    <td><a href="{rel_link}">{i['city']}, {i['state']}</a></td>
-                </tr>
-        """
-    agent_table += """
-            </tbody>
-        </table>
-    </div>
-    """
-
-    rep_codes = {
-        'XXsitemetasXX': f"{site.sitemetas}",
-        'XXpagemetasXX': f"{pagedoc.pagemetas}",
-        'XXsitelinksXX': f"{site.sitelinks}",
-        'XXpagelinksXX': f"{pagedoc.pagelinks}",
-        'XXsitestyleXX': f"{site.sitestyle}",
-        'XXtitleXX': f"{pagedoc.title}",
-        'XXsiteheaderXX': f"{site.siteheader}",
-        'XXcontentXX': f"{pagedoc.content}",
-        'XXsitefooterXX': f"{site.sitefooter}",
-        'XXsitescriptsXX': f"{site.sitescripts}",
-        'XXpagescriptsXX': f"{pagedoc.pagescripts}",
-        
-    }
-    compiled = f"{basic_doc}"
-
-    for k, v in rep_codes.items():
-        compiled = re.sub(k, v, compiled)
-    compiled = re.sub("XXagentsXX", agent_table, compiled)
-    compiled = re.sub("XXqueryXX", kwargs['arg_two'], compiled)
-    compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
-    compiled = replace_shortcodes(site, compiled)
-    return HttpResponse(compiled, content_type='text/html')
-
-
-def blog_handler(request, site, pagename, dbg, admin, **kwargs):
-    blog_obj = list(coll_bl.find({'id': kwargs['blog_id']}, {'_id': 0}))
-    if len(blog_obj):
-        pagedoc = None
-        for i in site.pages:
-            if i.route == '/blog/posts/id':
-                pagedoc = i
-                break
-        
-        rep_codes = {
-            'XXsitemetasXX': f"{site.sitemetas}",
-            'XXpagemetasXX': f"{pagedoc.pagemetas}",
-            'XXsitelinksXX': f"{site.sitelinks}",
-            'XXpagelinksXX': f"{pagedoc.pagelinks}",
-            'XXsitestyleXX': f"{site.sitestyle}",
-            'XXtitleXX': f"{pagedoc.title}",
-            'XXsiteheaderXX': f"{site.siteheader}",
-            'XXcontentXX': f"{pagedoc.content}",
-            'XXsitefooterXX': f"{site.sitefooter}",
-            'XXsitescriptsXX': f"{site.sitescripts}",
-            'XXpagescriptsXX': f"{pagedoc.pagescripts}",
-            
-        }
-        compiled = f"{basic_doc}"
-
-        for k, v in rep_codes.items():
-            compiled = re.sub(k, v, compiled)
-
-        for k, v in blog_obj[0].items():
-            regx = re.compile(f"XX{k}XX")
-            compiled = re.sub(regx, f"{v}", compiled)
-        compiled = re.sub("XXrouteXX", f"{pagename}", compiled)
-        compiled = replace_shortcodes(site, compiled)
-        return HttpResponse(compiled, content_type='text/html')
-    else:
-        return HttpResponseNotFound()
-
 
 def sitemap_generator(request, site):
     states = list(coll_ra.find().distinct('state'))
@@ -497,34 +151,34 @@ def sitemap_generator(request, site):
     #print(agents)
 
     for i in agents:
-        process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/process-server/{i}"""))+"</loc>\n\t</url>")
+        process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/process-server/{i}/"""))+"</loc>\n\t</url>")
         a_states = list(coll_ra.find({"agent": i}).distinct("state"))
         #print(a_states)
         for n in a_states:
-            process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/process-server/{i}/{n}"""))+"</loc>\n\t</url>")
+            process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/process-server/{i}/{n}/"""))+"</loc>\n\t</url>")
             a_cities = list(coll_ra.find({"agent": i, 'state': n}).distinct("city"))
             #print(a_cities)
             for k in a_cities:
-                process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/process-server/{i}/{n}/{k}"""))+"</loc>\n\t</url>")
+                process_server_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/process-server/{i}/{n}/{k}/"""))+"</loc>\n\t</url>")
     process_server_urls.sort()
     process_server_urls.sort(key=len, reverse=True)
 
     for n in states:
-        agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/agents-by-state/{n}"""))+"</loc>\n\t</url>")
+        agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/agents-by-state/{n}/"""))+"</loc>\n\t</url>")
         s_cities = list(coll_ra.find({'state': n}).distinct("city"))
         #print(s_cities)
         for k in s_cities:
-            agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/agents-by-state/{n}/{k}"""))+"</loc>\n\t</url>")
+            agents_by_state_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/agents-by-state/{n}/{k}/"""))+"</loc>\n\t</url>")
     agents_by_state_urls.sort()
     agents_by_state_urls.sort(key=len, reverse=True)
 
     for i in list(coll_ra.find({}, {'_id': 0})):
-        registered_agent_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/registered-agents/{i['agent']}--{i['state']}--{i['county']}--{i['city']}/{i['id']}"""))+"</loc>\n\t</url>")
+        registered_agent_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(re.sub(' ', '_', f"""/registered-agents/{i['agent']}--{i['state']}--{i['county']}--{i['city']}/{i['id']}/"""))+"</loc>\n\t</url>")
     registered_agent_urls.sort()
     registered_agent_urls.sort(key=len, reverse=True)
 
     for i in pages:
-        page_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""{i}""")+"</loc>\n\t</url>")
+        page_urls.append(f'\n\t<url>\n\t\t<loc>https://www.{site.sitename}.com'+urllib.parse.quote(f"""{i}/""")+"</loc>\n\t</url>")
 
     print(len(page_urls))
     print(len(registered_agent_urls))
