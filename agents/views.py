@@ -273,54 +273,58 @@ def abs_state(request, *args, **kwargs):
                     rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
                     url_args[k] = re.sub('_', ' ', v)
             agents_objs = list(coll_ra.find(url_args, {'_id': 0}))
-            agent_table = """
-            <div class="table-responsive">
-                <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Registered Agent</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            """
-            for i in agents_objs:
-                agent = re.sub(' ', '_', i['agent'])
-                state = re.sub(' ', '_', i['state'])
-                county = re.sub(' ', '_', i['county'])
-                city = re.sub(' ', '_', i['city'])
-                rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
-                agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
-            agent_table += """
-                    </tbody>
-                </table>
-            </div>
-            """
+            if len(agents_objs):
+                agent_table = """
+                <div class="table-responsive">
+                    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Registered Agent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                """
+                for i in agents_objs:
+                    agent = re.sub(' ', '_', i['agent'])
+                    state = re.sub(' ', '_', i['state'])
+                    county = re.sub(' ', '_', i['county'])
+                    city = re.sub(' ', '_', i['city'])
+                    rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
+                    agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
+                agent_table += """
+                        </tbody>
+                    </table>
+                </div>
+                """
 
-            u_key = "city"
-            location_table = """<div class="process-server-corp-state-links">"""
-            loc_objs = list(coll_ra.find(url_args, {'_id': 0}).distinct(u_key))
-            for i in loc_objs:
-                u_val = re.sub(' ', '_', i)
-                rel_link = urllib.parse.quote(f"/agents-by-state/{kwargs['state']}/{u_val}/")
-                location_table += f"""<a href="{rel_link}">{i}</a>"""
-            location_table += """</div>""" 
-            res = f"{basic_doc}"
-            rep_codes = {
-                'XXpagemetasXX': f"{page.pagemetas}",
-                'XXpagelinksXX': f"{page.pagelinks}",
-                'XXtitleXX': f"{page.title}",
-                'XXcontentXX': f"{page.content}",
-                'XXpagescriptsXX': f"{page.pagescripts}",
-            }
-            for k, v in rep_codes.items():
-                res = re.sub(k, v, res)
-            res = re.sub('XXagentsXX', agent_table, res)
-            res = re.sub('XXsublocationsXX', location_table, res)
-            for k, v in rep_args.items():
-                res = re.sub(k, v, res)
-            res = replace_shortcodes(site, res)
-            res = re.sub(r'XX\w+XX', '', res)
-            return HttpResponse(res, content_type='text/html')
+                u_key = "city"
+                location_table = """<div class="process-server-corp-state-links">"""
+                loc_objs = list(coll_ra.find(url_args, {'_id': 0}).distinct(u_key))
+                for i in loc_objs:
+                    u_val = re.sub(' ', '_', i)
+                    rel_link = urllib.parse.quote(f"/agents-by-state/{kwargs['state']}/{u_val}/")
+                    location_table += f"""<a href="{rel_link}">{i}</a>"""
+                location_table += """</div>""" 
+                res = f"{basic_doc}"
+                rep_codes = {
+                    'XXpagemetasXX': f"{page.pagemetas}",
+                    'XXpagelinksXX': f"{page.pagelinks}",
+                    'XXtitleXX': f"{page.title}",
+                    'XXcontentXX': f"{page.content}",
+                    'XXpagescriptsXX': f"{page.pagescripts}",
+                }
+                for k, v in rep_codes.items():
+                    res = re.sub(k, v, res)
+                res = re.sub('XXagentsXX', agent_table, res)
+                res = re.sub('XXsublocationsXX', location_table, res)
+                for k, v in rep_args.items():
+                    res = re.sub(k, v, res)
+                res = replace_shortcodes(site, res)
+                res = re.sub(r'XX\w+XX', '', res)
+                return HttpResponse(res, content_type='text/html')
+            else:
+                return home_view(request, *args, **kwargs)
+                
     except Exception as e:
         print(e)
         PrintException()
@@ -346,44 +350,48 @@ def abs_city(request, *args, **kwargs):
                     rep_args[f"XX{k}XX"] = re.sub('_', ' ', v)
                     url_args[k] = re.sub('_', ' ', v)
             agents_objs = list(coll_ra.find(url_args, {'_id': 0}))
-            agent_table = """
-                <div class="table-responsive">
-                    <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Registered Agent</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                """
-            for i in agents_objs:
-                agent = re.sub(' ', '_', i['agent'])
-                state = re.sub(' ', '_', i['state'])
-                county = re.sub(' ', '_', i['county'])
-                city = re.sub(' ', '_', i['city'])
-                rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
-                agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
-            agent_table += """
-                        </tbody>
-                    </table>
-                </div>
-                """
-            res = f"{basic_doc}"
-            rep_codes = {
-                'XXpagemetasXX': f"{page.pagemetas}",
-                'XXpagelinksXX': f"{page.pagelinks}",
-                'XXtitleXX': f"{page.title}",
-                'XXcontentXX': f"{page.content}",
-                'XXpagescriptsXX': f"{page.pagescripts}",
-            }
-            for k, v in rep_codes.items():
-                res = re.sub(k, v, res)
-            res = re.sub('XXagentsXX', agent_table, res)
-            for k, v in rep_args.items():
-                res = re.sub(k, v, res)
-            res = replace_shortcodes(site, res)
-            res = re.sub(r'XX\w+XX', '', res)
-            return HttpResponse(res, content_type='text/html')
+            if len(agents_objs):
+                agent_table = """
+                    <div class="table-responsive">
+                        <table id="default_order" class="table table-striped table-bordered display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Registered Agent</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    """
+                for i in agents_objs:
+                    agent = re.sub(' ', '_', i['agent'])
+                    state = re.sub(' ', '_', i['state'])
+                    county = re.sub(' ', '_', i['county'])
+                    city = re.sub(' ', '_', i['city'])
+                    rel_link = urllib.parse.quote(f"/registered-agents/{agent}--{state}--{county}--{city}/{i['id']}/")
+                    agent_table += f"""<tr><td><a href="{rel_link}">{i['agent']} - {i['city']}, {i['stateacronym']}</a></td></tr>"""
+                agent_table += """
+                            </tbody>
+                        </table>
+                    </div>
+                    """
+                res = f"{basic_doc}"
+                rep_codes = {
+                    'XXpagemetasXX': f"{page.pagemetas}",
+                    'XXpagelinksXX': f"{page.pagelinks}",
+                    'XXtitleXX': f"{page.title}",
+                    'XXcontentXX': f"{page.content}",
+                    'XXpagescriptsXX': f"{page.pagescripts}",
+                }
+                for k, v in rep_codes.items():
+                    res = re.sub(k, v, res)
+                res = re.sub('XXagentsXX', agent_table, res)
+                for k, v in rep_args.items():
+                    res = re.sub(k, v, res)
+                res = replace_shortcodes(site, res)
+                res = re.sub(r'XX\w+XX', '', res)
+                return HttpResponse(res, content_type='text/html')
+            else:
+                return home_view(request, *args, **kwargs)
+            
     except Exception as e:
         print(e)
         PrintException()
