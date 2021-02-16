@@ -114,6 +114,15 @@ def home_view(request, *args, **kwargs):
         print(e)
         PrintException()
 
+def get_sitemap(request, *args, **kwargs):
+    try:
+        site = get_object_or_404(Site, id=kwargs['siteid'])
+        return sitemap_generator(request, site)
+    except Exception as e:
+        print(e)
+        PrintException()
+        return home_view(request, *args, **kwargs)
+
 def get_static_page(request, *args, **kwargs):
     try:
         site = get_object_or_404(Site, id=kwargs['siteid'])
