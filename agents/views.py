@@ -43,7 +43,7 @@ basic_doc = """<!DOCTYPE html>
         XXsitestyleXX
         <title>XXtitleXX</title>
     </head>
-    <body>
+    <body oncopy="return false" oncut="return false" onpaste="return false">
         XXsiteheaderXX
         XXcontentXX
         XXsitefooterXX

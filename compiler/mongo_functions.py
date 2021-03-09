@@ -199,7 +199,7 @@ def compiler_v3(s, t, r, arr):
             meta_data,
             f"""{spage.pagestyle if spage.pagestyle else s.sitestyle if s.sitestyle else tpage.pagestyle if tpage.pagestyle else t.sitestyle if t.sitestyle else ""}""",
             "</head>",
-            "<body>",
+            """<body oncopy="return false" oncut="return false" onpaste="return false">""",
             f"""{spage.pageheader if spage.pageheader else s.siteheader if s.siteheader else tpage.pageheader if tpage.pageheader else t.siteheader if t.siteheader else ""}""",
             f"""{spage.content if spage.content else tpage.content if tpage.content else ""}""",
             f"""{spage.pagefooter if spage.pagefooter else s.sitefooter if s.sitefooter else tpage.pagefooter if tpage.pagefooter else t.sitefooter if t.sitefooter else ""}""",
