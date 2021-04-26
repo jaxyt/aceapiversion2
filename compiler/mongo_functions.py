@@ -38,6 +38,7 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client.acedbv2
 
 coll_ra = db.registeredagents_registeredagent
+coll_ra2 = db.agents_agent
 coll_st = db.states_state
 coll_co = db.counties_county
 coll_ci = db.cities_city
@@ -850,6 +851,8 @@ def do_mongo_query(collection):
         # print(x)
         if collection == 'ra':
           res = json.dumps(list(map(add_to_map, coll_ra.find({}, {'_id': 0}))))
+        elif collection == 'ratwo':
+          res = json.dumps(list(map(add_to_map, coll_ra2.find({}, {'_id': 0}))))
         elif collection == 'st':
           res = json.dumps(list(map(add_to_map, coll_st.find({}, {'_id': 0}))))
         elif collection == 'co':
